@@ -46,3 +46,8 @@
 
 # Embedded web-server pid file
 /.web-server-pid
+
+#Eclipse
+/.externalToolBuilders
+/.metadata
+/.settings
