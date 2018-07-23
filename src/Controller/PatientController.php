@@ -18,7 +18,7 @@ class PatientController extends AppController
     /**
      * Listing des patients
      *
-     * @Route("/patient/listing/{page}/{field}/{order}", name="patient", defaults={"page" = 1, "field"= null, "order"= null})
+     * @Route("/patient/listing/{page}/{field}/{order}", name="patient_listing", defaults={"page" = 1, "field"= null, "order"= null})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      *
      */
@@ -32,7 +32,7 @@ class PatientController extends AppController
             $order = 'DESC';
         }
         
-        $session->set(self::CURRENT_SEARCH, array());
+        //$session->set(self::CURRENT_SEARCH, array());
         
         $params = array(
             'field' => $field,
@@ -46,7 +46,7 @@ class PatientController extends AppController
 
         $pagination = array(
             'page' => $page,
-            'route' => 'patient',
+            'route' => 'patient_listing',
             'pages_count' => ceil($result['nb'] / self::MAX_NB_RESULT),
             'nb_elements' => $result['nb'],
             'route_params' => array()
@@ -85,7 +85,7 @@ class PatientController extends AppController
             'paths' => array(
                 'home' => $this->indexUrlProject(),
                 'urls' => array(
-                    $this->generateUrl('patient', array(
+                    $this->generateUrl('patient_listing', array(
                         'page' => $page,
                         'field' => $arrayFilters['field'],
                         'order' => $arrayFilters['order']
@@ -129,7 +129,7 @@ class PatientController extends AppController
             $em->persist($patient);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('patient'));
+            return $this->redirect($this->generateUrl('patient_listing'));
         }
 
         return $this->render('patient/add.html.twig', [
@@ -138,7 +138,7 @@ class PatientController extends AppController
             'paths' => array(
                 'home' => $this->indexUrlProject(),
                 'urls' => array(
-                    $this->generateUrl('patient', array(
+                    $this->generateUrl('patient_listing', array(
                         'page' => $page,
                         'field' => $arrayFilters['field'],
                         'order' => $arrayFilters['order']
@@ -173,7 +173,7 @@ class PatientController extends AppController
             $em->persist($patient);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('patient', array(
+            return $this->redirect($this->generateUrl('patient_listing', array(
                 'page' => $page,
                 'field' => $arrayFilters['field'],
                 'order' => $arrayFilters['order']
@@ -187,7 +187,7 @@ class PatientController extends AppController
             'paths' => array(
                 'home' => $this->indexUrlProject(),
                 'urls' => array(
-                    $this->generateUrl('patient', array(
+                    $this->generateUrl('patient_listing', array(
                         'page' => $page,
                         'field' => $arrayFilters['field'],
                         'order' => $arrayFilters['order']
@@ -221,7 +221,7 @@ class PatientController extends AppController
 
         $entityManager->flush();
 
-        return $this->redirectToRoute('patient', array(
+        return $this->redirectToRoute('patient_listing', array(
             'page' => $page,
             'field' => $arrayFilters['field'],
             'order' => $arrayFilters['order']

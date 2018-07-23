@@ -30,22 +30,23 @@ class AppController extends Controller
      *
      * @Route("/utils/delete-search/{page}/{key}", name="utils_delete-search", defaults={"key"= null})
      */
-    public function deleteSearch(SessionInterface $session, int $page, $key = null)
+    public function deleteSearch(Request $request, SessionInterface $session, int $page, $key = null)
     {
-        $arrayFilters = $this->getDatasFilter($session);
-        
         $paramsSearch = $session->get(self::CURRENT_SEARCH);
         if(isset($paramsSearch[$key]))
         {
             unset($paramsSearch[$key]);
         }
         $session->set(self::CURRENT_SEARCH, $paramsSearch);
+       
         
-        return $this->redirect($this->generateUrl('patient', array(
+        return $this->redirect($request->headers->get('referer'));
+        
+        /*return $this->redirect($this->generateUrl('patient', array(
             'page' => $page,
             'field' => $arrayFilters['field'],
             'order' => $arrayFilters['order']
-        )));
+        )));*/
     }
     
     /**

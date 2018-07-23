@@ -37,7 +37,7 @@ class FamilleAdresse
     private $code_postal;
     
     /**
-     * @ORM\Column(type="smallint")
+     * @ORM\Column(type="boolean")
      */
     private $disabled;
 
@@ -94,12 +94,12 @@ class FamilleAdresse
         return $this;
     }
 
-    public function getDisabled(): ?int
+    public function getDisabled(): ?bool
     {
         return $this->disabled;
     }
 
-    public function setDisabled(int $disabled): self
+    public function setDisabled(bool $disabled): self
     {
         $this->disabled = $disabled;
 

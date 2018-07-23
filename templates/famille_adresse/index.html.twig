@@ -3,24 +3,34 @@
 {% block title %}Hello {{ controller_name }}!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+
+<h1>Gestion des adresses</h1>
+
+{% include 'elements/arborescence.html.twig' %}
 
 <div class="card">
 	<div class="card-header">
-    	{{ pagination.nb_elements }} adresses - Page {{ pagination.page }} / {{ pagination.pages_count }} a
+    	{{ pagination.nb_elements }} adresses - Page {{ pagination.page }} / {{ pagination.pages_count }}
+    	<a href="{{ path('famille_adresse_add', {'page' : pagination.page}) }}" class="float-right"> Nouvelle famille</a>
+    	{#{ labelFilter(path('utils_delete-search', {'page' : pagination.page} ), current_search) | raw }#}
   	</div>
   	<div class="card-body">
       	<table class="table table-sm table-striped">
         	<tr>
-        		<th>#</th>
-        		<th>Numéro de voie</th>
-        		<th>Voie</th>
-        		<th>Ville</th>
-        		<th>Code Postal</th>
+        		<th>{{ headerFilter(path('famille_adresse', {'page' : pagination.page, 'field' : 'id'} ), '#', current_order, current_field) | raw }}</th>
+        		<th>{{ headerFilter(path('famille_adresse', {'page' : pagination.page, 'field' : 'numero_voie'} ), 'Numéro de voie', current_order, current_field) | raw }}</th>
+        		<th>{{ headerFilter(path('famille_adresse', {'page' : pagination.page, 'field' : 'voie'} ), 'Voie', current_order, current_field) | raw }}</th>
+        		<th>{{ headerFilter(path('famille_adresse', {'page' : pagination.page, 'field' : 'ville'} ), 'Ville', current_order, current_field) | raw }}</th>
+        		<th>{{ headerFilter(path('famille_adresse', {'page' : pagination.page, 'field' : 'code_postal'} ), 'Code postal', current_order, current_field) | raw }}</th>
         		<th></th>
+        	</tr>
+        	<tr>
+        		<td>{{ inputFilter(path('famille_adresse', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'FamilleAdresse-id', current_search, 'Identifiant') | raw }}</td>
+        		<td>{{ inputFilter(path('famille_adresse', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'FamilleAdresse-numero_voie', current_search, 'N° de voie') | raw }}</td>
+        		<td>{{ inputFilter(path('famille_adresse', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'FamilleAdresse-voie', current_search, 'Voie') | raw }}</td>
+        		<td>{{ inputFilter(path('famille_adresse', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'FamilleAdresse-ville', current_search, 'Ville') | raw }}</td>
+        		<td>{{ inputFilter(path('famille_adresse', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'FamilleAdresse-code_postal', current_search, 'Code postal') | raw }}</td>
+        		<td></td>
         	</tr>
         	{% for adresse in adresses %}
         		<tr>
@@ -30,14 +40,14 @@
         			<td>{{ adresse.ville}}</td>
         			<td>{{ adresse.codepostal }}</td>
         			<td>
-        			   
+        			    {{ actionEdit(path('patient_edit', {'id' : patient.id, 'page' : pagination.page})) | raw }}
         			</td>
         		</tr>
         	{% endfor %}
         </table>
   	</div>
   	<div class="card-footer">
-    	
+    	{% include 'elements/pagination.html.twig' %}
   	</div>
 </div>
 	  

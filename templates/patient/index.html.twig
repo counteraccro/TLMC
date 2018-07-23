@@ -18,18 +18,18 @@
   	<div class="card-body">
       	<table class="table table-sm table-striped">
         	<tr>
-        		<th>{{ headerFilter(path('patient', {'page' : pagination.page, 'field' : 'id'} ), '#', current_order, current_field) | raw }}</th>
-        		<th>{{ headerFilter(path('patient', {'page' : pagination.page, 'field' : 'nom'} ), 'Nom', current_order, current_field) | raw }}</th>
-        		<th>{{ headerFilter(path('patient', {'page' : pagination.page, 'field' : 'prenom'} ), 'Prénom', current_order, current_field) | raw }}</th>
-        		<th>{{ headerFilter(path('patient', {'page' : pagination.page, 'field' : 'date_naissance'} ), 'Date de naissance', current_order, current_field) | raw }}</th>
+        		<th>{{ headerFilter(path('patient_listing', {'page' : pagination.page, 'field' : 'id'} ), '#', current_order, current_field) | raw }}</th>
+        		<th>{{ headerFilter(path('patient_listing', {'page' : pagination.page, 'field' : 'nom'} ), 'Nom', current_order, current_field) | raw }}</th>
+        		<th>{{ headerFilter(path('patient_listing', {'page' : pagination.page, 'field' : 'prenom'} ), 'Prénom', current_order, current_field) | raw }}</th>
+        		<th>{{ headerFilter(path('patient_listing', {'page' : pagination.page, 'field' : 'date_naissance'} ), 'Date de naissance', current_order, current_field) | raw }}</th>
         		<th>Service</th>
         		<th></th>
         	</tr>
         	<tr>
-        		<td>{{ inputFilter(path('patient', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Patient-id', current_search, 'Identifiant') | raw }}</td>
-        		<td>{{ inputFilter(path('patient', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Patient-nom', current_search, 'Nom') | raw }}</td>
-        		<td>{{ inputFilter(path('patient', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Patient-prenom', current_search, 'Prenom') | raw }}</td>
-        		<td>{{ inputFilter(path('patient', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Patient-date_naissance', current_search, 'Date de naissance') | raw }}</td>
+        		<td>{{ inputFilter(path('patient_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Patient-id', current_search, 'Identifiant') | raw }}</td>
+        		<td>{{ inputFilter(path('patient_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Patient-nom', current_search, 'Nom') | raw }}</td>
+        		<td>{{ inputFilter(path('patient_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Patient-prenom', current_search, 'Prenom') | raw }}</td>
+        		<td>{{ inputFilter(path('patient_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Patient-date_naissance', current_search, 'Date de naissance') | raw }}</td>
         		<td></td>
         		<td></td>
         	</tr>
