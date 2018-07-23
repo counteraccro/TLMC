@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello {{ controller_name }}!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <h1>Hello {{ controller_name }}! ✅</h1>
+
+    This friendly message is coming from:
+    <ul>
+        <li>Your controller at <code><a href="{{ 'src/Controller/ExtensionFormulaireController.php'|file_link(0) }}">src/Controller/ExtensionFormulaireController.php</a></code></li>
+        <li>Your template at <code><a href="{{ 'templates/extension_formulaire/index.html.twig'|file_link(0) }}">templates/extension_formulaire/index.html.twig</a></code></li>
+    </ul>
+</div>
+
+<div>
+
+	{% for extensionFormulaire in extensionFormulaires %}
+
+		<br /> Clé :
+	    {{ extensionFormulaire.cle }}
+		<br />
+
+		Valeur :
+	   	{{ extensionFormulaire.valeur }}
+	   	<br />
+	   	
+	   	Type :
+	   	{{ extensionFormulaire.type }}
+	   	<br />
+	   	
+	   	Valeur par défaut :
+	   	{{ extensionFormulaire.valeurDefaut }}
+	   	<br />
+	   		   	
+	   	Liste de valeurs :
+	   	{{ extensionFormulaire.listeValeur }}
+	   	<br />
+	   
+	   	Obligatoire :
+	   	{{ extensionFormulaire.obligatoire }}
+	   	<br />
+
+	   	Ordre :
+	   	{{ extensionFormulaire.ordre }}
+	   	<br />
+	   	
+	   	Régles :
+	   	{{ extensionFormulaire.regles }}
+	   	<br />
+	   	
+	    {% if extensionFormulaire.evenement != null %}
+	    Evenement :
+	   	{{ extensionFormulaire.evenement.nom }}
+	   	<br />
+	   	{% endif %}
+	   	
+	   	{% if extensionFormulaire.produit != null %}
+	    Produit :
+	   	{{ extensionFormulaire.produit.titre }}
+	   	<br />
+	   	{% endif %}
+		<hr>
+	{% endfor %}
+
+</div>
+{% endblock %}

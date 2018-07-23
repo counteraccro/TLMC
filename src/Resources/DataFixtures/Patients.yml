@@ -1,0 +1,17 @@
+parameters:
+    Patient:
+        Patient-1:
+            setNom: Oréo
+            setPrenom: Hingrid
+            setDateNaissance: 1991-09-30 11:29:00
+            setPMR: 0
+        Patient-2:
+            setNom: Lagarde
+            setPrenom: Christine
+            setDateNaissance: 1993-08-23 17:55:00
+            setPMR: 0
+        Patient-3:
+            setNom: LeChef
+            setPrenom: Aymeric
+            setDateNaissance: 1984-04-12 11:11:11
+            setPMR: 1

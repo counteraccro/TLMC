@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello {{ controller_name }}!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <h1>Hello {{ controller_name }}! ✅</h1>
+
+    This friendly message is coming from:
+    <ul>
+        <li>Your controller at <code><a href="{{ 'src/Controller/QuestionController.php'|file_link(0) }}">src/Controller/QuestionController.php</a></code></li>
+        <li>Your template at <code><a href="{{ 'templates/question/index.html.twig'|file_link(0) }}">templates/question/index.html.twig</a></code></li>
+    </ul>
+</div>
+
+<div>
+	
+	{% for question in questions %}
+		
+		Questionnaire ID : {{ question.questionnaire.id }}
+		<br />
+		 
+		Question 
+	    {% if question.question != null %} 
+	    {{ question.question.id }} :
+	    {% endif %}
+		<br />
+        {{ question.libelleTop }}
+        <br />
+        {{ question.libelle }}
+        <br />
+        {{ question.libelleBottom }}
+		<br />
+		
+		Type:
+		{{ question.type }}
+		<br />
+		
+		Type:
+		{{ question.valeurDefaut }}
+		<br />
+		
+		Liste de valeurs :
+		{{ question.listeValeur }}
+		<br />
+       
+       	Obligatoire :
+		{{ question.obligatoire }}
+		<br />
+		
+		Règles :
+		{{ question.regles }}
+		<br />
+		
+		Message d'erreur :
+		{{ question.messageErreur }}
+		<br />
+		
+		Ordre :
+		{{ question.ordre }}
+		<br />
+		
+		Actif ?
+		{{ question.disabled }}
+		<br />
+
+	   	<hr>
+	{% endfor %}
+</div>
+{% endblock %}

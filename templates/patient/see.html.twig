@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Fiche d'un patient {% endblock %}
+
+{% block body %}
+
+<h1>Fiche du patient {{ patient.prenom }} {{ patient.nom }}</h1>
+
+{% include 'elements/arborescence.html.twig' %}
+
+ici repose un bug
+
+{% endblock %}

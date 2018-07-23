@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello {{ controller_name }}!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <h1>Hello {{ controller_name }}! ✅</h1>
+
+    This friendly message is coming from:
+    <ul>
+        <li>Your controller at <code><a href="{{ 'src/Controller/HistoriqueController.php'|file_link(0) }}">src/Controller/HistoriqueController.php</a></code></li>
+        <li>Your template at <code><a href="{{ 'templates/historique/index.html.twig'|file_link(0) }}">templates/historique/index.html.twig</a></code></li>
+    </ul>
+</div>
+
+<div>
+	
+	{% for historique in historiques %}
+		 	
+		<br /> Date :
+        {{ historique.date |date("m/d/Y H:i") }}
+		<br />
+
+	   	Evenement :
+	   	{{ historique.evenement.nom }}
+	   	<br />
+	   
+	    {%  if historique.specialite != null %}
+	   	Specialite :
+	   	{{ historique.specialite.service }}
+	   	<br />
+	   	{% endif %}
+	   	
+	   	Patient :
+	   	{{ historique.patient.prenom }} - {{ historique.patient.nom }}
+	   	<br />
+	   	
+	   	Membre :
+	   	{{ historique.membre.prenom }} - {{ historique.membre.nom }}
+	   	<br />
+	   	<hr>
+	{% endfor %}
+</div>
+{% endblock %}

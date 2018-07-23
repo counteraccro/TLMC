@@ -1,0 +1,48 @@
+security:
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    encoders:
+        App\Entity\Membre: bcrypt
+    providers:
+        #in_memory: { memory: ~ }
+        database_users:
+            entity: { class: App\Entity\Membre, property: username }
+    firewalls:
+        
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            anonymous: ~
+            form_login:
+                login_path: security_login
+                check_path: security_login
+                
+            logout:
+                # La route où se trouve le process de deconnexion
+                path: security_logout
+                # La route sur laquelle doit etre rediriger l'utilisateur apres une deconnexion
+                target: index
+
+            # activate different ways to authenticate
+
+            # http_basic: true
+            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
+
+            # form_login: true
+            # https://symfony.com/doc/current/security/form_login_setup.html
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    #access_control:
+        # - { path: ^/admin, roles: ROLE_ADMIN }
+        # - { path: ^/profile, roles: ROLE_USER }
+
+    role_hierarchy:
+    # Roles Benevole (3)
+       ROLE_BENEVOLE: ROLE_BENEVOLE
+    # Roles Beneficiaire (3)
+       ROLE_BENEFICIAIRE: ROLE_BENEFICIAIRE
+    # Role Beneficiaire Direct (2)
+       ROLE_BENEFICIAIRE_DIRECT: ROLE_BENEFICIAIRE
+    # Role Admin (1)
+       ROLE_ADMIN: [ROLE_BENEVOLE, ROLE_BENEFICIAIRE, ROLE_BENEFICIAIRE_DIRECT, ROLE_ALLOWED_TO_SWITCH]

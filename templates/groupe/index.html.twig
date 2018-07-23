@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello {{ controller_name }}!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <h1>Hello {{ controller_name }}! ✅</h1>
+
+    This friendly message is coming from:
+    <ul>
+        <li>Your controller at <code><a href="{{ 'src/Controller/GroupeController.php'|file_link(0) }}">src/Controller/GroupeController.php</a></code></li>
+        <li>Your template at <code><a href="{{ 'templates/groupe/index.html.twig'|file_link(0) }}">templates/groupe/index.html.twig</a></code></li>
+    </ul>
+</div>
+
+<div>
+	
+	{% for groupe in groupes %}
+		Nom :
+	    {{ groupe.nom }}
+		
+		<br /> Date :
+        {{ groupe.date |date("m/d/Y H:i") }}
+		<br />
+
+		Actif ?
+	   	{{ groupe.disabled }}
+	   	<br />
+	   	
+        {% for membre in groupe.groupeMembres %}
+	   	
+	   	Membre :
+	   	{{ membre.membre.nom }}
+	   	<br />
+	   	
+	   	{% endfor %}
+	   	<hr>
+	{% endfor %}
+</div>
+{% endblock %}

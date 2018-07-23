@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello {{ controller_name }}!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="card">
+	<div class="card-header">
+    	{{ pagination.nb_elements }} adresses - Page {{ pagination.page }} / {{ pagination.pages_count }}
+  	</div>
+  	<div class="card-body">
+      	<table class="table table-sm table-striped">
+        	<tr>
+        		<th>#</th>
+        		<th>Numéro de voie</th>
+        		<th>Voie</th>
+        		<th>Ville</th>
+        		<th>Code Postal</th>
+        		<th></th>
+        	</tr>
+        	{% for adresse in adresses %}
+        		<tr>
+        			<td>{{ adresse.id }}</td>
+        			<td>{{ adresse.numeroVoie }}</td>
+        			<td>{{ adresse.voie }}</td>
+        			<td>{{ adresse.ville}}</td>
+        			<td>{{ adresse.codepostal }}</td>
+        			<td>
+        			   
+        			</td>
+        		</tr>
+        	{% endfor %}
+        </table>
+  	</div>
+  	<div class="card-footer">
+    	
+  	</div>
+</div>
+	  
+{% endblock %}

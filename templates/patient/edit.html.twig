@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Edition d'un patient {% endblock %}
+
+{% block body %}
+
+<h1>Modification du patient {{ patient.prenom }} {{ patient.nom }}</h1>
+
+{% include 'elements/arborescence.html.twig' %}
+
+<fieldset>
+    {{ form(form) }}
+</fieldset>
+	  
+{% endblock %}
