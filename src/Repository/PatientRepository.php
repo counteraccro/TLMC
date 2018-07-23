@@ -55,11 +55,9 @@ class PatientRepository extends ServiceEntityRepository
 
         // pagination
         $query = $this->createQueryBuilder($params['repository'])->setFirstResult($firstResult);
-        
-        if(isset($params['search']))
-        {
-            foreach($params['search'] as $searchKey => $valueKey)
-            {
+
+        if (isset($params['search'])) {
+            foreach ($params['search'] as $searchKey => $valueKey) {
                 $query->andWhere(str_replace('-', '.', $searchKey) . " LIKE '%" . $valueKey . "%'");
             }
         }

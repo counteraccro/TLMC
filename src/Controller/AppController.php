@@ -41,12 +41,6 @@ class AppController extends Controller
        
         
         return $this->redirect($request->headers->get('referer'));
-        
-        /*return $this->redirect($this->generateUrl('patient', array(
-            'page' => $page,
-            'field' => $arrayFilters['field'],
-            'order' => $arrayFilters['order']
-        )));*/
     }
     
     /**
@@ -124,6 +118,15 @@ class AppController extends Controller
         else
         {
             $paramsSearch = array_merge($paramsSearch, $request->request->all());
+        }
+        
+        foreach($paramsSearch as $key => $val)
+        {
+            $tab = explode('-', $key);
+            if($tab[0] != $params['repository'])
+            {
+                unset($paramsSearch[$key]);
+            }
         }
        
         $paramsRepo = array(

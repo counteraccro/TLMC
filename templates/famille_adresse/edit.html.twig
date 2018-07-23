@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Edition d'une adresse {% endblock %}
+
+{% block body %}
+
+<h1>Modification de l'adresse </h1>
+
+{% include 'elements/arborescence.html.twig' %}
+
+<fieldset>
+    {{ form(form) }}
+</fieldset>
+	  
+{% endblock %}
