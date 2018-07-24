@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Fiche d'une famille {% endblock %}
+
+{% block body %}
+
+<h1>Fiche de la famille {{ famille.prenom }} {{ famille.nom }} </h1>
+
+{% include 'elements/arborescence.html.twig' %}
+
+Fiche de la famille {{ famille.id }}
+
+{% endblock %}

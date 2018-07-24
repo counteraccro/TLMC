@@ -29,8 +29,6 @@ class FamilleAdresseController extends AppController
             $order = 'DESC';
         }
         
-        //$session->set(self::CURRENT_SEARCH, array());
-        
         $params = array(
             'field' => $field,
             'order' => $order,
@@ -69,7 +67,7 @@ class FamilleAdresseController extends AppController
      * Affichage de la fiche d'une adresse 
      * 
      * @Route("/famille_adresse/see/{id}/{page}", name="famille_adresse_see")
-     * @ParamConverter("patient", options={"mapping": {"id": "id"}})
+     * @ParamConverter("famille_adresse", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      * 
      * @param SessionInterface $session
@@ -128,7 +126,7 @@ class FamilleAdresseController extends AppController
             $em->persist($adresse);
             $em->flush();
             
-            return $this->redirect($this->generateUrl('famille_adresse'));
+            return $this->redirect($this->generateUrl('famille_adresse_listing'));
         }
         
         return $this->render('famille_adresse/add.html.twig', [

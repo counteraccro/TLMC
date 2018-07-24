@@ -59,9 +59,7 @@ class FamilleAdresseRepository extends ServiceEntityRepository
         {
             foreach($params['search'] as $searchKey => $valueKey)
             {
-                //if(!empty($valueKey)){
-                    $query->andWhere(str_replace('-', '.', $searchKey) . " LIKE '%" . $valueKey . "%'");
-                //}
+                $query->andWhere(str_replace('-', '.', $searchKey) . " LIKE '%" . $valueKey . "%'");
             }
         }
         

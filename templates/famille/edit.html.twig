@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Edition d'une famille {% endblock %}
+
+{% block body %}
+
+<h1>Modification de la famille {{ famille.prenom }} {{ famille.nom }}</h1>
+
+{% include 'elements/arborescence.html.twig' %}
+
+<fieldset>
+    {{ form(form) }}
+</fieldset>
+	  
+{% endblock %}
