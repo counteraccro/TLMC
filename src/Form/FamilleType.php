@@ -33,10 +33,10 @@ class FamilleType extends AbstractType
             'label' => 'Personne à mobilité réduite',
             'required' => false
         ))
-            ->add('disabled', CheckboxType::class, array(
-            'label' => 'Actif',
-            'required' => false
-        ))    
+//             ->add('disabled', CheckboxType::class, array(
+//             'label' => 'Actif',
+//             'required' => false
+//         ))    
         // ->add('patient');
         // ->add('famille_adresse')
         ->add('save', SubmitType::class, array(

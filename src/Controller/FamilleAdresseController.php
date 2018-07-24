@@ -117,6 +117,7 @@ class FamilleAdresseController extends AppController
         
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $adresse->setDisabled(0);
             
             $em = $this->getDoctrine()->getManager();
             
@@ -164,7 +165,6 @@ class FamilleAdresseController extends AppController
         
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            
             $em = $this->getDoctrine()->getManager();
             
             $em->persist($adresse);

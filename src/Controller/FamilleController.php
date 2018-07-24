@@ -120,16 +120,18 @@ class FamilleController extends AppController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             
+            $famille->setDisabled(0);
+            
             $em = $this->getDoctrine()->getManager();
             
             $repository1 = $this->getDoctrine()->getRepository(Patient::class);
             // TODO A changer
-            $patient = $repository1->findById(1);
+            $patient = $repository1->findById(self::ID_PATIENT);
             $famille->setPatient($patient[0]);
             
             $repository2 = $this->getDoctrine()->getRepository(FamilleAdresse::class);
             // TODO A changer
-            $famille_adresse = $repository2->findById(1);
+            $famille_adresse = $repository2->findById(self::ID_FAMILLE_ADRESSE);
             $famille->setFamilleAdresse($famille_adresse[0]);
             
             $em->persist($famille);

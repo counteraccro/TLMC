@@ -25,6 +25,12 @@ class AppController extends Controller
      */
     const CURRENT_SEARCH = 'current_search';
 
+    //@todo à virer à terme
+    const ID_SPECIALITE = 58;
+    const ID_PATIENT = 44;
+    const ID_FAMILLE = 66;
+    const ID_FAMILLE_ADRESSE = 53;
+    
     /**
      * Supprime une recherche de la session
      *

@@ -35,10 +35,10 @@ class QuestionnaireType extends AbstractType
             ->add('jour_relance', NumberType::class, array(
             'label' => 'Jour de relance'
         ))
-            ->add('disabled', CheckboxType::class, array(
-            'required' => false,
-            'label' => 'Actif'
-        ))
+//             ->add('disabled', CheckboxType::class, array(
+//             'required' => false,
+//             'label' => 'Actif'
+//         ))
             ->add('save', SubmitType::class, array(
             'label' => 'Valider'
         ));

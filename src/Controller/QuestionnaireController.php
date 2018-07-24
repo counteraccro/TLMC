@@ -111,6 +111,7 @@ class QuestionnaireController extends AppController
         
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $questionnaire->setDisabled(0);
             
             $em = $this->getDoctrine()->getManager();
             $em->persist($questionnaire);

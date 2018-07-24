@@ -19,10 +19,10 @@ class FamilleAdresseType extends AbstractType
             ->add('voie')
             ->add('ville')
             ->add('code_postal')
-            ->add('disabled', CheckboxType::class, array(
-                'required' => false,
-                'label' => 'Actif'
-            ))
+//             ->add('disabled', CheckboxType::class, array(
+//                 'required' => false,
+//                 'label' => 'Actif'
+//             ))
             ->add('save', SubmitType::class, array(
                 'label' => 'Valider'
             ))
