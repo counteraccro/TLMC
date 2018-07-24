@@ -44,7 +44,7 @@ class Questionnaire
     private $jour_relance;
 
     /**
-     * @ORM\Column(type="smallint")
+     * @ORM\Column(type="boolean")
      */
     private $disabled;
 
@@ -135,12 +135,12 @@ class Questionnaire
         return $this;
     }
 
-    public function getDisabled(): ?int
+    public function getDisabled(): ?bool
     {
         return $this->disabled;
     }
 
-    public function setDisabled(int $disabled): self
+    public function setDisabled(bool $disabled): self
     {
         $this->disabled = $disabled;
 

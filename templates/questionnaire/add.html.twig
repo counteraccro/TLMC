@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Nouveau questionnaire {% endblock %}
+
+{% block body %}
+
+<h1>Ajout d'un nouveau questionnaire</h1>
+
+{% include 'elements/arborescence.html.twig' %}
+
+<fieldset>
+    {{ form(form) }}
+</fieldset>
+	  
+{% endblock %}
