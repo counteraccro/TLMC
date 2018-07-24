@@ -108,9 +108,6 @@ class QuestionnaireController extends AppController
         $questionnaire = new Questionnaire();
         
         $form = $this->createForm(QuestionnaireType::class, $questionnaire);
-        $form->add('save', SubmitType::class, array(
-            'label' => 'Ajouter'
-        ));
         
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -151,9 +148,6 @@ class QuestionnaireController extends AppController
         $arrayFilters = $this->getDatasFilter($session);
         
         $form = $this->createForm(QuestionnaireType::class, $questionnaire);
-        $form->add('save', SubmitType::class, array(
-            'label' => 'Modifier'
-        ));
         
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

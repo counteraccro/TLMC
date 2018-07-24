@@ -116,9 +116,6 @@ class FamilleController extends AppController
         $famille = new Famille();
         
         $form = $this->createForm(FamilleType::class, $famille);
-        $form->add('save', SubmitType::class, array(
-            'label' => 'Ajouter'
-        ));
         
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -127,12 +124,12 @@ class FamilleController extends AppController
             
             $repository1 = $this->getDoctrine()->getRepository(Patient::class);
             // TODO A changer
-            $patient = $repository1->findById(44);
+            $patient = $repository1->findById(1);
             $famille->setPatient($patient[0]);
             
             $repository2 = $this->getDoctrine()->getRepository(FamilleAdresse::class);
             // TODO A changer
-            $famille_adresse = $repository2->findById(57);
+            $famille_adresse = $repository2->findById(1);
             $famille->setFamilleAdresse($famille_adresse[0]);
             
             $em->persist($famille);
@@ -176,9 +173,6 @@ class FamilleController extends AppController
         $arrayFilters = $this->getDatasFilter($session);
         
         $form = $this->createForm(FamilleType::class, $famille);
-        $form->add('save', SubmitType::class, array(
-            'label' => 'Modifier'
-        ));
         
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Form;
 
 use App\Entity\Questionnaire;
@@ -10,42 +9,45 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
-
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class QuestionnaireType extends AbstractType
 {
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('titre')
+        $builder->add('titre')
             ->add('description', TextType::class, array(
-                'label' => 'Description'
-            ))
+            'label' => 'Description'
+        ))
             ->add('date_creation', DateTimeType::class, array(
-                'label' => 'Date de création',
-                'widget' => 'choice',
-                'years' => range(date('Y') - 100, date('Y')),
-                'date_format' => 'dd MM yyyy'
-            ))
+            'label' => 'Date de création',
+            'widget' => 'choice',
+            'years' => range(date('Y') - 100, date('Y')),
+            'date_format' => 'dd MM yyyy'
+        ))
             ->add('date_fin', DateTimeType::class, array(
-                'label' => 'Date de fin',
-                'widget' => 'choice',
-                'years' => range(date('Y') - 100, date('Y')),
-                'date_format' => 'dd MM yyyy'
-            ))
+            'label' => 'Date de fin',
+            'widget' => 'choice',
+            'years' => range(date('Y') - 100, date('Y')),
+            'date_format' => 'dd MM yyyy'
+        ))
             ->add('jour_relance', NumberType::class, array(
-                'label' => 'Jour de relance'
-            ))
+            'label' => 'Jour de relance'
+        ))
             ->add('disabled', CheckboxType::class, array(
-                'required' => false,
-                'label' => 'Actif'
-            ));
+            'required' => false,
+            'label' => 'Actif'
+        ))
+            ->add('save', SubmitType::class, array(
+            'label' => 'Valider'
+        ));
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Questionnaire::class,
+            'data_class' => Questionnaire::class
         ]);
     }
 }

@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class FamilleType extends AbstractType
 {
@@ -35,10 +36,12 @@ class FamilleType extends AbstractType
             ->add('disabled', CheckboxType::class, array(
             'label' => 'Actif',
             'required' => false
-        ));
-        //->add('patient');
+        ))    
+        // ->add('patient');
         // ->add('famille_adresse')
-        
+        ->add('save', SubmitType::class, array(
+            'label' => 'Valider'
+        ));
     }
 
     public function configureOptions(OptionsResolver $resolver)

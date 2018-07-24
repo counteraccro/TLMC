@@ -114,9 +114,6 @@ class FamilleAdresseController extends AppController
         $adresse = new FamilleAdresse();
         
         $form = $this->createForm(FamilleAdresseType::class, $adresse);
-        $form->add('save', SubmitType::class, array(
-            'label' => 'Ajouter'
-        ));
         
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -164,9 +161,6 @@ class FamilleAdresseController extends AppController
         $arrayFilters = $this->getDatasFilter($session);
         
         $form = $this->createForm(FamilleAdresseType::class, $adresse);
-        $form->add('save', SubmitType::class, array(
-            'label' => 'Modifier'
-        ));
         
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
