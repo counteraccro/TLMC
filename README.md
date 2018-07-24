@@ -1,6 +1,6 @@
 # TLMC
 Installation du projet
-Le projet tourne avec les versions suivantes :
+Le projet fonctionne avec les versions suivantes :
 
 Version de PHP : 7.1
 Mysql : 5.0.12
@@ -13,28 +13,24 @@ Installation
 
 Étape 1 : cloner le dépôt GIT
 
-'https://github.com/counteraccro/Jupiter.git'
+https://github.com/counteraccro/TLMC.git
 
 Étape 2 : Installer Symfony
 
 'composer update'
 
-Étape 3 : récupération des tables de la base de données
-
-'php bin/console doctrine:schema:update --force'
-
-Étape 4 : installer la base de données
+Étape 3 : installer la base de données
 
 'php bin/console doctrine:database:create'
+
+Étape 4 : récupération des tables de la base de données
+
+'php bin/console doctrine:schema:update --force'
 
 Étape 5: installation des fixtures
 
 'php bin/console doctrine:fixture:load'
 
-Etape 6: installation des assets
+Étape 6: accès au projet via l'url
 
-'php bin/console assets:install'
-
-Étape 7: accès au projet via l'url
-
-http://localhost:8000
+'http://localhost:8000'
