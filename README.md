@@ -1,4 +1,5 @@
 # TLMC
+
 Installation du projet
 Le projet fonctionne avec les versions suivantes :
 
@@ -10,27 +11,28 @@ Jquery 3.3.1
 Bootstrap 4.1.2
 
 Installation
+------------
 
 Étape 1 : cloner le dépôt GIT
 
-https://github.com/counteraccro/TLMC.git
+`https://github.com/counteraccro/TLMC.git`
 
 Étape 2 : Installer Symfony
 
-'composer update'
+`composer update`
 
 Étape 3 : installer la base de données
 
-'php bin/console doctrine:database:create'
+`php bin/console doctrine:database:create`
 
 Étape 4 : récupération des tables de la base de données
 
-'php bin/console doctrine:schema:update --force'
+`php bin/console doctrine:schema:update --force`
 
 Étape 5: installation des fixtures
 
-'php bin/console doctrine:fixture:load'
+`php bin/console doctrine:fixture:load`
 
 Étape 6: accès au projet via l'url
 
-'http://localhost:8000'
+`http://localhost:8000`
