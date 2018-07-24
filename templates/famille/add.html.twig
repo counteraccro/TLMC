@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Nouvelle famille {% endblock %}
+
+{% block body %}
+
+<h1>Ajout d'un nouvelle famille</h1>
+
+{% include 'elements/arborescence.html.twig' %}
+
+<fieldset>
+    {{ form(form) }}
+</fieldset>
+	  
+{% endblock %}

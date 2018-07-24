@@ -1,36 +1,53 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello {{ controller_name }}!{% endblock %}
+{% block title %} Familles {% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'src/Controller/FamilleController.php'|file_link(0) }}">src/Controller/FamilleController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'templates/famille/index.html.twig'|file_link(0) }}">templates/famille/index.html.twig</a></code></li>
-    </ul>
+	<h1>Gestion des familles</h1>
     
-    {% for famille in familles %}
-	
-		<div>
-			<hr />
-			Bloc Famille <br />
-			Nom : {{ famille.nom }} <br />
-			Parenté : {{ famille.lienFamille }} <br />
-			Adresse : {{ famille.familleAdresse.numeroVoie }} - {{ famille.familleAdresse.voie }} - {{ famille.familleAdresse.ville }} <br />
-			
-			--- Patient : <br />
-			--- Prenom : {{ famille.patient.prenom }} - {{ famille.patient.nom }}  <br />
-		</div>
-	
-	{% endfor %}
+    {% include 'elements/arborescence.html.twig' %}
     
-</div>
+    <div class="card">
+    	<div class="card-header">
+        	{{ pagination.nb_elements }} familles - Page {{ pagination.page }} / {{ pagination.pages_count }}
+    		<a href="{{ path('famille_add', {'page' : pagination.page}) }}" class="float-right"><span class="oi oi-person"></span> Nouvelle famille</a>
+        	{{ labelFilter(path('utils_delete-search', {'page' : pagination.page} ), current_search) | raw }}
+      	</div>
+      	
+      	<div class="card-body">
+          	<table class="table table-sm table-striped">
+        		<tr>
+        			<th> {{ headerFilter(path('famille_listing', {'page' : pagination.page, 'field' : 'id'} ), '#', current_order, current_field) | raw }} </th>
+            		<th> {{ headerFilter(path('famille_listing', {'page' : pagination.page, 'field' : 'nom'} ), 'Nom', current_order, current_field) | raw }} </th>
+            		<th> {{ headerFilter(path('famille_listing', {'page' : pagination.page, 'field' : 'prenom'} ), 'Prénom', current_order, current_field) | raw }} </th>
+            		<th> {{ headerFilter(path('famille_listing', {'page' : pagination.page, 'field' : 'lien_famille'} ), 'Lien de famille avec le patient', current_order, current_field) | raw }} </th>
+            		<th> {{ headerFilter(path('famille_listing', {'page' : pagination.page, 'field' : 'email'} ), 'Email', current_order, current_field) | raw }} </th>
+            		<th> N° de téléphone</th>
+            		<th> Adresse </th>
+            		<th> Patient </th>
+            		<th></th>
+            	</tr>
+                {% for famille in familles %}
+            	
+            		<tr>
+            			<td>{{ famille.id }} </td>
+            			<td>{{ famille.nom }} </td>
+            			<td>{{ famille.prenom }} </td>
+            			<td>{{ famille.lienFamille }} </td>
+            			<td>{{ famille.email }} </td>
+            			<td>{{ famille.numeroTel }} </td>
+            			<td>{{ famille.familleAdresse.numeroVoie }}, {{ famille.familleAdresse.voie }} - {{ famille.familleAdresse.codePostal }} {{ famille.familleAdresse.ville }} </td>
+            			<td>{{ famille.patient.prenom }} {{ famille.patient.nom }}</td>
+            			<td></td>
+            		</tr>
+            	
+            	{% endfor %}
+    		</table>
+      	</div>
+      	
+      	<div class="card-footer">
+      		{% include 'elements/pagination.html.twig' %}
+      	</div>
+	</div>
 {% endblock %}

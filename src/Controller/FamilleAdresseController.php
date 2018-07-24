@@ -29,8 +29,6 @@ class FamilleAdresseController extends AppController
             $order = 'DESC';
         }
         
-        //$session->set(self::CURRENT_SEARCH, array());
-        
         $params = array(
             'field' => $field,
             'order' => $order,
@@ -128,7 +126,7 @@ class FamilleAdresseController extends AppController
             $em->persist($adresse);
             $em->flush();
             
-            return $this->redirect($this->generateUrl('famille_adresse'));
+            return $this->redirect($this->generateUrl('famille_adresse_listing'));
         }
         
         return $this->render('famille_adresse/add.html.twig', [
