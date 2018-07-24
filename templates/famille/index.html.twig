@@ -21,10 +21,10 @@
         			<th> {{ headerFilter(path('famille_listing', {'page' : pagination.page, 'field' : 'id'} ), '#', current_order, current_field) | raw }} </th>
             		<th> {{ headerFilter(path('famille_listing', {'page' : pagination.page, 'field' : 'nom'} ), 'Nom', current_order, current_field) | raw }} </th>
             		<th> {{ headerFilter(path('famille_listing', {'page' : pagination.page, 'field' : 'prenom'} ), 'Prénom', current_order, current_field) | raw }} </th>
-            		<th> {{ headerFilter(path('famille_listing', {'page' : pagination.page, 'field' : 'lien_famille'} ), 'Lien de famille avec le patient', current_order, current_field) | raw }} </th>
+            		<th> {{ headerFilter(path('famille_listing', {'page' : pagination.page, 'field' : 'lien_famille'} ), 'Lien de parenté', current_order, current_field) | raw }} </th>
             		<th> {{ headerFilter(path('famille_listing', {'page' : pagination.page, 'field' : 'email'} ), 'Email', current_order, current_field) | raw }} </th>
             		<th> N° de téléphone</th>
-            		<th> {{ headerFilter(path('famille_listing', {'page' : pagination.page, 'field' : 'pmr'} ), 'Personne à mobilité réduite', current_order, current_field) | raw }}</th>
+            		<th> {{ headerFilter(path('famille_listing', {'page' : pagination.page, 'field' : 'pmr'} ), 'Mobilité réduite', current_order, current_field) | raw }}</th>
             		<th> Adresse </th>
             		<th> Patient </th>
             		<th></th>
