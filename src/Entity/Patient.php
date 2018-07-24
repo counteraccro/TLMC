@@ -39,7 +39,7 @@ class Patient
     private $PMR;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Famille", mappedBy="patient")
+     * @ORM\OneToMany(targetEntity="App\Entity\Famille", mappedBy="patient", cascade={"persist"})
      */
     private $familles;
 

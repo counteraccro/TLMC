@@ -49,7 +49,7 @@ class Famille
     private $numero_tel;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Patient", inversedBy="familles")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Patient", inversedBy="familles", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $patient;

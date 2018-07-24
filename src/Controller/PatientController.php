@@ -11,6 +11,7 @@ use App\Form\PatientType;
 use App\Entity\Specialite;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use App\Entity\FamilleAdresse;
 
 class PatientController extends AppController
 {
@@ -111,9 +112,6 @@ class PatientController extends AppController
         $patient = new Patient();
 
         $form = $this->createForm(PatientType::class, $patient);
-        $form->add('save', SubmitType::class, array(
-            'label' => 'Ajouter'
-        ));
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -121,10 +119,19 @@ class PatientController extends AppController
             $em = $this->getDoctrine()->getManager();
 
             $repository = $this->getDoctrine()->getRepository(Specialite::class);
+            $repositoryF = $this->getDoctrine()->getRepository(FamilleAdresse::class);
 
             // TODO A changer
-            $result = $repository->findById(57);
+            $result = $repository->findById(1);
             $patient->setSpecialite($result[0]);
+            
+            foreach ($patient->getFamilles() as $famille) {
+                $famille->setPatient($patient);
+                $famille->setFamilleAdresse($repositoryF->findById(1)[0]);
+                $patient->addFamille($famille) ;
+            }
+            
+            $patient->setDisabled(0);
 
             $em->persist($patient);
             $em->flush();
@@ -161,9 +168,6 @@ class PatientController extends AppController
         $arrayFilters = $this->getDatasFilter($session);
 
         $form = $this->createForm(PatientType::class, $patient);
-        $form->add('save', SubmitType::class, array(
-            'label' => 'Modifier'
-        ));
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

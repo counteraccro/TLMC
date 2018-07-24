@@ -8,6 +8,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class PatientType extends AbstractType
 {
@@ -24,18 +26,32 @@ class PatientType extends AbstractType
             'years' => range(date('Y') - 100, date('Y')),
             'date_format' => 'dd MM yyyy'
         ))
-            ->
-        add('PMR', CheckboxType::class, array(
+            ->add('PMR', CheckboxType::class, array(
             'required' => false,
             'label' => 'Personne à mobilité réduite'
         ))
-            ->add('disabled', CheckboxType::class, array(
-            'required' => false,
-            'label' => 'Actif'
+            ->
+            add('familles', CollectionType::class, array(
+            'label' => 'Formulaire d\'ajout d\'un nouveau membre de famille',
+            'label_attr' => array(
+                'id' => 'label_collection_type'
+            ),
+            'entry_type' => FamilleType::class,
+            'entry_options' => array(
+                'label' => '--- Ajouter un nouveau membre de famille ---'
+            ),
+            'allow_add' => true,
+            'auto_initialize' => true
         ))
+            ->
+        add('save', SubmitType::class, array(
+            'label' => 'Valider',
+            'attr' => array(
+                'class' => 'btn btn-primary',
+            )
+        ));
         // ->add('specialite')
         ;
-        
     }
 
     public function configureOptions(OptionsResolver $resolver)

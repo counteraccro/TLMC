@@ -4,10 +4,11 @@
         <meta charset="UTF-8">
         <link rel="stylesheet" href="{{ asset('assets/css/bootstrap/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/css/iconic/css/open-iconic-bootstrap.min.css') }}">
+        {% block stylesheets %}{% endblock %}
         <script type="text/javascript" src="{{ asset('assets/js/jquery/jquery-3.3.1.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('assets/js/bootstrap/bootstrap.min.js') }}"></script>
+         {% block script %}{% endblock %}
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
     </head>
     <body>
     	<div class="container-fluid">

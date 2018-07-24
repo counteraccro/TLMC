@@ -8,8 +8,47 @@
 
 {% include 'elements/arborescence.html.twig' %}
 
-<fieldset>
-    {{ form(form) }}
-</fieldset>
+<div>
+    {{ form_start(form) }}
+    {# form(form) #}
+    
+	{{ form_row(form.nom) }}
+	{{ form_row(form.prenom) }}
+	{{ form_row(form.date_naissance) }}
+	{{ form_row(form.PMR) }}
+
+	<div class="shadow-sm p-3 mb-5 bg-white rounded border">
+        {{ form_row(form.familles) }}
+      
+  		<a href="#" id="add_famille" class="btn btn-primary btn-sm">Ajouter une famille</a>
+  	</div>
+    
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+    
+</div>
 	  
+{% endblock %}
+
+ {% block script %}
+ 	<script src="{{ asset('assets/js/utils/FormAddCollection.js') }}?{{ date().timestamp }}"></script>
+ {% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+    
+    $(document).ready(function() {
+
+		var params = {
+				id_container : 'div#patient_familles',
+				id_btn_add : '#add_famille',
+				id_label_fieldset : '#label_collection_type',
+				btn_delete : '<a href="#" class="btn btn-danger btn-sm">Supprimer</a>',
+		};
+        
+    	FormAddCollection.Launch(params);
+		FormAddCollection.Event();
+    });
+    
+    </script>
 {% endblock %}
