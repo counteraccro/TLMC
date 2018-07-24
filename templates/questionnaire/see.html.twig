@@ -1,13 +1,38 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} Fiche d'un questionnaire {% endblock %}
+{% block title %}
+Fiche d'un questionnaire
+{% endblock %}
 
 {% block body %}
 
-<h1>Fiche du questionnaire {{ questionnaire.titre }}</h1>
+<h1>
+	Fiche du questionnaire
+	{{ questionnaire.titre }}
+</h1>
 
 {% include 'elements/arborescence.html.twig' %}
 
-ici repose un bug
+{% for question in questionnaire.questions %}
+
+<div class="card">
+	<div class="card-header">
+		{{ question.libelleTop }}
+	</div>
+
+	<div class="card-body">
+		<table class="table table-sm table-striped">
+			<tr>
+				<th>{{ question.libelle }}</th>
+			</tr>
+		</table>
+	</div>
+	
+	<div class="card-footer">
+		{{ question.libelleBottom }}
+	</div>
+</div>
+
+{% endfor %}
 
 {% endblock %}
