@@ -67,7 +67,7 @@ class FamilleAdresseController extends AppController
      * Affichage de la fiche d'une adresse 
      * 
      * @Route("/famille_adresse/see/{id}/{page}", name="famille_adresse_see")
-     * @ParamConverter("patient", options={"mapping": {"id": "id"}})
+     * @ParamConverter("famille_adresse", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      * 
      * @param SessionInterface $session

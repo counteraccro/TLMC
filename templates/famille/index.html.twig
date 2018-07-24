@@ -24,10 +24,24 @@
             		<th> {{ headerFilter(path('famille_listing', {'page' : pagination.page, 'field' : 'lien_famille'} ), 'Lien de famille avec le patient', current_order, current_field) | raw }} </th>
             		<th> {{ headerFilter(path('famille_listing', {'page' : pagination.page, 'field' : 'email'} ), 'Email', current_order, current_field) | raw }} </th>
             		<th> N° de téléphone</th>
+            		<th> {{ headerFilter(path('famille_listing', {'page' : pagination.page, 'field' : 'pmr'} ), 'Personne à mobilité réduite', current_order, current_field) | raw }}</th>
             		<th> Adresse </th>
             		<th> Patient </th>
             		<th></th>
             	</tr>
+            	<tr>
+            		<td>{{ inputFilter(path('famille_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Famille-id', current_search, 'Identifiant') | raw }}</td>
+            		<td>{{ inputFilter(path('famille_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Famille-nom', current_search, 'Nom') | raw }}</td>
+            		<td>{{ inputFilter(path('famille_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Famille-prenom', current_search, 'Prénom') | raw }}</td>
+            		<td></td>
+            		<td>{{ inputFilter(path('famille_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Famille-email', current_search, 'Email') | raw }}</td>
+            		<td>{{ inputFilter(path('famille_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Famille-numero_tel', current_search, 'N° de téléphone') | raw }}</td>
+            		<td></td>
+            		<td></td>
+            		<td></td>
+            		<td></td>
+            	</tr>
+            	
                 {% for famille in familles %}
             	
             		<tr>
@@ -37,9 +51,17 @@
             			<td>{{ famille.lienFamille }} </td>
             			<td>{{ famille.email }} </td>
             			<td>{{ famille.numeroTel }} </td>
+            			<td>{%if famille.pmr == 1 %} Oui {% else %} Non {% endif %}</td>
             			<td>{{ famille.familleAdresse.numeroVoie }}, {{ famille.familleAdresse.voie }} - {{ famille.familleAdresse.codePostal }} {{ famille.familleAdresse.ville }} </td>
             			<td>{{ famille.patient.prenom }} {{ famille.patient.nom }}</td>
-            			<td></td>
+            			<td>
+            				{{ actionSee(path('famille_see', {'id' : famille.id, 'page' : pagination.page})) | raw }}
+        			        {{ actionEdit(path('famille_edit', {'id' : famille.id, 'page' : pagination.page})) | raw }}
+        			        
+            			    {% if is_granted("ROLE_ADMIN") %}
+            			        {{ actionDelete(famille.disabled, path('famille_delete', {'id' : famille.id, 'page' : pagination.page})) | raw }}
+            			    {% endif %}
+            			</td>
             		</tr>
             	
             	{% endfor %}

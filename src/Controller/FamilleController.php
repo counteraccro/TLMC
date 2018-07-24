@@ -66,6 +66,39 @@ class FamilleController extends AppController
     }
     
     /**
+     * Affichage de la fiche d'une famille
+     *
+     * @Route("/famille/see/{id}/{page}", name="famille_see")
+     * @ParamConverter("famille", options={"mapping": {"id": "id"}})
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
+     *
+     * @param SessionInterface $session
+     * @param Famille $famille
+     * @param int $page
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function seeAction(SessionInterface $session, Famille $famille, int $page)
+    {
+        $arrayFilters = $this->getDatasFilter($session);
+        
+        return $this->render('famille/see.html.twig', [
+            'page' => $page,
+            'famille' => $famille,
+            'paths' => array(
+                'home' => $this->indexUrlProject(),
+                'urls' => array(
+                    $this->generateUrl('famille_listing', array(
+                        'page' => $page,
+                        'field' => $arrayFilters['field'],
+                        'order' => $arrayFilters['order']
+                    )) => "Gestion de familles"
+                ),
+                'active' => "Fiche d'une famille"
+            )
+        ]);
+    }
+    
+    /**
      * Ajout d'une famille
      *
      * @Route("/famille/add/{page}", name="famille_add")
@@ -123,5 +156,95 @@ class FamilleController extends AppController
                 'active' => "Ajout d'une famille"
             )
         ]);
+    }
+    
+    /**
+     * Edition d'une famille
+     *
+     * @Route("/famille/edit/{id}/{page}", name="famille_edit")
+     * @ParamConverter("famille", options={"mapping": {"id": "id"}})
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
+     *
+     * @param SessionInterface $session
+     * @param Request $request
+     * @param Famille $famille
+     * @param int $page
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function editAction(SessionInterface $session, Request $request, Famille $famille, int $page)
+    {
+        $arrayFilters = $this->getDatasFilter($session);
+        
+        $form = $this->createForm(FamilleType::class, $famille);
+        $form->add('save', SubmitType::class, array(
+            'label' => 'Modifier'
+        ));
+        
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+            $em = $this->getDoctrine()->getManager();
+            
+            $em->persist($famille);
+            $em->flush();
+            
+            return $this->redirect($this->generateUrl('famille_listing', array(
+                'page' => $page,
+                'field' => $arrayFilters['field'],
+                'order' => $arrayFilters['order']
+            )));
+        }
+        
+        return $this->render('famille/edit.html.twig', [
+            'page' => $page,
+            'form' => $form->createView(),
+            'famille' => $famille,
+            'paths' => array(
+                'home' => $this->indexUrlProject(),
+                'urls' => array(
+                    $this->generateUrl('famille_listing', array(
+                        'page' => $page,
+                        'field' => $arrayFilters['field'],
+                        'order' => $arrayFilters['order']
+                    )) => 'Gestion de familles'
+                ),
+                'active' => 'Edition de #' . $famille->getId() . ' - ' . $famille->getPrenom() . ' ' . $famille->getNom()
+            )
+        ]);
+    }
+    
+    /**
+     * Désactivation d'une famille
+     *
+     * @Route("/famille/delete/{id}/{page}", name="famille_delete")
+     * @ParamConverter("famille", options={"mapping": {"id": "id"}})
+     * @Security("is_granted('ROLE_ADMIN')")
+     *
+     * @param SessionInterface $session
+     * @param Famille $famille
+     * @param int $page
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function deleteAction(SessionInterface $session, Famille $famille, $page)
+    {
+        $arrayFilters = $this->getDatasFilter($session);
+        
+        if ($famille->getDisabled() == 1) {
+            $famille->setDisabled(0);
+        } else {
+            $famille->setDisabled(1);
+        }
+        
+        $entityManager = $this->getDoctrine()->getManager();
+        
+        $entityManager->persist($famille);
+        
+        $entityManager->flush();
+        
+        return $this->redirectToRoute('famille_listing', array(
+            'page' => $page,
+            'field' => $arrayFilters['field'],
+            'order' => $arrayFilters['order']
+        ));
     }
 }
