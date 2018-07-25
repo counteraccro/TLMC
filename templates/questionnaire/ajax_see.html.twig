@@ -1,0 +1,47 @@
+<div id="ajax_questionnaire_see">
+	<a href="{{path('questionnaire_ajax_edit', {'id': questionnaire.id }) }}" id="btn-edit-questionnaire" class="btn btn-primary float-right">Editer</a><br/>
+	
+    {{ questionnaire.titre }} <br />
+	<hr>
+	Date de creation : <b>{{ questionnaire.dateCreation | date('d/m/Y') }}</b> - Date de fin : <b>{{ questionnaire.dateFin | date('d/m/Y') }}</b>
+	
+	
+	{% for question in questionnaire.questions %}
+
+        <div class="card">
+        	<div class="card-header">
+        		{{ question.libelleTop }}
+        	</div>
+        
+        	<div class="card-body">
+        		
+        		<table class="table table-sm table-striped">
+        			<tr>
+        				Description : {{ questionnaire.description }}
+        			</tr>
+        			<tr>
+        				<th>{{ question.libelle }}</th>
+        			</tr>
+        		</table>
+        	</div>
+        	
+        	<div class="card-footer">
+        		{{ question.libelleBottom }}<br/>
+        		Nombre de jours avant relance : {{ questionnaire.jourRelance }}
+        	</div>
+        </div>
+		<hr>
+    {% endfor %}
+    
+
+	{% block javascripts %}
+    <script type="text/javascript">
+
+    var id_btn = '#btn-edit-questionnaire';
+    QuestionnaireForm.EventEdit(id_btn);
+
+    </script>
+{% endblock %}
+
+	
+</div>

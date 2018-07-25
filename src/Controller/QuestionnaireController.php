@@ -10,6 +10,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use App\Form\QuestionnaireType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\Response;
+use App\Entity\Reponse;
 
 
 class QuestionnaireController extends AppController
@@ -18,7 +20,7 @@ class QuestionnaireController extends AppController
     /**
      * Listing des questionnaires
      * @Route("/questionnaire/listing/{page}/{field}/{order}", name="questionnaire_listing", defaults={"page" = 1, "field"= null, "order"= null})
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
 
      */
     public function index(Request $request, SessionInterface $session, int $page = 1, $field = null, $order = null)
@@ -101,6 +103,21 @@ class QuestionnaireController extends AppController
     }
     
     /**
+     * Fiche d'un questionnaire
+     *
+     * @Route("/questionnaire/ajax/see/{id}", name="questionnaire_ajax_see")
+     * @ParamConverter("questionnaire", options={"mapping": {"id": "id"}})
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
+     */
+    public function ajaxSeeAction(Questionnaire $questionnaire)
+    {
+        return $this->render('questionnaire/ajax_see.html.twig', [
+            'questionnaire' => $questionnaire,
+        ]);
+    }
+
+    
+    /**
      * Ajout d'un nouveau questionnaire
      *
      * @Route("/questionnaire/add/{page}", name="questionnaire_add")
@@ -148,16 +165,18 @@ class QuestionnaireController extends AppController
      * Edition d'un questionnaire
      *
      * @Route("/questionnaire/edit/{id}/{page}", name="questionnaire_edit")
+     * @Route("/questionnaire/ajax/edit/{id}", name="questionnaire_ajax_edit")
      * @ParamConverter("questionnaire", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      */
-    public function editAction(SessionInterface $session, Request $request, Questionnaire $questionnaire, int $page)
+    public function editAction(SessionInterface $session, Request $request, Questionnaire $questionnaire, int $page = 1)
     {
         $arrayFilters = $this->getDatasFilter($session);
         
         $form = $this->createForm(QuestionnaireType::class, $questionnaire);
         
         $form->handleRequest($request);
+        
         if ($form->isSubmitted() && $form->isValid()) {
             
             $em = $this->getDoctrine()->getManager();
@@ -165,11 +184,29 @@ class QuestionnaireController extends AppController
             $em->persist($questionnaire);
             $em->flush();
             
-            return $this->redirect($this->generateUrl('questionnaire_listing', array(
-                'page' => $page,
-                'field' => $arrayFilters['field'],
-                'order' => $arrayFilters['order']
-            )));
+            if($request->isXmlHttpRequest())
+            {
+                return $this->json(array('statut' => true));
+            }
+            else
+            {
+                return $this->redirect($this->generateUrl('questionnaire_listing', array(
+                    'page' => $page,
+                    'field' => $arrayFilters['field'],
+                    'order' => $arrayFilters['order']
+                )));
+            }
+            
+        }
+        
+        // Si appel Ajax, on renvoi sur la page ajax
+        if($request->isXmlHttpRequest())
+        {
+            return $this->render('questionnaire/ajax_edit.html.twig', [
+                'questionnaire' => $questionnaire,
+                'form' => $form->createView(),
+                'id' => $questionnaire->getId()
+            ]);
         }
         
         return $this->render('questionnaire/edit.html.twig', [

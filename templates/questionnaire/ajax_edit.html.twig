@@ -1,0 +1,37 @@
+<div id="ajax_questionnaire_add">
+
+<!-- Modal -->
+<div class="modal fade" id="modal_questionnaire_edit" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edition d'un questionnaire</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      	    {{ form(form) }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+	
+	
+	{% block javascripts %}
+    <script type="text/javascript">
+    
+    $('#modal_questionnaire_edit').modal({
+    	   'show' : true,
+    	   'backdrop' : 'static'
+    });
+    
+	var url = '{{path('questionnaire_ajax_edit', {'id': questionnaire.id }) }}';
+	QuestionnaireForm.EventEditSubmit(url);
+
+    </script>
+{% endblock %}

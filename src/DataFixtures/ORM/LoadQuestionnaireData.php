@@ -18,7 +18,7 @@ class LoadQuestionnaireData extends Fixture
     private $tabQuestionnaires = [
         'Questionnaire' => [
             'Questionnaire-1' => [
-                'setTitre' => 'Questionnaire à l\'attention des participants à la soirée annuelle',
+                'setTitre' => 'Soirée annuelle',
                 'setDescription' => 'Ce questionnaire est une évaluation de satisfaction.',
                 'setDateCreation' => '2017-12-25 17:00:00',
                 'setDateFin' => '2017-12-30 17:00:00',

@@ -20,9 +20,9 @@ class LoadQuestionData extends Fixture implements DependentFixtureInterface
         'Question' => [
             'Question-1' => [
                 'setQuestionnaire' => 'Questionnaire-1',
-                'setLibelle' => 'Libelle Q1',
-                'setLibelleTop' => 'Libelle top Q1',
-                'setLibelleBottom' => 'Libelle bottom Q1',
+                'setLibelle' => 'Avez-vous apprécié l\'ambiance générale de la soirée ?',
+                'setLibelleTop' => 'Ambiance générale',
+                'setLibelleBottom' => 'Bien-être/confort',
                 'setType' => 'input',
                 'setValeurDefaut' => 'Q1 val def',
                 'setListeValeur' => '{ liste val en json }',
@@ -35,9 +35,9 @@ class LoadQuestionData extends Fixture implements DependentFixtureInterface
             'Question-2' => [
                 //'setQuestion' => 'Question-1',
                 'setQuestionnaire' => 'Questionnaire-1',
-                'setLibelle' => 'Libelle Q2',
-                'setLibelleTop' => 'Libelle top Q2',
-                'setLibelleBottom' => 'Libelle bottom Q2',
+                'setLibelle' => 'A quelle activité avez-vous participé durant la soirée ?',
+                'setLibelleTop' => 'Activités proposées',
+                'setLibelleBottom' => 'Activités/loisirs',
                 'setType' => 'textarea',
                 'setValeurDefaut' => 'Q2 val def',
                 'setListeValeur' => '{ liste val en json }',

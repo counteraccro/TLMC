@@ -7,32 +7,43 @@ Fiche d'un questionnaire
 {% block body %}
 
 <h1>
-	Fiche du questionnaire
-	{{ questionnaire.titre }}
+	Questionnaire 
+	#{{ questionnaire.id }}
 </h1>
+
 
 {% include 'elements/arborescence.html.twig' %}
 
-{% for question in questionnaire.questions %}
 
-<div class="card">
-	<div class="card-header">
-		{{ question.libelleTop }}
-	</div>
-
-	<div class="card-body">
-		<table class="table table-sm table-striped">
-			<tr>
-				<th>{{ question.libelle }}</th>
-			</tr>
-		</table>
-	</div>
-	
-	<div class="card-footer">
-		{{ question.libelleBottom }}
-	</div>
+<div id="bloc_questionnaire">
+	<div class="loader">Loading</div>
+</div>
+<div id="bloc_modal">
+ <!--  div pour le chargement des modales -->
 </div>
 
-{% endfor %}
 
+
+{% endblock %}
+
+ {% block script %}
+ 	<script src="{{ asset('assets/js/questionnaire/QuestionnaireForm.js') }}?{{ date().timestamp }}"></script>
+ {% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+    
+    $(document).ready(function() {
+
+		var params = {
+				url_ajax_see : '{{path('questionnaire_ajax_see', {'id': questionnaire.id }) }}',
+				id_modal : '#bloc_modal',
+				id_global : '#bloc_questionnaire',
+		};
+        
+    	QuestionnaireForm.Launch(params);
+    	QuestionnaireForm.LoadQuestionnaire();
+    });
+    
+    </script>
 {% endblock %}

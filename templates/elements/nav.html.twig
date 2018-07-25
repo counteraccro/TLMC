@@ -15,14 +15,15 @@
           			Pages OK
         		</a>
         		<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          			<a class="dropdown-item" href="/patient/listing">Patient</a>
-          			<a class="dropdown-item" href="/questionnaire/listing">Questionnaire</a>
+        		
+          			<a class="dropdown-item" href="{{ path('patient_listing') }}">Patient</a>
+          			<a class="dropdown-item" href="{{ path('questionnaire_listing') }}">Questionnaire</a>
           			<div class="dropdown-divider"></div>
-          			<a class="dropdown-item" href="/famille/listing">Famille</a>
-          			<a class="dropdown-item" href="/famille_adresse/listing">Famille Adresse</a>
+          			<a class="dropdown-item" href="{{ path('famille_listing') }}">Famille</a>
+          			<a class="dropdown-item" href="{{ path('famille_adresse_listing') }}">Famille Adresse</a>
           		</div>
       		</li>
-      		<li class="nav-item">
+      		<li class="nav-item" >
         		<a class="nav-link disabled" href="#">Disabled</a>
       		</li>
     	</ul>
