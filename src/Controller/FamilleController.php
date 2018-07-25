@@ -113,7 +113,7 @@ class FamilleController extends AppController
         
         $famille = new Famille();
         
-        $form = $this->createForm(FamilleType::class, $famille);
+        $form = $this->createForm(FamilleType::class, $famille, array('label_submit' => 'Ajouter'));
         
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -172,7 +172,7 @@ class FamilleController extends AppController
     {
         $arrayFilters = $this->getDatasFilter($session);
         
-        $form = $this->createForm(FamilleType::class, $famille);
+        $form = $this->createForm(FamilleType::class, $famille, array('label_submit' => 'Modifier'));
         
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

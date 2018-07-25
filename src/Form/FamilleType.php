@@ -6,7 +6,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -42,17 +41,19 @@ class FamilleType extends AbstractType
             'required' => false
         ))
             ->add('save', SubmitType::class, array(
-            'label' => 'Valider'
+            'label' => $options['label_submit']
         ));
+
         // ->add('patient');
-        // ->add('famille_adresse')
+        // ->add('famille_adresse', EntityType::class, array('class' => FamilleAdresse::class, 'choice_label' => 'voie'))
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => Famille::class,
-            'famille_parente' => AppController::FAMILLE_PARENTE
+            'famille_parente' => AppController::FAMILLE_PARENTE,
+            'label_submit' => 'Valider'
         ]);
     }
 }

@@ -31,7 +31,7 @@
 	</tr>
 </table>
 <br />
-<table  class="table table-sm">
+<table  class="table table-sm table-borderless">
 	<tr>
 		<th  scope="row" colspan="6" >Famille</th>
 	</tr>
@@ -63,9 +63,10 @@
     {% else %}
     	
     	<tr>
-    		<td>
-    			Aucun membre n'est associé à ce patient.
-    		</td>
+    		<td>Aucun membre n'est associé à ce patient.</td>
+    		</tr>
+    	<tr>
+    		<td><a href="{{ path('famille_add', {'page' : page}) }}" > Ajouter une famille</a></td>
     	</tr>
     	
 	{% endif %}
