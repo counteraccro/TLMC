@@ -13,26 +13,26 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Response;
 use App\Entity\Reponse;
 
-
 class QuestionnaireController extends AppController
 {
-    
+
     /**
      * Listing des questionnaires
+     *
      * @Route("/questionnaire/listing/{page}/{field}/{order}", name="questionnaire_listing", defaults={"page" = 1, "field"= null, "order"= null})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
-
+     *
      */
     public function index(Request $request, SessionInterface $session, int $page = 1, $field = null, $order = null)
     {
         if (is_null($field)) {
             $field = 'id';
         }
-        
+
         if (is_null($order)) {
             $order = 'DESC';
         }
-        
+
         $params = array(
             'field' => $field,
             'order' => $order,
@@ -42,7 +42,7 @@ class QuestionnaireController extends AppController
             'repositoryMethode' => 'findAllQuestionnaires'
         );
         $result = $this->genericSearch($request, $session, $params);
-        
+
         $pagination = array(
             'page' => $page,
             'route' => 'questionnaire_listing',
@@ -50,9 +50,9 @@ class QuestionnaireController extends AppController
             'nb_elements' => $result['nb'],
             'route_params' => array()
         );
-        
+
         $this->setDatasFilter($session, $field, $order);
-       
+
         return $this->render('questionnaire/index.html.twig', [
             'controller_name' => 'QuestionnaireController',
             'questionnaires' => $result['paginator'],
@@ -62,11 +62,11 @@ class QuestionnaireController extends AppController
             'current_search' => $session->get(self::CURRENT_SEARCH),
             'paths' => array(
                 'home' => $this->indexUrlProject(),
-                'active' => 'Liste des questionnaires',
+                'active' => 'Liste des questionnaires'
             )
         ]);
     }
-    
+
     /**
      * Fiche d'un questionnaire
      *
@@ -77,7 +77,7 @@ class QuestionnaireController extends AppController
     public function seeAction(SessionInterface $session, Questionnaire $questionnaire, int $page)
     {
         $arrayFilters = $this->getDatasFilter($session);
-        
+
         return $this->render('questionnaire/see.html.twig', [
             'page' => $page,
             'questionnaire' => $questionnaire,
@@ -93,15 +93,15 @@ class QuestionnaireController extends AppController
                 'active' => 'Fiche d\'un questionnaire'
             )
         ]);
-        
-//         //TODO
-//         Traitement des questions 
-//         GetQuestions()
-//         ex: type de question ? input ? textarea ? (switch case)
-//         Message d'erreur (par rapport à règles, required...)
-//         Liste de valeurs en json (dropdown)
+
+        // //TODO
+        // Traitement des questions
+        // GetQuestions()
+        // ex: type de question ? input ? textarea ? (switch case)
+        // Message d'erreur (par rapport à règles, required...)
+        // Liste de valeurs en json (dropdown)
     }
-    
+
     /**
      * Fiche d'un questionnaire
      *
@@ -112,11 +112,10 @@ class QuestionnaireController extends AppController
     public function ajaxSeeAction(Questionnaire $questionnaire)
     {
         return $this->render('questionnaire/ajax_see.html.twig', [
-            'questionnaire' => $questionnaire,
+            'questionnaire' => $questionnaire
         ]);
     }
 
-    
     /**
      * Ajout d'un nouveau questionnaire
      *
@@ -128,22 +127,22 @@ class QuestionnaireController extends AppController
     public function addAction(SessionInterface $session, Request $request, int $page)
     {
         $arrayFilters = $this->getDatasFilter($session);
-        
+
         $questionnaire = new Questionnaire();
-        
+
         $form = $this->createForm(QuestionnaireType::class, $questionnaire);
-        
+
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $questionnaire->setDisabled(0);
-            
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($questionnaire);
             $em->flush();
-            
+
             return $this->redirect($this->generateUrl('questionnaire_listing'));
         }
-        
+
         return $this->render('questionnaire/add.html.twig', [
             'page' => $page,
             'form' => $form->createView(),
@@ -160,7 +159,7 @@ class QuestionnaireController extends AppController
             )
         ]);
     }
-    
+
     /**
      * Edition d'un questionnaire
      *
@@ -172,43 +171,49 @@ class QuestionnaireController extends AppController
     public function editAction(SessionInterface $session, Request $request, Questionnaire $questionnaire, int $page = 1)
     {
         $arrayFilters = $this->getDatasFilter($session);
-        
-        $form = $this->createForm(QuestionnaireType::class, $questionnaire);
-        
+
+        if ($request->isXmlHttpRequest()) {
+            $form = $this->createForm(QuestionnaireType::class, $questionnaire, array(
+                'ajax_button' => true,
+                'attr' => array(
+                    'id' => 'questionnaire_ajax_edit'
+                )
+            ));
+        } else {
+            $form = $this->createForm(QuestionnaireType::class, $questionnaire);
+        }
         $form->handleRequest($request);
-        
+
         if ($form->isSubmitted() && $form->isValid()) {
-            
+
             $em = $this->getDoctrine()->getManager();
-            
+
             $em->persist($questionnaire);
             $em->flush();
-            
-            if($request->isXmlHttpRequest())
-            {
-                return $this->json(array('statut' => true));
-            }
-            else
-            {
+
+            if ($request->isXmlHttpRequest()) {
+                return $this->json(array(
+                    'statut' => true
+                ));
+            } else {
                 return $this->redirect($this->generateUrl('questionnaire_listing', array(
                     'page' => $page,
                     'field' => $arrayFilters['field'],
                     'order' => $arrayFilters['order']
                 )));
             }
-            
         }
-        
+
         // Si appel Ajax, on renvoi sur la page ajax
-        if($request->isXmlHttpRequest())
-        {
+        if ($request->isXmlHttpRequest()) {
+
             return $this->render('questionnaire/ajax_edit.html.twig', [
                 'questionnaire' => $questionnaire,
                 'form' => $form->createView(),
                 'id' => $questionnaire->getId()
             ]);
         }
-        
+
         return $this->render('questionnaire/edit.html.twig', [
             'page' => $page,
             'form' => $form->createView(),
@@ -226,7 +231,7 @@ class QuestionnaireController extends AppController
             )
         ]);
     }
-    
+
     /**
      * desactivation d'un questionnaire
      *
@@ -237,19 +242,19 @@ class QuestionnaireController extends AppController
     public function deleteAction(SessionInterface $session, Questionnaire $questionnaire, $page)
     {
         $arrayFilters = $this->getDatasFilter($session);
-        
+
         if ($questionnaire->getDisabled() == 1) {
             $questionnaire->setDisabled(0);
         } else {
             $questionnaire->setDisabled(1);
         }
-        
+
         $entityManager = $this->getDoctrine()->getManager();
-        
+
         $entityManager->persist($questionnaire);
-        
+
         $entityManager->flush();
-        
+
         return $this->redirectToRoute('questionnaire_listing', array(
             'page' => $page,
             'field' => $arrayFilters['field'],
