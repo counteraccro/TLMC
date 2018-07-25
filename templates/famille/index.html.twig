@@ -48,7 +48,7 @@
             			<td>{{ famille.id }} </td>
             			<td>{{ famille.nom }} </td>
             			<td>{{ famille.prenom }} </td>
-            			<td>{{ famille.lienFamille }} </td>
+            			<td>{{ lienParente(famille.lienFamille) }}</td>
             			<td>{{ famille.email }} </td>
             			<td>{{ famille.numeroTel }} </td>
             			<td>{%if famille.pmr == 1 %} Oui {% else %} Non {% endif %}</td>

@@ -18,19 +18,43 @@ class AppController extends Controller
      * @var integer
      */
     const MAX_NB_RESULT = 20;
-    
+
     /**
      * Indentifiant pour la recherche courante
+     *
      * @var string
      */
     const CURRENT_SEARCH = 'current_search';
 
-    //@todo à virer à terme
+    /**
+     * Tableau de parenté
+     *
+     * @var array
+     */
+    const FAMILLE_PARENTE = array(
+        1 => 'Père',
+        2 => 'Mère',
+        3 => 'Frère',
+        4 => 'Soeur',
+        5 => 'Cousin',
+        6 => 'Cousine',
+        7 => 'Demi-frère',
+        8 => 'Demi-soeur',
+        9 => 'Conjoint',
+        10 => 'Enfant',
+        11 => 'Parrain',
+        12 => 'Marraine'
+    );
+
+    // @todo à virer à terme
     const ID_SPECIALITE = 58;
+
     const ID_PATIENT = 44;
+
     const ID_FAMILLE = 66;
+
     const ID_FAMILLE_ADRESSE = 53;
-    
+
     /**
      * Supprime une recherche de la session
      *
@@ -39,16 +63,14 @@ class AppController extends Controller
     public function deleteSearch(Request $request, SessionInterface $session, int $page, $key = null)
     {
         $paramsSearch = $session->get(self::CURRENT_SEARCH);
-        if(isset($paramsSearch[$key]))
-        {
+        if (isset($paramsSearch[$key])) {
             unset($paramsSearch[$key]);
         }
         $session->set(self::CURRENT_SEARCH, $paramsSearch);
-       
-        
+
         return $this->redirect($request->headers->get('referer'));
     }
-    
+
     /**
      * Debug array
      *
@@ -102,48 +124,45 @@ class AppController extends Controller
 
     /**
      * Fonction permettant la recherche à multiples filtres
+     *
      * @param Request $request
      * @param SessionInterface $session
-     * @param array $params [order] => l'ordre de tri
-     *         [field] => champs à trier
-     *         [repositoryClass] => repository (classe) concerné
-     *         [repositoryMethode] => méthode à utiliser dans le repository
-     *         [page] => indication pour la pagination
+     * @param array $params
+     *            [order] => l'ordre de tri
+     *            [field] => champs à trier
+     *            [repositoryClass] => repository (classe) concerné
+     *            [repositoryMethode] => méthode à utiliser dans le repository
+     *            [page] => indication pour la pagination
      * @return array @return liste des résultats de la recherche
      */
     public function genericSearch(Request $request, SessionInterface $session, array $params)
     {
         $repository = $this->getDoctrine()->getRepository($params['repositoryClass']);
-        
+
         $paramsSearch = $session->get(self::CURRENT_SEARCH);
-        
-        if(empty($paramsSearch))
-        {
+
+        if (empty($paramsSearch)) {
             $paramsSearch = $request->request->all();
-        }
-        else
-        {
+        } else {
             $paramsSearch = array_merge($paramsSearch, $request->request->all());
         }
-        
-        foreach($paramsSearch as $key => $val)
-        {
+
+        foreach ($paramsSearch as $key => $val) {
             $tab = explode('-', $key);
-            if($tab[0] != $params['repository'])
-            {
+            if ($tab[0] != $params['repository']) {
                 unset($paramsSearch[$key]);
             }
         }
-       
+
         $paramsRepo = array(
             'field' => $params['field'],
             'order' => $params['order'],
             'repository' => $params['repository'],
-            'search' => $paramsSearch,
+            'search' => $paramsSearch
         );
-        
+
         $session->set(self::CURRENT_SEARCH, $paramsSearch);
-        
+
         return $repository->{$params['repositoryMethode']}($params['page'], self::MAX_NB_RESULT, $paramsRepo);
     }
 }
