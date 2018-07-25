@@ -48,7 +48,7 @@
             			<td>{{ famille.id }} </td>
             			<td>{{ famille.nom }} </td>
             			<td>{{ famille.prenom }} </td>
-            			<td>{{ lienParente(famille.lienFamille) }}</td>
+            			<td>{{ famille.lienFamille | lienParente() }}</td>
             			<td>{{ famille.email }} </td>
             			<td>{{ famille.numeroTel }} </td>
             			<td>{%if famille.pmr == 1 %} Oui {% else %} Non {% endif %}</td>
@@ -66,6 +66,11 @@
             	
             	{% endfor %}
     		</table>
+    		
+    		{% if familles is empty %}
+        		<h6 class="card-title text-center">Il  n'y a aucune famille correspondant à votre recherche.</h6>
+            {% endif %}
+    		
       	</div>
       	
       	<div class="card-footer">

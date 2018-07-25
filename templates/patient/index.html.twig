@@ -33,7 +33,8 @@
         		<td></td>
         		<td></td>
         	</tr>
-        	{% for patient in patients %}
+        	
+  		{% for patient in patients %}
         		<tr>
         			<td>{{ patient.id }}</td>
         			<td>{{ patient.nom }}</td>
@@ -51,6 +52,11 @@
         		</tr>
         	{% endfor %}
         </table>
+                
+    	{% if patients is empty %}
+        	<h6 class="card-title text-center">Il  n'y a aucun patient correspondant à votre recherche.</h6>
+        {% endif %}
+        
   	</div>
   	<div class="card-footer">
     	{% include 'elements/pagination.html.twig' %}

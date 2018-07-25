@@ -8,6 +8,67 @@
 
 {% include 'elements/arborescence.html.twig' %}
 
-ici repose un bug
+<table  class="table table-sm">
+	<tr>
+		<th scope="col"> Prénom </th>
+		<td> {{ patient.prenom }} </td>
+	</tr>
+	<tr>
+		<th scope="col"> Nom </th>
+		<td> {{ patient.nom }} </td>
+	</tr>
+	<tr>
+		<th scope="col"> Date de naissance </th>
+		<td> {{ patient.dateNaissance | date('d/m/Y') }} </td>
+	</tr>
+	<tr>
+		<th scope="col"> Personne à mobilité réduite </th>
+		<td> {%if patient.pmr == 1 %} Oui {% else %} Non {% endif %} </td>
+	</tr>
+	<tr>
+		<th scope="col"> Service </th>
+		<td> {{ patient.specialite.service }} </td>
+	</tr>
+</table>
+<br />
+<table  class="table table-sm">
+	<tr>
+		<th  scope="row" colspan="6" >Famille</th>
+	</tr>
+	
+	{% if patient.familles is not empty %}
+    	<tr>
+    		<th scope="row">Parent</th>
+    		<th scope="row">Lien avec le patient</th>
+    		<th scope="row">Email</th>
+    		<th scope="row">N° de téléphone</th>
+    		<th scope="row">PMR</th>
+    		<th scope="row">Adresse</th>
+    	</tr>
+    	{% for famille in patient.familles %}
+    		<tr>
+    			<td>{{ famille.prenom }} {{ famille.nom }} {{ actionEdit(path('famille_edit', {'id' : famille.id, 'page' : page})) | raw }}</td>
+        		<td>{{ famille.lienFamille | lienParente() }}</td>
+        		<td>{{ famille.email }}</td>
+        		<td>{{ famille.numeroTel }}</td>
+        		<td>{%if famille.pmr == 1 %} Oui {% else %} Non {% endif %}</td>
+        		<td>
+        		    {{ famille.familleAdresse.numeroVoie }}, {{ famille.familleAdresse.voie }}
+        		     - {{ famille.familleAdresse.codePostal }} {{ famille.familleAdresse.ville }}
+        		    {{ actionEdit(path('famille_adresse_edit', {'id' : famille.familleAdresse.id, 'page' : page})) | raw }}
+        		</td>
+    		</tr>
+    	{% endfor %}
+    	
+    {% else %}
+    	
+    	<tr>
+    		<td>
+    			Aucun membre n'est associé à ce patient.
+    		</td>
+    	</tr>
+    	
+	{% endif %}
+</table>
 
 {% endblock %}

@@ -5,9 +5,9 @@
 namespace App\Twig;
 
 use Twig\Extension\AbstractExtension;
-use Twig\TwigFunction;
 use Twig_Extension;
 use App\Controller\AppController;
+use Twig\TwigFilter;
 
 class LienParenteExtension extends AbstractExtension
 {
@@ -19,7 +19,12 @@ class LienParenteExtension extends AbstractExtension
      */
     public function getFilters()
     {
-        return array();
+        return array(
+            new TwigFilter('lienParente', array(
+                $this,
+                'getLienParente'
+            ))
+        );
     }
     
     /**
@@ -29,10 +34,6 @@ class LienParenteExtension extends AbstractExtension
     public function getFunctions()
     {
         return array(
-            new TwigFunction('lienParente', array(
-                $this,
-                'getLienParente'
-            ))
         );
     }
     

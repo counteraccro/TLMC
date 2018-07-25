@@ -50,6 +50,11 @@
         		</tr>
         	{% endfor %}
         </table>
+        
+        {% if adresses is empty %}
+        	<h6 class="card-title text-center">Il  n'y a aucune adresse correspondant à votre recherche.</h6>
+        {% endif %}
+        
   	</div>
   	<div class="card-footer">
     	{% include 'elements/pagination.html.twig' %}

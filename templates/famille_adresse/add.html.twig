@@ -8,8 +8,18 @@
 
 {% include 'elements/arborescence.html.twig' %}
 
-<fieldset>
-    {{ form(form) }}
-</fieldset>
+<div>
+    {{ form_start(form) }}
+    
+	{{ form_row(form.numero_voie) }}
+	{{ form_row(form.voie) }}
+	{{ form_row(form.ville) }}
+	{{ form_row(form.code_postal) }}
+	
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+    
+</div>
+	  
 	  
 {% endblock %}
