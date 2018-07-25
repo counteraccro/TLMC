@@ -19,8 +19,7 @@
 
 	<div class="shadow-sm p-3 mb-5 bg-white rounded border">
         {{ form_row(form.familles) }}
-      
-  		<a href="#" id="add_famille" class="btn btn-primary btn-sm">Ajouter une famille</a>
+      		<a href="#" id="add_famille" class="btn btn-primary btn-sm">Ajouter une famille</a>
   	</div>
     
     {{ form_rest(form) }}
@@ -30,11 +29,12 @@
 	  
 {% endblock %}
 
- {% block script %}
+{% block script %}
  	<script src="{{ asset('assets/js/utils/FormAddCollection.js') }}?{{ date().timestamp }}"></script>
- {% endblock %}
+{% endblock %}
 
 {% block javascripts %}
+
     <script type="text/javascript">
     
     $(document).ready(function() {
@@ -50,5 +50,6 @@
 		FormAddCollection.Event();
     });
     
-    </script>
+    </script> 
+
 {% endblock %}

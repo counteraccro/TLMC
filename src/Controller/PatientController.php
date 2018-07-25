@@ -121,12 +121,8 @@ class PatientController extends AppController
             $result = $repository->findById(self::ID_SPECIALITE);
             $patient->setSpecialite($result[0]);
             
-            var_dump($patient->getFamilles()); die();
-            
             foreach ($patient->getFamilles() as $famille) {
                 $famille->setPatient($patient);
-//                 $repositoryF = $this->getDoctrine()->getRepository(FamilleAdresse::class);
-//                 $famille->setFamilleAdresse($repositoryF->findById(self::ID_FAMILLE_ADRESSE)[0]);
                 $famille->getFamilleAdresse()->setDisabled(0);
                 $famille->setDisabled(0);
                 $patient->addFamille($famille) ;
