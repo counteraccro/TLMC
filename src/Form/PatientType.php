@@ -30,24 +30,24 @@ class PatientType extends AbstractType
             'required' => false,
             'label' => 'Personne à mobilité réduite'
         ))
-            ->
-            add('familles', CollectionType::class, array(
+            ->add('familles', CollectionType::class, array(
             'label' => 'Formulaire d\'ajout d\'un nouveau membre de famille',
             'label_attr' => array(
                 'id' => 'label_collection_type'
             ),
             'entry_type' => FamilleType::class,
             'entry_options' => array(
-                'label' => '--- Ajouter un nouveau membre de famille ---'
+                'label' => '--- Ajouter un nouveau membre de famille ---',
+                'cascade' => true
             ),
+
             'allow_add' => true,
             'auto_initialize' => true
         ))
-            ->
-        add('save', SubmitType::class, array(
-            'label' => 'Valider',
+            ->add('save', SubmitType::class, array(
+            'label' => $options['label_submit'],
             'attr' => array(
-                'class' => 'btn btn-primary',
+                'class' => 'btn btn-primary'
             )
         ));
         // ->add('specialite')
@@ -57,7 +57,8 @@ class PatientType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Patient::class
+            'data_class' => Patient::class,
+            'label_submit' => 'Valider'
         ]);
     }
 }

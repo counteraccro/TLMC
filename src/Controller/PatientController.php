@@ -9,9 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\PatientType;
 use App\Entity\Specialite;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use App\Entity\FamilleAdresse;
 
 class PatientController extends AppController
 {
@@ -118,16 +116,19 @@ class PatientController extends AppController
 
             $em = $this->getDoctrine()->getManager();
 
-            $repository = $this->getDoctrine()->getRepository(Specialite::class);
-            $repositoryF = $this->getDoctrine()->getRepository(FamilleAdresse::class);
-
             // TODO A changer
+            $repository = $this->getDoctrine()->getRepository(Specialite::class);
             $result = $repository->findById(self::ID_SPECIALITE);
             $patient->setSpecialite($result[0]);
             
+            var_dump($patient->getFamilles()); die();
+            
             foreach ($patient->getFamilles() as $famille) {
                 $famille->setPatient($patient);
-                $famille->setFamilleAdresse($repositoryF->findById(self::ID_FAMILLE_ADRESSE)[0]);
+//                 $repositoryF = $this->getDoctrine()->getRepository(FamilleAdresse::class);
+//                 $famille->setFamilleAdresse($repositoryF->findById(self::ID_FAMILLE_ADRESSE)[0]);
+                $famille->getFamilleAdresse()->setDisabled(0);
+                $famille->setDisabled(0);
                 $patient->addFamille($famille) ;
             }
             
