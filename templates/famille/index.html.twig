@@ -24,9 +24,9 @@
             		<th> {{ headerFilter(path('famille_listing', {'page' : pagination.page, 'field' : 'lien_famille'} ), 'Lien de parenté', current_order, current_field) | raw }} </th>
             		<th> {{ headerFilter(path('famille_listing', {'page' : pagination.page, 'field' : 'email'} ), 'Email', current_order, current_field) | raw }} </th>
             		<th> N° de téléphone</th>
-            		<th> {{ headerFilter(path('famille_listing', {'page' : pagination.page, 'field' : 'pmr'} ), 'Mobilité réduite', current_order, current_field) | raw }}</th>
             		<th> Adresse </th>
             		<th> Patient </th>
+            		<th> {{ headerFilter(path('famille_listing', {'page' : pagination.page, 'field' : 'pmr'} ), 'Mobilité réduite', current_order, current_field) | raw }}</th>
             		<th></th>
             	</tr>
             	<tr>
@@ -36,8 +36,8 @@
             		<td></td>
             		<td>{{ inputFilter(path('famille_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Famille-email', current_search, 'Email') | raw }}</td>
             		<td>{{ inputFilter(path('famille_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Famille-numero_tel', current_search, 'N° de téléphone') | raw }}</td>
-            		<td></td>
-            		<td></td>
+            		<td>{{ inputFilter(path('famille_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Famille-famille_adresse-voie', current_search, 'Recherche voie') | raw }}</td>
+            		<td>{{ inputFilter(path('famille_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Famille-patient-nom', current_search, 'Nom') | raw }}</td>
             		<td></td>
             		<td></td>
             	</tr>
@@ -51,9 +51,9 @@
             			<td>{{ famille.lienFamille | lienParente() }}</td>
             			<td>{{ famille.email }} </td>
             			<td>{{ famille.numeroTel }} </td>
-            			<td>{%if famille.pmr == 1 %} Oui {% else %} Non {% endif %}</td>
             			<td>{{ famille.familleAdresse.numeroVoie }}, {{ famille.familleAdresse.voie }} - {{ famille.familleAdresse.codePostal }} {{ famille.familleAdresse.ville }} </td>
             			<td>{{ famille.patient.prenom }} {{ famille.patient.nom }}</td>
+            			<td>{%if famille.pmr == 1 %} Oui {% else %} Non {% endif %}</td>
             			<td>
             				{{ actionSee(path('famille_see', {'id' : famille.id, 'page' : pagination.page})) | raw }}
         			        {{ actionEdit(path('famille_edit', {'id' : famille.id, 'page' : pagination.page})) | raw }}

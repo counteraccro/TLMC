@@ -30,7 +30,7 @@
         		<td>{{ inputFilter(path('patient_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Patient-nom', current_search, 'Nom') | raw }}</td>
         		<td>{{ inputFilter(path('patient_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Patient-prenom', current_search, 'Prenom') | raw }}</td>
         		<td>{{ inputFilter(path('patient_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Patient-date_naissance', current_search, 'Date de naissance') | raw }}</td>
-        		<td></td>
+        		<td>{{ inputFilter(path('patient_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Patient-specialite-service', current_search, 'Date de naissance') | raw }}</td>
         		<td></td>
         	</tr>
         	
