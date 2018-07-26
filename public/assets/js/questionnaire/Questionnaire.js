@@ -1,37 +1,37 @@
 //objet JS pour le questionnaire
-QuestionnaireForm = {};
+Questionnaire = {};
 
-QuestionnaireForm.Launch = function(params) {
+Questionnaire.Launch = function(params) {
 
 	//url de la fiche questionnaire
-	QuestionnaireForm.url_ajax_see = params.url_ajax_see;
+	Questionnaire.url_ajax_see = params.url_ajax_see;
 	//cible la div '#bloc_questionnaire'
-	QuestionnaireForm.id_global = params.id_global;
+	Questionnaire.id_global = params.id_global;
 	//cible la div '#bloc_modal'
-	QuestionnaireForm.id_modal = params.id_modal;
+	Questionnaire.id_modal = params.id_modal;
 	
-	QuestionnaireForm.id_content_modal = params.id_content_modal;
+	Questionnaire.id_content_modal = params.id_content_modal;
 
 	/**
 	 * fonction édition du questionnaire, paramètres url et id_questionnaire
 	 */
-	QuestionnaireForm.EditQuestionnaire = function(url, id)
+	Questionnaire.EditQuestionnaire = function(url, id)
 	{
-		QuestionnaireForm.Ajax(url, id_done);
+		Questionnaire.Ajax(url, id_done);
 	}
 
 	/**
 	 * fonction prévue pour le chargement du questionnaire, paramètres url et id
 	 */
-	QuestionnaireForm.LoadQuestionnaire = function()
+	Questionnaire.LoadQuestionnaire = function()
 	{
-		QuestionnaireForm.Ajax(QuestionnaireForm.url_ajax_see, QuestionnaireForm.id_global);
+		Questionnaire.Ajax(Questionnaire.url_ajax_see, Questionnaire.id_global);
 	}
 
 	/**
 	 * Méthode Ajax qui va charger l'element présent dans l'URL
 	 */
-	QuestionnaireForm.Ajax = function(url, id_done, method = 'GET')
+	Questionnaire.Ajax = function(url, id_done, method = 'GET')
 	{		
 		$.ajax({
 			method: method,
@@ -47,15 +47,15 @@ QuestionnaireForm.Launch = function(params) {
 	/**
 	 * Evenement global
 	 */
-	QuestionnaireForm.EventEdit = function(id)
+	Questionnaire.EventEdit = function(id)
 	{
 		// Event sur le bouton edit d'un questionnaire
 		$(id).click(function() {
 			//on passe l'url et l'id_done
 			
-			console.log(QuestionnaireForm.id_content_modal);
+			console.log(Questionnaire.id_content_modal);
 			
-			QuestionnaireForm.Ajax($(this).attr('href'), QuestionnaireForm.id_content_modal);
+			Questionnaire.Ajax($(this).attr('href'), Questionnaire.id_content_modal);
 			return false;
 		});;
 	}
@@ -64,7 +64,7 @@ QuestionnaireForm.Launch = function(params) {
 	/**
 	 * 
 	 */
-	QuestionnaireForm.EventEditSubmit = function(url)
+	Questionnaire.EventEditSubmit = function(url)
 	{
 		$("form[name*='questionnaire']").on( "submit", function( event ) {
 			
@@ -81,12 +81,12 @@ QuestionnaireForm.Launch = function(params) {
 	
 				if(reponse.statut === true)
 				{
-					$(QuestionnaireForm.id_modal).modal('hide');
-					QuestionnaireForm.Ajax(QuestionnaireForm.url_ajax_see, QuestionnaireForm.id_global);
+					$(Questionnaire.id_modal).modal('hide');
+					Questionnaire.Ajax(Questionnaire.url_ajax_see, Questionnaire.id_global);
 				}
 				else
 				{
-					$(QuestionnaireForm.id_content_modal).html(reponse);
+					$(Questionnaire.id_content_modal).html(reponse);
 				}
 			});
 		});
