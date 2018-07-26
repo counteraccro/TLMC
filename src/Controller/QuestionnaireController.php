@@ -72,7 +72,7 @@ class QuestionnaireController extends AppController
      *
      * @Route("/questionnaire/see/{id}/{page}", name="questionnaire_see")
      * @ParamConverter("questionnaire", options={"mapping": {"id": "id"}})
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      */
     public function seeAction(SessionInterface $session, Questionnaire $questionnaire, int $page)
     {
@@ -107,7 +107,7 @@ class QuestionnaireController extends AppController
      *
      * @Route("/questionnaire/ajax/see/{id}", name="questionnaire_ajax_see")
      * @ParamConverter("questionnaire", options={"mapping": {"id": "id"}})
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      */
     public function ajaxSeeAction(Questionnaire $questionnaire)
     {
@@ -120,7 +120,7 @@ class QuestionnaireController extends AppController
      * Ajout d'un nouveau questionnaire
      *
      * @Route("/questionnaire/add/{page}", name="questionnaire_add")
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
+     * @Security("is_granted('ROLE_ADMIN')
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -166,7 +166,7 @@ class QuestionnaireController extends AppController
      * @Route("/questionnaire/edit/{id}/{page}", name="questionnaire_edit")
      * @Route("/questionnaire/ajax/edit/{id}", name="questionnaire_ajax_edit")
      * @ParamConverter("questionnaire", options={"mapping": {"id": "id"}})
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function editAction(SessionInterface $session, Request $request, Questionnaire $questionnaire, int $page = 1)
     {
