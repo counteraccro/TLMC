@@ -24,6 +24,16 @@ class FamilleType extends AbstractType
             $lien_parente[$val] = $key;
         }
 
+        if ($options['avec_patient']) {
+            $builder->add('patient', EntityType::class, array(
+                'class' => Patient::class,
+                'disabled' => $options['disabled_patient'],
+                'choice_label' => function ($patient) {
+                    return $patient->getPrenom() . ' ' . $patient->getNom();
+                }
+            ));
+        }
+
         $builder->add('nom')
             ->add('prenom', TextType::class, array(
             'label' => 'Prénom'
@@ -43,14 +53,6 @@ class FamilleType extends AbstractType
             'required' => false
         ));
 
-        if ($options['avec_patient']) {
-            $builder->add('patient', EntityType::class, array(
-                'class' => Patient::class,
-                'choice_label' => function ($patient) {
-                    return $patient->getPrenom() . ' ' . $patient->getNom();
-                }
-            ));
-        }
         $builder->add('famille_adresse', FamilleAdresseType::class, array(
             'label' => 'Adresse',
             'avec_bouton' => false
@@ -73,7 +75,8 @@ class FamilleType extends AbstractType
             'famille_parente' => AppController::FAMILLE_PARENTE,
             'label_submit' => 'Valider',
             'avec_bouton' => true,
-            'avec_patient' => true
+            'avec_patient' => true,
+            'disabled_patient' => false
         ]);
     }
 }

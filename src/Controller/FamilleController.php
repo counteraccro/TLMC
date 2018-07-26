@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controller;
 
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,8 +12,10 @@ use App\Entity\Patient;
 
 class FamilleController extends AppController
 {
+
     /**
      * Listing des familles
+     *
      * @Route("/famille/listing/{page}/{field}/{order}", name="famille_listing", defaults={"page" = 1, "field"= null, "order"= null})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      */
@@ -23,11 +24,11 @@ class FamilleController extends AppController
         if (is_null($field)) {
             $field = 'id';
         }
-        
+
         if (is_null($order)) {
             $order = 'DESC';
         }
-        
+
         $params = array(
             'field' => $field,
             'order' => $order,
@@ -37,7 +38,7 @@ class FamilleController extends AppController
             'repositoryMethode' => 'findAllFamilles'
         );
         $result = $this->genericSearch($request, $session, $params);
-        
+
         $pagination = array(
             'page' => $page,
             'route' => 'famille_listing',
@@ -45,9 +46,9 @@ class FamilleController extends AppController
             'nb_elements' => $result['nb'],
             'route_params' => array()
         );
-        
+
         $this->setDatasFilter($session, $field, $order);
-        
+
         return $this->render('famille/index.html.twig', [
             'controller_name' => 'FamilleController',
             'familles' => $result['paginator'],
@@ -61,7 +62,7 @@ class FamilleController extends AppController
             )
         ]);
     }
-    
+
     /**
      * Affichage de la fiche d'une famille
      *
@@ -77,7 +78,7 @@ class FamilleController extends AppController
     public function seeAction(SessionInterface $session, Famille $famille, int $page)
     {
         $arrayFilters = $this->getDatasFilter($session);
-        
+
         return $this->render('famille/see.html.twig', [
             'page' => $page,
             'famille' => $famille,
@@ -94,11 +95,12 @@ class FamilleController extends AppController
             )
         ]);
     }
-    
+
     /**
      * Ajout d'une famille
      *
      * @Route("/famille/add/{page}", name="famille_add")
+     * @Route("/famille/ajax/add/{id}", name="famille_ajax_add")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      *
      * @param SessionInterface $session
@@ -106,29 +108,58 @@ class FamilleController extends AppController
      * @param int $page
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function addAction(SessionInterface $session, Request $request, int $page)
+    public function addAction(SessionInterface $session, Request $request, int $page = 1, int $id = null)
     {
         $arrayFilters = $this->getDatasFilter($session);
-        
+
         $famille = new Famille();
-        
-        $form = $this->createForm(FamilleType::class, $famille, array('label_submit' => 'Ajouter'));
-        
+
+        if ($request->isXmlHttpRequest()) {
+            $repository = $this->getDoctrine()->getRepository(Patient::class);
+            $result = $repository->findById($id);
+            $patient = $result[0];
+            $famille->setPatient($patient);
+
+            $form = $this->createForm(FamilleType::class, $famille, array(
+                'label_submit' => 'Ajouter',
+                'disabled_patient' => true
+            ));
+        } else {
+
+            $form = $this->createForm(FamilleType::class, $famille, array(
+                'label_submit' => 'Ajouter'
+            ));
+        }
         $form->handleRequest($request);
-        
+
         if ($form->isSubmitted() && $form->isValid()) {
-            
+
             $famille->setDisabled(0);
             $famille->getFamilleAdresse()->setDisabled(0);
-            
+
             $em = $this->getDoctrine()->getManager();
-            
+
             $em->persist($famille);
             $em->flush();
-            
-            return $this->redirect($this->generateUrl('famille_listing'));
+
+            if ($request->isXmlHttpRequest()) {
+                return $this->json(array(
+                    'statut' => true
+                ));
+            } else {
+                return $this->redirect($this->generateUrl('famille_listing'));
+            }
         }
-        
+
+        // Si appel Ajax, on renvoi sur la page ajax
+        if ($request->isXmlHttpRequest()) {
+
+            return $this->render('famille/ajax_add.html.twig', [
+                'form' => $form->createView(),
+                'patient' => $patient
+            ]);
+        }
+
         return $this->render('famille/add.html.twig', [
             'page' => $page,
             'form' => $form->createView(),
@@ -145,7 +176,7 @@ class FamilleController extends AppController
             )
         ]);
     }
-    
+
     /**
      * Edition d'une famille
      *
@@ -162,24 +193,26 @@ class FamilleController extends AppController
     public function editAction(SessionInterface $session, Request $request, Famille $famille, int $page)
     {
         $arrayFilters = $this->getDatasFilter($session);
-        
-        $form = $this->createForm(FamilleType::class, $famille, array('label_submit' => 'Modifier'));
-        
+
+        $form = $this->createForm(FamilleType::class, $famille, array(
+            'label_submit' => 'Modifier'
+        ));
+
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            
+
             $em = $this->getDoctrine()->getManager();
-            
+
             $em->persist($famille);
             $em->flush();
-            
+
             return $this->redirect($this->generateUrl('famille_listing', array(
                 'page' => $page,
                 'field' => $arrayFilters['field'],
                 'order' => $arrayFilters['order']
             )));
         }
-        
+
         return $this->render('famille/edit.html.twig', [
             'page' => $page,
             'form' => $form->createView(),
@@ -197,7 +230,7 @@ class FamilleController extends AppController
             )
         ]);
     }
-    
+
     /**
      * Désactivation d'une famille
      *
@@ -213,19 +246,19 @@ class FamilleController extends AppController
     public function deleteAction(SessionInterface $session, Famille $famille, $page)
     {
         $arrayFilters = $this->getDatasFilter($session);
-        
+
         if ($famille->getDisabled() == 1) {
             $famille->setDisabled(0);
         } else {
             $famille->setDisabled(1);
         }
-        
+
         $entityManager = $this->getDoctrine()->getManager();
-        
+
         $entityManager->persist($famille);
-        
+
         $entityManager->flush();
-        
+
         return $this->redirectToRoute('famille_listing', array(
             'page' => $page,
             'field' => $arrayFilters['field'],

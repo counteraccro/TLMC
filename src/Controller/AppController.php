@@ -8,6 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use App\Entity\Patient;
 
 class AppController extends Controller
 {
@@ -155,6 +156,28 @@ class AppController extends Controller
             if ($tab[0] != $params['repository']) {
                 unset($paramsSearch[$key]);
             }
+        }
+
+        // Vérification si le champ de trie appartient bien à l'object
+        $obj = new $params['repositoryClass']();        
+        $array_methode = get_class_methods($obj);
+        $field = str_replace('_', '', $params['field']);
+        $is_true = false;
+        foreach( $array_methode as $methode)
+        {
+            $methode = str_replace('set', '', $methode);
+            $methode = strtolower($methode);
+            if($methode == $field)
+            {
+                $is_true = true;
+                break;
+            }
+            
+        }
+        
+        if(!$is_true)
+        {
+            $params['field'] = 'id';
         }
 
         $paramsRepo = array(

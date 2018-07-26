@@ -1,0 +1,47 @@
+<div id="ajax_famille_add">
+	 {{ form_start(form) }}
+	<div class="modal-header">
+		<h5 class="modal-title">
+			Ajout d'une famille au patient {{ patient.prenom }} {{ patient.nom }}
+		</h5>
+		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+	
+	<div class="modal-body">
+    	{{ form_row(form.patient) }}
+    	{{ form_row(form.nom) }}
+    	{{ form_row(form.prenom) }}
+    	{{ form_row(form.lien_famille) }}
+    	{{ form_row(form.email) }}
+    	{{ form_row(form.numero_tel) }}
+    	{{ form_row(form.pmr) }}
+    	
+    	<div id="adresse">
+    	    {{ form_row(form.famille_adresse) }}
+    	</div>
+	</div>
+	
+	<div class="modal-footer">
+		<!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+		{{ form_widget(form.save) }}
+	</div>
+	    {{ form_rest(form) }}
+	{{ form_end(form) }}
+
+{% block javascripts %}
+	<script type="text/javascript">
+    
+    	$('#modal_famille_global').modal({
+    		   'show' : true,
+    		   'backdrop' : 'static'
+    	});
+
+    	$('#adresse').hide();
+    	
+		var url = '{{path('famille_ajax_add', {'id': patient.id }) }}';
+		Patient.EventAddSubmit(url);
+	
+	    </script>
+{% endblock %}

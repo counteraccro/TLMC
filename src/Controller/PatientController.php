@@ -5,7 +5,6 @@ use App\Entity\Patient;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\PatientType;
 use App\Entity\Specialite;
@@ -30,8 +29,6 @@ class PatientController extends AppController
         if (is_null($order)) {
             $order = 'DESC';
         }
-        
-        //$session->set(self::CURRENT_SEARCH, array());
         
         $params = array(
             'field' => $field,
@@ -95,6 +92,20 @@ class PatientController extends AppController
         ]);
     }
 
+    /**
+     * Bloc famille d'un patient
+     *
+     * @Route("/patient/ajax/see/{id}", name="patient_famille_ajax_see")
+     * @ParamConverter("patient", options={"mapping": {"id": "id"}})
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
+     */
+    public function ajaxSeeAction(Patient $patient)
+    {
+        return $this->render('patient/ajax_see_famille.html.twig', [
+            'patient' => $patient
+        ]);
+    }
+    
     /**
      * Ajout d'un nouveau patient
      *

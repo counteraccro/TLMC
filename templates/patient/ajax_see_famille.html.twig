@@ -1,0 +1,63 @@
+<div id="ajax_patient_famille_see">
+    <div class="card">
+        <div class="card-header">
+        	Famille
+        	<a href="{{ path('famille_ajax_add', {'id' : patient.id}) }}" id="btn-add-famille" class="float-right"><span class="oi oi-person"></span> Nouvelle famille</a>
+        </div>
+        
+        <div class="card-body">
+          	<table class="table table-sm table-striped">
+           		<tr>
+               		<th> Parent </th>
+               		<th> Lien avec le patient </th>
+               		<th> Email </th>
+               		<th> N° de téléphone </th>
+               		<th> Adresse </th>
+               		<th> Mobilité réduite </th>
+               		<th></th>
+               	</tr>
+               	
+                {% for famille in patient.familles %}
+               		
+               		<tr>
+               			<td>{{ famille.prenom }} {{ famille.nom }} </td>
+                		<td>{{ famille.lienFamille | lienParente() }}</td>
+                		<td>{{ famille.email }} </td>
+                		<td>{{ famille.numeroTel }} </td>
+                		<td>
+                			<a href="{{ path('famille_adresse_see', {'id': famille.familleAdresse.id, 'page' : 1}) }}">
+                		        {{ famille.familleAdresse.numeroVoie }}, {{ famille.familleAdresse.voie }}<br />
+                		        {{ famille.familleAdresse.codePostal }} {{ famille.familleAdresse.ville }}
+                		    </a>
+                		    {{ actionEdit(path('famille_adresse_edit', {'id' : famille.familleAdresse.id, 'page' : 1})) | raw }}
+                		</td>
+                		<td>{%if famille.pmr == 1 %} Oui {% else %} Non {% endif %}</td>
+                		<td>
+                			{{ actionSee(path('famille_see', {'id' : famille.id, 'page' : 1})) | raw }}
+            		        {{ actionEdit(path('famille_edit', {'id' : famille.id, 'page' : 1})) | raw }}
+            		        
+                		    {% if is_granted("ROLE_ADMIN") %}
+                		        {{ actionDelete(famille.disabled, path('famille_delete', {'id' : famille.id, 'page' : 1})) | raw }}
+                		    {% endif %}
+                		</td>
+                	</tr>
+                
+                {% endfor %}
+        	</table>
+        	
+        	{% if patient.familles is empty %}
+            	<p class="text-info text-center">Il  n'y a aucune famille associée à ce patient.</p>
+            {% endif %}
+        	
+        </div>
+    </div>
+    
+    {% block javascripts %}
+        <script type="text/javascript">
+    
+        var id_btn = '#btn-add-famille';
+        Patient.EventAdd(id_btn);
+    
+        </script>
+    {% endblock %}
+</div>
