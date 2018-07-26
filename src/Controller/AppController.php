@@ -49,7 +49,7 @@ class AppController extends Controller
     // @todo à virer à terme
     const ID_SPECIALITE = 58;
 
-    const ID_PATIENT = 44;
+    const ID_PATIENT = 47;
 
     const ID_FAMILLE = 66;
 
@@ -66,6 +66,9 @@ class AppController extends Controller
         if (isset($paramsSearch[$key])) {
             unset($paramsSearch[$key]);
         }
+        
+        $this->pre($paramsSearch);
+        
         $session->set(self::CURRENT_SEARCH, $paramsSearch);
 
         return $this->redirect($request->headers->get('referer'));
