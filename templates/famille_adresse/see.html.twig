@@ -4,10 +4,27 @@
 
 {% block body %}
 
-<h1>Fiche d'une adresse </h1>
+<h1>Fiche de l'adresse #{{ adresse.id }}</h1>
 
 {% include 'elements/arborescence.html.twig' %}
 
-Fiche de l'adresse {{ adresse.id }}
+<table  class="table table-sm">
+	<tr>
+		<th scope="col"> N° de voie </th>
+		<td> {{ adresse.numeroVoie }} </td>
+	</tr>
+	<tr>
+		<th scope="col"> Voie </th>
+		<td> {{ adresse.voie }} </td>
+	</tr>
+	<tr>
+		<th scope="col"> Ville </th>
+		<td> {{ adresse.ville }} </td>
+	</tr>
+	<tr>
+		<th scope="col"> Code postal </th>
+		<td> {{ adresse.codePostal }} </td>
+	</tr>
 
+</table>
 {% endblock %}

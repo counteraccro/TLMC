@@ -119,15 +119,9 @@ class FamilleController extends AppController
         if ($form->isSubmitted() && $form->isValid()) {
             
             $famille->setDisabled(0);
+            $famille->getFamilleAdresse()->setDisabled(0);
             
             $em = $this->getDoctrine()->getManager();
-            
-            $repository1 = $this->getDoctrine()->getRepository(Patient::class);
-            // TODO A changer
-            $patient = $repository1->findById(self::ID_PATIENT);
-            $famille->setPatient($patient[0]);
-            
-            $famille->getFamilleAdresse()->setDisabled(0);
             
             $em->persist($famille);
             $em->flush();

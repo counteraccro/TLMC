@@ -6,6 +6,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  *
@@ -56,21 +57,18 @@ class FamilleAdresseRepository extends ServiceEntityRepository
         // pagination
         $query = $this->createQueryBuilder($params['repository'])->setFirstResult($firstResult);
 
-        if (isset($params['search'])) {
-            foreach ($params['search'] as $searchKey => $valueKey) {
-                $query->andWhere(str_replace('-', '.', $searchKey) . " LIKE :searchTerm");
-                $query->setParameter('searchTerm', '%' . $valueKey . '%');
-            }
-        }
+        // Génération des paramètres SQL
+        $query = $this->generateParamsSql($query, $params);
 
         $query->orderBy($params['repository'] . '.' . $params['field'], $params['order'])->setMaxResults($max);
         $paginator = new Paginator($query);
 
         // Nombre total d'adresse
-        $result = $this->createQueryBuilder($params['repository'])
-            ->select('COUNT(' . $params['repository'] . '.id)')
-            ->getQuery()
-            ->getSingleScalarResult();
+        $query = $this->createQueryBuilder($params['repository'])->select('COUNT(' . $params['repository'] . '.id)');
+
+        // Génération des paramètres SQL
+        $query = $this->generateParamsSql($query, $params);
+        $result = $query->getQuery()->getSingleScalarResult();
 
         if (($paginator->count() <= $firstResult) && $page != 1) {
             throw new NotFoundHttpException('Page not found');
@@ -80,6 +78,27 @@ class FamilleAdresseRepository extends ServiceEntityRepository
             'paginator' => $paginator,
             'nb' => $result
         );
+    }
+
+    /**
+     *
+     * @param QueryBuilder $query
+     * @param array $params
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    private function generateParamsSql(QueryBuilder $query, array $params)
+    {
+        $index = 1;
+        if (isset($params['search'])) {
+            foreach ($params['search'] as $searchKey => $valueKey) {
+
+                $query->andWhere(str_replace('-', '.', $searchKey) . " LIKE :searchTerm$index");
+                $query->setParameter('searchTerm' . $index, '%' . $valueKey . '%');
+                $index++;
+            }
+        }
+
+        return $query;
     }
 
     // /**

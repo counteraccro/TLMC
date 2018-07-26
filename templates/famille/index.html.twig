@@ -37,7 +37,7 @@
             		<td>{{ inputFilter(path('famille_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Famille-email', current_search, 'Email') | raw }}</td>
             		<td>{{ inputFilter(path('famille_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Famille-numero_tel', current_search, 'N° de téléphone') | raw }}</td>
             		<td>{{ inputFilter(path('famille_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Famille-famille_adresse-voie', current_search, 'Recherche voie') | raw }}</td>
-            		<td>{{ inputFilter(path('famille_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Famille-patient-nom', current_search, 'Nom') | raw }}</td>
+            		<td>{{ inputFilter(path('famille_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Famille-patient-nom', current_search, 'Nom du patient') | raw }}</td>
             		<td></td>
             		<td></td>
             	</tr>
@@ -51,8 +51,17 @@
             			<td>{{ famille.lienFamille | lienParente() }}</td>
             			<td>{{ famille.email }} </td>
             			<td>{{ famille.numeroTel }} </td>
-            			<td>{{ famille.familleAdresse.numeroVoie }}, {{ famille.familleAdresse.voie }} - {{ famille.familleAdresse.codePostal }} {{ famille.familleAdresse.ville }} </td>
-            			<td>{{ famille.patient.prenom }} {{ famille.patient.nom }}</td>
+            			<td>
+            				<a href="{{ path('famille_adresse_see', {'id': famille.familleAdresse.id, 'page' : pagination.page}) }}">
+            			        {{ famille.familleAdresse.numeroVoie }}, {{ famille.familleAdresse.voie }}<br />
+            			        {{ famille.familleAdresse.codePostal }} {{ famille.familleAdresse.ville }}
+            			    </a>
+            			</td>
+            			<td>
+            				<a href="{{ path('patient_see', {'id': famille.patient.id, 'page' : pagination.page}) }}">
+            			        {{ famille.patient.prenom }} {{ famille.patient.nom }}
+            			    </a>
+            			</td>
             			<td>{%if famille.pmr == 1 %} Oui {% else %} Non {% endif %}</td>
             			<td>
             				{{ actionSee(path('famille_see', {'id' : famille.id, 'page' : pagination.page})) | raw }}
@@ -68,7 +77,7 @@
     		</table>
     		
     		{% if familles is empty %}
-        		<h6 class="card-title text-center">Il  n'y a aucune famille correspondant à votre recherche.</h6>
+        		<p class="text-info text-center">Il  n'y a aucune famille correspondant à votre recherche.</p>
             {% endif %}
     		
       	</div>

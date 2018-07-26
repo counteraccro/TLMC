@@ -6,6 +6,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  *
@@ -56,8 +57,40 @@ class FamilleRepository extends ServiceEntityRepository
         // pagination
         $query = $this->createQueryBuilder($params['repository'])->setFirstResult($firstResult);
 
+        // Génération des paramètres SQL
+        $query = $this->generateParamsSql($query, $params);
+
+        $query->orderBy($params['repository'] . '.' . $params['field'], $params['order'])->setMaxResults($max);
+        $paginator = new Paginator($query);
+
+        // Nombre total de famille
+        $query = $this->createQueryBuilder($params['repository'])->select('COUNT(' . $params['repository'] . '.id)');
+
+        // Génération des paramètres SQL
+        $query = $this->generateParamsSql($query, $params);
+        $result = $query->getQuery()->getSingleScalarResult();
+
+        if (($paginator->count() <= $firstResult) && $page != 1) {
+            throw new NotFoundHttpException('Page not found');
+        }
+
+        return array(
+            'paginator' => $paginator,
+            'nb' => $result
+        );
+    }
+
+    /**
+     *
+     * @param QueryBuilder $query
+     * @param array $params
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    private function generateParamsSql(QueryBuilder $query, array $params)
+    {
         if (isset($params['search'])) {
             foreach ($params['search'] as $searchKey => $valueKey) {
+
                 $explode_key = explode('-', $searchKey);
                 if (count($explode_key) == 3) {
                     $query = $query->join($explode_key[0] . '.' . $explode_key[1], $explode_key[1]);
@@ -70,23 +103,7 @@ class FamilleRepository extends ServiceEntityRepository
             }
         }
 
-        $query->orderBy($params['repository'] . '.' . $params['field'], $params['order'])->setMaxResults($max);
-        $paginator = new Paginator($query);
-
-        // Nombre total de famille
-        $result = $this->createQueryBuilder($params['repository'])
-            ->select('COUNT(' . $params['repository'] . '.id)')
-            ->getQuery()
-            ->getSingleScalarResult();
-
-        if (($paginator->count() <= $firstResult) && $page != 1) {
-            throw new NotFoundHttpException('Page not found');
-        }
-
-        return array(
-            'paginator' => $paginator,
-            'nb' => $result
-        );
+        return $query;
     }
 
     // /**

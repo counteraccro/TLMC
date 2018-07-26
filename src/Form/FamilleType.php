@@ -11,6 +11,8 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use App\Controller\AppController;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Entity\Patient;
 
 class FamilleType extends AbstractType
 {
@@ -39,14 +41,22 @@ class FamilleType extends AbstractType
             ->add('pmr', CheckboxType::class, array(
             'label' => 'Personne à mobilité réduite',
             'required' => false
-        ))
-            ->add('famille_adresse', FamilleAdresseType::class, array(
-            'label' => 'Adresse',
-            'cascade' => true
         ));
-        
 
-        if (! $options['cascade']) {
+        if ($options['avec_patient']) {
+            $builder->add('patient', EntityType::class, array(
+                'class' => Patient::class,
+                'choice_label' => function ($patient) {
+                    return $patient->getPrenom() . ' ' . $patient->getNom();
+                }
+            ));
+        }
+        $builder->add('famille_adresse', FamilleAdresseType::class, array(
+            'label' => 'Adresse',
+            'avec_bouton' => false
+        ));
+
+        if ($options['avec_bouton']) {
             $builder->add('save', SubmitType::class, array(
                 'label' => $options['label_submit'],
                 'attr' => array(
@@ -54,8 +64,6 @@ class FamilleType extends AbstractType
                 )
             ));
         }
-
-        // ->add('patient');
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -64,7 +72,8 @@ class FamilleType extends AbstractType
             'data_class' => Famille::class,
             'famille_parente' => AppController::FAMILLE_PARENTE,
             'label_submit' => 'Valider',
-            'cascade' => false
+            'avec_bouton' => true,
+            'avec_patient' => true
         ]);
     }
 }

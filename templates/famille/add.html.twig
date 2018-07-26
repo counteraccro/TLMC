@@ -16,6 +16,7 @@
 	{{ form_row(form.lien_famille) }}
 	{{ form_row(form.email) }}
 	{{ form_row(form.numero_tel) }}
+	{{ form_row(form.patient) }}
 	{{ form_row(form.pmr) }}
     
     <div class="shadow-sm p-3 mb-5 bg-white rounded border">
@@ -23,6 +24,7 @@
   	</div>
     
     {{ form_rest(form) }}
+    {{ form_errors(form) }}
     {{ form_end(form) }}
     
 </div>

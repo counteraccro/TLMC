@@ -5,22 +5,22 @@ use App\Entity\FamilleAdresse;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 class FamilleAdresseType extends AbstractType
 {
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('numero_voie', TextType::class, array(
+        $builder->add('numero_voie', IntegerType::class, array(
             'label' => 'Numéro de voie'
         ))
             ->add('voie')
             ->add('ville')
             ->add('code_postal');
 
-        if (! $options['cascade']) {
+        if ($options['avec_bouton']) {
             $builder->add('save', SubmitType::class, array(
                 'label' => $options['label_submit'],
                 'attr' => array(
@@ -35,7 +35,7 @@ class FamilleAdresseType extends AbstractType
         $resolver->setDefaults([
             'data_class' => FamilleAdresse::class,
             'label_submit' => 'Valider',
-            'cascade' => false
+            'avec_bouton' => true
         ]);
     }
 }

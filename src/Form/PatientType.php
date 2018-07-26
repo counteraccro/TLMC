@@ -7,9 +7,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 
 class PatientType extends AbstractType
 {
@@ -20,11 +20,8 @@ class PatientType extends AbstractType
             ->add('prenom', TextType::class, array(
             'label' => 'Prénom'
         ))
-            ->add('date_naissance', DateTimeType::class, array(
-            'label' => 'Date de naissance',
-            'widget' => 'choice',
-            'years' => range(date('Y') - 100, date('Y')),
-            'date_format' => 'dd MM yyyy'
+            ->add('date_naissance', BirthdayType::class, array(
+            'label' => 'Date de naissance'
         ))
             ->add('PMR', CheckboxType::class, array(
             'required' => false,
@@ -38,7 +35,8 @@ class PatientType extends AbstractType
             'entry_type' => FamilleType::class,
             'entry_options' => array(
                 'label' => '--- Ajouter un nouveau membre de famille ---',
-                'cascade' => true
+                'avec_bouton' => false,
+                'avec_patient' => false
             ),
 
             'allow_add' => true,
