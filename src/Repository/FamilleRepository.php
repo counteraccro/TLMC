@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Repository;
 
 use App\Entity\Famille;
@@ -9,18 +8,20 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
+ *
  * @method Famille|null find($id, $lockMode = null, $lockVersion = null)
  * @method Famille|null findOneBy(array $criteria, array $orderBy = null)
- * @method Famille[]    findAll()
- * @method Famille[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Famille[] findAll()
+ * @method Famille[] findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class FamilleRepository extends ServiceEntityRepository
 {
+
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Famille::class);
     }
-    
+
     /**
      * Retourne une liste de famille paginé en fonction de l'ordre et de la recherche courante
      *
@@ -41,82 +42,79 @@ class FamilleRepository extends ServiceEntityRepository
         if (! is_numeric($page)) {
             throw new \InvalidArgumentException('$page doit être un integer (' . gettype($page) . ' : ' . $page . ')');
         }
-        
+
         if (! is_numeric($max)) {
             throw new \InvalidArgumentException('$max doit être un integer (' . gettype($max) . ' : ' . $max . ')');
         }
-        
+
         if (! isset($params['field']) && ! isset($params['order'])) {
             throw new \InvalidArgumentException('order et field ne sont pas présents comme clés dans $params');
         }
-        
+
         $firstResult = ($page - 1) * $max;
-        
+
         // pagination
         $query = $this->createQueryBuilder($params['repository'])->setFirstResult($firstResult);
-        
-        if(isset($params['search']))
-        {
-            foreach($params['search'] as $searchKey => $valueKey)
-            {
+
+        if (isset($params['search'])) {
+            foreach ($params['search'] as $searchKey => $valueKey) {
                 $explode_key = explode('-', $searchKey);
-                if(count($explode_key) == 3)
-                {
+                if (count($explode_key) == 3) {
                     $query = $query->join($explode_key[0] . '.' . $explode_key[1], $explode_key[1]);
-                    $query->andWhere($explode_key[1] . "." . $explode_key[2] . " LIKE '%" . $valueKey . "%'");
-                }
-                else
-                {
-                    $query->andWhere(str_replace('-', '.', $searchKey) . " LIKE '%" . $valueKey . "%'");
+                    $query->andWhere($explode_key[1] . "." . $explode_key[2] . " LIKE :searchTerm");
+                    $query->setParameter('searchTerm', '%' . $valueKey . '%');
+                } else {
+                    $query->andWhere(str_replace('-', '.', $searchKey) . " LIKE :searchTerm");
+                    $query->setParameter('searchTerm', '%' . $valueKey . '%');
                 }
             }
         }
-        
+
         $query->orderBy($params['repository'] . '.' . $params['field'], $params['order'])->setMaxResults($max);
         $paginator = new Paginator($query);
-        
+
         // Nombre total de famille
         $result = $this->createQueryBuilder($params['repository'])
-        ->select('COUNT(' . $params['repository'] . '.id)')
-        ->getQuery()
-        ->getSingleScalarResult();
-        
+            ->select('COUNT(' . $params['repository'] . '.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+
         if (($paginator->count() <= $firstResult) && $page != 1) {
             throw new NotFoundHttpException('Page not found');
         }
-        
+
         return array(
             'paginator' => $paginator,
             'nb' => $result
         );
     }
 
-//    /**
-//     * @return Famille[] Returns an array of Famille objects
-//     */
+    // /**
+    // * @return Famille[] Returns an array of Famille objects
+    // */
     /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('f')
-            ->andWhere('f.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('f.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+     * public function findByExampleField($value)
+     * {
+     * return $this->createQueryBuilder('f')
+     * ->andWhere('f.exampleField = :val')
+     * ->setParameter('val', $value)
+     * ->orderBy('f.id', 'ASC')
+     * ->setMaxResults(10)
+     * ->getQuery()
+     * ->getResult()
+     * ;
+     * }
+     */
 
     /*
-    public function findOneBySomeField($value): ?Famille
-    {
-        return $this->createQueryBuilder('f')
-            ->andWhere('f.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
+     * public function findOneBySomeField($value): ?Famille
+     * {
+     * return $this->createQueryBuilder('f')
+     * ->andWhere('f.exampleField = :val')
+     * ->setParameter('val', $value)
+     * ->getQuery()
+     * ->getOneOrNullResult()
+     * ;
+     * }
+     */
 }

@@ -6,6 +6,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  *
@@ -55,31 +56,19 @@ class PatientRepository extends ServiceEntityRepository
 
         // pagination
         $query = $this->createQueryBuilder($params['repository'])->setFirstResult($firstResult);
-        
-        if (isset($params['search'])) {
-            foreach ($params['search'] as $searchKey => $valueKey) {
-                
-                $explode_key = explode('-', $searchKey);
-                if(count($explode_key) == 3)
-                {
-                    $query = $query->join($explode_key[0] . '.' . $explode_key[1], $explode_key[1]);
-                    $query->andWhere($explode_key[1] . "." . $explode_key[2] . " LIKE '%" . $valueKey . "%'");
-                }
-                else
-                {
-                    $query->andWhere(str_replace('-', '.', $searchKey) . " LIKE '%" . $valueKey . "%'");
-                }
-            }
-        }
+
+        // Génération des paramètres SQL
+        $query = $this->generateParamsSql($query, $params);
 
         $query->orderBy($params['repository'] . '.' . $params['field'], $params['order'])->setMaxResults($max);
         $paginator = new Paginator($query);
 
         // Nombre total de patient
-        $result = $this->createQueryBuilder($params['repository'])
-            ->select('COUNT(' . $params['repository'] . '.id)')
-            ->getQuery()
-            ->getSingleScalarResult();
+        $query = $this->createQueryBuilder($params['repository'])->select('COUNT(' . $params['repository'] . '.id)');
+
+        // Génération des paramètres SQL
+        $query = $this->generateParamsSql($query, $params);
+        $result = $query->getQuery()->getSingleScalarResult();
 
         if (($paginator->count() <= $firstResult) && $page != 1) {
             throw new NotFoundHttpException('Page not found');
@@ -89,6 +78,32 @@ class PatientRepository extends ServiceEntityRepository
             'paginator' => $paginator,
             'nb' => $result
         );
+    }
+
+    /**
+     *
+     * @param QueryBuilder $query
+     * @param array $params
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    private function generateParamsSql(QueryBuilder $query, array $params)
+    {
+        if (isset($params['search'])) {
+            foreach ($params['search'] as $searchKey => $valueKey) {
+
+                $explode_key = explode('-', $searchKey);
+                if (count($explode_key) == 3) {
+                    $query = $query->join($explode_key[0] . '.' . $explode_key[1], $explode_key[1]);
+                    $query->andWhere($explode_key[1] . "." . $explode_key[2] . " LIKE :searchTerm");
+                    $query->setParameter('searchTerm', '%' . $valueKey . '%');
+                } else {
+                    $query->andWhere(str_replace('-', '.', $searchKey) . " LIKE :searchTerm");
+                    $query->setParameter('searchTerm', '%' . $valueKey . '%');
+                }
+            }
+        }
+
+        return $query;
     }
 
     // /**

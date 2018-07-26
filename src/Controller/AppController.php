@@ -49,7 +49,7 @@ class AppController extends Controller
     // @todo à virer à terme
     const ID_SPECIALITE = 58;
 
-    const ID_PATIENT = 47;
+    const ID_PATIENT = 18;
 
     const ID_FAMILLE = 66;
 

@@ -67,7 +67,7 @@ class LoadMembreData extends Fixture implements DependentFixtureInterface
                 'setDecideur' => '1',
                 'setAnnuaire' => '0',
                 'setSignature' => 'avec tout mon amour, votre cher Eric Fonzy',
-                'setDisabled' => '1',
+                'setDisabled' => '0',
                 'setEtablissement' => 'Etablissement-1',
                 'setSpecialite' => 'Specialite-1',
                 'setSalt' => '1A2B3C4D5E6F7G890A',
