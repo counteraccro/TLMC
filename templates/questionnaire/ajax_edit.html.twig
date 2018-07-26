@@ -1,5 +1,6 @@
 <div id="ajax_questionnaire_add">
 
+    {{ form_start(form) }}
 	<div class="modal-header">
 		<h5 class="modal-title">
 			Edition du questionnaire #
@@ -9,14 +10,21 @@
 			<span aria-hidden="true">&times;</span>
 		</button>
 	</div>
+	
 	<div class="modal-body">
-		{{ form(form) }}
+	{{ form_row(form.titre) }}
+	{{ form_row(form.description) }}
+	{{ form_row(form.date_creation) }}
+	{{ form_row(form.date_fin) }}
+	{{ form_row(form.jour_relance) }}
 	</div>
+	
 	<div class="modal-footer">
-		<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-		<button type="submit" form="questionnaire_ajax_edit"
-			class="btn btn-primary">Valider</button>
+		<!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+		{{ form_widget(form.save) }}
 	</div>
+	    {{ form_rest(form) }}
+	{{ form_end(form) }}
 </div>
 
 {% block javascripts %}
