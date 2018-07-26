@@ -33,7 +33,7 @@
             		<td>{{ inputFilter(path('famille_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Famille-id', current_search, 'Identifiant') | raw }}</td>
             		<td>{{ inputFilter(path('famille_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Famille-nom', current_search, 'Nom') | raw }}</td>
             		<td>{{ inputFilter(path('famille_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Famille-prenom', current_search, 'Prénom') | raw }}</td>
-            		<td></td>
+            		<td>{{ inputFilter(path('famille_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Famille-lien_famille', current_search, '', constant('App\\Controller\\AppController::FAMILLE_PARENTE')) | raw }}</td>
             		<td>{{ inputFilter(path('famille_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Famille-email', current_search, 'Email') | raw }}</td>
             		<td>{{ inputFilter(path('famille_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Famille-numero_tel', current_search, 'N° de téléphone') | raw }}</td>
             		<td>{{ inputFilter(path('famille_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Famille-famille_adresse-voie', current_search, 'Recherche voie') | raw }}</td>

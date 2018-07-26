@@ -88,18 +88,20 @@ class PatientRepository extends ServiceEntityRepository
      */
     private function generateParamsSql(QueryBuilder $query, array $params)
     {
+        $index = 1;
         if (isset($params['search'])) {
             foreach ($params['search'] as $searchKey => $valueKey) {
 
                 $explode_key = explode('-', $searchKey);
                 if (count($explode_key) == 3) {
                     $query = $query->join($explode_key[0] . '.' . $explode_key[1], $explode_key[1]);
-                    $query->andWhere($explode_key[1] . "." . $explode_key[2] . " LIKE :searchTerm");
-                    $query->setParameter('searchTerm', '%' . $valueKey . '%');
+                    $query->andWhere($explode_key[1] . "." . $explode_key[2] . " LIKE :searchTerm$index");
+                    $query->setParameter('searchTerm' . $index, '%' . $valueKey . '%');
                 } else {
-                    $query->andWhere(str_replace('-', '.', $searchKey) . " LIKE :searchTerm");
-                    $query->setParameter('searchTerm', '%' . $valueKey . '%');
+                    $query->andWhere(str_replace('-', '.', $searchKey) . " LIKE :searchTerm$index");
+                    $query->setParameter('searchTerm' . $index, '%' . $valueKey . '%');
                 }
+                $index++;
             }
         }
 

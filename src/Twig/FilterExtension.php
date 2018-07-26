@@ -75,13 +75,16 @@ class FilterExtension extends AbstractExtension
 
     /**
      * Génère les minis-formulaires de recherche
+     * Si
+     *
      * @param string $url
      * @param string $field
      * @param array $array_values
      * @param string $placeholder
+     * @param array $dropdown_values
      * @return string
      */
-    public function inputFilter($url, $field, $array_values = array(), $placeholder = null)
+    public function inputFilter($url, $field, $array_values = array(), $placeholder = null, array $dropdown_values = array())
     {
         if (is_null($placeholder)) {
             $placeholder = "Recherche...";
@@ -96,11 +99,20 @@ class FilterExtension extends AbstractExtension
 
         $id = $field . '-' . rand(1, 9) . rand(1, 9) . rand(1, 9) . rand(1, 9) . rand(1, 9);
 
-        $return = '
-        <form action="' . $url . '" method="post">
-            <div class="input-group mb-0">
-              <input type="text" class="form-control" placeholder="' . $placeholder . '" id="' . $id . '" name="' . $field . '" value="' . $value . '">
-              <div class="input-group-append">
+        $return = '<form action="' . $url . '" method="post">
+                    <div class="input-group mb-0">';
+
+        if (empty($dropdown_values)) {
+            $return .= '<input type="text" class="form-control" placeholder="' . $placeholder . '" id="' . $id . '" name="' . $field . '" value="' . $value . '">';
+        } else {
+            $return .= '<select name="' . $field . '" class="form-control">';
+            $return .= '<option value=""></option>';
+            foreach ($dropdown_values as $valeur => $nom) {
+                $return .= '<option value="' . $valeur . '" ' . ($valeur == $value ? 'selected' : '') . '>' . $nom . '</option>';
+            }
+            $return .= '</select>';
+        }
+        $return .= '<div class="input-group-append">
                 <button class="btn btn-outline-primary" type="submit" id="button-addon2"><span class="oi oi-magnifying-glass"></span></button>
               </div>
             </div>
@@ -111,6 +123,7 @@ class FilterExtension extends AbstractExtension
 
     /**
      * Génère les étiquettes correspondant aux champs de recherche utilisés
+     *
      * @param string $url
      * @param array $array_values
      * @return string
@@ -124,12 +137,10 @@ class FilterExtension extends AbstractExtension
                 $return .= '<a href="' . $url . '/' . $key . '" class="badge badge-primary">' . ucfirst(substr($key, $nb + 1)) . ' <b>X</b></a> ';
             }
         }
-        
-       if(!empty($return))
-       {
-           $return = " - Critère(s) de recherche : " . $return;
-       }
-        
+
+        if (! empty($return)) {
+            $return = " - Critère(s) de recherche : " . $return;
+        }
 
         return $return;
     }
