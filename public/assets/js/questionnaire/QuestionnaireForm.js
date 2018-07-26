@@ -9,6 +9,8 @@ QuestionnaireForm.Launch = function(params) {
 	QuestionnaireForm.id_global = params.id_global;
 	//cible la div '#bloc_modal'
 	QuestionnaireForm.id_modal = params.id_modal;
+	
+	QuestionnaireForm.id_content_modal = params.id_content_modal;
 
 	/**
 	 * fonction édition du questionnaire, paramètres url et id_questionnaire
@@ -50,7 +52,10 @@ QuestionnaireForm.Launch = function(params) {
 		// Event sur le bouton edit d'un questionnaire
 		$(id).click(function() {
 			//on passe l'url et l'id_done
-			QuestionnaireForm.Ajax($(this).attr('href'), QuestionnaireForm.id_modal);
+			
+			console.log(QuestionnaireForm.id_content_modal);
+			
+			QuestionnaireForm.Ajax($(this).attr('href'), QuestionnaireForm.id_content_modal);
 			return false;
 		});;
 	}
@@ -73,11 +78,15 @@ QuestionnaireForm.Launch = function(params) {
 				data: $(this).serialize()
 			})
 			.done(function( reponse ) {
-
+	
 				if(reponse.statut === true)
 				{
-					$('#modal_questionnaire_edit').modal('hide');
+					$(QuestionnaireForm.id_modal).modal('hide');
 					QuestionnaireForm.Ajax(QuestionnaireForm.url_ajax_see, QuestionnaireForm.id_global);
+				}
+				else
+				{
+					$(QuestionnaireForm.id_content_modal).html(reponse);
 				}
 			});
 		});

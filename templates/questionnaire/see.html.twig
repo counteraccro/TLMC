@@ -18,10 +18,13 @@ Fiche d'un questionnaire
 <div id="bloc_questionnaire">
 	<div>Loading</div>
 </div>
-<div id="bloc_modal">
- <!--  div pour le chargement des modales -->
-</div>
 
+		<!-- Modal -->
+<div class="modal fade" id="modal_questionnaire_global" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content" id="bloc_modal"></div>
+	</div>
+</div>
 
 
 {% endblock %}
@@ -37,7 +40,8 @@ Fiche d'un questionnaire
 
 		var params = {
 				url_ajax_see : '{{path('questionnaire_ajax_see', {'id': questionnaire.id }) }}',
-				id_modal : '#bloc_modal',
+				id_content_modal : '#bloc_modal',
+				id_modal : '#modal_questionnaire_global',
 				id_global : '#bloc_questionnaire',
 		};
         
