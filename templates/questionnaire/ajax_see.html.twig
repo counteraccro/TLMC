@@ -11,6 +11,7 @@
         <div class="card">
         	<div class="card-header">
         		{{ question.libelleTop }}
+        			<a href="{{path('questionnaire_ajax_edit', {'id': questionnaire.id }) }}" id="btn-edit-questionnaire" class="btn btn-primary float-right">Editer la question</a><br/>
         	</div>
         
         	<div class="card-body">
@@ -22,6 +23,24 @@
         			<tr>
         				<th>{{ question.libelle }}</th>
         			</tr>
+        			<tr>
+        				<th><{{ question.type }}></{{ question.type }}></th>
+        			</tr>
+        			<tr>
+        				<th>{{ question.valeurDefaut }}</th>
+        			</tr>
+        			<tr>
+        				<th>{{ question.obligatoire }}</th>
+        			</tr>
+        			<tr>
+        				<th>{{ question.regles }}</th>
+        			</tr>
+        			<tr>
+        				<th>{{ question.messageErreur }}</th>
+        			</tr>
+        			<tr>
+        				<th>{{ question.ordre }}</th>
+        			</tr>
         		</table>
         	</div>
         	
@@ -32,13 +51,12 @@
         </div>
 		<hr>
     {% endfor %}
-    
 
 	{% block javascripts %}
     <script type="text/javascript">
 
     var id_btn = '#btn-edit-questionnaire';
-    QuestionnaireForm.EventEdit(id_btn);
+    Questionnaire.EventEdit(id_btn);
 
     </script>
 {% endblock %}

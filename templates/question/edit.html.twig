@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+Edition d'une question
+{% endblock %}
+
+{% block body %}
+
+<h1>
+	Modification de la question
+	{{ question.libelle }}
+</h1>
+
+{% include 'elements/arborescence.html.twig' %}
+
+<fieldset>
+	{{ form(form) }}
+</fieldset>
+
+{% endblock %}

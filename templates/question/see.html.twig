@@ -1,26 +1,26 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-Fiche d'un questionnaire
+Fiche d'une question
 {% endblock %}
 
 {% block body %}
 
 <h1>
-	Questionnaire 
-	#{{ questionnaire.id }}
+	Question 
+	#{{ question.id }}
 </h1>
 
 
 {% include 'elements/arborescence.html.twig' %}
 
 
-<div id="bloc_questionnaire">
+<div id="bloc_question">
 	<div>Loading</div>
 </div>
 
 		<!-- Modal -->
-<div class="modal fade" id="modal_questionnaire_global" tabindex="-1" role="dialog">
+<div class="modal fade" id="modal_question_global" tabindex="-1" role="dialog">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content" id="bloc_modal"></div>
 	</div>
@@ -29,7 +29,7 @@ Fiche d'un questionnaire
 {% endblock %}
 
  {% block script %}
- 	<script src="{{ asset('assets/js/questionnaire/Questionnaire.js') }}?{{ date().timestamp }}"></script>
+ 	<script src="{{ asset('assets/js/question/Question.js') }}?{{ date().timestamp }}"></script>
  {% endblock %}
 
 {% block javascripts %}
@@ -38,14 +38,14 @@ Fiche d'un questionnaire
     $(document).ready(function() {
 
 		var params = {
-				url_ajax_see : '{{path('questionnaire_ajax_see', {'id': questionnaire.id }) }}',
+				url_ajax_see : '{{path('question_ajax_see', {'id': question.id }) }}',
 				id_content_modal : '#bloc_modal',
-				id_modal : '#modal_questionnaire_global',
-				id_global : '#bloc_questionnaire',
+				id_modal : '#modal_question_global',
+				id_global : '#bloc_question',
 		};
         
-		Questionnaire.Launch(params);
-		Questionnaire.LoadQuestionnaire();
+		Question.Launch(params);
+		Question.LoadQuestion();
     });
     
     </script>
