@@ -40,12 +40,22 @@ class FamilleType extends AbstractType
             'label' => 'Personne à mobilité réduite',
             'required' => false
         ))
-            ->add('save', SubmitType::class, array(
-            'label' => $options['label_submit']
+            ->add('famille_adresse', FamilleAdresseType::class, array(
+            'label' => 'Adresse',
+            'cascade' => true
         ));
+        
+
+        if (! $options['cascade']) {
+            $builder->add('save', SubmitType::class, array(
+                'label' => $options['label_submit'],
+                'attr' => array(
+                    'class' => 'btn btn-primary'
+                )
+            ));
+        }
 
         // ->add('patient');
-        // ->add('famille_adresse', EntityType::class, array('class' => FamilleAdresse::class, 'choice_label' => 'voie'))
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -53,7 +63,8 @@ class FamilleType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Famille::class,
             'famille_parente' => AppController::FAMILLE_PARENTE,
-            'label_submit' => 'Valider'
+            'label_submit' => 'Valider',
+            'cascade' => false
         ]);
     }
 }

@@ -40,7 +40,7 @@ FormAddCollection.Launch = function(params) {
 		
 		$(FormAddCollection.id_label_fieldset).hide();
 
-		var template = FormAddCollection.container.attr('data-prototype');
+		var template = FormAddCollection.container.attr('data-prototype').replace(/__name__/g, FormAddCollection.index);
 
 		// On crée un objet jquery qui contient ce template
 		var prototype = $(template);

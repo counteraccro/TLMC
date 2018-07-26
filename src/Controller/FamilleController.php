@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Form\FamilleType;
 use App\Entity\Patient;
-use App\Entity\FamilleAdresse;
 
 class FamilleController extends AppController
 {
@@ -116,6 +115,7 @@ class FamilleController extends AppController
         $form = $this->createForm(FamilleType::class, $famille, array('label_submit' => 'Ajouter'));
         
         $form->handleRequest($request);
+        
         if ($form->isSubmitted() && $form->isValid()) {
             
             $famille->setDisabled(0);
@@ -127,10 +127,7 @@ class FamilleController extends AppController
             $patient = $repository1->findById(self::ID_PATIENT);
             $famille->setPatient($patient[0]);
             
-            $repository2 = $this->getDoctrine()->getRepository(FamilleAdresse::class);
-            // TODO A changer
-            $famille_adresse = $repository2->findById(self::ID_FAMILLE_ADRESSE);
-            $famille->setFamilleAdresse($famille_adresse[0]);
+            $famille->getFamilleAdresse()->setDisabled(0);
             
             $em->persist($famille);
             $em->flush();

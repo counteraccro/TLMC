@@ -60,7 +60,7 @@ class Famille
     private $disabled;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\FamilleAdresse")
+     * @ORM\ManyToOne(targetEntity="App\Entity\FamilleAdresse", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $famille_adresse;
