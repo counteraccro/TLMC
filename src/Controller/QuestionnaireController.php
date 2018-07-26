@@ -120,7 +120,7 @@ class QuestionnaireController extends AppController
      * Ajout d'un nouveau questionnaire
      *
      * @Route("/questionnaire/add/{page}", name="questionnaire_add")
-     * @Security("is_granted('ROLE_ADMIN')
+     * @Security("is_granted('ROLE_ADMIN')")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
