@@ -9,6 +9,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Form\FamilleType;
 use App\Entity\Patient;
+use App\Entity\FamilleAdresse;
+use App\Form\FamilleAdresseType;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 class FamilleController extends AppController
 {
@@ -154,9 +160,37 @@ class FamilleController extends AppController
         // Si appel Ajax, on renvoi sur la page ajax
         if ($request->isXmlHttpRequest()) {
 
+            $encoders = array(
+                new XmlEncoder(),
+                new JsonEncoder()
+            );
+            $normalizers = array(
+                new ObjectNormalizer()
+            );
+
+            $serializer = new Serializer($normalizers, $encoders);
+
+            $jsonPatient = $serializer->normalize($patient, null, array(
+                'attributes' => array(
+                    'nom',
+                    'familles' => array(
+                        'id',
+                        'nom',
+                        'prenom',
+                        'familleAdresse' => array(
+                            'voie',
+                            'numeroVoie',
+                            'ville',
+                            'codePostal'
+                        )
+                    )
+                )
+            ));
+
             return $this->render('famille/ajax_add.html.twig', [
                 'form' => $form->createView(),
-                'patient' => $patient
+                'patient' => $patient,
+                'jsonPatient' => $jsonPatient
             ]);
         }
 

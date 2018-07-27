@@ -55,7 +55,7 @@
 {% endblock %}
 
 {% block script %}
- 	<script src="{{ asset('assets/js/patient/Patient.js') }}?{{ date().timestamp }}"></script>
+ 	<script src="{{ asset('assets/js/famille/Famille.js') }}?{{ date().timestamp }}"></script>
 {% endblock %}
 
 {% block javascripts %}
@@ -71,7 +71,7 @@
 		};
         
     	Patient.Launch(params);
-    	Patient.LoadPatient();
+    	Patient.LoadFamille();
     });
     
     </script>
