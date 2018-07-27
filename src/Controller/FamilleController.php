@@ -229,7 +229,8 @@ class FamilleController extends AppController
         $arrayFilters = $this->getDatasFilter($session);
 
         $form = $this->createForm(FamilleType::class, $famille, array(
-            'label_submit' => 'Modifier'
+            'label_submit' => 'Modifier',
+            'disabled_patient' => true
         ));
 
         $form->handleRequest($request);
