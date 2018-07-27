@@ -17,7 +17,7 @@
                		<th></th>
                	</tr>
                	
-                {% for famille in patient.familles %}
+                {% for famille in familles %}
                		<tr>
                			<td>{{ famille.prenom }} {{ famille.nom }} </td>
                 		<td>{{ famille.lienFamille | lienParente() }}</td>

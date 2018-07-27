@@ -29,7 +29,7 @@ class PatientController extends AppController
         if (is_null($order)) {
             $order = 'DESC';
         }
-        
+
         $params = array(
             'field' => $field,
             'order' => $order,
@@ -39,14 +39,14 @@ class PatientController extends AppController
             'repositoryMethode' => 'findAllPatients',
             'sans_inactif' => true
         );
-        
-        foreach ($this->getUser()->getRoles() as $role){
-            if($role == "ROLE_ADMIN"){
+
+        foreach ($this->getUser()->getRoles() as $role) {
+            if ($role == "ROLE_ADMIN") {
                 $params['sans_inactif'] = false;
                 break;
             }
         }
-        
+
         $result = $this->genericSearch($request, $session, $params);
 
         $pagination = array(
@@ -110,11 +110,14 @@ class PatientController extends AppController
      */
     public function ajaxSeeAction(Patient $patient)
     {
+        $familles = $this->getFamillesActives($patient);
+
         return $this->render('patient/ajax_see_famille.html.twig', [
-            'patient' => $patient
+            'patient' => $patient,
+            'familles' => $familles
         ]);
     }
-    
+
     /**
      * Ajout d'un nouveau patient
      *
@@ -140,14 +143,14 @@ class PatientController extends AppController
             $repository = $this->getDoctrine()->getRepository(Specialite::class);
             $result = $repository->findById(self::ID_SPECIALITE);
             $patient->setSpecialite($result[0]);
-            
+
             foreach ($patient->getFamilles() as $famille) {
                 $famille->setPatient($patient);
                 $famille->getFamilleAdresse()->setDisabled(0);
                 $famille->setDisabled(0);
-                $patient->addFamille($famille) ;
+                $patient->addFamille($famille);
             }
-            
+
             $patient->setDisabled(0);
 
             $em->persist($patient);

@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Doctrine\DBAL\Types\TextType;
+use App\Entity\Patient;
 
 class AppController extends Controller
 {
@@ -201,5 +202,33 @@ class AppController extends Controller
         $session->set(self::CURRENT_SEARCH, $paramsSearch);
 
         return $repository->{$params['repositoryMethode']}($params['page'], self::MAX_NB_RESULT, $paramsRepo);
+    }
+    
+    /**
+     *
+     * @param Patient $patient
+     * @return array
+     */
+    public function getFamillesActives(Patient $patient)
+    {
+        $admin = false;
+        foreach ($this->getUser()->getRoles() as $role) {
+            if ($role == "ROLE_ADMIN") {
+                $admin = true;
+                break;
+            }
+        }
+        
+        $familles = $patient->getFamilles();
+        
+        if (! $admin) {
+            $familles = array();
+            foreach ($patient->getFamilles() as $family) {
+                if ($family->getDisabled() == 0) {
+                    $familles[] = $family;
+                }
+            }
+        }
+        return $familles;
     }
 }

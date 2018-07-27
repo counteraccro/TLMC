@@ -12,6 +12,8 @@ Patient.Launch = function(params) {
 
 	Patient.id_content_modal = params.id_content_modal;
 
+	Patient.id_container_global = '#container-global';
+	
 	/**
 	 * fonction édition de la famille, paramètres url et id_patient
 	 */
@@ -39,6 +41,7 @@ Patient.Launch = function(params) {
 		})
 		.done(function( html ) {
 			$(id_done).html(html)
+			$(Patient.id_container_global).hideLoading();
 		});
 	}
 
@@ -53,6 +56,8 @@ Patient.Launch = function(params) {
 
 			console.log(Patient.id_content_modal);
 
+			$(Patient.id_container_global).showLoading();
+			
 			Patient.Ajax($(this).attr('href'), Patient.id_content_modal);
 			return false;
 		});;
@@ -66,6 +71,8 @@ Patient.Launch = function(params) {
 	{
 		$("form[name*='famille']").on( "submit", function( event ) {
 
+			$('#ajax_famille_add').hideLoading();
+			
 			$('#famille_save').prop('disabled', true).html('loading...');
 
 			event.preventDefault();

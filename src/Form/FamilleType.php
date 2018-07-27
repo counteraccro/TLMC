@@ -19,17 +19,13 @@ class FamilleType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $lien_parente = array();
-        foreach ($options['famille_parente'] as $key => $val) {
-            $lien_parente[$val] = $key;
-        }
-
         if ($options['avec_patient']) {
             $builder->add('patient', EntityType::class, array(
                 'class' => Patient::class,
                 'disabled' => $options['disabled_patient'],
                 'choice_label' => function (Patient $patient) {
-                    return $patient->getPrenom() . ' ' . $patient->getNom(). ' (' . $patient->getDateNaissance()->format('d/m/Y') . ')';
+                    return $patient->getPrenom() . ' ' . $patient->getNom() . ' (' . $patient->getDateNaissance()
+                        ->format('d/m/Y') . ')';
                 }
             ));
         }
@@ -40,14 +36,14 @@ class FamilleType extends AbstractType
         ))
             ->add('lien_famille', ChoiceType::class, array(
             'label' => 'Lien de famille avec le patient',
-            'choices' => $lien_parente
+            'choices' => array_flip($options['famille_parente'])
         ))
             ->add('email', EmailType::class, array(
             'label' => 'Adresse email'
         ))
             ->add('numero_tel', TextType::class, array(
-            'label' => 'Numéro de téléphone',
-            //'ok' => ''
+            'label' => 'Numéro de téléphone'
+            // 'ok' => ''
         ))
             ->add('pmr', CheckboxType::class, array(
             'label' => 'Personne à mobilité réduite',
@@ -57,7 +53,9 @@ class FamilleType extends AbstractType
         $builder->add('famille_adresse', FamilleAdresseType::class, array(
             'label' => $options['label_adresse'],
             'avec_bouton' => false,
-            'attr' => array('class' => 'shadow-sm p-3 mb-5 bg-white rounded border')
+            'attr' => array(
+                'class' => 'shadow-sm p-3 mb-5 bg-white rounded border'
+            )
         ));
 
         if ($options['avec_bouton']) {
