@@ -18,26 +18,25 @@
                	</tr>
                	
                 {% for famille in patient.familles %}
-               		
                		<tr>
                			<td>{{ famille.prenom }} {{ famille.nom }} </td>
                 		<td>{{ famille.lienFamille | lienParente() }}</td>
                 		<td>{{ famille.email }} </td>
                 		<td>{{ famille.numeroTel }} </td>
                 		<td>
-                			<a href="{{ path('famille_adresse_see', {'id': famille.familleAdresse.id, 'page' : 1}) }}">
+                			<!-- <a href="{#{ path('famille_adresse_see', {'id': famille.familleAdresse.id, 'page' : 1}) }#}"> -->
                 		        {{ famille.familleAdresse.numeroVoie }}, {{ famille.familleAdresse.voie }}<br />
                 		        {{ famille.familleAdresse.codePostal }} {{ famille.familleAdresse.ville }}
-                		    </a>
+                		    <!-- </a> -->
                 		    {{ actionEdit(path('famille_adresse_edit', {'id' : famille.familleAdresse.id, 'page' : 1})) | raw }}
                 		</td>
                 		<td>{%if famille.pmr == 1 %} Oui {% else %} Non {% endif %}</td>
                 		<td>
-                			{{ actionSee(path('famille_see', {'id' : famille.id, 'page' : 1})) | raw }}
+                			{#{ actionSee(path('famille_see', {'id' : famille.id, 'page' : 1})) | raw }#}
             		        {{ actionEdit(path('famille_edit', {'id' : famille.id, 'page' : 1})) | raw }}
             		        
                 		    {% if is_granted("ROLE_ADMIN") %}
-                		        {{ actionDelete(famille.disabled, path('famille_delete', {'id' : famille.id, 'page' : 1})) | raw }}
+                		        {{ actionDelete(famille.disabled, path('famille_delete', {'id' : famille.id, 'page' : -1})) | raw }}
                 		    {% endif %}
                 		</td>
                 	</tr>

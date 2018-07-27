@@ -43,6 +43,14 @@ class FamilleController extends AppController
             'repository' => 'Famille',
             'repositoryMethode' => 'findAllFamilles'
         );
+        
+        foreach ($this->getUser()->getRoles() as $role){
+            if($role == "ROLE_ADMIN"){
+                $params['sans_inactif'] = false;
+                break;
+            }
+        }
+        
         $result = $this->genericSearch($request, $session, $params);
 
         $pagination = array(
@@ -128,7 +136,8 @@ class FamilleController extends AppController
 
             $form = $this->createForm(FamilleType::class, $famille, array(
                 'label_submit' => 'Ajouter',
-                'disabled_patient' => true
+                'disabled_patient' => true,
+                'label_adresse' => ' '
             ));
         } else {
 
@@ -278,7 +287,7 @@ class FamilleController extends AppController
      * @param int $page
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function deleteAction(SessionInterface $session, Famille $famille, $page)
+    public function deleteAction(Request $request, SessionInterface $session, Famille $famille, int $page)
     {
         $arrayFilters = $this->getDatasFilter($session);
 
@@ -293,7 +302,10 @@ class FamilleController extends AppController
         $entityManager->persist($famille);
 
         $entityManager->flush();
-
+        
+        if($page < 0){
+            return $this->redirect($request->headers->get('referer'));
+        }
         return $this->redirectToRoute('famille_listing', array(
             'page' => $page,
             'field' => $arrayFilters['field'],

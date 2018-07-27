@@ -12,7 +12,7 @@ use Twig\TwigFilter;
 class LienParenteExtension extends AbstractExtension
 {
     /**
-     * Déclaration des fonctions pour twig
+     * Déclaration des filtres pour twig
      *
      * {@inheritdoc}
      * @see Twig_Extension::getFilters()
@@ -28,6 +28,7 @@ class LienParenteExtension extends AbstractExtension
     }
     
     /**
+     * Déclarations des fonctions twig
      * {@inheritDoc}
      * @see Twig_Extension::getFunctions()
      */

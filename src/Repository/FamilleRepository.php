@@ -104,6 +104,10 @@ class FamilleRepository extends ServiceEntityRepository
                 $index++;
             }
         }
+        
+        if(isset($params['sans_inactif']) && $params['sans_inactif']){
+            $query->andWhere($params['repository'] . '.disabled = 0');
+        }
 
         return $query;
     }

@@ -39,7 +39,7 @@
         			<td>{{ patient.id }}</td>
         			<td>{{ patient.nom }}</td>
         			<td>{{ patient.prenom }}</td>
-        			<td>{{ patient.dateNaissance | date('d/m/Y') }}</td>
+        			<td>{{ patient.dateNaissance | date('d/m/Y') }} ({{ patient.dateNaissance | age }} ans)</td>
         			<td>{{ patient.specialite.service }}</td>
         			<td>
         			    {{ actionSee(path('patient_see', {'id' : patient.id, 'page' : pagination.page})) | raw }}

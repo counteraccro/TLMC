@@ -36,8 +36,17 @@ class PatientController extends AppController
             'page' => $page,
             'repositoryClass' => Patient::class,
             'repository' => 'Patient',
-            'repositoryMethode' => 'findAllPatients'
+            'repositoryMethode' => 'findAllPatients',
+            'sans_inactif' => true
         );
+        
+        foreach ($this->getUser()->getRoles() as $role){
+            if($role == "ROLE_ADMIN"){
+                $params['sans_inactif'] = false;
+                break;
+            }
+        }
+        
         $result = $this->genericSearch($request, $session, $params);
 
         $pagination = array(

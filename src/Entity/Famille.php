@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\FamilleRepository")
@@ -45,6 +46,10 @@ class Famille
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\Regex(
+     *     pattern="/\d/",
+     *     message="Le numéro de téléphone est invalide"
+     * )
      */
     private $numero_tel;
 

@@ -194,7 +194,8 @@ class AppController extends Controller
             'field' => $params['field'],
             'order' => $params['order'],
             'repository' => $params['repository'],
-            'search' => $paramsSearch
+            'search' => $paramsSearch,
+            'sans_inactif' => (isset($params['sans_inactif']) ? $params['sans_inactif'] : true) 
         );
 
         $session->set(self::CURRENT_SEARCH, $paramsSearch);

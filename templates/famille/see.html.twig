@@ -10,6 +10,10 @@
 
 <table  class="table table-sm">
 	<tr>
+		<th scope="col"> Patient </th>
+		<td> {{ famille.patient.prenom }} {{ famille.patient.nom }} </td>
+	</tr>
+	<tr>
 		<th scope="col"> Prénom </th>
 		<td> {{ famille.prenom }} </td>
 	</tr>
@@ -25,14 +29,6 @@
 		<th scope="col"> Numéro de téléphone </th>
 		<td> {{ famille.numeroTel }} </td>
 	</tr>
-	<tr>
-		<th scope="col"> Personne à mobilité réduite </th>
-		<td> {%if famille.pmr == 1 %} Oui {% else %} Non {% endif %} </td>
-	</tr>
-	<tr>
-		<th scope="col"> Patient </th>
-		<td> {{ famille.patient.prenom }} {{ famille.patient.nom }} </td>
-	</tr>
 	
 	<tr>
 		<th scope="col"> Adresse </th>
@@ -40,6 +36,10 @@
 		    {{ famille.familleAdresse.numeroVoie }}, {{ famille.familleAdresse.voie }}<br />
             {{ famille.familleAdresse.codePostal }} {{ famille.familleAdresse.ville }} 
         </td>
+	</tr>
+	<tr>
+		<th scope="col"> Personne à mobilité réduite </th>
+		<td> {%if famille.pmr == 1 %} Oui {% else %} Non {% endif %} </td>
 	</tr>
 </table>
 

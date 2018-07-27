@@ -37,6 +37,14 @@ class FamilleAdresseController extends AppController
             'repository' => 'FamilleAdresse',
             'repositoryMethode' => 'findAllFamilleAdresses'
         );
+        
+        foreach ($this->getUser()->getRoles() as $role){
+            if($role == "ROLE_ADMIN"){
+                $params['sans_inactif'] = false;
+                break;
+            }
+        }
+        
         $result = $this->genericSearch($request, $session, $params);
         
         $pagination = array(
