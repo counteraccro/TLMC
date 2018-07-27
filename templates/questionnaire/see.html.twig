@@ -16,7 +16,16 @@ Fiche d'un questionnaire
 
 
 <div id="bloc_questionnaire">
-	<div>Loading</div>
+	<div class="row">
+		<div class="col-md-4 offset-md-4">
+			<div class="progress" style="height: 25px;">
+				<div class="progress-bar progress-bar-striped progress-bar-animated"
+					role="progressbar" aria-valuenow="75" aria-valuemin="0"
+					aria-valuemax="100" style="width: 50%">Chargement des
+					informations du questionnaire...</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 		<!-- Modal -->
@@ -30,6 +39,7 @@ Fiche d'un questionnaire
 
  {% block script %}
  	<script src="{{ asset('assets/js/questionnaire/Questionnaire.js') }}?{{ date().timestamp }}"></script>
+ 	<script src="{{ asset('assets/js/question/Question.js') }}?{{ date().timestamp }}"></script>
  {% endblock %}
 
 {% block javascripts %}
@@ -46,6 +56,8 @@ Fiche d'un questionnaire
         
 		Questionnaire.Launch(params);
 		Questionnaire.LoadQuestionnaire();
+
+		Question.Launch(params);
     });
     
     </script>

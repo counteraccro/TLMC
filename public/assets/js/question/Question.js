@@ -21,14 +21,6 @@ Question.Launch = function(params) {
 	}
 
 	/**
-	 * fonction prévue pour le chargement de la question, paramètres url et id
-	 */
-	Question.LoadQuestion = function()
-	{
-		Question.Ajax(Question.url_ajax_see, Question.id_global);
-	}
-
-	/**
 	 * Méthode Ajax qui va charger l'element présent dans l'URL
 	 */
 	Question.Ajax = function(url, id_done, method = 'GET')
@@ -51,10 +43,7 @@ Question.Launch = function(params) {
 	{
 		// Event sur le bouton edit d'une question
 		$(id).click(function() {
-			//on passe l'url et l'id_done
-			
-			console.log(Question.id_content_modal);
-			
+			//on passe l'url et l'id_done			
 			Question.Ajax($(this).attr('href'), Question.id_content_modal);
 			return false;
 		});;

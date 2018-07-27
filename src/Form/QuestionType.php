@@ -11,7 +11,6 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-
 class QuestionType extends AbstractType
 {
 
@@ -20,44 +19,33 @@ class QuestionType extends AbstractType
         $builder->add('libelle')
             ->add('libelle_top')
             ->add('libelle_bottom')
-//             ->add('description', TextType::class, array(
-//             'label' => 'Description'
-//         ))
-//             ->add('date_creation', DateTimeType::class, array(
-//             'label' => 'Date de création',
-//             'widget' => 'choice',
-//             'years' => range(date('Y') - 100, date('Y')),
-//             'date_format' => 'dd MM yyyy'
-//         ))
-//             ->add('date_fin', DateTimeType::class, array(
-//             'label' => 'Date de fin',
-//             'widget' => 'choice',
-//             'years' => range(date('Y') - 100, date('Y')),
-//             'date_format' => 'dd MM yyyy'
-//         ))
-//             ->add('jour_relance', NumberType::class, array(
-//             'label' => 'Jour de relance'
-//         ));
-//             ->add('disabled', CheckboxType::class, array(
-//             'required' => false,
-//             'label' => 'Actif'
-//         ))
-
-//            if ($options['ajax_button'] == false ){
-               // $builder
-                ->add('save', SubmitType::class, array(
-                    'label' => 'Valider',
-                    'attr' => array('class' => 'btn btn-primary')
-                    //regarder options pour classe btn-primary et désactiver div autour
-                ));
-//            }
+            ->add('type')
+            ->add('valeur_defaut')
+            ->add('liste_valeur')
+            ->add('message_erreur')
+            ->add('ordre')
+            ->add('regles')
+            ->add('obligatoire')
+            // ->add('jour_relance', NumberType::class, array(
+        // 'label' => 'Jour de relance'
+        // ));
+            ->add('disabled', CheckboxType::class, array(
+            'required' => false,
+            'label' => 'Actif'
+        ))
+            ->add('save', SubmitType::class, array(
+            'label' => 'Valider',
+            'attr' => array(
+                'class' => 'btn btn-primary'
+            )
+        ));
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => Question::class,
-            'ajax_button'=> false
+            'ajax_button' => false
         ]);
     }
 }
