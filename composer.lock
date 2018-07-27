@@ -4,11 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-<<<<<<< HEAD
-    "content-hash": "a271495bf8025cd022c0a511bbac723d",
-=======
     "content-hash": "8469e0ae64fb0a4704c9258602c9fef3",
->>>>>>> 91e48eab011dc1104bda83f5559305fab9e356b5
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -2789,16 +2785,16 @@
         },
         {
             "name": "symfony/flex",
-            "version": "v1.0.85",
+            "version": "v1.0.87",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/flex.git",
-                "reference": "48bf0eddadb004f95f6875b533ff1fb234bfc3f4"
+                "reference": "c2856dddbbb7c9e9327890d6f1a96e79f305236b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/flex/zipball/48bf0eddadb004f95f6875b533ff1fb234bfc3f4",
-                "reference": "48bf0eddadb004f95f6875b533ff1fb234bfc3f4",
+                "url": "https://api.github.com/repos/symfony/flex/zipball/c2856dddbbb7c9e9327890d6f1a96e79f305236b",
+                "reference": "c2856dddbbb7c9e9327890d6f1a96e79f305236b",
                 "shasum": ""
             },
             "require": {
@@ -2832,7 +2828,7 @@
                 }
             ],
             "description": "Composer plugin for Symfony",
-            "time": "2018-07-25T09:16:52+00:00"
+            "time": "2018-07-27T09:19:27+00:00"
         },
         {
             "name": "symfony/form",
@@ -4862,24 +4858,24 @@
         },
         {
             "name": "twig/extensions",
-            "version": "v1.5.1",
+            "version": "v1.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig-extensions.git",
-                "reference": "d188c76168b853481cc75879ea045bf93d718e9c"
+                "reference": "2c1a86526d0044065220d1b51ac08348bea5ca82"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig-extensions/zipball/d188c76168b853481cc75879ea045bf93d718e9c",
-                "reference": "d188c76168b853481cc75879ea045bf93d718e9c",
+                "url": "https://api.github.com/repos/twigphp/Twig-extensions/zipball/2c1a86526d0044065220d1b51ac08348bea5ca82",
+                "reference": "2c1a86526d0044065220d1b51ac08348bea5ca82",
                 "shasum": ""
             },
             "require": {
-                "twig/twig": "~1.27|~2.0"
+                "twig/twig": "^1.27|^2.0"
             },
             "require-dev": {
-                "symfony/phpunit-bridge": "~3.3@dev",
-                "symfony/translation": "~2.3|~3.0"
+                "symfony/phpunit-bridge": "^3.4",
+                "symfony/translation": "^2.7|^3.4"
             },
             "suggest": {
                 "symfony/translation": "Allow the time_diff output to be translated"
@@ -4909,12 +4905,11 @@
                 }
             ],
             "description": "Common additional features for Twig that do not directly belong in core",
-            "homepage": "http://twig.sensiolabs.org/doc/extensions/index.html",
             "keywords": [
                 "i18n",
                 "text"
             ],
-            "time": "2017-06-08T18:19:53+00:00"
+            "time": "2018-05-22T13:26:07+00:00"
         },
         {
             "name": "twig/twig",

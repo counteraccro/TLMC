@@ -11,6 +11,8 @@ Questionnaire.Launch = function(params) {
 	Questionnaire.id_modal = params.id_modal;
 	
 	Questionnaire.id_content_modal = params.id_content_modal;
+	
+	Questionnaire.id_container_global = '#container-global';
 
 	/**
 	 * fonction édition du questionnaire, paramètres url et id_questionnaire
@@ -39,6 +41,7 @@ Questionnaire.Launch = function(params) {
 		})
 		.done(function( html ) {
 			$(id_done).html(html)
+			$(Questionnaire.id_container_global).hideLoading();
 		});
 	}
 
@@ -53,7 +56,7 @@ Questionnaire.Launch = function(params) {
 		$(id).click(function() {
 			//on passe l'url et l'id_done
 			
-			console.log(Questionnaire.id_content_modal);
+			$(Questionnaire.id_container_global).showLoading();
 			
 			Questionnaire.Ajax($(this).attr('href'), Questionnaire.id_content_modal);
 			return false;
@@ -68,6 +71,8 @@ Questionnaire.Launch = function(params) {
 	{
 		$("form[name*='questionnaire']").on( "submit", function( event ) {
 			
+			$('#ajax_questionnaire_add').showLoading();
+			
 			$('#questionnaire_save').prop('disabled', true).html('loading...');
 			
 			event.preventDefault();
@@ -79,6 +84,8 @@ Questionnaire.Launch = function(params) {
 			})
 			.done(function( reponse ) {
 	
+				$('#ajax_questionnaire_add').hideLoading();
+				
 				if(reponse.statut === true)
 				{
 					$(Questionnaire.id_modal).modal('hide');

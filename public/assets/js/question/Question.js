@@ -10,6 +10,8 @@ Question.Launch = function(params) {
 	//cible la div '#bloc_modal'
 	Question.id_modal = params.id_modal;
 	
+	Questionnaire.id_container_global = '#container-global';
+	
 	Question.id_content_modal = params.id_content_modal;
 
 	/**
@@ -31,6 +33,7 @@ Question.Launch = function(params) {
 		})
 		.done(function( html ) {
 			$(id_done).html(html)
+			$(Questionnaire.id_container_global).hideLoading();
 		});
 	}
 
@@ -43,7 +46,8 @@ Question.Launch = function(params) {
 	{
 		// Event sur le bouton edit d'une question
 		$(id).click(function() {
-			//on passe l'url et l'id_done			
+			//on passe l'url et l'id_done		
+			$(Questionnaire.id_container_global).showLoading();
 			Question.Ajax($(this).attr('href'), Question.id_content_modal);
 			return false;
 		});;
@@ -79,5 +83,10 @@ Question.Launch = function(params) {
 				}
 			});
 		});
+	}
+	
+	Question.Preview = function(params)
+	{
+		
 	}
 }

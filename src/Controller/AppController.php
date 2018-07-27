@@ -8,6 +8,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Doctrine\DBAL\Types\TextType;
 
 class AppController extends Controller
 {
@@ -44,6 +46,15 @@ class AppController extends Controller
         10 => 'Enfant',
         11 => 'Parrain',
         12 => 'Marraine'
+    );
+    
+    const QUESTION_TYPE = array(
+        'ChoiceType' => 'Liste déroulante',
+        'TextType' => 'Champ texte',
+        'TextareaType' => 'Zone de texte',
+        'CheckboxType' => 'Case à cocher',
+        'FileType' => 'Fichier joint',
+        'RadioType' => 'Choix unique'
     );
 
     // @todo à virer à terme
