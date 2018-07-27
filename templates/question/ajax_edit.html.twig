@@ -12,7 +12,23 @@
 	</div>
 	
 	<div class="modal-body">
-	{{ form_row(form.libelle_top) }}
+		
+		<div class="card shadow-sm">
+         	<div class="card-header">
+            	Préview
+          	</div>
+          	<div class="card-body">
+            	<div id="content-demo-question">
+            		
+            	</div>
+          </div>
+        </div>
+        
+        <hr />
+	
+	{{ form_row(form.type) }}
+	
+	{# form_row(form.libelle_top) }}
 	{{ form_row(form.libelle) }}
 	{{ form_row(form.libelle_bottom) }}
 	{{ form_row(form.type) }}
@@ -22,14 +38,14 @@
 	{{ form_row(form.regles) }}
 	{{ form_row(form.message_erreur) }}
 	{{ form_row(form.ordre) }}
-	{{ form_row(form.disabled) }}
+	{{ form_row(form.disabled) #}
 	</div>
 	
 	<div class="modal-footer">
 		<!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
 		{{ form_widget(form.save) }}
 	</div>
-	    {{ form_rest(form) }}
+	    {# form_rest(form) #}
 	{{ form_end(form) }}
 </div>
 
