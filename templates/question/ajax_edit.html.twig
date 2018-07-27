@@ -12,13 +12,18 @@
 	</div>
 	
 	<div class="modal-body">
+	{{ form_row(form.libelle_top) }}
 	{{ form_row(form.libelle) }}
-	{#
-	{{ form_row(form.description) }}
-	{{ form_row(form.date_creation) }}
-	{{ form_row(form.date_fin) }}
-	{{ form_row(form.jour_relance) }}
-	</div>#}
+	{{ form_row(form.libelle_bottom) }}
+	{{ form_row(form.type) }}
+	{{ form_row(form.valeur_defaut) }}
+	{{ form_row(form.liste_valeur) }}
+	{{ form_row(form.obligatoire) }}
+	{{ form_row(form.regles) }}
+	{{ form_row(form.message_erreur) }}
+	{{ form_row(form.ordre) }}
+	{{ form_row(form.disabled) }}
+	</div>
 	
 	<div class="modal-footer">
 		<!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
@@ -31,7 +36,7 @@
 {% block javascripts %}
 <script type="text/javascript">
     
-    $('#modal_question_global').modal({
+    $('#modal_questionnaire_global').modal({
     	   'show' : true,
     	   'backdrop' : 'static'
     });

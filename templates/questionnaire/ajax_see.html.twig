@@ -11,7 +11,7 @@
         <div class="card">
         	<div class="card-header">
         		{{ question.libelleTop }}
-        			<a href="{{path('questionnaire_ajax_edit', {'id': questionnaire.id }) }}" id="btn-edit-questionnaire" class="btn btn-primary float-right">Editer la question</a><br/>
+        			<a href="{{path('question_ajax_edit', {'id': question.id }) }}" id="btn-edit-question" class="btn btn-primary float-right">Editer la question</a><br/>
         	</div>
         
         	<div class="card-body">
@@ -55,8 +55,11 @@
 	{% block javascripts %}
     <script type="text/javascript">
 
-    var id_btn = '#btn-edit-questionnaire';
-    Questionnaire.EventEdit(id_btn);
+    var id_btn_questionnaire = '#btn-edit-questionnaire';
+    Questionnaire.EventEdit(id_btn_questionnaire);
+
+    var id_btn_question = '#btn-edit-question';
+    Question.EventEdit(id_btn_question)
 
     </script>
 {% endblock %}
