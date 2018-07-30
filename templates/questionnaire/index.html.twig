@@ -23,6 +23,7 @@
         		<th>{{ headerFilter(path('questionnaire_listing', {'page' : pagination.page, 'field' : 'jour_relance'} ), 'Nb jours avant relance', current_order, current_field) | raw }}</th>
         		<th>{{ headerFilter(path('questionnaire_listing', {'page' : pagination.page, 'field' : 'date_creation'} ), 'Date de création', current_order, current_field) | raw }}</th>
         		<th>{{ headerFilter(path('questionnaire_listing', {'page' : pagination.page, 'field' : 'date_fin'} ), 'Date de fin', current_order, current_field) | raw }}</th>
+        		 		<th>{{ headerFilter(path('questionnaire_listing', {'page' : pagination.page, 'field' : 'nb_questions'} ), 'Nb questions', current_order, current_field) | raw }}</th>
         		<th></th>
         	</tr>
         	<tr>
@@ -36,17 +37,12 @@
         	</tr>
 	        {% for questionnaire in questionnaires %}
         	<tr>	        
-	        {#
-	        {% for question in questionnaire.questions %}
-					{{ question.libelle }}
-					<br />
-		      {% endfor %}#}
-		            
 		            <td>{{ questionnaire.id }}</td>
-		            <td>{{ questionnaire.titre }}</td>     		 
+		            <td>{{ questionnaire.titre }}</td> 
             		<td>{{ questionnaire.jourRelance }}</td>
             	   	<td>{{ questionnaire.dateCreation |date("d/m/Y H:i") }}</td>
             	   	<td>{{ questionnaire.dateFin |date("d/m/Y H:i") }}</td>
+            	   	<td>{{ questionnaire.questions | length }}</td>	
             	   	<td>
         			    {{ actionSee(path('questionnaire_see', {'id' : questionnaire.id, 'page' : pagination.page})) | raw }}
         			    {{ actionEdit(path('questionnaire_edit', {'id' : questionnaire.id, 'page' : pagination.page})) | raw }}

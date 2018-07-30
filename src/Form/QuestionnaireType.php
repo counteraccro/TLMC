@@ -11,7 +11,6 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-
 class QuestionnaireType extends AbstractType
 {
 
@@ -35,26 +34,20 @@ class QuestionnaireType extends AbstractType
         ))
             ->add('jour_relance', NumberType::class, array(
             'label' => 'Jour de relance'
+        ))
+            ->add('save', SubmitType::class, array(
+            'label' => 'Valider',
+            'attr' => array(
+                'class' => 'btn btn-primary'
+            )
         ));
-//             ->add('disabled', CheckboxType::class, array(
-//             'required' => false,
-//             'label' => 'Actif'
-//         ))
-
-//            if ($options['ajax_button'] == false ){
-                $builder->add('save', SubmitType::class, array(
-                    'label' => 'Valider',
-                    'attr' => array('class' => 'btn btn-primary')
-                    //regarder options pour classe btn-primary et désactiver div autour
-                ));
-//            }
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => Questionnaire::class,
-            'ajax_button'=> false
+            'ajax_button' => false
         ]);
     }
 }

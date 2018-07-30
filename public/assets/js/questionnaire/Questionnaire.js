@@ -65,7 +65,7 @@ Questionnaire.Launch = function(params) {
 
 
 	/**
-	 * 
+	 * Fonction intervenant au moment de la soumission du formulaire Ajax d'édition
 	 */
 	Questionnaire.EventEditSubmit = function(url)
 	{

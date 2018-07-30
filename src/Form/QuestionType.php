@@ -11,6 +11,8 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use App\Controller\AppController;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Doctrine\DBAL\Types\BooleanType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
 class QuestionType extends AbstractType
 {
@@ -20,24 +22,28 @@ class QuestionType extends AbstractType
         $builder->add('type', ChoiceType::class, array(
             'choices' => array_flip(AppController::QUESTION_TYPE),
             'label' => 'Type de question',
+            'required' => false,
             'attr' => array(
                 'class' => 'preview'
             )
         ))
             ->add('libelle', TextareaType::class, array(
             'label' => 'Libellé du champ',
+            'required' => false,
             'attr' => array(
                 'class' => 'preview'
             )
         ))
             ->add('libelle_bottom', TextareaType::class, array(
             'label' => 'Libellé informatif',
+            'required' => false,
             'attr' => array(
                 'class' => 'preview'
             )
         ))
             ->add('libelle_top', TextareaType::class, array(
             'label' => 'texte optionnel',
+            'required' => false,
             'attr' => array(
                 'class' => 'preview'
             )
@@ -51,11 +57,25 @@ exemple-cle2:exemple-valeur2,',
                 'class' => 'preview'
             )
         ))
-            ->add('valeur_defaut')
-            ->add('message_erreur')
-            ->add('ordre')
-            ->add('regles')
-            ->add('obligatoire')
+            ->add('valeur_defaut', TextareaType::class, array(
+            'label' => 'Valeur par défaut',
+            'required' => false,
+            'attr' => array(
+                'class' => 'preview'
+            )
+        ))
+            ->add('message_erreur', TextType::class, array(
+            'required' => false
+        ))
+            ->add('ordre', NumberType::class, array(
+            'required' => false
+        ))
+            ->add('regles', TextareaType::class, array(
+            'required' => false
+        ))
+            ->add('obligatoire', TextType::class, array(
+            'required' => false
+        ))
             ->
         // ->add('jour_relance', NumberType::class, array(
         // 'label' => 'Jour de relance'
