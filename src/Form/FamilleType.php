@@ -43,7 +43,6 @@ class FamilleType extends AbstractType
         ))
             ->add('numero_tel', TextType::class, array(
             'label' => 'Numéro de téléphone'
-            // 'ok' => ''
         ))
             ->add('pmr', CheckboxType::class, array(
             'label' => 'Personne à mobilité réduite',

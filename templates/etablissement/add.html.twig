@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Nouvel établissement {% endblock %}
+
+{% block body %}
+
+<h1>Ajout d'un nouvel établissement</h1>
+
+{% include 'elements/arborescence.html.twig' %}
+
+<div>
+    {{ form_start(form) }}
+    
+{{ form_row(form.nom) }}
+	{{ form_row(form.type) }}
+	{{ form_row(form.code_logistique) }}
+	{{ form_row(form.nb_lit) }}
+	{{ form_row(form.statut_convention) }}
+	{{ form_row(form.date_collaboration) }}
+	{{ form_row(form.numero_voie) }}
+	{{ form_row(form.voie) }}
+	{{ form_row(form.ville) }}
+	{{ form_row(form.code_postal) }}
+	{{ form_row(form.region) }}
+    
+    {{ form_rest(form) }}
+    {{ form_errors(form) }}
+    {{ form_end(form) }}
+    
+</div>
+	  
+{% endblock %}

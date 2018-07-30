@@ -66,6 +66,8 @@ class AppController extends Controller
     const ID_FAMILLE = 66;
 
     const ID_FAMILLE_ADRESSE = 53;
+    
+    CONST ID_ETABLISSEMENT = 57;
 
     /**
      * Supprime une recherche de la session

@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Edition d'une spécialité {% endblock %}
+
+{% block body %}
+
+<h1>Modification de la spécialité #{{ specialite.id }} - {{ specialite.service }} </h1>
+
+{% include 'elements/arborescence.html.twig' %}
+
+<div>
+    {{ form_start(form) }}
+    
+	{{ form_row(form.service) }}
+	{{ form_row(form.etablissement) }}
+	{{ form_row(form.code_logistique) }}
+	{{ form_row(form.adulte) }}
+	{{ form_row(form.pediatrie) }}
+    
+    {{ form_rest(form) }}
+    {{ form_errors(form) }}
+    {{ form_end(form) }}
+    
+</div>
+	  
+{% endblock %}
