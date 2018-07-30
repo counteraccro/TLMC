@@ -1,39 +1,47 @@
-//objet JS pour le patient
-Patient = {};
+//objet JS pour la famille
+Famille = {};
 
-Patient.Launch = function(params) {
+Famille.Launch = function(params) {
 
 	//url de la fiche patient
-	Patient.url_ajax_see = params.url_ajax_see;
+	Famille.url_ajax_see = params.url_ajax_see;
 	//cible la div '#bloc_patient'
-	Patient.id_global = params.id_global;
+	Famille.id_global = params.id_global;
 	//cible la div '#bloc_modal'
-	Patient.id_modal = params.id_modal;
+	Famille.id_modal = params.id_modal;
 
-	Patient.id_content_modal = params.id_content_modal;
+	Famille.id_content_modal = params.id_content_modal;
 
-	Patient.id_container_global = '#container-global';
+	Famille.id_container_global = '#container-global';
 	
 	/**
-	 * fonction édition de la famille, paramètres url et id_patient
+	 * fonction ajout de la famille, paramètres url et id_patient
 	 */
-	Patient.AddFamille = function(url, id)
+	Famille.AddFamille = function(url, id)
 	{
-		Patient.Ajax(url, id_done);
+		Famille.Ajax(url, id_done);
+	}
+	
+	/**
+	 * fonction edition de la famille, paramètres url et id_patient
+	 */
+	Famille.EditFamille = function(url, id)
+	{
+		Famille.Ajax(url, id_done);
 	}
 
 	/**
 	 * fonction prévue pour le chargement des familles du patient, paramètres url et id
 	 */
-	Patient.LoadFamille = function()
+	Famille.LoadFamille = function()
 	{
-		Patient.Ajax(Patient.url_ajax_see, Patient.id_global);
+		Famille.Ajax(Famille.url_ajax_see, Famille.id_global);
 	}
 
 	/**
 	 * Méthode Ajax qui va charger l'element présent dans l'URL
 	 */
-	Patient.Ajax = function(url, id_done, method = 'GET')
+	Famille.Ajax = function(url, id_done, method = 'GET')
 	{		
 		$.ajax({
 			method: method,
@@ -41,37 +49,36 @@ Patient.Launch = function(params) {
 		})
 		.done(function( html ) {
 			$(id_done).html(html)
-			$(Patient.id_container_global).hideLoading();
+			$(Famille.id_container_global).hideLoading();
 		});
 	}
 
 	/**
 	 * Evenement ajout
 	 */
-	Patient.EventAdd = function(id)
+	Famille.EventAdd = function(id)
 	{
 		// Event sur le bouton add d'une famille
 		$(id).click(function() {
 			//on passe l'url et l'id_done
-
-			console.log(Patient.id_content_modal);
-
-			$(Patient.id_container_global).showLoading();
 			
-			Patient.Ajax($(this).attr('href'), Patient.id_content_modal);
+			$(Famille.id_container_global).showLoading();
+			
+			Famille.Ajax($(this).attr('href'), Famille.id_content_modal);
 			return false;
-		});;
+		});
 	}
-
 
 	/**
 	 * traitement du formulaire
 	 */
-	Patient.EventAddSubmit = function(url, patientJson)
+	Famille.EventAddSubmit = function(url, patientJson)
 	{
+		console.log('Add');
+		
 		$("form[name*='famille']").on( "submit", function( event ) {
 
-			$('#ajax_famille_add').hideLoading();
+			$('#ajax_famille_add').showLoading();
 			
 			$('#famille_save').prop('disabled', true).html('loading...');
 
@@ -84,23 +91,27 @@ Patient.Launch = function(params) {
 				data: $(this).serialize()
 			})
 			.done(function( reponse ) {
-
+				
+				$('#ajax_famille_add').hideLoading();
+				
 				if(reponse.statut === true)
 				{
+					console.log('OK');
 					//on cache la modale si le formulaire est valide
-					$(Patient.id_modal).modal('hide');
-					Patient.Ajax(Patient.url_ajax_see, Patient.id_global);
+					$(Famille.id_modal).modal('hide');
+					Famille.Ajax(Famille.url_ajax_see, Famille.id_global);
 				}
 				else
 				{
+					console.log('NOK');
 					//on revient sur le formulaire s'il est incorrect
-					$(Patient.id_content_modal).html(reponse);
+					$(Famille.id_content_modal).html(reponse);
 				}
 			});
 		});
 
 		// action effectuée lors de la sélection d'une adresse
-		$('#ajax_famille_add #famille_famille_adresse').change(function() {
+		$('#ajax_famille_add #famille_famille_adresse_select').change(function() {
 			
 			var famille_add = '#ajax_famille_add';
 			
@@ -147,6 +158,103 @@ Patient.Launch = function(params) {
 			}
 
 		});
+	}
+	
+	//Famille.LoadAdresseSelect = function()
+	
+	/**
+	 * Evenement ajout
+	 */
+	Famille.EventEdit = function(id)
+	{
+		// Event sur le bouton edit d'une famille
+		$(id).click(function() {
+			//on passe l'url et l'id_done
+			
+			$(Famille.id_container_global).showLoading();
+			
+			Famille.Ajax($(this).attr('href'), Famille.id_content_modal);
+			return false;
+		});
+	}
+	
+	/**
+	 * traitement du formulaire
+	 */
+	Famille.EventEditSubmit = function(url)
+	{
+		$("form[name*='famille']").on( "submit", function( event ) {
+			
+			console.log('OK');
+			
+			$('#ajax_famille_edit').showLoading();
+			
+			$('#famille_save').prop('disabled', true).html('loading...');
 
+			event.preventDefault();
+			
+			//envoi d'une requête POST en AJAX
+			$.ajax({
+				method: 'POST',
+				url: url,
+				data: $(this).serialize()
+			})
+			.done(function( reponse ) {
+				
+				$('#ajax_famille_edit').hideLoading();
+				
+				if(reponse.statut === true)
+				{
+					//on cache la modale si le formulaire est valide
+					$(Famille.id_modal).modal('hide');
+					Famille.Ajax(Famille.url_ajax_see, Famille.id_global);
+				}
+				else
+				{
+					//on revient sur le formulaire s'il est incorrect
+					$(Famille.id_content_modal).html(reponse);
+				}
+			});
+		});
+	}
+	
+	/**
+	 * traitement du formulaire
+	 */
+	Famille.EventEditAdresseSubmit = function(url)
+	{
+		$("form[name*='famille']").on( "submit", function( event ) {
+			
+			console.log('OK');
+			
+			$('#ajax_famille_adresse_edit').showLoading();
+			
+			$('#famille_save').prop('disabled', true).html('loading...');
+
+			event.preventDefault();
+			
+			//envoi d'une requête POST en AJAX
+			$.ajax({
+				method: 'POST',
+				url: url,
+				data: $(this).serialize()
+			})
+			.done(function( reponse ) {
+				
+				$('#ajax_famille_adresse_edit').hideLoading();
+				
+				if(reponse.statut === true)
+				{
+					//on cache la modale si le formulaire est valide
+					$(Famille.id_modal).modal('hide');
+					Famille.Ajax(Famille.url_ajax_see, Famille.id_global);
+				}
+				else
+				{
+					//on revient sur le formulaire s'il est incorrect
+					$(Famille.id_content_modal).html(reponse);
+				}
+			});
+		});
 	}
 }

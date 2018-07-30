@@ -156,6 +156,7 @@ class FamilleAdresseController extends AppController
      * Edition d'une adresse pour un membre d'une famille
      * 
      * @Route("/famille_adresse/edit/{id}/{page}", name="famille_adresse_edit")
+     * @Route("/famille_adresse/ajax/edit/{id}", name="famille_adresse_ajax_edit")
      * @ParamConverter("famille_adresse", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      * 
@@ -165,7 +166,7 @@ class FamilleAdresseController extends AppController
      * @param int $page
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function editAction(SessionInterface $session, Request $request, FamilleAdresse $adresse, int $page)
+    public function editAction(SessionInterface $session, Request $request, FamilleAdresse $adresse, int $page = 1)
     {
         $arrayFilters = $this->getDatasFilter($session);
         
@@ -178,11 +179,26 @@ class FamilleAdresseController extends AppController
             $em->persist($adresse);
             $em->flush();
             
+            if ($request->isXmlHttpRequest()) {
+                return $this->json(array(
+                    'statut' => true
+                ));
+            }
+            
             return $this->redirect($this->generateUrl('famille_adresse_listing', array(
                 'page' => $page,
                 'field' => $arrayFilters['field'],
                 'order' => $arrayFilters['order']
             )));
+        }
+        
+        // Si appel Ajax, on renvoi sur la page ajax
+        if ($request->isXmlHttpRequest()) {
+            
+            return $this->render('famille_adresse/ajax_edit.html.twig', [
+                'form' => $form->createView(),
+                'adresse' => $adresse
+            ]);
         }
         
         return $this->render('famille_adresse/edit.html.twig', [

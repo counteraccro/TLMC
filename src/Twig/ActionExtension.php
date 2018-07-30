@@ -109,6 +109,6 @@ class ActionExtension extends AbstractExtension
             $icon = "oi-check";
         }
 
-        return '<a href="' . $url_delete . '" title="' . $title . '"><span class="oi ' . $icon . '"></span></a>';
+        return '<a href="' . $url_delete . '" title="' . $title . '" class="link-delete"><span class="oi ' . $icon . '"></span></a>';
     }
 }

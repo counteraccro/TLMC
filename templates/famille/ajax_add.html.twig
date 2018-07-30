@@ -2,9 +2,7 @@
 	{{ form_start(form) }}
 	<div class="modal-header">
 		<h5 class="modal-title">
-			Ajout d'une famille au patient
-			{{ patient.prenom }}
-			{{ patient.nom }}
+			Ajout d'une famille au patient {{ patient.prenom }} {{ patient.nom }}
 		</h5>
 		<button type="button" class="close" data-dismiss="modal"
 			aria-label="Close">
@@ -23,11 +21,11 @@
 
 		<div class="shadow-sm p-3 mb-5 bg-white rounded border">
     		<div class="form-group">
-    			<label for="famille_famille_adresse">Ajouter ou selectionner une adresse associée au patient</label> 
-    			<select id="famille_famille_adresse" name="famille[famille_adresse]" class="form-control">
+    			<label for="famille_famille_adresse_select">Ajouter ou selectionner une adresse associée au patient</label> 
+    			<select id="famille_famille_adresse_select" name="famille[adresse_select]" class="form-control">
     				<option value="0">Nouvelle Adresse</option>
     				   {%  for famille in patient.familles %}
-    					<option value="{{ famille.id }}">{{ famille.prenom }} {{ famille.nom }} ( {{ famille.lienFamille | lienParente }} )</option>
+    					<option {% if famille.id == select_famille %} selected {% endif %} value="{{ famille.id }}">{{ famille.prenom }} {{ famille.nom }} ( {{ famille.lienFamille | lienParente }} )</option>
     				   {% endfor %}
     			</select>
     		</div>
@@ -60,7 +58,7 @@
 		//jsonPatient tableau contenant les infos des familles (id, nom, prenom, familleAdresse) encodé en json
 		var jsonPatient = {{ jsonPatient|json_encode|raw }};
 		
-		Patient.EventAddSubmit(url, jsonPatient);
+		Famille.EventAddSubmit(url, jsonPatient);
 	
 	    </script>
 	{% endblock %}
