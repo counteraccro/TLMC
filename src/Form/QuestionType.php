@@ -37,13 +37,21 @@ class QuestionType extends AbstractType
             )
         ))
             ->add('libelle_top', TextareaType::class, array(
-            'label' => 'Libellé important',
+            'label' => 'texte optionnel',
+            'attr' => array(
+                'class' => 'preview'
+            )
+        ))
+            ->add('liste_valeur', TextareaType::class, array(
+            'label' => 'Valeurs présentes dans la question',
+            'empty_data' => 'exemple-cle1:exemple-valeur1,
+exemple-cle2:exemple-valeur2,',
+            'required' => false,
             'attr' => array(
                 'class' => 'preview'
             )
         ))
             ->add('valeur_defaut')
-            ->add('liste_valeur')
             ->add('message_erreur')
             ->add('ordre')
             ->add('regles')

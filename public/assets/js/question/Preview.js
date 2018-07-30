@@ -25,10 +25,10 @@ Preview.Launch = function(params) {
 		$(Preview.id_global + " .preview").each(function(){
 			Preview.ConstructHtml($(this));
 		});
-		
+
 		Preview.Render();
 	}
-	
+
 	/**
 	 * Fonction liée à l'évènement 'au changement' du type de champ souhaité
 	 * Préparation du HTML
@@ -37,7 +37,7 @@ Preview.Launch = function(params) {
 	{
 		$(Preview.id_global + " .preview").change(function(){
 			Preview.ConstructHtml($(this));
-			
+
 			Preview.Render();
 		});
 	}
@@ -49,24 +49,37 @@ Preview.Launch = function(params) {
 	{
 		var id = form_element.attr('id');
 
+		var val = form_element.val();
+
 		switch (id) { 
 		case 'question_liste_select_type':
 			Preview.SelectType(form_element);
 			break;
 		case 'question_libelle' : 
-			Preview.label = '<label for="exampleInputEmail1">' + form_element.val() + '</label>';
+			Preview.label = '<label for="exampleInputEmail1">' + val + '</label>';
 			break;
-		case 'question_libelle_bottom' : 
-			Preview.label_bottom = '<small id="emailHelp" class="form-text text-muted"><i>' + form_element.val() + '</i></small>';
+		case 'question_libelle_bottom' :
+			Preview.label_bottom = '';
+			if(val != "")
+			{
+				Preview.label_bottom = '<small class="form-text text-muted"><i>' + val + '</i></small>';
+			}
 			break;
 		case 'question_libelle_top' : 
-			Preview.label_top = '<small id="todo" class="form-text text-muted">' + form_element.val() + '</small>';
+			Preview.label_top = '';
+			if(val != "")
+			{
+				Preview.label_top = '<p>' + val + '</p>';
+			}
+			break;
+		case 'question_liste_valeur':
+			Preview.ConvertListeValue(form_element);
 			break;
 		default:
 			console.log('Element ' + id + ' introuvable');
 		}
 	}
-	
+
 	/**
 	 * Renvoie le preview en fonction de l'élément ciblé par l'utilisateur
 	 */
@@ -103,4 +116,41 @@ Preview.Launch = function(params) {
 		}
 	}
 
+	/**
+	 * Conversion de la liste de valeurs envoyée par l'utilisateur en JSON
+	 */
+	Preview.ConvertListeValue = function(element)
+	{
+		var json = JSON.parse(element.val());
+		var html = '';
+		var options = "";
+		
+		var i = 0;
+		for (var key in json)
+		{
+			html += '<div class="row no-gutters align-items-center" id="list-val-col-' + i + '">';
+			html += '<div class="col-md-5">';
+			html += '<input class="form-control liste-val-key" type="text" value="' + key + '" />';
+			html += '</div>';
+			html += '<div class="col-md-5">';
+			html += '<input type="text" class="form-control list-val-val" value="' + json[key] + '" />';
+			html += '</div>';
+			html += '<div class="col-md-2">';
+			html += '-- <a href="#" data-id="' + i + '"><span class="oi oi-x"></span></a>';
+			html += '</div>';
+			html += '</div>';
+			i++;
+			
+			options += '<option value="' + key + '">' + json[key] + '</option>';
+		}
+		
+		$("#contener-input-liste-val").html(html);
+		
+		Preview.input = '<select class="form-control" id="select-preview">'+ options + '</select>';
+	}
 }
+
+
+
+
+

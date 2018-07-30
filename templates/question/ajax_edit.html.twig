@@ -33,6 +33,14 @@
 			<h6>Configuration simple</h6>
 			{{ form_row(form.libelle, {"id":"question_libelle"}) }}
 			{{ form_row(form.libelle_bottom, {"id":"question_libelle_bottom"}) }}
+			
+			<div id="input-liste-val">
+				Valeur(s) possible pour la réponse :
+				<div id="contener-input-liste-val">
+				
+				</div>
+			</div>
+			{{ form_row(form.liste_valeur, {"id":"question_liste_valeur"})}}
 
 		
 		</div>
