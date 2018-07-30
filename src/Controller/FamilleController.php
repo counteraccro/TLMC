@@ -9,8 +9,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Form\FamilleType;
 use App\Entity\Patient;
-use App\Entity\FamilleAdresse;
-use App\Form\FamilleAdresseType;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
@@ -137,7 +135,8 @@ class FamilleController extends AppController
             $form = $this->createForm(FamilleType::class, $famille, array(
                 'label_submit' => 'Ajouter',
                 'disabled_patient' => true,
-                'label_adresse' => ' '
+                'label_adresse' => ' ',
+                'allow_extra_fields' => true
             ));
         } else {
 
@@ -196,7 +195,7 @@ class FamilleController extends AppController
                 )
             ));
 
-            // @todo commentaire
+            // on récupère la valeur du select adresse qui n'est pas conservé en cas d'erreur
             $resultForm = $request->request->all();
             if(!empty($resultForm))
             {
@@ -314,7 +313,7 @@ class FamilleController extends AppController
      * @param int $page
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function deleteAction(Request $request, SessionInterface $session, Famille $famille, int $page)
+    public function deleteAction(Request $request, SessionInterface $session, Famille $famille, int $page = 1)
     {
         $arrayFilters = $this->getDatasFilter($session);
 
@@ -330,9 +329,12 @@ class FamilleController extends AppController
 
         $entityManager->flush();
 
-        if ($page < 0) {
-            return $this->redirect($request->headers->get('referer'));
+        if ($request->isXmlHttpRequest()) {
+            return $this->json(array(
+                'statut' => true
+            ));
         }
+        
         return $this->redirectToRoute('famille_listing', array(
             'page' => $page,
             'field' => $arrayFilters['field'],

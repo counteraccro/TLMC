@@ -44,6 +44,7 @@
 		{{ form_widget(form.save) }}
 	</div>
 	{{ form_rest(form) }}
+	{{ form_errors(form) }}
 	{{ form_end(form) }}
 
 	{% block javascripts %}
@@ -57,8 +58,8 @@
 		var url = '{{path('famille_ajax_add', {'id': patient.id }) }}';
 		//jsonPatient tableau contenant les infos des familles (id, nom, prenom, familleAdresse) encodé en json
 		var jsonPatient = {{ jsonPatient|json_encode|raw }};
-		
+
+		Famille.LoadAdresseSelect($('#ajax_famille_add #famille_famille_adresse_select'), jsonPatient);
 		Famille.EventAddSubmit(url, jsonPatient);
-	
 	    </script>
 	{% endblock %}
