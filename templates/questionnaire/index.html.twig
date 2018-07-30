@@ -41,8 +41,13 @@
 		            <td>{{ questionnaire.titre }}</td> 
             		<td>{{ questionnaire.jourRelance }}</td>
             	   	<td>{{ questionnaire.dateCreation |date("d/m/Y H:i") }}</td>
-            	   	<td>{{ questionnaire.dateFin |date("d/m/Y H:i") }}</td>
+            	   	{% if questionnaire.dateFin |date("d/m/Y H:i") > "now"|date('d/m/Y H:i') %}
+            	   		<td><p style="color: crimson">{{ questionnaire.dateFin |date("d/m/Y H:i") }}</p></td>
+            	   	{% else %}
+            	   	    <td>{{ questionnaire.dateFin |date("d/m/Y H:i") }}</td>
+            	   	{% endif %}
             	   	<td>{{ questionnaire.questions | length }}</td>	
+   
             	   	<td>
         			    {{ actionSee(path('questionnaire_see', {'id' : questionnaire.id, 'page' : pagination.page})) | raw }}
         			    {{ actionEdit(path('questionnaire_edit', {'id' : questionnaire.id, 'page' : pagination.page})) | raw }}
@@ -53,6 +58,11 @@
           	</tr>         
             {% endfor %}
         </table>
+        
+        {% if questionnaires is empty %}
+        	<p class="text-info text-center">Il  n'y a aucun questionnaire correspondant à votre recherche.</p>
+        {% endif %}
+        
   	</div>
   	<div class="card-footer">
     	{% include 'elements/pagination.html.twig' %}
