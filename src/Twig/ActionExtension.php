@@ -100,7 +100,7 @@ class ActionExtension extends AbstractExtension
      * @param string $disabled
      * @return string
      */
-    public function actionDeleteFilter($disabled, $url_delete)
+    public function actionDeleteFilter($disabled, $url_delete, $id = null)
     {
         $title = "Désactiver la donnée";
         $icon = "oi-x";
@@ -109,6 +109,6 @@ class ActionExtension extends AbstractExtension
             $icon = "oi-check";
         }
 
-        return '<a href="' . $url_delete . '" title="' . $title . '"><span class="oi ' . $icon . '"></span></a>';
+        return '<a href="' . $url_delete . '" title="' . $title . '" class="link-delete" ' . ($id ? 'id="delete-' . $id . '"' : '') . '><span class="oi ' . $icon . '"></span></a>';
     }
 }

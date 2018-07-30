@@ -47,7 +47,7 @@ class Famille
     /**
      * @ORM\Column(type="string", length=50)
      * @Assert\Regex(
-     *     pattern="/\d/",
+     *     pattern="/(\+\d+(\s|-))?\d(\s|-)?(\d{2}(\s|-)?){4}/",
      *     message="Le numéro de téléphone est invalide"
      * )
      */

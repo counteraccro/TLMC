@@ -9,8 +9,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Form\FamilleType;
 use App\Entity\Patient;
-use App\Entity\FamilleAdresse;
-use App\Form\FamilleAdresseType;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
@@ -43,14 +41,14 @@ class FamilleController extends AppController
             'repository' => 'Famille',
             'repositoryMethode' => 'findAllFamilles'
         );
-        
-        foreach ($this->getUser()->getRoles() as $role){
-            if($role == "ROLE_ADMIN"){
+
+        foreach ($this->getUser()->getRoles() as $role) {
+            if ($role == "ROLE_ADMIN") {
                 $params['sans_inactif'] = false;
                 break;
             }
         }
-        
+
         $result = $this->genericSearch($request, $session, $params);
 
         $pagination = array(
@@ -137,7 +135,8 @@ class FamilleController extends AppController
             $form = $this->createForm(FamilleType::class, $famille, array(
                 'label_submit' => 'Ajouter',
                 'disabled_patient' => true,
-                'label_adresse' => ' '
+                'label_adresse' => ' ',
+                'allow_extra_fields' => true
             ));
         } else {
 
@@ -146,9 +145,9 @@ class FamilleController extends AppController
             ));
         }
         $form->handleRequest($request);
-
+        
         if ($form->isSubmitted() && $form->isValid()) {
-
+            
             $famille->setDisabled(0);
             $famille->getFamilleAdresse()->setDisabled(0);
 
@@ -196,13 +195,25 @@ class FamilleController extends AppController
                 )
             ));
 
+            // on récupère la valeur du select adresse qui n'est pas conservé en cas d'erreur
+            $resultForm = $request->request->all();
+            if(!empty($resultForm))
+            {
+                $select_famille = $resultForm['famille']['adresse_select'];
+            }
+            else
+            {
+                $select_famille = -1;
+            }
+            
             return $this->render('famille/ajax_add.html.twig', [
                 'form' => $form->createView(),
                 'patient' => $patient,
-                'jsonPatient' => $jsonPatient
+                'jsonPatient' => $jsonPatient,
+                'select_famille' => $select_famille
             ]);
         }
-
+        
         return $this->render('famille/add.html.twig', [
             'page' => $page,
             'form' => $form->createView(),
@@ -224,6 +235,7 @@ class FamilleController extends AppController
      * Edition d'une famille
      *
      * @Route("/famille/edit/{id}/{page}", name="famille_edit")
+     * @Route("/famille/ajax/edit/{id}", name="famille_ajax_edit")
      * @ParamConverter("famille", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      *
@@ -233,7 +245,7 @@ class FamilleController extends AppController
      * @param int $page
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function editAction(SessionInterface $session, Request $request, Famille $famille, int $page)
+    public function editAction(SessionInterface $session, Request $request, Famille $famille, int $page = 1)
     {
         $arrayFilters = $this->getDatasFilter($session);
 
@@ -250,11 +262,25 @@ class FamilleController extends AppController
             $em->persist($famille);
             $em->flush();
 
+            if ($request->isXmlHttpRequest()) {
+                return $this->json(array(
+                    'statut' => true
+                ));
+            }
             return $this->redirect($this->generateUrl('famille_listing', array(
                 'page' => $page,
                 'field' => $arrayFilters['field'],
                 'order' => $arrayFilters['order']
             )));
+        }
+
+        // Si appel Ajax, on renvoi sur la page ajax
+        if ($request->isXmlHttpRequest()) {
+
+            return $this->render('famille/ajax_edit.html.twig', [
+                'form' => $form->createView(),
+                'famille' => $famille
+            ]);
         }
 
         return $this->render('famille/edit.html.twig', [
@@ -287,7 +313,7 @@ class FamilleController extends AppController
      * @param int $page
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function deleteAction(Request $request, SessionInterface $session, Famille $famille, int $page)
+    public function deleteAction(Request $request, SessionInterface $session, Famille $famille, int $page = 1)
     {
         $arrayFilters = $this->getDatasFilter($session);
 
@@ -302,10 +328,13 @@ class FamilleController extends AppController
         $entityManager->persist($famille);
 
         $entityManager->flush();
-        
-        if($page < 0){
-            return $this->redirect($request->headers->get('referer'));
+
+        if ($request->isXmlHttpRequest()) {
+            return $this->json(array(
+                'statut' => true
+            ));
         }
+        
         return $this->redirectToRoute('famille_listing', array(
             'page' => $page,
             'field' => $arrayFilters['field'],
