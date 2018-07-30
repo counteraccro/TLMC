@@ -9,20 +9,39 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use App\Controller\AppController;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class QuestionType extends AbstractType
 {
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('type', ChoiceType::class, array(
-                'choices' => array_flip(AppController::QUESTION_TYPE),
-                'label' => 'Type de question'
-            ))
-            ->add('libelle')
-            ->add('libelle_top')
-            ->add('libelle_bottom')
+        $builder->add('type', ChoiceType::class, array(
+            'choices' => array_flip(AppController::QUESTION_TYPE),
+            'label' => 'Type de question',
+            'attr' => array(
+                'class' => 'preview'
+            )
+        ))
+            ->add('libelle', TextareaType::class, array(
+            'label' => 'Libellé du champ',
+            'attr' => array(
+                'class' => 'preview'
+            )
+        ))
+            ->add('libelle_bottom', TextareaType::class, array(
+            'label' => 'Libellé informatif',
+            'attr' => array(
+                'class' => 'preview'
+            )
+        ))
+            ->add('libelle_top', TextareaType::class, array(
+            'label' => 'Libellé important',
+            'attr' => array(
+                'class' => 'preview'
+            )
+        ))
             ->add('valeur_defaut')
             ->add('liste_valeur')
             ->add('message_erreur')

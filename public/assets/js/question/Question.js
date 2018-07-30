@@ -9,8 +9,9 @@ Question.Launch = function(params) {
 	Question.id_global = params.id_global;
 	//cible la div '#bloc_modal'
 	Question.id_modal = params.id_modal;
-	
+
 	Questionnaire.id_container_global = '#container-global';
+	Questionnaire.id_question_type = '#question_type';
 	
 	Question.id_content_modal = params.id_content_modal;
 
@@ -60,9 +61,9 @@ Question.Launch = function(params) {
 	Question.EventEditSubmit = function(url)
 	{
 		$("form[name*='question']").on( "submit", function( event ) {
-			
+
 			$('#question_save').prop('disabled', true).html('loading...');
-			
+
 			event.preventDefault();
 
 			$.ajax({
@@ -71,7 +72,7 @@ Question.Launch = function(params) {
 				data: $(this).serialize()
 			})
 			.done(function( reponse ) {
-	
+
 				if(reponse.statut === true)
 				{
 					$(Question.id_modal).modal('hide');
@@ -84,9 +85,5 @@ Question.Launch = function(params) {
 			});
 		});
 	}
-	
-	Question.Preview = function(params)
-	{
-		
-	}
+
 }

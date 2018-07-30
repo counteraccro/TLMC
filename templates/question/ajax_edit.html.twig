@@ -1,4 +1,4 @@
-<div id="ajax_question_add">
+<div id="ajax_question_edit">
 
     {{ form_start(form) }}
 	<div class="modal-header">
@@ -15,30 +15,31 @@
 		
 		<div class="card shadow-sm">
          	<div class="card-header">
-            	Préview
+            	Aperçu
           	</div>
           	<div class="card-body">
-            	<div id="content-demo-question">
+            	<div id="content-preview-question">
             		
             	</div>
           </div>
         </div>
         
         <hr />
+        
+	{{ form_row(form.type, {"id":"question_liste_select_type"}) }}
 	
-	{{ form_row(form.type) }}
-	
-	{# form_row(form.libelle_top) }}
-	{{ form_row(form.libelle) }}
-	{{ form_row(form.libelle_bottom) }}
-	{{ form_row(form.type) }}
-	{{ form_row(form.valeur_defaut) }}
-	{{ form_row(form.liste_valeur) }}
-	{{ form_row(form.obligatoire) }}
-	{{ form_row(form.regles) }}
-	{{ form_row(form.message_erreur) }}
-	{{ form_row(form.ordre) }}
-	{{ form_row(form.disabled) #}
+	<div class="row">
+		<div class="col-md-6">
+			<h6>Configuration simple</h6>
+			{{ form_row(form.libelle, {"id":"question_libelle"}) }}
+			{{ form_row(form.libelle_bottom, {"id":"question_libelle_bottom"}) }}
+
+		
+		</div>
+		<div class="col-md-6">
+			<h6>Avancée</h6>
+			{{ form_row(form.libelle_top, {"id":"question_libelle_top"}) }}
+		</div>
 	</div>
 	
 	<div class="modal-footer">
@@ -48,6 +49,10 @@
 	    {# form_rest(form) #}
 	{{ form_end(form) }}
 </div>
+
+ {% block script %}
+ 	<script src="{{ asset('assets/js/question/Preview.js') }}?{{ date().timestamp }}"></script>
+ {% endblock %}
 
 {% block javascripts %}
 <script type="text/javascript">
@@ -59,6 +64,19 @@
     
 	var url = '{{path('question_ajax_edit', {'id': question.id }) }}';
 	Question.EventEditSubmit(url);
+
+	var params = {
+			id_global : '#ajax_question_edit',
+			id_preview : '#content-preview-question',
+			liste_type_json : JSON.parse('{{ liste_type|json_encode() | raw }}')
+	};
+
+	Preview.Launch(params);
+	Preview.Load();
+	Preview.Event();
+
+	
+
 
     </script>
 {% endblock %}

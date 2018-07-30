@@ -1,3 +1,6 @@
+=\=\=\=\=\=\=
+<<<<<<<=HEAD
+>>>>>>>=a86c1f601f7e4f77fad4d40f03669fe9c6d0b4d6
 eclipse.preferences.version=1
 encoding//src/Controller/PatientController.php=UTF-8
 encoding//templates/base.html.twig=UTF-8
@@ -17,16 +20,14 @@ encoding//templates/index/index.html.twig=UTF-8
 encoding//templates/membre/index.html.twig=UTF-8
 encoding//templates/message/index.html.twig=UTF-8
 encoding//templates/message_lu/index.html.twig=UTF-8
-<<<<<<< HEAD
 encoding//templates/patient=UTF-8
-=======
->>>>>>> a86c1f601f7e4f77fad4d40f03669fe9c6d0b4d6
 encoding//templates/patient/add.html.twig=UTF-8
 encoding//templates/patient/edit.html.twig=UTF-8
 encoding//templates/patient/index.html.twig=UTF-8
 encoding//templates/patient/see.html.twig=UTF-8
 encoding//templates/piece_jointe/index.html.twig=UTF-8
 encoding//templates/produit/index.html.twig=UTF-8
+encoding//templates/question/ajax_edit.html.twig=UTF-8
 encoding//templates/question/index.html.twig=UTF-8
 encoding//templates/questionnaire/add.html.twig=UTF-8
 encoding//templates/questionnaire/ajax_edit.html.twig=UTF-8
