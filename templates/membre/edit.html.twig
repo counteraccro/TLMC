@@ -38,7 +38,7 @@
 {% endblock %}
 
 {% block script %}
- 	<script src="{{ asset('assets/js/membre/membre.js') }}?{{ date().timestamp }}"></script>
+ 	<script src="{{ asset('assets/js/specialite/specialite.js') }}?{{ date().timestamp }}"></script>
 {% endblock %}
 
 {% block javascripts %}
@@ -47,14 +47,14 @@
     $(document).ready(function() {
     	
 		var params = {
-				url_ajax_see : '{{ path('membre_ajax_edit_specialite', {'id': membre.id}) }}',
+				url_ajax_see : '{{ path('membre_ajax_edit_specialite', {'membre_id': membre.id}) }}',
 				id_specialite : '#bloc_specialite',
 				id_bloc_etablissement : '#membre_etablissement'
 		};
         
-    	Membre.Launch(params);
-    	Membre.LoadSpecialite();
-		Membre.EventChange();
+    	Specialite.Launch(params);
+    	Specialite.LoadSpecialite();
+    	Specialite.EventChange();
 		
     });
     

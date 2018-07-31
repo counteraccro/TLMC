@@ -14,6 +14,19 @@
 	{{ form_row(form.nom) }}
 	{{ form_row(form.prenom) }}
 	{{ form_row(form.date_naissance) }}
+	<div id="bloc_etablissement">
+	    <div class="form-group">
+        	<label for="patient_etablissement">Etablissement</label> 
+            <select id="patient_etablissement" name="patient[etablissement]" class="form-control">
+                {%  for etablissement in etablissements %}
+            		<option value="{{ etablissement.id }}">{{ etablissement.nom }}</option>
+            	{% endfor %}
+            </select>
+    	</div>
+	</div>
+	<div id="bloc_specialite">
+	    {{ form_row(form.specialite) }}
+	</div>
 	{{ form_row(form.PMR) }}
 
 	<div class="shadow-sm p-3 mb-5 bg-white rounded border">
@@ -31,6 +44,7 @@
 
 {% block script %}
  	<script src="{{ asset('assets/js/utils/FormAddCollection.js') }}?{{ date().timestamp }}"></script>
+ 	<script src="{{ asset('assets/js/specialite/specialite.js') }}?{{ date().timestamp }}"></script>
 {% endblock %}
 
 {% block javascripts %}
@@ -48,6 +62,16 @@
         
     	FormAddCollection.Launch(params);
 		FormAddCollection.Event();
+
+		var params_spec = {
+				url_ajax_see : '{{ path('patient_ajax_add_specialite') }}',
+				id_specialite : '#bloc_specialite',
+				id_bloc_etablissement : '#bloc_etablissement #patient_etablissement'
+		};
+        
+    	Specialite.Launch(params_spec);
+    	Specialite.LoadSpecialite();
+		Specialite.EventChange();
     });
     
     </script> 

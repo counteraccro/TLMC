@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controller;
 
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,9 +13,10 @@ use App\Entity\Etablissement;
 
 class MembreController extends AppController
 {
+
     /**
      * Listing des membres
-     * 
+     *
      * @Route("/membre/listing/{page}/{field}/{order}", name="membre_listing", defaults={"page" = 1, "field"= null, "order"= null})
      * @Security("is_granted('ROLE_ADMIN')")
      */
@@ -25,11 +25,11 @@ class MembreController extends AppController
         if (is_null($field)) {
             $field = 'id';
         }
-        
+
         if (is_null($order)) {
             $order = 'DESC';
         }
-        
+
         $params = array(
             'field' => $field,
             'order' => $order,
@@ -39,9 +39,9 @@ class MembreController extends AppController
             'repositoryMethode' => 'findAllMembres',
             'sans_inactif' => false
         );
-        
+
         $result = $this->genericSearch($request, $session, $params);
-        
+
         $pagination = array(
             'page' => $page,
             'route' => 'membre_listing',
@@ -49,9 +49,9 @@ class MembreController extends AppController
             'nb_elements' => $result['nb'],
             'route_params' => array()
         );
-        
+
         $this->setDatasFilter($session, $field, $order);
-        
+
         return $this->render('membre/index.html.twig', [
             'controller_name' => 'MembreController',
             'membres' => $result['paginator'],
@@ -65,9 +65,9 @@ class MembreController extends AppController
             )
         ]);
     }
-    
+
     /**
-     * Fiche d'un membre
+     * Mise à jour du dropdown Spécialité lorsque l'établissement change dans le formulaire d'ajout d'un membre
      *
      * @Route("/membre/ajax/add/specialite/{id}", name="membre_ajax_add_specialite", defaults={"id" = 0})
      * @ParamConverter("etablissement", options={"mapping": {"id": "id"}})
@@ -76,38 +76,40 @@ class MembreController extends AppController
     public function addAjaxSpecialiteAction(Request $request, Etablissement $etablissement)
     {
         $specialites = $etablissement->getSpecialites();
-        
-        return $this->render('membre/ajax_add_specialite.html.twig', array(
+
+        return $this->render('membre/ajax_dropdown_specialite.html.twig', array(
             'specialites' => $specialites,
             'select_specialite' => 0
         ));
     }
-    
+
     /**
-     * Fiche d'un membre
+     * Mise à jour du dropdown Spécialité lorsque l'établissement change dans le formulaire d'édition d'un membre
      *
-     * @Route("/membre/ajax/edit/specialite/{id}/{etablissement_id}", name="membre_ajax_edit_specialite", defaults={"etablissement_id"=-1})
-     * @ParamConverter("membre", options={"mapping": {"id": "id"}})
+     * @Route("/membre/ajax/edit/{membre_id}/{etablissement_id}", name="membre_ajax_edit_specialite", defaults={"etablissement_id" = 0})
+     * @ParamConverter("membre", options={"mapping": {"membre_id": "id"}})
+     * @ParamConverter("etablissement", options={"mapping": {"etablissement_id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function editAjaxSpecialiteAction(Request $request, Membre $membre, int $etablissement_id = -1)
+    public function editAjaxSpecialiteAction(Request $request, Membre $membre, Etablissement $etablissement = null)
     {
-        $select_specialite = $membre->getSpecialite()->getId();
-        
-        if($etablissement_id > 0){
-            $repository = $this->getDoctrine()->getRepository(Etablissement::class);
-            $etablissements = $repository->findById($etablissement_id);
-            $etablissement = $etablissements[0];
+        $select_specialite = 0;
+        if (! is_null($membre->getSpecialite())) {
+            $select_specialite = $membre->getSpecialite()->getId();
+        }
+
+        if (! is_null($etablissement)) {
             $specialites = $etablissement->getSpecialites();
         } else {
             $specialites = $membre->getEtablissement()->getSpecialites();
         }
-        return $this->render('membre/ajax_add_specialite.html.twig', array(
+
+        return $this->render('membre/ajax_dropdown_specialite.html.twig', array(
             'specialites' => $specialites,
             'select_specialite' => $select_specialite
         ));
     }
-    
+
     /**
      * Fiche d'un membre
      *
@@ -118,7 +120,7 @@ class MembreController extends AppController
     public function seeAction(SessionInterface $session, Membre $membre, int $page)
     {
         $arrayFilters = $this->getDatasFilter($session);
-        
+
         return $this->render('membre/see.html.twig', [
             'page' => $page,
             'membre' => $membre,
@@ -135,7 +137,7 @@ class MembreController extends AppController
             )
         ]);
     }
-    
+
     /**
      * Ajout d'un nouveau membre
      *
@@ -147,29 +149,31 @@ class MembreController extends AppController
     public function addAction(UserPasswordEncoderInterface $encoder, SessionInterface $session, Request $request, int $page)
     {
         $arrayFilters = $this->getDatasFilter($session);
-        
+
         $membre = new Membre();
-        
+
         $form = $this->createForm(MembreType::class, $membre);
-        
+
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            
+
             $em = $this->getDoctrine()->getManager();
-            
+
             // TODO A changer
             $membre->setDisabled(0);
             $membre->setSalt('41df4dgv54gfd5g');
-            $membre->setRoles(array("ROLE_BENEFICIAIRE"));
-            
+            $membre->setRoles(array(
+                "ROLE_BENEFICIAIRE"
+            ));
+
             $encodePassword = $encoder->encodePassword($membre, $membre->getPassword());
             $membre->setPassword($encodePassword);
             $em->persist($membre);
             $em->flush();
-            
+
             return $this->redirect($this->generateUrl('membre_listing'));
         }
-        
+
         return $this->render('membre/add.html.twig', [
             'page' => $page,
             'form' => $form->createView(),
@@ -186,7 +190,7 @@ class MembreController extends AppController
             )
         ]);
     }
-    
+
     /**
      * Edition d'un membre
      *
@@ -197,24 +201,24 @@ class MembreController extends AppController
     public function editAction(SessionInterface $session, Request $request, Membre $membre, int $page)
     {
         $arrayFilters = $this->getDatasFilter($session);
-        
+
         $form = $this->createForm(MembreType::class, $membre);
-        
+
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            
+
             $em = $this->getDoctrine()->getManager();
-            
+
             $em->persist($membre);
             $em->flush();
-            
+
             return $this->redirect($this->generateUrl('membre_listing', array(
                 'page' => $page,
                 'field' => $arrayFilters['field'],
                 'order' => $arrayFilters['order']
             )));
         }
-        
+
         return $this->render('membre/edit.html.twig', [
             'page' => $page,
             'form' => $form->createView(),
@@ -232,7 +236,7 @@ class MembreController extends AppController
             )
         ]);
     }
-    
+
     /**
      * desactivation d'un membre
      *
@@ -243,19 +247,19 @@ class MembreController extends AppController
     public function deleteAction(SessionInterface $session, Membre $membre, $page)
     {
         $arrayFilters = $this->getDatasFilter($session);
-        
+
         if ($membre->getDisabled() == 1) {
             $membre->setDisabled(0);
         } else {
             $membre->setDisabled(1);
         }
-        
+
         $entityManager = $this->getDoctrine()->getManager();
-        
+
         $entityManager->persist($membre);
-        
+
         $entityManager->flush();
-        
+
         return $this->redirectToRoute('membre_listing', array(
             'page' => $page,
             'field' => $arrayFilters['field'],

@@ -43,7 +43,6 @@ class MembreType extends AbstractType
             'invalid_message' => 'Les mots de passe doivent correspondre',
             'options' => array(
                 'attr' => array(
-
                     'class' => 'password-field'
                 )
             )
