@@ -43,6 +43,7 @@ Preview.Launch = function(params) {
 			Preview.Render();
 		});
 
+		// évènement à l'ajout d'une nouvelle valeur de réponse possible
 		$(Preview.id_global +  ' #btn-add-input-list').click(function() {
 
 			Preview.json_liste_val[Object.keys(Preview.json_liste_val).length] = {'value' : '', 'libelle' : ''};
@@ -52,8 +53,10 @@ Preview.Launch = function(params) {
 			return false;
 		});
 
+		
 		Preview.subRepeatEvent = function()
 		{
+			// évènement à la suppression d'une valeur de réponse possible
 			$(Preview.id_global +  ' .btn-delete-element-list').click(function() {
 		
 				var id = $(this).data('id');
@@ -63,6 +66,7 @@ Preview.Launch = function(params) {
 				Preview.subRepeatEvent();
 			});
 			
+			// permet de renvoyer les valeurs de réponses possibles dans le menu déroulant lorsque celles-ci sont modifiées
 			$(Preview.id_global +  ' .input-val').change(function() {
 				
 				var id = $(this).data('id');
