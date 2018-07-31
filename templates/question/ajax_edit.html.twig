@@ -35,12 +35,22 @@
 			{{ form_row(form.libelle_bottom, {"id":"question_libelle_bottom"}) }}
 			
 			<div id="input-liste-val">
-				Valeur(s) possible pour la réponse :
+				<div class="row">
+					<div class="col-md-9">
+						Valeur(s) possible(s) pour la réponse : 
+					</div>
+					<div class="col-md-3">
+						<a class="btn btn-sm btn-outline-success float-right" id="btn-add-input-list" href="#"><span class="oi oi-plus"></span></a>
+					</div>
+				</div>
 				<div id="contener-input-liste-val">
 				
 				</div>
 			</div>
 			{{ form_row(form.liste_valeur, {"id":"question_liste_valeur"})}}
+			
+			{{ form_row(form.valeur_defaut, {"id":"question_valeur_defaut"})}}
+			<br />
 
 		
 		</div>
@@ -69,6 +79,8 @@
     	   'show' : true,
     	   'backdrop' : 'static'
     });
+
+    $('#ajax_question_edit #question_liste_valeur').parent().hide();
     
 	var url = '{{path('question_ajax_edit', {'id': question.id }) }}';
 	Question.EventEditSubmit(url);
@@ -82,6 +94,7 @@
 	Preview.Launch(params);
 	Preview.Load();
 	Preview.Event();
+	Preview.subRepeatEvent();
 
 	
 
