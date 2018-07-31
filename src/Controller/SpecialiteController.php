@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controller;
 
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,9 +11,10 @@ use App\Form\SpecialiteType;
 
 class SpecialiteController extends AppController
 {
+
     /**
      * Listing des spécialités
-     * 
+     *
      * @Route("/specialite/listing/{page}/{field}/{order}", name="specialite_listing", defaults={"page" = 1, "field"= null, "order"= null})
      * @Security("is_granted('ROLE_ADMIN')")
      */
@@ -23,11 +23,11 @@ class SpecialiteController extends AppController
         if (is_null($field)) {
             $field = 'id';
         }
-        
+
         if (is_null($order)) {
             $order = 'DESC';
         }
-        
+
         $params = array(
             'field' => $field,
             'order' => $order,
@@ -37,9 +37,9 @@ class SpecialiteController extends AppController
             'repositoryMethode' => 'findAllSpecialites',
             'sans_inactif' => false
         );
-        
+
         $result = $this->genericSearch($request, $session, $params);
-        
+
         $pagination = array(
             'page' => $page,
             'route' => 'specialite_listing',
@@ -47,9 +47,9 @@ class SpecialiteController extends AppController
             'nb_elements' => $result['nb'],
             'route_params' => array()
         );
-        
+
         $this->setDatasFilter($session, $field, $order);
-        
+
         return $this->render('specialite/index.html.twig', [
             'controller_name' => 'SpecialiteController',
             'specialites' => $result['paginator'],
@@ -60,6 +60,34 @@ class SpecialiteController extends AppController
             'paths' => array(
                 'home' => $this->indexUrlProject(),
                 'active' => 'Liste des spécialités'
+            )
+        ]);
+    }
+
+    /**
+     * Fiche d'une spécialité
+     *
+     * @Route("/specialite/see/{id}/{page}", name="specialite_see")
+     * @ParamConverter("specialite", options={"mapping": {"id": "id"}})
+     * @Security("is_granted('ROLE_ADMIN')")
+     */
+    public function seeAction(SessionInterface $session, Specialite $specialite, int $page)
+    {
+        $arrayFilters = $this->getDatasFilter($session);
+        
+        return $this->render('specialite/see.html.twig', [
+            'page' => $page,
+            'specialite' => $specialite,
+            'paths' => array(
+                'home' => $this->indexUrlProject(),
+                'urls' => array(
+                    $this->generateUrl('specialite_listing', array(
+                        'page' => $page,
+                        'field' => $arrayFilters['field'],
+                        'order' => $arrayFilters['order']
+                    )) => 'Gestion des spécialités'
+                ),
+                'active' => 'Fiche d\'une spécialité'
             )
         ]);
     }
@@ -75,25 +103,25 @@ class SpecialiteController extends AppController
     public function addAction(SessionInterface $session, Request $request, int $page)
     {
         $arrayFilters = $this->getDatasFilter($session);
-        
+
         $specialite = new Specialite();
-        
+
         $form = $this->createForm(SpecialiteType::class, $specialite);
-        
+
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            
+
             $em = $this->getDoctrine()->getManager();
-            
+
             // TODO A changer
             $specialite->setDisabled(0);
-            
+
             $em->persist($specialite);
             $em->flush();
-            
+
             return $this->redirect($this->generateUrl('specialite_listing'));
         }
-        
+
         return $this->render('specialite/add.html.twig', [
             'page' => $page,
             'form' => $form->createView(),
@@ -110,7 +138,7 @@ class SpecialiteController extends AppController
             )
         ]);
     }
-    
+
     /**
      * Edition d'une spécialité
      *
@@ -121,24 +149,26 @@ class SpecialiteController extends AppController
     public function editAction(SessionInterface $session, Request $request, Specialite $specialite, int $page)
     {
         $arrayFilters = $this->getDatasFilter($session);
-        
-        $form = $this->createForm(SpecialiteType::class, $specialite);
-        
+
+        $form = $this->createForm(SpecialiteType::class, $specialite, array(
+            'disabled_etablissement' => true
+        ));
+
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            
+
             $em = $this->getDoctrine()->getManager();
-            
+
             $em->persist($specialite);
             $em->flush();
-            
+
             return $this->redirect($this->generateUrl('specialite_listing', array(
                 'page' => $page,
                 'field' => $arrayFilters['field'],
                 'order' => $arrayFilters['order']
             )));
         }
-        
+
         return $this->render('specialite/edit.html.twig', [
             'page' => $page,
             'form' => $form->createView(),
@@ -156,7 +186,7 @@ class SpecialiteController extends AppController
             )
         ]);
     }
-    
+
     /**
      * désactivation d'une spécialité
      *
@@ -167,19 +197,19 @@ class SpecialiteController extends AppController
     public function deleteAction(SessionInterface $session, Specialite $specialite, $page)
     {
         $arrayFilters = $this->getDatasFilter($session);
-        
+
         if ($specialite->getDisabled() == 1) {
             $specialite->setDisabled(0);
         } else {
             $specialite->setDisabled(1);
         }
-        
+
         $entityManager = $this->getDoctrine()->getManager();
-        
+
         $entityManager->persist($specialite);
-        
+
         $entityManager->flush();
-        
+
         return $this->redirectToRoute('specialite_listing', array(
             'page' => $page,
             'field' => $arrayFilters['field'],

@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Fiche d'un membre {% endblock %}
+
+{% block body %}
+
+    <h1>Fiche du membre #{{ membre.id }} - {{ membre.prenom }} {{ membre.nom }}</h1>
+    
+    {% include 'elements/arborescence.html.twig' %}
+    
+    <table  class="table table-sm table-striped">
+    	<tr>
+    		<th scope="col"> Prénom </th>
+    		<td> {{ membre.prenom }} </td>
+    	</tr>
+    	<tr>
+    		<th scope="col"> Nom </th>
+    		<td> {{ membre.nom }} </td>
+    	</tr>
+    	<tr>
+    		<th scope="col"> Pseudo </th>
+    		<td> {{ membre.username }} </td>
+    	</tr>
+    	<tr>
+    		<th scope="col"> Numéro de téléphone </th>
+    		<td> {{ membre.numeroTel }} </td>
+    	</tr>
+    	<tr>
+    		<th scope="col"> Email </th>
+    		<td> {{ membre.email }} </td>
+    	</tr>
+    	<tr>
+    		<th scope="col"> Etablissement </th>
+    		<td> {{ membre.etablissement.nom }} </td>
+    	</tr>
+    	<tr>
+    		<th scope="col"> Spécialité </th>
+    		<td> {% if membre.specialite != null %} {{ membre.specialite.service }} {% endif %} </td>
+    	</tr>
+    	<tr>
+    		<th scope="col"> Fonction </th>
+    		<td> {{ membre.fonction }} </td>
+    	</tr>
+    	<tr>
+    		<th scope="col"> Signature </th>
+    		<td> {{ membre.signature }} </td>
+    	</tr>
+    	<tr>
+    		<th scope="col"> Membre décideur </th>
+    		<td> {{ membre.decideur | bool }} </td>
+    	</tr>
+    	<tr>
+    		<th scope="col"> Membre présent dans l'annuaire </th>
+    		<td> {{ membre.annuaire | bool }} </td>
+    	</tr>
+    	<tr>
+    		<th scope="col"> Droits </th>
+    		<td> 
+    		    {% for role in membre.roles %}
+    		    	{{ role }}<br />
+    		   	{% endfor %} 
+    		</td>
+    	</tr>
+    </table>
+    <br />
+
+	
+{% endblock %}

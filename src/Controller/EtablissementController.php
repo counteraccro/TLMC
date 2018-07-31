@@ -65,6 +65,34 @@ class EtablissementController extends AppController
     }
     
     /**
+     * Fiche d'un établissement
+     *
+     * @Route("/etablissement/see/{id}/{page}", name="etablissement_see")
+     * @ParamConverter("etablissement", options={"mapping": {"id": "id"}})
+     * @Security("is_granted('ROLE_ADMIN')")
+     */
+    public function seeAction(SessionInterface $session, Etablissement $etablissement, int $page)
+    {
+        $arrayFilters = $this->getDatasFilter($session);
+        
+        return $this->render('etablissement/see.html.twig', [
+            'page' => $page,
+            'etablissement' => $etablissement,
+            'paths' => array(
+                'home' => $this->indexUrlProject(),
+                'urls' => array(
+                    $this->generateUrl('etablissement_listing', array(
+                        'page' => $page,
+                        'field' => $arrayFilters['field'],
+                        'order' => $arrayFilters['order']
+                    )) => "Gestion d'établissements"
+                ),
+                'active' => 'Fiche d\'un établissement'
+            )
+        ]);
+    }
+    
+    /**
      * Ajout d'un nouveau établissement
      *
      * @Route("/etablissement/add/{page}", name="etablissement_add")

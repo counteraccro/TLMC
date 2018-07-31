@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Fiche d'une spécialité {% endblock %}
+
+{% block body %}
+
+<h1>Fiche de la spécialité #{{ specialite.id }} - {{ specialite.service }}</h1>
+
+{% include 'elements/arborescence.html.twig' %}
+
+<table  class="table table-sm">
+	<tr>
+		<th scope="col"> Etablissement </th>
+		<td> {{ specialite.etablissement.nom }} </td>
+	</tr>
+	<tr>
+		<th scope="col"> Service </th>
+		<td> {{ specialite.service }} </td>
+	</tr>
+	<tr>
+		<th scope="col"> Code Logistique </th>
+		<td> {{ specialite.codeLogistique }} </td>
+	</tr>
+	<tr>
+		<th scope="col"> Service pour les adultes </th>
+		<td> {{ specialite.adulte | bool }} </td>
+	</tr>
+	<tr>
+		<th scope="col"> Service pour les enfants </th>
+		<td> {{ specialite.pediatrie | bool }} </td>
+	</tr>
+</table>
+<br />
+
+{% endblock %}

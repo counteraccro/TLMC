@@ -18,7 +18,8 @@ class SpecialiteType extends AbstractType
     {
         $builder->add('etablissement', EntityType::class, array(
             'class' => Etablissement::class,
-            'choice_label' => 'nom'
+            'choice_label' => 'nom',
+            'disabled' => $options['disabled_etablissement']
         ))
             ->add('service', TextType::class, array(
             'label' => 'Nom du service'
@@ -48,7 +49,8 @@ class SpecialiteType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Specialite::class,
-            'label_submit' => 'Valider'
+            'label_submit' => 'Valider',
+            'disabled_etablissement' => false
         ]);
     }
 }
