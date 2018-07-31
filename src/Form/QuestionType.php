@@ -57,7 +57,7 @@ exemple-cle2:exemple-valeur2,',
                 'class' => 'preview'
             )
         ))
-            ->add('valeur_defaut', TextareaType::class, array(
+            ->add('valeur_defaut', ChoiceType::class, array(
             'label' => 'Valeur par défaut',
             'required' => false,
             'attr' => array(

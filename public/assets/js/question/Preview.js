@@ -149,7 +149,7 @@ Preview.Render = function()
 		  </div>'*/
 
 	Preview.html += 'Visualiser le message d\'erreur : <input type="checkbox" id="checkbox_msg_erreur">'; 
-	Preview.html += '<p id="checkbox_message_erreur" style="display:none" class="btn btn-outline-danger btn-sm">{{ form_row(form.message_erreur, {"id":"message_erreur"}) }}</p></p>';
+	Preview.html += '<p id="checkbox_message_erreur" style="display:none" class="btn btn-outline-danger btn-sm">' + $('#question_message_erreur').val() + '</p>';
 	$(Preview.id_preview).html(Preview.html);
 }
 
