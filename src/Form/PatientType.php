@@ -10,6 +10,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Entity\Specialite;
 
 class PatientType extends AbstractType
 {
@@ -26,6 +28,11 @@ class PatientType extends AbstractType
             ->add('PMR', CheckboxType::class, array(
             'required' => false,
             'label' => 'Personne à mobilité réduite'
+        ))
+            ->add('specialite', EntityType::class, array(
+            'class' => Specialite::class,
+            'label' => 'Spécialité',
+            'choice_label' => 'service'
         ))
             ->add('familles', CollectionType::class, array(
             'label' => 'Formulaire d\'ajout d\'un nouveau membre de famille',
@@ -48,15 +55,14 @@ class PatientType extends AbstractType
                 'class' => 'btn btn-primary'
             )
         ));
-        // ->add('specialite')
-        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => Patient::class,
-            'label_submit' => 'Valider'
+            'label_submit' => 'Valider',
+            'allow_extra_fields' => true
         ]);
     }
 }

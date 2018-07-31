@@ -7,8 +7,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\PatientType;
-use App\Entity\Specialite;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use App\Entity\Etablissement;
 
 class PatientController extends AppController
 {
@@ -73,6 +73,48 @@ class PatientController extends AppController
         ]);
     }
 
+    
+    /**
+     * Mise à jour du dropdown Spécialité lorsque l'établissement change dans le formulaire d'ajout d'un patient
+     * 
+     * @Route("/patient/ajax/add/specialite/{id}", name="patient_ajax_add_specialite", defaults={"id" = 0})
+     * @ParamConverter("etablissement", options={"mapping": {"id": "id"}})
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
+     */
+    public function addAjaxSpecialiteAction(Request $request, Etablissement $etablissement)
+    {
+        $specialites = $etablissement->getSpecialites();
+        
+        return $this->render('patient/ajax_dropdown_specialite.html.twig', array(
+            'specialites' => $specialites,
+            'select_specialite' => 0
+        ));
+    }
+    
+    /**
+     * Mise à jour du dropdown Spécialité lorsque l'établissement change dans le formulaire d'édition d'un patient
+     * 
+     * @Route("/patient/ajax/edit/specialite/{patient_id}/{etablissement_id}", name="patient_ajax_edit_specialite", defaults={"etablissement_id"=0})
+     * @ParamConverter("patient", options={"mapping": {"patient_id": "id"}})
+     * @ParamConverter("etablissement", options={"mapping": {"etablissement_id": "id"}})
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
+     */
+    public function editAjaxSpecialiteAction(Request $request, Patient $patient, int $etablissement = null)
+    {
+        $select_specialite = $patient->getSpecialite()->getId();
+        
+        if (! is_null($etablissement)) {
+            $specialites = $etablissement->getSpecialites();
+        } else {
+            $specialites = $patient->getEtablissement()->getSpecialites();
+        }
+        
+        return $this->render('patient/ajax_dropdown_specialite.html.twig', array(
+            'specialites' => $specialites,
+            'select_specialite' => $select_specialite
+        ));
+    }
+    
     /**
      * Fiche d'un patient
      *
@@ -129,20 +171,15 @@ class PatientController extends AppController
     public function addAction(SessionInterface $session, Request $request, int $page)
     {
         $arrayFilters = $this->getDatasFilter($session);
-
+        
         $patient = new Patient();
-
+        
         $form = $this->createForm(PatientType::class, $patient);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
             $em = $this->getDoctrine()->getManager();
-
-            // TODO A changer
-            $repository = $this->getDoctrine()->getRepository(Specialite::class);
-            $result = $repository->findById(self::ID_SPECIALITE);
-            $patient->setSpecialite($result[0]);
 
             foreach ($patient->getFamilles() as $famille) {
                 $famille->setPatient($patient);
@@ -158,10 +195,14 @@ class PatientController extends AppController
 
             return $this->redirect($this->generateUrl('patient_listing'));
         }
-
+        
+        $repository = $this->getDoctrine()->getRepository(Etablissement::class);
+        $etablissements = $repository->findAll();
+        
         return $this->render('patient/add.html.twig', [
             'page' => $page,
             'form' => $form->createView(),
+            'etablissements' => $etablissements,
             'paths' => array(
                 'home' => $this->indexUrlProject(),
                 'urls' => array(
