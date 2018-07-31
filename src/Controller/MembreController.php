@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Form\MembreType;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use App\Entity\Etablissement;
 
 class MembreController extends AppController
 {
@@ -63,6 +64,48 @@ class MembreController extends AppController
                 'active' => 'Liste des membres'
             )
         ]);
+    }
+    
+    /**
+     * Fiche d'un membre
+     *
+     * @Route("/membre/ajax/add/specialite/{id}", name="membre_ajax_add_specialite", defaults={"id" = 0})
+     * @ParamConverter("etablissement", options={"mapping": {"id": "id"}})
+     * @Security("is_granted('ROLE_ADMIN')")
+     */
+    public function addAjaxSpecialiteAction(Request $request, Etablissement $etablissement)
+    {
+        $specialites = $etablissement->getSpecialites();
+        
+        return $this->render('membre/ajax_add_specialite.html.twig', array(
+            'specialites' => $specialites,
+            'select_specialite' => 0
+        ));
+    }
+    
+    /**
+     * Fiche d'un membre
+     *
+     * @Route("/membre/ajax/edit/specialite/{id}/{etablissement_id}", name="membre_ajax_edit_specialite", defaults={"etablissement_id"=-1})
+     * @ParamConverter("membre", options={"mapping": {"id": "id"}})
+     * @Security("is_granted('ROLE_ADMIN')")
+     */
+    public function editAjaxSpecialiteAction(Request $request, Membre $membre, int $etablissement_id = -1)
+    {
+        $select_specialite = $membre->getSpecialite()->getId();
+        
+        if($etablissement_id > 0){
+            $repository = $this->getDoctrine()->getRepository(Etablissement::class);
+            $etablissements = $repository->findById($etablissement_id);
+            $etablissement = $etablissements[0];
+            $specialites = $etablissement->getSpecialites();
+        } else {
+            $specialites = $membre->getEtablissement()->getSpecialites();
+        }
+        return $this->render('membre/ajax_add_specialite.html.twig', array(
+            'specialites' => $specialites,
+            'select_specialite' => $select_specialite
+        ));
     }
     
     /**

@@ -10,7 +10,6 @@
 
 <div>
     {{ form_start(form) }}
-    
 	{{ form_row(form.nom) }}
 	{{ form_row(form.prenom) }}
 	{{ form_row(form.username) }}
@@ -22,6 +21,13 @@
 	{{ form_row(form.decideur) }}
 	{{ form_row(form.annuaire) }}
 	
+	{{ form_row(form.etablissement) }}
+	<div id="bloc_specialite">
+		{{ form_row(form.specialite) }}
+	</div>
+	
+	<input type="hidden" name="membre[password][first]" value="{{ membre.password }}">
+	<input type="hidden" name="membre[password][second]" value="{{ membre.password }}">
     
     {{ form_rest(form) }}
     {{ form_errors(form) }}
@@ -29,4 +35,28 @@
     
 </div>
 	  
+{% endblock %}
+
+{% block script %}
+ 	<script src="{{ asset('assets/js/membre/membre.js') }}?{{ date().timestamp }}"></script>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+    
+    $(document).ready(function() {
+    	
+		var params = {
+				url_ajax_see : '{{ path('membre_ajax_edit_specialite', {'id': membre.id}) }}',
+				id_specialite : '#bloc_specialite',
+				id_bloc_etablissement : '#membre_etablissement'
+		};
+        
+    	Membre.Launch(params);
+    	Membre.LoadSpecialite();
+		Membre.EventChange();
+		
+    });
+    
+    </script>
 {% endblock %}
