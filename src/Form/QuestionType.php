@@ -65,7 +65,11 @@ exemple-cle2:exemple-valeur2,',
             )
         ))
             ->add('message_erreur', TextType::class, array(
-            'required' => false
+            'label' => 'Message d\'erreur',
+            'required' => false,
+            'attr' => array(
+                'class' => 'preview'
+            )
         ))
             ->add('ordre', NumberType::class, array(
             'required' => false
@@ -76,11 +80,7 @@ exemple-cle2:exemple-valeur2,',
             ->add('obligatoire', TextType::class, array(
             'required' => false
         ))
-            ->
-        // ->add('jour_relance', NumberType::class, array(
-        // 'label' => 'Jour de relance'
-        // ));
-        add('disabled', CheckboxType::class, array(
+            ->add('disabled', CheckboxType::class, array(
             'required' => false,
             'label' => 'Actif'
         ))

@@ -19,7 +19,7 @@
           	</div>
           	<div class="card-body">
             	<div id="content-preview-question">
-            		
+
             	</div>
           </div>
         </div>
@@ -27,13 +27,14 @@
         <hr />
         
 	{{ form_row(form.type, {"id":"question_liste_select_type"}) }}
+
 	
 	<div class="row">
 		<div class="col-md-6">
 			<h6>Configuration simple</h6>
 			{{ form_row(form.libelle, {"id":"question_libelle"}) }}
 			{{ form_row(form.libelle_bottom, {"id":"question_libelle_bottom"}) }}
-			
+
 			<div id="input-liste-val">
 				<div class="row">
 					<div class="col-md-9">
@@ -57,6 +58,7 @@
 		<div class="col-md-6">
 			<h6>Avancée</h6>
 			{{ form_row(form.libelle_top, {"id":"question_libelle_top"}) }}
+			{{ form_row(form.message_erreur, {"id":"question_message_erreur"}) }}
 		</div>
 	</div>
 	
@@ -95,9 +97,6 @@
 	Preview.Load();
 	Preview.Event();
 	Preview.subRepeatEvent();
-
-	
-
 
     </script>
 {% endblock %}

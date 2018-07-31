@@ -93,13 +93,6 @@ class QuestionnaireController extends AppController
                 'active' => 'Fiche d\'un questionnaire'
             )
         ]);
-
-        // //TODO
-        // Traitement des questions
-        // GetQuestions()
-        // ex: type de question ? input ? textarea ? (switch case)
-        // Message d'erreur (par rapport à règles, required...)
-        // Liste de valeurs en json (dropdown)
     }
 
     /**
