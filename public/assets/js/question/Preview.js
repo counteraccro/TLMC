@@ -6,6 +6,8 @@ Preview.Launch = function(params) {
 	Preview.id_global = params.id_global;
 	Preview.id_preview = params.id_global + ' ' + params.id_preview;
 	Preview.liste_type_json = params.liste_type_json;
+	Preview.id_input_liste_val = '#contener-input-liste-val';
+	Preview.json_liste_val = '';
 
 	Preview.html = '';
 	Preview.input = '';
@@ -27,6 +29,7 @@ Preview.Launch = function(params) {
 		});
 
 		Preview.Render();
+
 	}
 
 	/**
@@ -37,9 +40,42 @@ Preview.Launch = function(params) {
 	{
 		$(Preview.id_global + " .preview").change(function(){
 			Preview.ConstructHtml($(this));
-
 			Preview.Render();
 		});
+
+		$(Preview.id_global +  ' #btn-add-input-list').click(function() {
+
+			Preview.json_liste_val[Object.keys(Preview.json_liste_val).length] = {'value' : '', 'libelle' : ''};
+			Preview.GestionElementListe();
+			Preview.Render();
+			Preview.subRepeatEvent();
+			return false;
+		});
+
+		Preview.subRepeatEvent = function()
+		{
+			$(Preview.id_global +  ' .btn-delete-element-list').click(function() {
+		
+				var id = $(this).data('id');
+				delete Preview.json_liste_val[id];
+				Preview.GestionElementListe();
+				Preview.Render();
+				Preview.subRepeatEvent();
+			});
+			
+			$(Preview.id_global +  ' .input-val').change(function() {
+				
+				var id = $(this).data('id');
+				var value = $("#list-val-col-" + id + " #input-value-"+ id).val();
+				var libelle = $("#list-val-col-" + id + " #input-libelle-"+ id).val();
+				Preview.json_liste_val[id] = {'value' : value, 'libelle' : libelle};
+				Preview.GestionElementListe();
+				Preview.Render();
+				Preview.subRepeatEvent();
+				
+			});
+		}
+
 	}
 
 	/**
@@ -73,7 +109,8 @@ Preview.Launch = function(params) {
 			}
 			break;
 		case 'question_liste_valeur':
-			Preview.ConvertListeValue(form_element);
+			Preview.json_liste_val = JSON.parse(form_element.val());
+			Preview.GestionElementListe();
 			break;
 		default:
 			console.log('Element ' + id + ' introuvable');
@@ -119,34 +156,34 @@ Preview.Launch = function(params) {
 	/**
 	 * Conversion de la liste de valeurs envoyée par l'utilisateur en JSON
 	 */
-	Preview.ConvertListeValue = function(element)
+	Preview.GestionElementListe = function()
 	{
-		var json = JSON.parse(element.val());
+		var json = Preview.json_liste_val;
 		var html = '';
 		var options = "";
-		
-		var i = 0;
-		for (var key in json)
-		{
+
+		for (var i in json)
+		{			
 			html += '<div class="row no-gutters align-items-center" id="list-val-col-' + i + '">';
 			html += '<div class="col-md-5">';
-			html += '<input class="form-control liste-val-key" type="text" value="' + key + '" />';
+			html += '<input class="form-control liste-val-key input-val" type="text" value="' + json[i].value + '" data-id="'+ i +'" id="input-value-'+ i +'" />';
 			html += '</div>';
 			html += '<div class="col-md-5">';
-			html += '<input type="text" class="form-control list-val-val" value="' + json[key] + '" />';
+			html += '<input type="text" class="form-control list-val-val input-val" value="' + json[i].libelle + '" data-id="'+ i +'" id="input-libelle-'+ i +'" />';
 			html += '</div>';
 			html += '<div class="col-md-2">';
-			html += '-- <a href="#" data-id="' + i + '"><span class="oi oi-x"></span></a>';
+			html += '&nbsp;&nbsp;<a href="#" data-id="' + i + '" class="btn btn-sm btn-outline-danger btn-delete-element-list"><span class="oi oi-x"></span></a>';
 			html += '</div>';
 			html += '</div>';
-			i++;
-			
-			options += '<option value="' + key + '">' + json[key] + '</option>';
+
+			options += '<option value="' + json[i].value + '">' + json[i].libelle + '</option>';
 		}
-		
-		$("#contener-input-liste-val").html(html);
-		
-		Preview.input = '<select class="form-control" id="select-preview">'+ options + '</select>';
+
+		$(Preview.id_input_liste_val).html(html);
+
+		$(Preview.id_global + ' #question_liste_valeur').val(JSON.stringify(json));
+		Preview.input = Preview.tabStructureElement['ChoiceType'];
+		Preview.input = Preview.input.replace('<option>valeur</option>', options);
 	}
 }
 
