@@ -1,58 +1,83 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello {{ controller_name }}!{% endblock %}
+{% block title %}Etablissements{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'src/Controller/EtablissementController.php'|file_link(0) }}">src/Controller/EtablissementController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'templates/etablissement/index.html.twig'|file_link(0) }}">templates/etablissement/index.html.twig</a></code></li>
-    </ul>
+    <h1>Gestion des établissements</h1>
+    
+    {% include 'elements/arborescence.html.twig' %}
+    
+    <div class="card">
+    	<div class="card-header">
+            {{ pagination.nb_elements }} établissements - Page {{ pagination.page }} / {{ pagination.pages_count }}
+        	<a href="{{ path('etablissement_add', {'page' : pagination.page}) }}" class="float-right"><span class="oi oi-person"></span> Nouvel établissement</a>
+      		{{ labelFilter(path('utils_delete-search', {'page' : pagination.page} ), current_search) | raw }}
+      	</div>
+      	
+      	<div class="card-body">
+      	<table class="table table-sm table-striped">
+        	<tr>
+        		<th>{{ headerFilter(path('etablissement_listing', {'page' : pagination.page, 'field' : 'id'} ), '#', current_order, current_field) | raw }}</th>
+        		<th>{{ headerFilter(path('etablissement_listing', {'page' : pagination.page, 'field' : 'nom'} ), 'Nom', current_order, current_field) | raw }}</th>
+        		<th>{{ headerFilter(path('etablissement_listing', {'page' : pagination.page, 'field' : 'type'} ), 'Type', current_order, current_field) | raw }}</th>
+        		<th>{{ headerFilter(path('etablissement_listing', {'page' : pagination.page, 'field' : 'code_logistique'} ), 'Code logistique', current_order, current_field) | raw }} </th>
+            	<th>{{ headerFilter(path('etablissement_listing', {'page' : pagination.page, 'field' : 'nb_lit'} ), 'Nombre de lit', current_order, current_field) | raw }}</th>
+        		<th>{{ headerFilter(path('etablissement_listing', {'page' : pagination.page, 'field' : 'statut_convention'} ), 'Statut de la convention', current_order, current_field) | raw }}</th>
+        		<th>{{ headerFilter(path('etablissement_listing', {'page' : pagination.page, 'field' : 'date_collaboration'} ), 'Date de début de la collaboration', current_order, current_field) | raw }}</th>
+        		<th>{{ headerFilter(path('etablissement_listing', {'page' : pagination.page, 'field' : 'numero_voie'} ), 'N° de voie', current_order, current_field) | raw }} </th>
+            	<th>{{ headerFilter(path('etablissement_listing', {'page' : pagination.page, 'field' : 'voie'} ), 'Voie', current_order, current_field) | raw }}</th>
+        		<th>{{ headerFilter(path('etablissement_listing', {'page' : pagination.page, 'field' : 'code_postal'} ), 'Code Postal', current_order, current_field) | raw }}</th>
+        		<th>{{ headerFilter(path('etablissement_listing', {'page' : pagination.page, 'field' : 'ville'} ), 'Ville', current_order, current_field) | raw }}</th>
+        		<th>{{ headerFilter(path('etablissement_listing', {'page' : pagination.page, 'field' : 'region'} ), 'Région', current_order, current_field) | raw }} </th>
+            	<th></th>
+        	</tr>
+        	<tr>
+        		<td>{{ inputFilter(path('etablissement_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Etablissement-id', current_search, 'Identifiant') | raw }}</td>
+        		<td>{{ inputFilter(path('etablissement_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Etablissement-nom', current_search, 'Nom') | raw }}</td>
+        		<td>{{ inputFilter(path('etablissement_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Etablissement-type', current_search, 'Type') | raw }}</td>
+        		<td>{{ inputFilter(path('etablissement_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Etablissement-code_logistique', current_search, 'Code logistique') | raw }}</td>
+        		<td>{{ inputFilter(path('etablissement_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Etablissement-nb_lit', current_search, 'Nombre de lits') | raw }}</td>
+        		<td>{{ inputFilter(path('etablissement_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Etablissement-statut_convention', current_search, 'Statut de la convention') | raw }}</td>
+        		<td>{{ inputFilter(path('etablissement_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Etablissement-date_collaboration', current_search, 'Date collaboration') | raw }}</td>
+        		<td>{{ inputFilter(path('etablissement_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Etablissement-numero_voie', current_search, 'N° voie') | raw }}</td>
+        		<td>{{ inputFilter(path('etablissement_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Etablissement-voie', current_search, 'Voie') | raw }}</td>
+        		<td>{{ inputFilter(path('etablissement_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Etablissement-code_postal', current_search, 'Code postal') | raw }}</td>
+        		<td>{{ inputFilter(path('etablissement_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Etablissement-ville', current_search, 'Ville') | raw }}</td>
+        		<td>{{ inputFilter(path('etablissement_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Etablissement-region', current_search, 'Région') | raw }}</td>
+        		<td></td>
+        	</tr>
+        	
+  		{% for etablissement in etablissements %}
+        		<tr>
+        			<td>{{ etablissement.id }}</td>
+        			<td>{{ etablissement.nom }}</td>
+        			<td>{{ etablissement.type }}</td>
+        			<td>{{ etablissement.codeLogistique }}</td>
+        			<td>{{ etablissement.nbLit }}</td>
+        			<td>{{ etablissement.statutConvention }}</td>
+        			<td>{{ etablissement.dateCollaboration | date('d/m/Y') }}</td>
+        			<td>{{ etablissement.numeroVoie }}</td>
+        			<td>{{ etablissement.voie }} </td>
+        			<td>{{ etablissement.codePostal }}</td>
+        			<td>{{ etablissement.ville }}</td>
+        			<td>{{ etablissement.region }}</td>
+        			<td>
+        			    {#{ actionSee(path('etablissement_see', {'id' : etablissement.id, 'page' : pagination.page})) | raw }#}
+        			    {{ actionEdit(path('etablissement_edit', {'id' : etablissement.id, 'page' : pagination.page})) | raw }}
+        			    {{ actionDelete(etablissement.disabled, path('etablissement_delete', {'id' : etablissement.id, 'page' : pagination.page})) | raw }}
+        			</td>
+        		</tr>
+        	{% endfor %}
+        </table>
+                
+    	{% if etablissements is empty %}
+        	<p class="text-info text-center">Il  n'y a aucun établissement correspondant à votre recherche.</p>
+        {% endif %}
+        
+  	</div>
+  	<div class="card-footer">
+    	{% include 'elements/pagination.html.twig' %}
+  	</div>
 </div>
-
-<div>
-	
-	{% for etablissement in etablissements %}
-		Nom :
-	    {{ etablissement.nom }}
-		<br /> Type :
-	    {{ etablissement.type }}
-		
-		<br />Code logistique :
-	    {{ etablissement.codeLogistique }}
-		
-		<br />Adresse : 
-		{{ etablissement.numeroVoie }}, {{ etablissement.voie }} - {{ etablissement.ville }}
-		
-		<br />	
-		<br />
-	    Specialites :<br />	
-	    {% for specialite in etablissement.specialites %}
-	    	--- Service : {{ specialite.service }}<br />
-	    	--- Code Logistique : {{ specialite.codeLogistique }}
-	    	<br/>
-	    	<br />	
-	    {% endfor %}
-	        	<br />
-	        	
-	    Produits :<br />	
-	    {% for produit in etablissement.produits %}
-	    	--- Produit : {{ produit.produit.titre }}<br />
-	    	<br/>
-	    	<br />	
-	    {% endfor %}
-		<hr>
-	{% endfor %}
-	
-
-</div>
-
 {% endblock %}

@@ -50,12 +50,12 @@ class Membre implements AdvancedUserInterface
     private $fonction;
 
     /**
-     * @ORM\Column(type="smallint")
+     * @ORM\Column(type="boolean")
      */
     private $decideur;
 
     /**
-     * @ORM\Column(type="smallint")
+     * @ORM\Column(type="boolean")
      */
     private $annuaire;
 
@@ -215,30 +215,6 @@ class Membre implements AdvancedUserInterface
     public function setFonction(string $fonction): self
     {
         $this->fonction = $fonction;
-
-        return $this;
-    }
-
-    public function getDecideur(): ?int
-    {
-        return $this->decideur;
-    }
-
-    public function setDecideur(int $decideur): self
-    {
-        $this->decideur = $decideur;
-
-        return $this;
-    }
-
-    public function getAnnuaire(): ?int
-    {
-        return $this->annuaire;
-    }
-
-    public function setAnnuaire(int $annuaire): self
-    {
-        $this->annuaire = $annuaire;
 
         return $this;
     }
@@ -570,6 +546,30 @@ class Membre implements AdvancedUserInterface
     public function isAccountNonLocked()
     {
         return true;
+    }
+
+    public function getDecideur(): ?bool
+    {
+        return $this->decideur;
+    }
+
+    public function setDecideur(bool $decideur): self
+    {
+        $this->decideur = $decideur;
+
+        return $this;
+    }
+
+    public function getAnnuaire(): ?bool
+    {
+        return $this->annuaire;
+    }
+
+    public function setAnnuaire(bool $annuaire): self
+    {
+        $this->annuaire = $annuaire;
+
+        return $this;
     }
 
 

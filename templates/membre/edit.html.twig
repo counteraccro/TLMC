@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Edition d'un membre {% endblock %}
+
+{% block body %}
+
+<h1>Modification du membre #{{ membre.id }} - {{ membre.prenom }} {{ membre.nom }}</h1>
+
+{% include 'elements/arborescence.html.twig' %}
+
+<div>
+    {{ form_start(form) }}
+    
+	{{ form_row(form.nom) }}
+	{{ form_row(form.prenom) }}
+	{{ form_row(form.username) }}
+	{{ form_row(form.password) }}
+	{{ form_row(form.email) }}
+	{{ form_row(form.numero_tel) }}
+	{{ form_row(form.fonction) }}
+	{{ form_row(form.signature) }}
+	{{ form_row(form.decideur) }}
+	{{ form_row(form.annuaire) }}
+	
+    
+    {{ form_rest(form) }}
+    {{ form_errors(form) }}
+    {{ form_end(form) }}
+    
+</div>
+	  
+{% endblock %}

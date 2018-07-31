@@ -23,7 +23,7 @@
 	</tr>
 	<tr>
 		<th scope="col"> Personne à mobilité réduite </th>
-		<td> {%if patient.pmr == 1 %} Oui {% else %} Non {% endif %} </td>
+		<td> {{ patient.pmr | bool }} </td>
 	</tr>
 	<tr>
 		<th scope="col"> Service </th>

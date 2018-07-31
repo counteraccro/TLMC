@@ -39,7 +39,7 @@
 	</tr>
 	<tr>
 		<th scope="col"> Personne à mobilité réduite </th>
-		<td> {%if famille.pmr == 1 %} Oui {% else %} Non {% endif %} </td>
+		<td> {{ famille.pmr | bool }} </td>
 	</tr>
 </table>
 

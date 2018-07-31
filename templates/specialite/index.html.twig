@@ -1,71 +1,65 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}
-Hello
-{{ controller_name }}
-!
-{% endblock %}
+{% block title %}Spécialités{% endblock %}
 
 {% block body %}
-<style>
-.example-wrapper {
-	margin: 1em auto;
-	max-width: 800px;
-	width: 95%;
-	font: 18px/1.5 sans-serif;
-}
 
-.example-wrapper code {
-	background: #F5F5F5;
-	padding: 2px 6px;
-}
-</style>
-
-<div class="example-wrapper">
-	<h1>
-		Hello
-		{{ controller_name }}
-		! ✅
-	</h1>
-
-	This friendly message is coming from:
-	<ul>
-		<li>Your controller at <code>
-				<a
-					href="{{ 'src/Controller/SpecialiteController.php'|file_link(0) }}">src/Controller/SpecialiteController.php</a>
-			</code></li>
-		<li>Your template at <code>
-				<a href="{{ 'templates/specialite/index.html.twig'|file_link(0) }}">templates/specialite/index.html.twig</a>
-			</code></li>
-	</ul>
-</div>
-
-<div>
-	
-	{% for specialite in specialites %}
-		Etablissement :
-	    {{ specialite.etablissement.nom }}
-		
-		<br /> Code logistique :
-	    {{ specialite.codeLogistique }}
-		<br /> Adulte ou Pediatrie ?
-	    
-	    {% if specialite.adulte == 1 %}
-			<p>Adulte</p>
-	    {% endif %}
-
-	    {% if specialite.pediatrie == 1 %}
-			<p>Pediatrie</p>
-	    {% endif %}
-
-		Service :
-	   	{{ specialite.service }}
-	   	
-	   	
-{# 	   	Evenements liés à la spécialité :#}
-		<hr>
-	
-	{% endfor %}
-
+    <h1>Gestion des spécialités</h1>
+    
+    {% include 'elements/arborescence.html.twig' %}
+    
+    <div class="card">
+    	<div class="card-header">
+            {{ pagination.nb_elements }} spécialités - Page {{ pagination.page }} / {{ pagination.pages_count }}
+        	<a href="{{ path('specialite_add', {'page' : pagination.page}) }}" class="float-right"><span class="oi oi-person"></span> Nouvelle spécialité</a>
+      		{{ labelFilter(path('utils_delete-search', {'page' : pagination.page} ), current_search) | raw }}
+      	</div>
+      	
+      	<div class="card-body">
+      	<table class="table table-sm table-striped">
+        	<tr>
+        		<th>{{ headerFilter(path('specialite_listing', {'page' : pagination.page, 'field' : 'id'} ), '#', current_order, current_field) | raw }}</th>
+        		<th>{{ headerFilter(path('specialite_listing', {'page' : pagination.page, 'field' : 'service'} ), 'Région', current_order, current_field) | raw }} </th>
+            	<th>{{ headerFilter(path('specialite_listing', {'page' : pagination.page, 'field' : 'code_logistique'} ), 'Code logistique', current_order, current_field) | raw }} </th>
+            	<th>Etablissement</th>
+            	<th>Service adulte</th>
+            	<th>Service enfant</th>
+            	<th></th>
+        	</tr>
+        	<tr>
+        		<td>{{ inputFilter(path('specialite_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Specialite-id', current_search, 'Identifiant') | raw }}</td>
+        		<td>{{ inputFilter(path('specialite_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Specialite-service', current_search, 'Nom') | raw }}</td>
+        		<td>{{ inputFilter(path('specialite_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Specialite-code_logistique', current_search, 'Code logistique') | raw }}</td>
+        		<td>{{ inputFilter(path('specialite_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Specialite-Etablissement-nom', current_search, 'Etablissement') | raw }}</td>
+        		<td></td>
+        		<td></td>
+        		<td></td>
+        	</tr>
+        	
+  		{% for specialite in specialites %}
+        		<tr>
+        			<td>{{ specialite.id }}</td>
+        			<td>{{ specialite.service }}</td>
+        			<td>{{ specialite.codeLogistique }}</td>
+        			<td>{{ specialite.etablissement.nom }}</td>
+        			<td>{{ specialite.adulte | bool }}</td>
+        			<td>{{ specialite.pediatrie | bool }}</td>
+        			<td>
+        			    {#{ actionSee(path('specialite_see', {'id' : specialite.id, 'page' : pagination.page})) | raw }#}
+        			    {{ actionEdit(path('specialite_edit', {'id' : specialite.id, 'page' : pagination.page})) | raw }}
+        			    {{ actionDelete(specialite.disabled, path('specialite_delete', {'id' : specialite.id, 'page' : pagination.page})) | raw }}
+        			</td>
+        		</tr>
+        	{% endfor %}
+        </table>
+                
+    	{% if specialites is empty %}
+        	<p class="text-info text-center">Il  n'y a aucune spécialité correspondant à votre recherche.</p>
+        {% endif %}
+        
+  	</div>
+  	<div class="card-footer">
+    	{% include 'elements/pagination.html.twig' %}
+  	</div>
 </div>
 {% endblock %}

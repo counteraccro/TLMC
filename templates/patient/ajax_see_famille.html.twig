@@ -28,7 +28,7 @@
                 		    {{ famille.familleAdresse.codePostal }} {{ famille.familleAdresse.ville }}
                 		    <a href="{{ path('famille_adresse_ajax_edit', {'id' : famille.familleAdresse.id}) }}" id="btn-edit-famille-adresse-{{ famille.familleAdresse.id }}"  title="Editer la fiche"><span class="oi oi-pencil"></span></a>
                 		</td>
-                		<td>{%if famille.pmr == 1 %} Oui {% else %} Non {% endif %}</td>
+                		<td>{{ famille.pmr | bool }}</td>
                 		<td>
             		        <a href="{{ path('famille_ajax_edit', {'id' : famille.id}) }}" id="btn-edit-famille-{{ famille.id }}"  title="Editer la fiche"><span class="oi oi-pencil"></span></a>
                 		    {% if is_granted("ROLE_ADMIN") %}
