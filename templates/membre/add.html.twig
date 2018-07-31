@@ -1,32 +1,62 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} Nouveau membre {% endblock %}
+{% block title %}
+	Nouveau membre
+{% endblock %}
 
 {% block body %}
 
-<h1>Ajout d'un nouveau membre</h1>
-
-{% include 'elements/arborescence.html.twig' %}
-
-<div>
-    {{ form_start(form) }}
-    
-	{{ form_row(form.nom) }}
-	{{ form_row(form.prenom) }}
-	{{ form_row(form.username) }}
-	{{ form_row(form.password) }}
-	{{ form_row(form.email) }}
-	{{ form_row(form.numero_tel) }}
-	{{ form_row(form.fonction) }}
-	{{ form_row(form.signature) }}
-	{{ form_row(form.decideur) }}
-	{{ form_row(form.annuaire) }}
+	<h1>Ajout d'un nouveau membre</h1>
 	
+    {% include 'elements/arborescence.html.twig' %}
+	
+	<div>
+    	{{ form_start(form) }}
     
-    {{ form_rest(form) }}
-    {{ form_errors(form) }}
-    {{ form_end(form) }}
+    	{{ form_row(form.nom) }}
+    	{{ form_row(form.prenom) }}
+    	{{ form_row(form.username) }}
+    	{{ form_row(form.password) }}
+    	{{ form_row(form.email) }}
+    	{{ form_row(form.numero_tel) }}
+    	{{ form_row(form.fonction) }}
+    	{{ form_row(form.signature) }}
+    	{{ form_row(form.decideur) }}
+    	{{ form_row(form.annuaire) }}
     
-</div>
-	  
+    	{{ form_row(form.etablissement) }}
+    	<div id="bloc_specialite">
+    	    {{ form_row(form.specialite) }}
+    	</div>
+    
+    	{{ form_rest(form) }}
+    	{{ form_errors(form) }}
+    	{{ form_end(form) }}
+    
+    </div>
+
+{% endblock %}
+
+{% block script %}
+ 	<script src="{{ asset('assets/js/membre/membre.js') }}?{{ date().timestamp }}"></script>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+    
+    $(document).ready(function() {
+    	
+		var params = {
+				url_ajax_see : '{{ path('membre_ajax_add_specialite') }}',
+				id_specialite : '#bloc_specialite',
+				id_bloc_etablissement : '#membre_etablissement'
+		};
+        
+    	Membre.Launch(params);
+    	Membre.LoadSpecialite();
+		Membre.EventChange();
+		
+    });
+    
+    </script>
 {% endblock %}
