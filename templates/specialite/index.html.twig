@@ -45,7 +45,7 @@
         			<td>{{ specialite.adulte | bool }}</td>
         			<td>{{ specialite.pediatrie | bool }}</td>
         			<td>
-        			    {#{ actionSee(path('specialite_see', {'id' : specialite.id, 'page' : pagination.page})) | raw }#}
+        			    {{ actionSee(path('specialite_see', {'id' : specialite.id, 'page' : pagination.page})) | raw }}
         			    {{ actionEdit(path('specialite_edit', {'id' : specialite.id, 'page' : pagination.page})) | raw }}
         			    {{ actionDelete(specialite.disabled, path('specialite_delete', {'id' : specialite.id, 'page' : pagination.page})) | raw }}
         			</td>

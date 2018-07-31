@@ -63,7 +63,7 @@
         			<td>{{ etablissement.ville }}</td>
         			<td>{{ etablissement.region }}</td>
         			<td>
-        			    {#{ actionSee(path('etablissement_see', {'id' : etablissement.id, 'page' : pagination.page})) | raw }#}
+        			    {{ actionSee(path('etablissement_see', {'id' : etablissement.id, 'page' : pagination.page})) | raw }}
         			    {{ actionEdit(path('etablissement_edit', {'id' : etablissement.id, 'page' : pagination.page})) | raw }}
         			    {{ actionDelete(etablissement.disabled, path('etablissement_delete', {'id' : etablissement.id, 'page' : pagination.page})) | raw }}
         			</td>

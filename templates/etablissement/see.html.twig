@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Fiche d'un établissement {% endblock %}
+
+{% block body %}
+
+    <h1>Fiche de l'établissement #{{ etablissement.id }} - {{ etablissement.nom }}</h1>
+    
+    {% include 'elements/arborescence.html.twig' %}
+    
+    <table  class="table table-sm">
+    	<tr>
+    		<th scope="col"> Nom </th>
+    		<td> {{ etablissement.nom }} </td>
+    	</tr>
+    	<tr>
+    		<th scope="col"> Type </th>
+    		<td> {{ etablissement.type }} </td>
+    	</tr>
+    	<tr>
+    		<th scope="col"> Code Logistique </th>
+    		<td> {{ etablissement.codeLogistique }} </td>
+    	</tr>
+    	<tr>
+    		<th scope="col"> Date de début de collaboration </th>
+    		<td> {{ etablissement.dateCollaboration | date('d/m/Y') }} </td>
+    	</tr>
+    	<tr>
+    		<th scope="col"> Statut de la convention </th>
+    		<td> {{ etablissement.statutConvention }} </td>
+    	</tr>
+    	<tr>
+    		<th scope="col"> Nombre de lit </th>
+    		<td> {{ etablissement.nbLit }} </td>
+    	</tr>
+    	<tr>
+    		<th scope="col"> Adresse </th>
+    		<td>
+    		    {{ etablissement.numeroVoie }}, {{ etablissement.voie }} <br />
+    			{{ etablissement.codePostal }} {{ etablissement.ville }} <br />
+    			{{ etablissement.region }}
+    		</td>
+    	</tr>
+    </table>
+    <br />
+
+	<table class="table table-sm table-striped">
+    	<tr>
+        	<th> Service </th>
+            <th> Code Logistique </th>
+            <th> Service pour adultes </th>
+            <th> Service pour enfants </th>
+        </tr>
+        
+        {% for specialite in etablissement.specialites %}
+        	<tr>
+            	<td>{{ specialite.service }} </td>
+                <td>{{ specialite.codeLogistique }}</td>
+                <td>{{ specialite.adulte | bool }} </td>
+                <td>{{ specialite.pediatrie | bool }} </td>
+            </tr>
+        
+        {% endfor %}
+	</table>
+        	
+    {% if etablissement.specialites is empty %}
+    	<p class="text-info text-center">Il  n'y a aucune spécialité associée à cet établissement.</p>
+    {% endif %}
+{% endblock %}

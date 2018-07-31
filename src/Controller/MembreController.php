@@ -66,6 +66,34 @@ class MembreController extends AppController
     }
     
     /**
+     * Fiche d'un membre
+     *
+     * @Route("/membre/see/{id}/{page}", name="membre_see")
+     * @ParamConverter("membre", options={"mapping": {"id": "id"}})
+     * @Security("is_granted('ROLE_ADMIN')")
+     */
+    public function seeAction(SessionInterface $session, Membre $membre, int $page)
+    {
+        $arrayFilters = $this->getDatasFilter($session);
+        
+        return $this->render('membre/see.html.twig', [
+            'page' => $page,
+            'membre' => $membre,
+            'paths' => array(
+                'home' => $this->indexUrlProject(),
+                'urls' => array(
+                    $this->generateUrl('membre_listing', array(
+                        'page' => $page,
+                        'field' => $arrayFilters['field'],
+                        'order' => $arrayFilters['order']
+                    )) => 'Gestion de membres'
+                ),
+                'active' => 'Fiche d\'un membre'
+            )
+        ]);
+    }
+    
+    /**
      * Ajout d'un nouveau membre
      *
      * @Route("/membre/add/{page}", name="membre_add")

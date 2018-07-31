@@ -26,8 +26,6 @@
             	<th>Etablissement</th>
         		<th>Spécialité</th>
             	<th>{{ headerFilter(path('membre_listing', {'page' : pagination.page, 'field' : 'fonction'} ), 'Fonction', current_order, current_field) | raw }} </th>
-            	<th>Décideur</th>
-        		<th>Présent dans l'annuaire</th>
             	<th></th>
         	</tr>
         	<tr>
@@ -39,8 +37,6 @@
             	<td>{{ inputFilter(path('membre_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Membre-etablissement-nom', current_search, 'Etablissement') | raw }}</td>
             	<td>{{ inputFilter(path('membre_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Membre-specialite-service', current_search, 'Spécialité') | raw }}</td>
         		<td>{{ inputFilter(path('membre_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Membre-fonction', current_search, 'Fonction') | raw }}</td>
-        		<td></td>
-        		<td></td>
         		<td></td>
         	</tr>
         	
@@ -54,10 +50,8 @@
         			<td>{{ membre.etablissement.nom }}</td>
         			<td>{% if membre.specialite != null %} {{ membre.specialite.service }} {% endif %}</td>
         			<td>{{ membre.fonction }}</td>
-        			<td>{{ membre.decideur | bool }}</td>
-        			<td>{{ membre.annuaire | bool }}</td>
         			<td>
-        			    {#{ actionSee(path('membre_see', {'id' : membre.id, 'page' : pagination.page})) | raw }#}
+        			    {{ actionSee(path('membre_see', {'id' : membre.id, 'page' : pagination.page})) | raw }}
         			    {{ actionEdit(path('membre_edit', {'id' : membre.id, 'page' : pagination.page})) | raw }}
         			    {{ actionDelete(membre.disabled, path('membre_delete', {'id' : membre.id, 'page' : pagination.page})) | raw }}
         			</td>
