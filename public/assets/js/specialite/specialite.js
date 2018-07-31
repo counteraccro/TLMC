@@ -15,7 +15,6 @@ Specialite.Launch = function(params) {
 	 */
 	Specialite.LoadSpecialite = function()
 	{
-		console.log(Specialite.url_ajax_see + '/' + $(Specialite.id_bloc_etablissement).val());
 		Specialite.Ajax(Specialite.url_ajax_see + '/' + $(Specialite.id_bloc_etablissement).val(), Specialite.id_specialite);
 	}
 	

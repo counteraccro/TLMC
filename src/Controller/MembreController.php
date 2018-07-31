@@ -162,9 +162,6 @@ class MembreController extends AppController
             // TODO A changer
             $membre->setDisabled(0);
             $membre->setSalt('41df4dgv54gfd5g');
-            $membre->setRoles(array(
-                "ROLE_BENEFICIAIRE"
-            ));
 
             $encodePassword = $encoder->encodePassword($membre, $membre->getPassword());
             $membre->setPassword($encodePassword);

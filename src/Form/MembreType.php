@@ -15,6 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Entity\Etablissement;
 use App\Entity\Specialite;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class MembreType extends AbstractType
 {
@@ -72,6 +73,16 @@ class MembreType extends AbstractType
             'choice_label' => 'service',
             'label' => 'Spécialité',
             'required' => false
+        ))
+            ->add('roles', ChoiceType::class, array(
+            'choices' => array(
+                'Administratreur' => 'ROLE_ADMIN',
+                'Bénéficiaire Direct' => 'ROLE_BENEFICIAIRE_DIRECT',
+                'Bénéficiaire' => 'ROLE_BENEFICIAIRE',
+                'Bénévole' => 'ROLE_BENEVOLE'
+            ),
+            'label' => 'Droits',
+            'multiple' => true
         ))
             ->add('save', SubmitType::class, array(
             'label' => $options['label_submit'],
