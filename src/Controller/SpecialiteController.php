@@ -41,7 +41,7 @@ class SpecialiteController extends AppController
             'order' => $order,
             'page' => $page,
             'repositoryClass' => Specialite::class,
-            'repository' => 'Specielite',
+            'repository' => 'Specialite',
             'repositoryMethode' => 'findAllSpecialites',
             'sans_inactif' => false
         );

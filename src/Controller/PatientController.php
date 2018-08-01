@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Form\PatientType;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Entity\Etablissement;
+use App\Entity\Specialite;
 
 class PatientController extends AppController
 {
@@ -92,7 +93,7 @@ class PatientController extends AppController
      */
     public function addAjaxSpecialiteAction(Request $request, Etablissement $etablissement)
     {
-        $specialites = $etablissement->getSpecialites();
+        $specialites = $this->getElementsLiesActifs($etablissement, 'getSpecialites');
 
         return $this->render('patient/ajax_dropdown_specialite.html.twig', array(
             'specialites' => $specialites,
@@ -116,7 +117,7 @@ class PatientController extends AppController
     public function editAjaxSpecialiteAction(Request $request, Patient $patient, int $etablissement = null)
     {
         $select_specialite = $patient->getSpecialite()->getId();
-
+        
         if (! is_null($etablissement)) {
             $specialites = $etablissement->getSpecialites();
         } else {
@@ -258,11 +259,17 @@ class PatientController extends AppController
     {
         $arrayFilters = $this->getDatasFilter($session);
 
-        $form = $this->createForm(PatientType::class, $patient);
-
+        $repositoryE = $this->getDoctrine()->getRepository(Etablissement::class);
+        $etablissements = $repositoryE->findHopital();
+        
+        $repositoryS = $this->getDoctrine()->getRepository(Specialite::class);
+        $specialites = $repositoryS->findByEtablissement($patient->getSpecialite()->getEtablissement());
+        
+        $form = $this->createForm(PatientType::class, $patient, array('add' => false));
+        
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
+            
             $em = $this->getDoctrine()->getManager();
 
             $em->persist($patient);
@@ -274,11 +281,15 @@ class PatientController extends AppController
                 'order' => $arrayFilters['order']
             )));
         }
-
+        
+        
+        
         return $this->render('patient/edit.html.twig', array(
             'page' => $page,
             'form' => $form->createView(),
             'patient' => $patient,
+            'etablissements' => $etablissements,
+            'specialites' => $specialites,
             'paths' => array(
                 'home' => $this->indexUrlProject(),
                 'urls' => array(

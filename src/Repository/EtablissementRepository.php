@@ -120,6 +120,20 @@ class EtablissementRepository extends ServiceEntityRepository
         return $query;
     }
 
+    /**
+     * Récupère les établissements qui sont des hôpitaux
+     * @return Etablissement[] Returns an array of Etablissement objects
+     */
+    public function findHopital()
+    {
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.type like :hopital')
+            ->setParameter('hopital', '%hopital%')
+            ->orderBy('e.nom', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
     // /**
     // * @return Etablissement[] Returns an array of Etablissement objects
     // */
