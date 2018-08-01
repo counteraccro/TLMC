@@ -57,6 +57,15 @@ class AppController extends Controller
         'FileType' => 'Fichier joint',
         'RadioType' => 'Choix unique'
     );
+    
+    const QUESTION_REGLES_REGEX = array(
+        'd' => 'Chiffre uniquement',
+        'W' => 'caractères spéciaux uniquement',
+        '[a-zA-Z]' => 'Lettres uniquement',
+        '[a-z]' => 'Lettres minuscules uniquement',
+        '[A-Z]' => 'Lettres majuscules uniquement',
+        '[[:alnum:]]' => 'Lettres (min & maj) et chiffres uniquement',
+    );
 
     // @todo à virer à terme
     const ID_SPECIALITE = 58;
