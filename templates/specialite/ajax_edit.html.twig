@@ -1,8 +1,8 @@
-<div id="ajax_specialite_add">
+<div id="ajax_specialite_edit">
 	{{ form_start(form) }}
 	<div class="modal-header">
 		<h5 class="modal-title">
-			Ajout d'une spécialité à l'établissement {{ etablissement.nom }}
+			Modification de la spécialité #{{ specialite.id }} - {{ specialite.service }}
 		</h5>
 		<button type="button" class="close" data-dismiss="modal"
 			aria-label="Close">
@@ -11,12 +11,12 @@
 	</div>
 
 	<div class="modal-body">
-		{{ form_row(form.etablissement) }}
+        {{ form_row(form.etablissement) }}
 		{{ form_row(form.service) }}
 		{{ form_row(form.code_logistique) }}
 		{{ form_row(form.adulte) }}
 		{{ form_row(form.pediatrie) }}
-	</div>
+    </div>
 
 	<div class="modal-footer">
 		{{ form_widget(form.save) }}
@@ -24,6 +24,7 @@
 	{{ form_rest(form) }}
 	{{ form_errors(form) }}
 	{{ form_end(form) }}
+</div>
 
 	{% block javascripts %}
 	<script type="text/javascript">
@@ -33,8 +34,9 @@
     		   'backdrop' : 'static'
     	});
     	
-		var url = '{{path('specialite_ajax_add', {'id': etablissement.id }) }}';
-		Specialite.EventAddSubmit(url);
-	</script>
+		var url = '{{path('specialite_ajax_edit', {'id': specialite.id }) }}';
+		
+		Specialite.EventEditSubmit(url);
+	
+	    </script>
 	{% endblock %}
-</div>

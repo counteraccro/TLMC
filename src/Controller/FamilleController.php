@@ -22,6 +22,13 @@ class FamilleController extends AppController
      *
      * @Route("/famille/listing/{page}/{field}/{order}", name="famille_listing", defaults={"page" = 1, "field"= null, "order"= null})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
+     * 
+     * @param Request $request
+     * @param SessionInterface $session
+     * @param int $page
+     * @param string $field
+     * @param string $order
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function index(Request $request, SessionInterface $session, int $page = 1, $field = null, $order = null)
     {
