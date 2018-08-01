@@ -16,6 +16,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Entity\Etablissement;
 use App\Entity\Specialite;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use App\Controller\AppController;
 
 class MembreType extends AbstractType
 {
@@ -80,12 +81,7 @@ class MembreType extends AbstractType
             'required' => false
         ))
             ->add('roles', ChoiceType::class, array(
-            'choices' => array(
-                'Administratreur' => 'ROLE_ADMIN',
-                'Bénéficiaire Direct' => 'ROLE_BENEFICIAIRE_DIRECT',
-                'Bénéficiaire' => 'ROLE_BENEFICIAIRE',
-                'Bénévole' => 'ROLE_BENEVOLE'
-            ),
+            'choices' => array_flip($options['roles']),
             'label' => 'Droits',
             'multiple' => true
         ))
@@ -102,7 +98,8 @@ class MembreType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Membre::class,
             'label_submit' => 'Valider',
-            'edit' => false
+            'edit' => false,
+            'roles' => AppController::DROITS
         ]);
     }
 }

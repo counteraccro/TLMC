@@ -57,7 +57,7 @@
     		<th scope="col"> Droits </th>
     		<td> 
     		    {% for role in membre.roles %}
-    		    	{{ role }}<br />
+    		    	{{ role | droit }}<br />
     		   	{% endfor %} 
     		</td>
     	</tr>
