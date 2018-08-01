@@ -16,6 +16,7 @@
 		<div class="card shadow-sm">
          	<div class="card-header">
             	Aperçu
+            	<div class="float-right">Message d'erreur <input type="checkbox" id="checkbox_msg_erreur"></div>
           	</div>
           	<div class="card-body">
             	<div id="content-preview-question">
@@ -35,7 +36,9 @@
 			{{ form_row(form.libelle, {"id":"question_libelle"}) }}
 			{{ form_row(form.libelle_bottom, {"id":"question_libelle_bottom"}) }}
 
+			
 			<div id="input-liste-val">
+				<hr />
 				<div class="row">
 					<div class="col-md-9">
 						Valeur(s) possible(s) pour la réponse : 
@@ -47,11 +50,12 @@
 				<div id="contener-input-liste-val">
 				
 				</div>
+				<hr />
 			</div>
 			{{ form_row(form.liste_valeur, {"id":"question_liste_valeur"})}}
 			
+			<div id="contener-input-def-value"></div>
 			{{ form_row(form.valeur_defaut, {"id":"question_valeur_defaut"})}}
-			<br />
 
 		
 		</div>
@@ -82,7 +86,7 @@
     	   'backdrop' : 'static'
     });
 
-    $('#ajax_question_edit #question_liste_valeur').parent().hide();
+    //$('#ajax_question_edit #question_liste_valeur').parent().hide();
     
 	var url = '{{path('question_ajax_edit', {'id': question.id }) }}';
 	Question.EventEditSubmit(url);
@@ -90,6 +94,7 @@
 	var params = {
 			id_global : '#ajax_question_edit',
 			id_preview : '#content-preview-question',
+			def_selected_valeur : $('#question_valeur_defaut').val(),
 			liste_type_json : JSON.parse('{{ liste_type|json_encode() | raw }}')
 	};
 

@@ -50,22 +50,21 @@ class QuestionType extends AbstractType
         ))
             ->add('liste_valeur', TextareaType::class, array(
             'label' => 'Valeurs présentes dans la question',
-            'empty_data' => 'exemple-cle1:exemple-valeur1,
-exemple-cle2:exemple-valeur2,',
             'required' => false,
             'attr' => array(
                 'class' => 'preview'
             )
         ))
-            ->add('valeur_defaut', ChoiceType::class, array(
+            ->add('valeur_defaut', TextType::class, array(
             'label' => 'Valeur par défaut',
             'required' => false,
             'attr' => array(
-                'class' => 'preview'
+                'class' => 'preview-hidden'
             )
         ))
             ->add('message_erreur', TextType::class, array(
             'label' => 'Message d\'erreur',
+            'empty_data' => 'Ce champ est incorrect',
             'required' => false,
             'attr' => array(
                 'class' => 'preview'
