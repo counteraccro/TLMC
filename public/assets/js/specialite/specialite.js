@@ -42,7 +42,7 @@ Specialite.Launch = function(params) {
 	}
 	
 	/**
-	 * 
+	 * Evénement changement du select établissement
 	 */
 	Specialite.EventChange = function()
 	{
@@ -61,4 +61,136 @@ Specialite.Launch = function(params) {
 	{
 		Specialite.Ajax(Specialite.url_ajax_see, Specialite.id_global);
 	}
+	
+	/**
+	 * Evenement ajout d'une spécialité
+	 */
+	Specialite.EventAdd = function(id)
+	{
+		// Event sur le bouton add d'une famille
+		$(id).click(function() {
+			//on passe l'url et l'id_done
+
+			//$(Specialite.id_container_global).showLoading();
+
+			Specialite.Ajax($(this).attr('href'), Specialite.id_content_modal);
+			return false;
+		});
+	}
+	
+	/**
+	 * traitement du formulaire d'ajout d'une spécialité
+	 */
+	Specialite.EventAddSubmit = function(url)
+	{
+		$("form[name*='specialite']").on( "submit", function( event ) {
+
+			//$('#ajax_specialite_add').showLoading();
+
+			$('#specialite_save').prop('disabled', true).html('chargement...');
+
+			event.preventDefault();
+
+			//envoi d'une requête POST en AJAX
+			$.ajax({
+				method: 'POST',
+				url: url,
+				data: $(this).serialize()
+			})
+			.done(function( reponse ) {
+
+				//$('#ajax_specialite_add').hideLoading();
+
+				if(reponse.statut === true)
+				{
+					//on cache la modale si le formulaire est valide
+					$(Specialite.id_modal).modal('hide');
+					Specialite.Ajax(Specialite.url_ajax_see, Specialite.id_global);
+				}
+				else
+				{
+					//on revient sur le formulaire s'il est incorrect
+					$(Specialite.id_content_modal).html(reponse);
+				}
+			});
+		});
+	}
+	
+	/**
+	 * Evenement édition d'une spécialité
+	 */
+	Specialite.EventEdit = function(id)
+	{
+		// Event sur le bouton edit d'une famille
+		$(id).click(function() {
+			//on passe l'url et l'id_done
+
+			//$(Specialite.id_container_global).showLoading();
+
+			Specialite.Ajax($(this).attr('href'), Specialite.id_content_modal);
+			return false;
+		});
+	}
+
+	/**
+	 * traitement du formulaire d'édition d'une spécialité
+	 */
+	Specialite.EventEditSubmit = function(url)
+	{
+		$("form[name*='specialite']").on( "submit", function( event ) {
+			
+			//$('#ajax_specialite_edit').showLoading();
+
+			$('#specialite_save').prop('disabled', true).html('chargement...');
+
+			event.preventDefault();
+
+			//envoi d'une requête POST en AJAX
+			$.ajax({
+				method: 'POST',
+				url: url,
+				data: $(this).serialize()
+			})
+			.done(function( reponse ) {
+
+				$('#ajax_specialite_edit').hideLoading();
+
+				if(reponse.statut === true)
+				{
+					//on cache la modale si le formulaire est valide
+					$(Specialite.id_modal).modal('hide');
+					Specialite.Ajax(Specialite.url_ajax_see, Specialite.id_global);
+				}
+				else
+				{
+					//on revient sur le formulaire s'il est incorrect
+					$(Specialite.id_content_modal).html(reponse);
+				}
+			});
+		});
+	}
+	
+	/**
+	 * désactivation d'une spécialité au click
+	 */
+	Specialite.EventDelete = function(id, url)
+	{
+		$(id).click(function(){
+			event.preventDefault();
+
+			//envoi d'une requête POST en AJAX
+			$.ajax({
+				method: 'POST',
+				url: $(this).attr('href')
+			})
+			.done(function( reponse ) {
+
+				if(reponse.statut === true)
+				{
+					Specialite.Ajax(Specialite.url_ajax_see, Specialite.id_global);
+				}
+			});
+		});
+	}
+	
 }

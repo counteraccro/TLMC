@@ -18,6 +18,13 @@ class SpecialiteController extends AppController
      *
      * @Route("/specialite/listing/{page}/{field}/{order}", name="specialite_listing", defaults={"page" = 1, "field"= null, "order"= null})
      * @Security("is_granted('ROLE_ADMIN')")
+     * 
+     * @param Request $request
+     * @param SessionInterface $session
+     * @param int $page
+     * @param string $field
+     * @param string $order
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function index(Request $request, SessionInterface $session, int $page = 1, $field = null, $order = null)
     {
@@ -71,6 +78,11 @@ class SpecialiteController extends AppController
      * @Route("/specialite/see/{id}/{page}", name="specialite_see")
      * @ParamConverter("specialite", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
+     * 
+     * @param SessionInterface $session
+     * @param Specialite $specialite
+     * @param int $page
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function seeAction(SessionInterface $session, Specialite $specialite, int $page)
     {
@@ -115,7 +127,7 @@ class SpecialiteController extends AppController
             $repository = $this->getDoctrine()->getRepository(Etablissement::class);
             $result = $repository->findById($id);
             $etablissement = $result[0];
-            $specialite->setPatient($etablissement);
+            $specialite->setEtablissement($etablissement);
 
             $form = $this->createForm(SpecialiteType::class, $specialite, array(
                 'label_submit' => 'Ajouter',
@@ -132,8 +144,7 @@ class SpecialiteController extends AppController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $em = $this->getDoctrine()->getManager();
-
-            // TODO A changer
+            
             $specialite->setDisabled(0);
 
             $em->persist($specialite);
@@ -178,14 +189,22 @@ class SpecialiteController extends AppController
      * Edition d'une spécialité
      *
      * @Route("/specialite/edit/{id}/{page}", name="specialite_edit")
+     * @Route("/specialite/ajax/edit/{id}", name="specialite_ajax_edit")
      * @ParamConverter("specialite", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
+     * 
+     * @param SessionInterface $session
+     * @param Request $request
+     * @param Specialite $specialite
+     * @param int $page
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function editAction(SessionInterface $session, Request $request, Specialite $specialite, int $page)
+    public function editAction(SessionInterface $session, Request $request, Specialite $specialite, int $page = 1)
     {
         $arrayFilters = $this->getDatasFilter($session);
 
         $form = $this->createForm(SpecialiteType::class, $specialite, array(
+            'label_submit' => 'Modifier',
             'disabled_etablissement' => true
         ));
 
@@ -197,6 +216,12 @@ class SpecialiteController extends AppController
             $em->persist($specialite);
             $em->flush();
 
+            if ($request->isXmlHttpRequest()) {
+                return $this->json(array(
+                    'statut' => true
+                ));
+            }
+            
             return $this->redirect($this->generateUrl('specialite_listing', array(
                 'page' => $page,
                 'field' => $arrayFilters['field'],
@@ -204,6 +229,15 @@ class SpecialiteController extends AppController
             )));
         }
 
+        // Si appel Ajax, on renvoi sur la page ajax
+        if ($request->isXmlHttpRequest()) {
+            
+            return $this->render('specialite/ajax_edit.html.twig', [
+                'form' => $form->createView(),
+                'specialite' => $specialite
+            ]);
+        }
+        
         return $this->render('specialite/edit.html.twig', [
             'page' => $page,
             'form' => $form->createView(),
@@ -226,10 +260,15 @@ class SpecialiteController extends AppController
      * désactivation d'une spécialité
      *
      * @Route("/specialite/delete/{id}/{page}", name="specialite_delete")
-     * @ParamConverter("etablissement", options={"mapping": {"id": "id"}})
+     * @ParamConverter("specialite", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
+     * 
+     * @param SessionInterface $session
+     * @param Specialite $specialite
+     * @param int $page
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function deleteAction(SessionInterface $session, Specialite $specialite, $page)
+    public function deleteAction(Request $request, SessionInterface $session, Specialite $specialite, $page = 1)
     {
         $arrayFilters = $this->getDatasFilter($session);
 
@@ -245,6 +284,12 @@ class SpecialiteController extends AppController
 
         $entityManager->flush();
 
+        if ($request->isXmlHttpRequest()) {
+            return $this->json(array(
+                'statut' => true
+            ));
+        }
+         
         return $this->redirectToRoute('specialite_listing', array(
             'page' => $page,
             'field' => $arrayFilters['field'],
