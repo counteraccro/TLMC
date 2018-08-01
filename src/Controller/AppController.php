@@ -56,12 +56,13 @@ class AppController extends Controller
     );
     
     const QUESTION_REGLES_REGEX = array(
-        'd' => 'Chiffre uniquement',
-        'W' => 'caractères spéciaux uniquement',
-        '[a-zA-Z]' => 'Lettres uniquement',
-        '[a-z]' => 'Lettres minuscules uniquement',
-        '[A-Z]' => 'Lettres majuscules uniquement',
-        '[[:alnum:]]' => 'Lettres (min & maj) et chiffres uniquement',
+        'Chiffres uniquement' => 'd',
+        'Caractères spéciaux uniquement' => 'W',
+        'Lettres uniquement' => '[a-zA-Z]',
+        'Lettres minuscules uniquement' => '[a-z]',
+        'Lettres majuscules uniquement' => '[A-Z]',
+        'Lettres (min. & maj.) et chiffres' => '[[:alnum:]]',
+        'Tout accepter' => '.'
     );
 
     // @todo à virer à terme

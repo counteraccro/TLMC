@@ -74,8 +74,13 @@ class QuestionType extends AbstractType
             ->add('ordre', NumberType::class, array(
             'required' => false
         ))
-            ->add('regles', TextareaType::class, array(
-            'required' => false
+            ->add('regles', ChoiceType::class, array(
+            'choices' => AppController::QUESTION_REGLES_REGEX,
+            'label' => 'Règles',
+            'required' => false,
+            'attr' => array(
+                'class' => 'preview'
+            )
         ))
             ->add('obligatoire', CheckboxType::class, array(
             'required' => false,

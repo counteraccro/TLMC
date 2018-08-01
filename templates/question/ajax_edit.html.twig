@@ -63,6 +63,18 @@
 			<h6>Avancée</h6>
 			{{ form_row(form.libelle_top, {"id":"question_libelle_top"}) }}
 			{{ form_row(form.message_erreur, {"id":"question_message_erreur"}) }}
+			{{ form_row(form.regles, {"id":"question_regles"}) }}
+              <div class="row">
+                <div class="col-sm">
+                  {{ form_row(form.ordre, {"id":"question_ordre"}) }}
+                </div>
+                <div class="col-sm">
+                  {{ form_row(form.obligatoire, {"id":"question_obligatoire"}) }}
+                </div>
+                <div class="col-sm">
+                  {{ form_row(form.disabled, {"id":"question_disabled"}) }}
+                </div>
+              </div>
 		</div>
 	</div>
 	

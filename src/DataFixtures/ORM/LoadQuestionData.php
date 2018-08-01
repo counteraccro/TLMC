@@ -51,14 +51,14 @@ class LoadQuestionData extends Fixture implements DependentFixtureInterface
                 'setQuestionnaire' => 'Questionnaire-2',
                 'setLibelle' => 'Quel est le prénom de l\'accompagnateur que vous préférez ?',
                 'setLibelleTop' => 'Nous allons vous poser quelques questions sur l\'encadrement des évènements',
-                'setLibelleBottom' => 'Vous pouvez également nous communiquer son nom si vous le connaissez',
-                'setType' => 'TextType',
-                'setValeurDefaut' => 'ex : Marcel',
-                'setListeValeur' => '',
+                'setLibelleBottom' => 'Ceci nous permettra d\'améliorer notre qualité de service à l\'avenir',
+                'setType' => 'RadioType',
+                'setValeurDefaut' => 'Marcel',
+                'setListeValeur' => '{"0":{"value":"0","libelle":"Accompagnateur favori"},"1":{"value":"2","libelle":"Samuel"},"2":{"value":"3","libelle":"Marcel"},"3":{"value":"4","libelle":"Lara"},"4":{"value":"5","libelle":"Enzo"},"5":{"value":"6","libelle":"Oxana"}}',
                 'setDisabled' => '0',
                 'setObligatoire' => 'true',
                 'setRegles' => 'regles json',
-                'setMessageErreur' => 'Merci d\'indiquer un prénom/nom',
+                'setMessageErreur' => 'Merci d\'indiquer le prénom de l\'accompagnateur que vous préférez',
                 'setOrdre' => '1'
             ]
         ]
