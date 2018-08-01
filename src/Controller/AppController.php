@@ -63,17 +63,13 @@ class AppController extends Controller
         '[A-Z]' => 'Lettres majuscules uniquement',
         '[[:alnum:]]' => 'Lettres (min & maj) et chiffres uniquement',
     );
-
-    // @todo à virer à terme
-    const ID_SPECIALITE = 58;
-
-    const ID_PATIENT = 18;
-
-    const ID_FAMILLE = 66;
-
-    const ID_FAMILLE_ADRESSE = 53;
-
-    const ID_ETABLISSEMENT = 57;
+    
+    const DROITS = array(
+        'ROLE_ADMIN' => 'Administratreur',
+        'ROLE_BENEFICIAIRE_DIRECT' => 'Bénéficiaire Direct',
+        'ROLE_BENEFICIAIRE' => 'Bénéficiaire',
+        'ROLE_BENEVOLE' => 'Bénévole' 
+    );
 
     /**
      * Supprime une recherche de la session
