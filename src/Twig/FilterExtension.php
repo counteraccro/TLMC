@@ -75,7 +75,6 @@ class FilterExtension extends AbstractExtension
 
     /**
      * Génère les minis-formulaires de recherche
-     * Si
      *
      * @param string $url
      * @param string $field

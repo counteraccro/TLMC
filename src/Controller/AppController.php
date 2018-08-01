@@ -8,9 +8,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Doctrine\DBAL\Types\TextType;
-use App\Entity\Patient;
 
 class AppController extends Controller
 {

@@ -81,9 +81,16 @@ class FamilleAdresseRepository extends ServiceEntityRepository
     }
 
     /**
+     * Génération de la requête
      *
      * @param QueryBuilder $query
      * @param array $params
+     *            [order] => ordre de tri
+     *            [page] => page (pagination)
+     *            [search] => tableau contenant les éléments de la recherche
+     *            [repository] => repository (objet courant)
+     *            [field] => champ de tri,
+     *            [avec_disabled] => boolean
      * @return \Doctrine\ORM\QueryBuilder
      */
     private function generateParamsSql(QueryBuilder $query, array $params)
@@ -94,14 +101,14 @@ class FamilleAdresseRepository extends ServiceEntityRepository
 
                 $query->andWhere(str_replace('-', '.', $searchKey) . " LIKE :searchTerm$index");
                 $query->setParameter('searchTerm' . $index, '%' . $valueKey . '%');
-                $index++;
+                $index ++;
             }
         }
-        
-        if(isset($params['sans_inactif']) && $params['sans_inactif']){
+
+        if (isset($params['sans_inactif']) && $params['sans_inactif']) {
             $query->andWhere($params['repository'] . '.disabled = 0');
         }
-        
+
         return $query;
     }
 

@@ -3,14 +3,14 @@ Specialite = {};
 
 Specialite.Launch = function(params) {
 
-	//url pour charger les spécialité
+	//url pour charger les spécialités
 	Specialite.url_ajax_see = params.url_ajax_see;
 	//cible la div '#bloc_specialite'
 	Specialite.id_specialite = params.id_specialite;
-	//récupère l'id du bloc établissemnt
+	//cible la div '#bloc_etablissement'
 	Specialite.id_bloc_etablissement = params.id_bloc_etablissement;
 	
-	//cible la div '#bloc_patient'
+	//cible la div '#bloc_etablissement_specialite'
 	Specialite.id_global = params.id_global;
 	//cible la div '#bloc_modal'
 	Specialite.id_modal = params.id_modal;
@@ -38,6 +38,7 @@ Specialite.Launch = function(params) {
 		})
 		.done(function( html ) {
 			$(id_done).html(html);
+			$(Specialite.id_container_global).hideLoading();
 		});
 	}
 	
@@ -55,7 +56,7 @@ Specialite.Launch = function(params) {
 	}
 	
 	/**
-	 * fonction prévue pour le chargement des spécialités de l'établissement, paramètres url et id
+	 * Fonction prévue pour le chargement des spécialités de l'établissement, paramètres url et id
 	 */
 	Specialite.LoadSpecialite = function()
 	{
@@ -63,7 +64,7 @@ Specialite.Launch = function(params) {
 	}
 	
 	/**
-	 * Evenement ajout d'une spécialité
+	 * Evénement ajout d'une spécialité
 	 */
 	Specialite.EventAdd = function(id)
 	{
@@ -71,7 +72,7 @@ Specialite.Launch = function(params) {
 		$(id).click(function() {
 			//on passe l'url et l'id_done
 
-			//$(Specialite.id_container_global).showLoading();
+			$(Specialite.id_container_global).showLoading();
 
 			Specialite.Ajax($(this).attr('href'), Specialite.id_content_modal);
 			return false;
@@ -79,13 +80,13 @@ Specialite.Launch = function(params) {
 	}
 	
 	/**
-	 * traitement du formulaire d'ajout d'une spécialité
+	 * Traitement du formulaire d'ajout d'une spécialité
 	 */
 	Specialite.EventAddSubmit = function(url)
 	{
 		$("form[name*='specialite']").on( "submit", function( event ) {
 
-			//$('#ajax_specialite_add').showLoading();
+			$('#ajax_specialite_add').showLoading();
 
 			$('#specialite_save').prop('disabled', true).html('chargement...');
 
@@ -99,7 +100,7 @@ Specialite.Launch = function(params) {
 			})
 			.done(function( reponse ) {
 
-				//$('#ajax_specialite_add').hideLoading();
+				$('#ajax_specialite_add').hideLoading();
 
 				if(reponse.statut === true)
 				{
@@ -117,7 +118,7 @@ Specialite.Launch = function(params) {
 	}
 	
 	/**
-	 * Evenement édition d'une spécialité
+	 * Evénement édition d'une spécialité
 	 */
 	Specialite.EventEdit = function(id)
 	{
@@ -125,7 +126,7 @@ Specialite.Launch = function(params) {
 		$(id).click(function() {
 			//on passe l'url et l'id_done
 
-			//$(Specialite.id_container_global).showLoading();
+			$(Specialite.id_container_global).showLoading();
 
 			Specialite.Ajax($(this).attr('href'), Specialite.id_content_modal);
 			return false;
@@ -139,7 +140,7 @@ Specialite.Launch = function(params) {
 	{
 		$("form[name*='specialite']").on( "submit", function( event ) {
 			
-			//$('#ajax_specialite_edit').showLoading();
+			$('#ajax_specialite_edit').showLoading();
 
 			$('#specialite_save').prop('disabled', true).html('chargement...');
 

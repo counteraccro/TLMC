@@ -18,7 +18,7 @@ class SpecialiteController extends AppController
      *
      * @Route("/specialite/listing/{page}/{field}/{order}", name="specialite_listing", defaults={"page" = 1, "field"= null, "order"= null})
      * @Security("is_granted('ROLE_ADMIN')")
-     * 
+     *
      * @param Request $request
      * @param SessionInterface $session
      * @param int $page
@@ -58,7 +58,7 @@ class SpecialiteController extends AppController
 
         $this->setDatasFilter($session, $field, $order);
 
-        return $this->render('specialite/index.html.twig', [
+        return $this->render('specialite/index.html.twig', array(
             'controller_name' => 'SpecialiteController',
             'specialites' => $result['paginator'],
             'pagination' => $pagination,
@@ -69,7 +69,7 @@ class SpecialiteController extends AppController
                 'home' => $this->indexUrlProject(),
                 'active' => 'Liste des spécialités'
             )
-        ]);
+        ));
     }
 
     /**
@@ -78,7 +78,7 @@ class SpecialiteController extends AppController
      * @Route("/specialite/see/{id}/{page}", name="specialite_see")
      * @ParamConverter("specialite", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
-     * 
+     *
      * @param SessionInterface $session
      * @param Specialite $specialite
      * @param int $page
@@ -88,7 +88,7 @@ class SpecialiteController extends AppController
     {
         $arrayFilters = $this->getDatasFilter($session);
 
-        return $this->render('specialite/see.html.twig', [
+        return $this->render('specialite/see.html.twig', array(
             'page' => $page,
             'specialite' => $specialite,
             'paths' => array(
@@ -102,7 +102,7 @@ class SpecialiteController extends AppController
                 ),
                 'active' => 'Fiche d\'une spécialité'
             )
-        ]);
+        ));
     }
 
     /**
@@ -144,7 +144,7 @@ class SpecialiteController extends AppController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $em = $this->getDoctrine()->getManager();
-            
+
             $specialite->setDisabled(0);
 
             $em->persist($specialite);
@@ -168,7 +168,7 @@ class SpecialiteController extends AppController
             ));
         }
 
-        return $this->render('specialite/add.html.twig', [
+        return $this->render('specialite/add.html.twig', array(
             'page' => $page,
             'form' => $form->createView(),
             'paths' => array(
@@ -182,7 +182,7 @@ class SpecialiteController extends AppController
                 ),
                 'active' => "Ajout d'une spécialité"
             )
-        ]);
+        ));
     }
 
     /**
@@ -192,7 +192,7 @@ class SpecialiteController extends AppController
      * @Route("/specialite/ajax/edit/{id}", name="specialite_ajax_edit")
      * @ParamConverter("specialite", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
-     * 
+     *
      * @param SessionInterface $session
      * @param Request $request
      * @param Specialite $specialite
@@ -221,7 +221,7 @@ class SpecialiteController extends AppController
                     'statut' => true
                 ));
             }
-            
+
             return $this->redirect($this->generateUrl('specialite_listing', array(
                 'page' => $page,
                 'field' => $arrayFilters['field'],
@@ -231,14 +231,14 @@ class SpecialiteController extends AppController
 
         // Si appel Ajax, on renvoi sur la page ajax
         if ($request->isXmlHttpRequest()) {
-            
-            return $this->render('specialite/ajax_edit.html.twig', [
+
+            return $this->render('specialite/ajax_edit.html.twig', array(
                 'form' => $form->createView(),
                 'specialite' => $specialite
-            ]);
+            ));
         }
-        
-        return $this->render('specialite/edit.html.twig', [
+
+        return $this->render('specialite/edit.html.twig', array(
             'page' => $page,
             'form' => $form->createView(),
             'specialite' => $specialite,
@@ -253,16 +253,16 @@ class SpecialiteController extends AppController
                 ),
                 'active' => 'Edition de #' . $specialite->getId() . ' - ' . $specialite->getService()
             )
-        ]);
+        ));
     }
 
     /**
-     * désactivation d'une spécialité
+     * Désactivation d'une spécialité
      *
      * @Route("/specialite/delete/{id}/{page}", name="specialite_delete")
      * @ParamConverter("specialite", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
-     * 
+     *
      * @param SessionInterface $session
      * @param Specialite $specialite
      * @param int $page
@@ -289,7 +289,7 @@ class SpecialiteController extends AppController
                 'statut' => true
             ));
         }
-         
+
         return $this->redirectToRoute('specialite_listing', array(
             'page' => $page,
             'field' => $arrayFilters['field'],
