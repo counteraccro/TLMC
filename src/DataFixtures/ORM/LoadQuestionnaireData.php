@@ -28,8 +28,8 @@ class LoadQuestionnaireData extends Fixture
             'Questionnaire-2' => [
                 'setTitre' => 'Formulaire d\'inscription',
                 'setDescription' => 'Ce questionnaire permet d\'inscrire un nouveau participant.',
-                'setDateCreation' => '2017-06-01 17:00:00',
-                'setDateFin' => '2017-06-30 17:00:00',
+                'setDateCreation' => '2018-08-01 17:00:00',
+                'setDateFin' => '2019-01-30 17:00:00',
                 'setJourRelance' => '5',
                 'setDisabled' => '0'
             ]

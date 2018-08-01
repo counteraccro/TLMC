@@ -35,17 +35,14 @@
         		<td></td>
         		<td></td>
         	</tr>
+        	
 	        {% for questionnaire in questionnaires %}
         	<tr>	        
 		            <td>{{ questionnaire.id }}</td>
 		            <td>{{ questionnaire.titre }}</td> 
             		<td>{{ questionnaire.jourRelance }}</td>
             	   	<td>{{ questionnaire.dateCreation |date("d/m/Y H:i") }}</td>
-            	   	{% if questionnaire.dateFin |date("d/m/Y H:i") > "now"|date('d/m/Y H:i') %}
-            	   		<td><p style="color: crimson">{{ questionnaire.dateFin |date("d/m/Y H:i") }}</p></td>
-            	   	{% else %}
-            	   	    <td>{{ questionnaire.dateFin |date("d/m/Y H:i") }}</td>
-            	   	{% endif %}
+            	   	<td>{{ questionnaire.dateFin |date("d/m/Y H:i") }}</td>
             	   	<td>{{ questionnaire.questions | length }}</td>	
    
             	   	<td>
