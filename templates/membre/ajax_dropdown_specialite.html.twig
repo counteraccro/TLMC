@@ -1,10 +1,10 @@
 <div id="ajax_membre_specialite">
-    <div class="form-group">
+	<div class="form-group">
     	<label for="membre_specialite">Spécialité</label> 
         <select id="membre_specialite" name="membre[specialite]" class="form-control">
             {%  for specialite in specialites %}
-        		<option {% if specialite.id == select_specialite %} selected {% endif %} value="{{ specialite.id }}">{{ specialite.service }}</option>
-        	{% endfor %}
+            	<option {% if specialite.id == select_specialite %} selected {% endif %} value="{{ specialite.id }}">{{ specialite.service }}</option>
+            {% endfor %}
         </select>
     </div>
 </div>
