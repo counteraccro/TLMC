@@ -60,7 +60,7 @@ class PatientRepository extends ServiceEntityRepository
 
         // Génération des paramètres SQL
         $query = $this->generateParamsSql($query, $params);
-        
+
         $query->orderBy($params['repository'] . '.' . $params['field'], $params['order'])->setMaxResults($max);
         $paginator = new Paginator($query);
 
@@ -82,9 +82,16 @@ class PatientRepository extends ServiceEntityRepository
     }
 
     /**
+     * Génération de la requête
      *
      * @param QueryBuilder $query
      * @param array $params
+     *            [order] => ordre de tri
+     *            [page] => page (pagination)
+     *            [search] => tableau contenant les éléments de la recherche
+     *            [repository] => repository (objet courant)
+     *            [field] => champ de tri,
+     *            [avec_disabled] => boolean
      * @return \Doctrine\ORM\QueryBuilder
      */
     private function generateParamsSql(QueryBuilder $query, array $params)
@@ -92,10 +99,10 @@ class PatientRepository extends ServiceEntityRepository
         $index = 1;
         if (isset($params['search'])) {
             foreach ($params['search'] as $searchKey => $valueKey) {
-                
+
                 $explode_key = explode('-', $searchKey);
                 if (count($explode_key) == 3) {
-                    //traitement des liaisons avec une autre table
+                    // traitement des liaisons avec une autre table
                     $query = $query->join($explode_key[0] . '.' . $explode_key[1], $explode_key[1]);
                     $query->andWhere($explode_key[1] . "." . $explode_key[2] . " LIKE :searchTerm$index");
                     $query->setParameter('searchTerm' . $index, '%' . $valueKey . '%');
@@ -103,11 +110,11 @@ class PatientRepository extends ServiceEntityRepository
                     $query->andWhere(str_replace('-', '.', $searchKey) . " LIKE :searchTerm$index");
                     $query->setParameter('searchTerm' . $index, '%' . $valueKey . '%');
                 }
-                $index++;
+                $index ++;
             }
         }
-        
-        if(isset($params['sans_inactif']) && $params['sans_inactif']){
+
+        if (isset($params['sans_inactif']) && $params['sans_inactif']) {
             $query->andWhere($params['repository'] . '.disabled = 0');
         }
         return $query;

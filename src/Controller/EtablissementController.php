@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controller;
 
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,22 +11,30 @@ use App\Form\EtablissementType;
 
 class EtablissementController extends AppController
 {
+
     /**
      * Listing des établissements
-     * 
+     *
      * @Route("/etablissement/listing/{page}/{field}/{order}", name="etablissement_listing", defaults={"page" = 1, "field"= null, "order"= null})
      * @Security("is_granted('ROLE_ADMIN')")
+     *
+     * @param Request $request
+     * @param SessionInterface $session
+     * @param int $page
+     * @param string $field
+     * @param string $order
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function index(Request $request, SessionInterface $session, int $page = 1, $field = null, $order = null)
     {
         if (is_null($field)) {
             $field = 'id';
         }
-        
+
         if (is_null($order)) {
             $order = 'DESC';
         }
-        
+
         $params = array(
             'field' => $field,
             'order' => $order,
@@ -37,9 +44,9 @@ class EtablissementController extends AppController
             'repositoryMethode' => 'findAllEtablissements',
             'sans_inactif' => false
         );
-        
+
         $result = $this->genericSearch($request, $session, $params);
-        
+
         $pagination = array(
             'page' => $page,
             'route' => 'etablissement_listing',
@@ -47,10 +54,10 @@ class EtablissementController extends AppController
             'nb_elements' => $result['nb'],
             'route_params' => array()
         );
-        
+
         $this->setDatasFilter($session, $field, $order);
-        
-        return $this->render('etablissement/index.html.twig', [
+
+        return $this->render('etablissement/index.html.twig', array(
             'controller_name' => 'EtablissementController',
             'etablissements' => $result['paginator'],
             'pagination' => $pagination,
@@ -61,21 +68,26 @@ class EtablissementController extends AppController
                 'home' => $this->indexUrlProject(),
                 'active' => 'Liste des établissements'
             )
-        ]);
+        ));
     }
-    
+
     /**
      * Fiche d'un établissement
      *
      * @Route("/etablissement/see/{id}/{page}", name="etablissement_see")
      * @ParamConverter("etablissement", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
+     *
+     * @param SessionInterface $session
+     * @param Etablissement $etablissement
+     * @param int $page
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function seeAction(SessionInterface $session, Etablissement $etablissement, int $page)
     {
         $arrayFilters = $this->getDatasFilter($session);
-        
-        return $this->render('etablissement/see.html.twig', [
+
+        return $this->render('etablissement/see.html.twig', array(
             'page' => $page,
             'etablissement' => $etablissement,
             'paths' => array(
@@ -89,58 +101,62 @@ class EtablissementController extends AppController
                 ),
                 'active' => 'Fiche d\'un établissement'
             )
-        ]);
+        ));
     }
-    
+
     /**
-     * Bloc spécialité d'un établissement
+     * Bloc spécialité dans la vue d'un établissement
      *
      * @Route("/etablissement/ajax/see/{id}", name="etablissement_specialite_ajax_see")
      * @ParamConverter("etablissement", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
+     *
+     * @param Etablissement $etablissement
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function ajaxSeeAction(Etablissement $etablissement)
     {
         $specialites = $this->getElementsLiesActifs($etablissement, 'getSpecialites');
-        
-        return $this->render('etablissement/ajax_see_specialite.html.twig', [
+
+        return $this->render('etablissement/ajax_see_specialite.html.twig', array(
             'etablissement' => $etablissement,
             'specialites' => $specialites
-        ]);
+        ));
     }
-    
-    
+
     /**
-     * Ajout d'un nouveau établissement
+     * Ajout d'un nouvel établissement
      *
      * @Route("/etablissement/add/{page}", name="etablissement_add")
      * @Security("is_granted('ROLE_ADMIN')")
+     *
+     * @param SessionInterface $session
      * @param Request $request
+     * @param int $page
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function addAction(SessionInterface $session, Request $request, int $page)
     {
         $arrayFilters = $this->getDatasFilter($session);
-        
+
         $etablissement = new Etablissement();
-        
+
         $form = $this->createForm(EtablissementType::class, $etablissement);
-        
+
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            
+
             $em = $this->getDoctrine()->getManager();
-            
-            // TODO A changer
+
             $etablissement->setDisabled(0);
-            
+
             $em->persist($etablissement);
             $em->flush();
-            
+
             return $this->redirect($this->generateUrl('etablissement_listing'));
         }
-        
-        return $this->render('etablissement/add.html.twig', [
+
+        return $this->render('etablissement/add.html.twig', array(
             'page' => $page,
             'form' => $form->createView(),
             'paths' => array(
@@ -154,38 +170,44 @@ class EtablissementController extends AppController
                 ),
                 'active' => "Ajout d'un établissement"
             )
-        ]);
+        ));
     }
-    
+
     /**
      * Edition d'un établissement
      *
      * @Route("/etablissement/edit/{id}/{page}", name="etablissement_edit")
      * @ParamConverter("etablissement", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
+     *
+     * @param SessionInterface $session
+     * @param Request $request
+     * @param Etablissement $etablissement
+     * @param int $page
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function editAction(SessionInterface $session, Request $request, Etablissement $etablissement, int $page)
     {
         $arrayFilters = $this->getDatasFilter($session);
-        
+
         $form = $this->createForm(EtablissementType::class, $etablissement);
-        
+
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            
+
             $em = $this->getDoctrine()->getManager();
-            
+
             $em->persist($etablissement);
             $em->flush();
-            
+
             return $this->redirect($this->generateUrl('etablissement_listing', array(
                 'page' => $page,
                 'field' => $arrayFilters['field'],
                 'order' => $arrayFilters['order']
             )));
         }
-        
-        return $this->render('etablissement/edit.html.twig', [
+
+        return $this->render('etablissement/edit.html.twig', array(
             'page' => $page,
             'form' => $form->createView(),
             'etablissement' => $etablissement,
@@ -200,32 +222,37 @@ class EtablissementController extends AppController
                 ),
                 'active' => 'Edition de #' . $etablissement->getId() . ' - ' . $etablissement->getNom()
             )
-        ]);
+        ));
     }
-    
+
     /**
-     * désactivation d'un établissement
+     * Désactivation d'un établissement
      *
      * @Route("/etablissement/delete/{id}/{page}", name="etablissement_delete")
      * @ParamConverter("etablissement", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
+     *
+     * @param SessionInterface $session
+     * @param Etablissement $etablissement
+     * @param int $page
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function deleteAction(SessionInterface $session, Etablissement $etablissement, $page)
+    public function deleteAction(SessionInterface $session, Etablissement $etablissement, int $page)
     {
         $arrayFilters = $this->getDatasFilter($session);
-        
+
         if ($etablissement->getDisabled() == 1) {
             $etablissement->setDisabled(0);
         } else {
             $etablissement->setDisabled(1);
         }
-        
+
         $entityManager = $this->getDoctrine()->getManager();
-        
+
         $entityManager->persist($etablissement);
-        
+
         $entityManager->flush();
-        
+
         return $this->redirectToRoute('etablissement_listing', array(
             'page' => $page,
             'field' => $arrayFilters['field'],

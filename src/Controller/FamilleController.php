@@ -22,7 +22,7 @@ class FamilleController extends AppController
      *
      * @Route("/famille/listing/{page}/{field}/{order}", name="famille_listing", defaults={"page" = 1, "field"= null, "order"= null})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
-     * 
+     *
      * @param Request $request
      * @param SessionInterface $session
      * @param int $page
@@ -68,7 +68,7 @@ class FamilleController extends AppController
 
         $this->setDatasFilter($session, $field, $order);
 
-        return $this->render('famille/index.html.twig', [
+        return $this->render('famille/index.html.twig', array(
             'controller_name' => 'FamilleController',
             'familles' => $result['paginator'],
             'pagination' => $pagination,
@@ -79,7 +79,7 @@ class FamilleController extends AppController
                 'home' => $this->indexUrlProject(),
                 'active' => "Liste des familles"
             )
-        ]);
+        ));
     }
 
     /**
@@ -98,7 +98,7 @@ class FamilleController extends AppController
     {
         $arrayFilters = $this->getDatasFilter($session);
 
-        return $this->render('famille/see.html.twig', [
+        return $this->render('famille/see.html.twig', array(
             'page' => $page,
             'famille' => $famille,
             'paths' => array(
@@ -112,7 +112,7 @@ class FamilleController extends AppController
                 ),
                 'active' => "Fiche d'une famille"
             )
-        ]);
+        ));
     }
 
     /**
@@ -152,9 +152,9 @@ class FamilleController extends AppController
             ));
         }
         $form->handleRequest($request);
-        
+
         if ($form->isSubmitted() && $form->isValid()) {
-            
+
             $famille->setDisabled(0);
             $famille->getFamilleAdresse()->setDisabled(0);
 
@@ -204,15 +204,12 @@ class FamilleController extends AppController
 
             // on récupère la valeur du select adresse qui n'est pas conservé en cas d'erreur
             $resultForm = $request->request->all();
-            if(!empty($resultForm))
-            {
+            if (! empty($resultForm)) {
                 $select_famille = $resultForm['famille']['adresse_select'];
+            } else {
+                $select_famille = - 1;
             }
-            else
-            {
-                $select_famille = -1;
-            }
-            
+
             return $this->render('famille/ajax_add.html.twig', array(
                 'form' => $form->createView(),
                 'patient' => $patient,
@@ -220,8 +217,8 @@ class FamilleController extends AppController
                 'select_famille' => $select_famille
             ));
         }
-        
-        return $this->render('famille/add.html.twig', [
+
+        return $this->render('famille/add.html.twig', array(
             'page' => $page,
             'form' => $form->createView(),
             'paths' => array(
@@ -235,7 +232,7 @@ class FamilleController extends AppController
                 ),
                 'active' => "Ajout d'une famille"
             )
-        ]);
+        ));
     }
 
     /**
@@ -284,13 +281,13 @@ class FamilleController extends AppController
         // Si appel Ajax, on renvoi sur la page ajax
         if ($request->isXmlHttpRequest()) {
 
-            return $this->render('famille/ajax_edit.html.twig', [
+            return $this->render('famille/ajax_edit.html.twig', array(
                 'form' => $form->createView(),
                 'famille' => $famille
-            ]);
+            ));
         }
 
-        return $this->render('famille/edit.html.twig', [
+        return $this->render('famille/edit.html.twig', array(
             'page' => $page,
             'form' => $form->createView(),
             'famille' => $famille,
@@ -305,7 +302,7 @@ class FamilleController extends AppController
                 ),
                 'active' => 'Edition de #' . $famille->getId() . ' - ' . $famille->getPrenom() . ' ' . $famille->getNom()
             )
-        ]);
+        ));
     }
 
     /**
@@ -341,7 +338,7 @@ class FamilleController extends AppController
                 'statut' => true
             ));
         }
-        
+
         return $this->redirectToRoute('famille_listing', array(
             'page' => $page,
             'field' => $arrayFilters['field'],

@@ -19,6 +19,13 @@ class MembreController extends AppController
      *
      * @Route("/membre/listing/{page}/{field}/{order}", name="membre_listing", defaults={"page" = 1, "field"= null, "order"= null})
      * @Security("is_granted('ROLE_ADMIN')")
+     *
+     * @param Request $request
+     * @param SessionInterface $session
+     * @param int $page
+     * @param string $field
+     * @param string $order
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function index(Request $request, SessionInterface $session, int $page = 1, $field = null, $order = null)
     {
@@ -52,7 +59,7 @@ class MembreController extends AppController
 
         $this->setDatasFilter($session, $field, $order);
 
-        return $this->render('membre/index.html.twig', [
+        return $this->render('membre/index.html.twig', array(
             'controller_name' => 'MembreController',
             'membres' => $result['paginator'],
             'pagination' => $pagination,
@@ -63,7 +70,7 @@ class MembreController extends AppController
                 'home' => $this->indexUrlProject(),
                 'active' => 'Liste des membres'
             )
-        ]);
+        ));
     }
 
     /**
@@ -72,6 +79,10 @@ class MembreController extends AppController
      * @Route("/membre/ajax/add/specialite/{id}", name="membre_ajax_add_specialite", defaults={"id" = 0})
      * @ParamConverter("etablissement", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
+     *
+     * @param Request $request
+     * @param Etablissement $etablissement
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function addAjaxSpecialiteAction(Request $request, Etablissement $etablissement)
     {
@@ -90,6 +101,11 @@ class MembreController extends AppController
      * @ParamConverter("membre", options={"mapping": {"membre_id": "id"}})
      * @ParamConverter("etablissement", options={"mapping": {"etablissement_id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
+     *
+     * @param Request $request
+     * @param Membre $membre
+     * @param Etablissement $etablissement
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function editAjaxSpecialiteAction(Request $request, Membre $membre, Etablissement $etablissement = null)
     {
@@ -116,12 +132,17 @@ class MembreController extends AppController
      * @Route("/membre/see/{id}/{page}", name="membre_see")
      * @ParamConverter("membre", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
+     *
+     * @param SessionInterface $session
+     * @param Membre $membre
+     * @param int $page
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function seeAction(SessionInterface $session, Membre $membre, int $page)
     {
         $arrayFilters = $this->getDatasFilter($session);
 
-        return $this->render('membre/see.html.twig', [
+        return $this->render('membre/see.html.twig', array(
             'page' => $page,
             'membre' => $membre,
             'paths' => array(
@@ -135,7 +156,7 @@ class MembreController extends AppController
                 ),
                 'active' => 'Fiche d\'un membre'
             )
-        ]);
+        ));
     }
 
     /**
@@ -143,8 +164,12 @@ class MembreController extends AppController
      *
      * @Route("/membre/add/{page}", name="membre_add")
      * @Security("is_granted('ROLE_ADMIN')")
+     *
+     * @param UserPasswordEncoderInterface $encoder
+     * @param SessionInterface $session
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param int $page
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function addAction(UserPasswordEncoderInterface $encoder, SessionInterface $session, Request $request, int $page)
     {
@@ -159,7 +184,6 @@ class MembreController extends AppController
 
             $em = $this->getDoctrine()->getManager();
 
-            // TODO A changer
             $membre->setDisabled(0);
             $membre->setSalt($this->generateSalt());
 
@@ -171,7 +195,7 @@ class MembreController extends AppController
             return $this->redirect($this->generateUrl('membre_listing'));
         }
 
-        return $this->render('membre/add.html.twig', [
+        return $this->render('membre/add.html.twig', array(
             'page' => $page,
             'form' => $form->createView(),
             'paths' => array(
@@ -185,7 +209,7 @@ class MembreController extends AppController
                 ),
                 'active' => "Ajout d'un membre"
             )
-        ]);
+        ));
     }
 
     /**
@@ -194,27 +218,36 @@ class MembreController extends AppController
      * @Route("/membre/edit/{id}/{page}", name="membre_edit")
      * @ParamConverter("membre", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
+     *
+     * @param SessionInterface $session
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $encoder
+     * @param Membre $membre
+     * @param int $page
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function editAction(SessionInterface $session, Request $request, UserPasswordEncoderInterface $encoder, Membre $membre, int $page)
     {
         $arrayFilters = $this->getDatasFilter($session);
-        
-        $form = $this->createForm(MembreType::class, $membre, array('edit' => true));
+
+        $form = $this->createForm(MembreType::class, $membre, array(
+            'edit' => true
+        ));
         $password = $membre->getPassword();
-        
+
         $form->handleRequest($request);
-        
+
         if ($form->isSubmitted() && $form->isValid()) {
-            
+
             $em = $this->getDoctrine()->getManager();
-            
-            if($membre->getPassword() == 'password'){
+
+            if ($membre->getPassword() == 'password') {
                 $membre->setPassword($password);
             } else {
                 $encodePassword = $encoder->encodePassword($membre, $membre->getPassword());
                 $membre->setPassword($encodePassword);
             }
-            
+
             $em->persist($membre);
             $em->flush();
 
@@ -225,7 +258,7 @@ class MembreController extends AppController
             )));
         }
 
-        return $this->render('membre/edit.html.twig', [
+        return $this->render('membre/edit.html.twig', array(
             'page' => $page,
             'form' => $form->createView(),
             'membre' => $membre,
@@ -240,17 +273,22 @@ class MembreController extends AppController
                 ),
                 'active' => 'Edition de #' . $membre->getId() . ' - ' . $membre->getPrenom() . ' ' . $membre->getNom()
             )
-        ]);
+        ));
     }
 
     /**
-     * desactivation d'un membre
+     * Désactivation d'un membre
      *
      * @Route("/patient/delete/{id}/{page}", name="membre_delete")
      * @ParamConverter("membre", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
+     *
+     * @param SessionInterface $session
+     * @param Membre $membre
+     * @param int $page
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function deleteAction(SessionInterface $session, Membre $membre, $page)
+    public function deleteAction(SessionInterface $session, Membre $membre, int $page)
     {
         $arrayFilters = $this->getDatasFilter($session);
 
@@ -272,11 +310,12 @@ class MembreController extends AppController
             'order' => $arrayFilters['order']
         ));
     }
-    
+
     /**
-     * Création de salt
+     * Génération automatique de salt
      */
-    public function generateSalt(){
+    public function generateSalt()
+    {
         return base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
     }
 }

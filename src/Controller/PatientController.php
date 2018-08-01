@@ -19,6 +19,12 @@ class PatientController extends AppController
      * @Route("/patient/listing/{page}/{field}/{order}", name="patient_listing", defaults={"page" = 1, "field"= null, "order"= null})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      *
+     * @param Request $request
+     * @param SessionInterface $session
+     * @param int $page
+     * @param string $field
+     * @param string $order
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function index(Request $request, SessionInterface $session, int $page = 1, $field = null, $order = null)
     {
@@ -59,7 +65,7 @@ class PatientController extends AppController
 
         $this->setDatasFilter($session, $field, $order);
 
-        return $this->render('patient/index.html.twig', [
+        return $this->render('patient/index.html.twig', array(
             'controller_name' => 'PatientController',
             'patients' => $result['paginator'],
             'pagination' => $pagination,
@@ -70,63 +76,76 @@ class PatientController extends AppController
                 'home' => $this->indexUrlProject(),
                 'active' => 'Liste des patients'
             )
-        ]);
+        ));
     }
 
-    
     /**
      * Mise à jour du dropdown Spécialité lorsque l'établissement change dans le formulaire d'ajout d'un patient
-     * 
+     *
      * @Route("/patient/ajax/add/specialite/{id}", name="patient_ajax_add_specialite", defaults={"id" = 0})
      * @ParamConverter("etablissement", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
+     *
+     * @param Request $request
+     * @param Etablissement $etablissement
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function addAjaxSpecialiteAction(Request $request, Etablissement $etablissement)
     {
         $specialites = $etablissement->getSpecialites();
-        
+
         return $this->render('patient/ajax_dropdown_specialite.html.twig', array(
             'specialites' => $specialites,
             'select_specialite' => 0
         ));
     }
-    
+
     /**
      * Mise à jour du dropdown Spécialité lorsque l'établissement change dans le formulaire d'édition d'un patient
-     * 
+     *
      * @Route("/patient/ajax/edit/specialite/{patient_id}/{etablissement_id}", name="patient_ajax_edit_specialite", defaults={"etablissement_id"=0})
      * @ParamConverter("patient", options={"mapping": {"patient_id": "id"}})
      * @ParamConverter("etablissement", options={"mapping": {"etablissement_id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
+     *
+     * @param Request $request
+     * @param Patient $patient
+     * @param int $etablissement
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function editAjaxSpecialiteAction(Request $request, Patient $patient, int $etablissement = null)
     {
         $select_specialite = $patient->getSpecialite()->getId();
-        
+
         if (! is_null($etablissement)) {
             $specialites = $etablissement->getSpecialites();
         } else {
             $specialites = $patient->getEtablissement()->getSpecialites();
         }
-        
+
         return $this->render('patient/ajax_dropdown_specialite.html.twig', array(
             'specialites' => $specialites,
             'select_specialite' => $select_specialite
         ));
     }
-    
+
     /**
      * Fiche d'un patient
      *
      * @Route("/patient/see/{id}/{page}", name="patient_see")
      * @ParamConverter("patient", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
+     *
+     * @param SessionInterface $session
+     * @param Patient $patient
+     * @param int $page
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function seeAction(SessionInterface $session, Patient $patient, int $page)
     {
         $arrayFilters = $this->getDatasFilter($session);
 
-        return $this->render('patient/see.html.twig', [
+        return $this->render('patient/see.html.twig', array(
             'page' => $page,
             'patient' => $patient,
             'paths' => array(
@@ -140,7 +159,7 @@ class PatientController extends AppController
                 ),
                 'active' => 'Fiche d\'un patient'
             )
-        ]);
+        ));
     }
 
     /**
@@ -149,15 +168,18 @@ class PatientController extends AppController
      * @Route("/patient/ajax/see/{id}", name="patient_famille_ajax_see")
      * @ParamConverter("patient", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
+     *
+     * @param Patient $patient
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function ajaxSeeAction(Patient $patient)
     {
         $familles = $this->getElementsLiesActifs($patient, 'getFamilles');
 
-        return $this->render('patient/ajax_see_famille.html.twig', [
+        return $this->render('patient/ajax_see_famille.html.twig', array(
             'patient' => $patient,
             'familles' => $familles
-        ]);
+        ));
     }
 
     /**
@@ -165,15 +187,17 @@ class PatientController extends AppController
      *
      * @Route("/patient/add/{page}", name="patient_add")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
+     *
+     * @param SessionInterface $session
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function addAction(SessionInterface $session, Request $request, int $page)
     {
         $arrayFilters = $this->getDatasFilter($session);
-        
+
         $patient = new Patient();
-        
+
         $form = $this->createForm(PatientType::class, $patient);
 
         $form->handleRequest($request);
@@ -195,11 +219,11 @@ class PatientController extends AppController
 
             return $this->redirect($this->generateUrl('patient_listing'));
         }
-        
+
         $repository = $this->getDoctrine()->getRepository(Etablissement::class);
         $etablissements = $repository->findAll();
-        
-        return $this->render('patient/add.html.twig', [
+
+        return $this->render('patient/add.html.twig', array(
             'page' => $page,
             'form' => $form->createView(),
             'etablissements' => $etablissements,
@@ -214,7 +238,7 @@ class PatientController extends AppController
                 ),
                 'active' => "Ajout d'un patient"
             )
-        ]);
+        ));
     }
 
     /**
@@ -223,6 +247,12 @@ class PatientController extends AppController
      * @Route("/patient/edit/{id}/{page}", name="patient_edit")
      * @ParamConverter("patient", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
+     *
+     * @param SessionInterface $session
+     * @param Request $request
+     * @param Patient $patient
+     * @param int $page
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function editAction(SessionInterface $session, Request $request, Patient $patient, int $page)
     {
@@ -245,7 +275,7 @@ class PatientController extends AppController
             )));
         }
 
-        return $this->render('patient/edit.html.twig', [
+        return $this->render('patient/edit.html.twig', array(
             'page' => $page,
             'form' => $form->createView(),
             'patient' => $patient,
@@ -260,17 +290,22 @@ class PatientController extends AppController
                 ),
                 'active' => 'Edition de #' . $patient->getId() . ' - ' . $patient->getPrenom() . ' ' . $patient->getNom()
             )
-        ]);
+        ));
     }
 
     /**
-     * desactivation d'un patient
+     * Désactivation d'un patient
      *
      * @Route("/patient/delete/{id}/{page}", name="patient_delete")
      * @ParamConverter("patient", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
+     *
+     * @param SessionInterface $session
+     * @param Patient $patient
+     * @param int $page
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function deleteAction(SessionInterface $session, Patient $patient, $page)
+    public function deleteAction(SessionInterface $session, Patient $patient, int $page)
     {
         $arrayFilters = $this->getDatasFilter($session);
 
