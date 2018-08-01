@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Doctrine\DBAL\Types\BooleanType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\DataMapper\CheckboxListMapper;
 
 class QuestionType extends AbstractType
 {
@@ -76,8 +77,9 @@ class QuestionType extends AbstractType
             ->add('regles', TextareaType::class, array(
             'required' => false
         ))
-            ->add('obligatoire', TextType::class, array(
-            'required' => false
+            ->add('obligatoire', CheckboxType::class, array(
+            'required' => false,
+            'label' => 'Obligatoire'
         ))
             ->add('disabled', CheckboxType::class, array(
             'required' => false,
