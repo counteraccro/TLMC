@@ -48,7 +48,7 @@ class AppController extends Controller
         11 => 'Parrain',
         12 => 'Marraine'
     );
-    
+
     const QUESTION_TYPE = array(
         'ChoiceType' => 'Liste déroulante',
         'TextType' => 'Champ texte',
@@ -66,8 +66,8 @@ class AppController extends Controller
     const ID_FAMILLE = 66;
 
     const ID_FAMILLE_ADRESSE = 53;
-    
-    CONST ID_ETABLISSEMENT = 57;
+
+    const ID_ETABLISSEMENT = 57;
 
     /**
      * Supprime une recherche de la session
@@ -80,9 +80,9 @@ class AppController extends Controller
         if (isset($paramsSearch[$key])) {
             unset($paramsSearch[$key]);
         }
-        
+
         $this->pre($paramsSearch);
-        
+
         $session->set(self::CURRENT_SEARCH, $paramsSearch);
 
         return $this->redirect($request->headers->get('referer'));
@@ -172,24 +172,20 @@ class AppController extends Controller
         }
 
         // Vérification si le champ de trie appartient bien à l'object
-        $obj = new $params['repositoryClass']();        
+        $obj = new $params['repositoryClass']();
         $array_methode = get_class_methods($obj);
         $field = str_replace('_', '', $params['field']);
         $is_true = false;
-        foreach( $array_methode as $methode)
-        {
+        foreach ($array_methode as $methode) {
             $methode = str_replace('set', '', $methode);
             $methode = strtolower($methode);
-            if($methode == $field)
-            {
+            if ($methode == $field) {
                 $is_true = true;
                 break;
             }
-            
         }
-        
-        if(!$is_true)
-        {
+
+        if (! $is_true) {
             $params['field'] = 'id';
         }
 
@@ -198,14 +194,14 @@ class AppController extends Controller
             'order' => $params['order'],
             'repository' => $params['repository'],
             'search' => $paramsSearch,
-            'sans_inactif' => (isset($params['sans_inactif']) ? $params['sans_inactif'] : true) 
+            'sans_inactif' => (isset($params['sans_inactif']) ? $params['sans_inactif'] : true)
         );
 
         $session->set(self::CURRENT_SEARCH, $paramsSearch);
 
         return $repository->{$params['repositoryMethode']}($params['page'], self::MAX_NB_RESULT, $paramsRepo);
     }
-    
+
     /**
      * Récupération des éléments liés et actifs pour un objet
      *
@@ -222,16 +218,22 @@ class AppController extends Controller
                 break;
             }
         }
-        
-        $elements = $objet->{$methode}();
-        
-        if (! $admin) {
-            $elements = array();
-            foreach ($objet->{$methode}() as $element) {
-                if ($elements->getDisabled() == 0) {
-                    $elements[] = $element;
+
+        if (method_exists($objet, $methode)) {
+
+            if (! $admin) {
+                $elements = array();
+                foreach ($objet->{$methode}() as $element) {
+                    if ($elements->getDisabled() == 0) {
+                        $elements[] = $element;
+                    }
                 }
+            } else {
+                $elements = $objet->{$methode}();
             }
+            
+        } else {
+            $elements = array();
         }
         return $elements;
     }

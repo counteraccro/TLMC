@@ -44,26 +44,49 @@
     </table>
     <br />
 
-	<table class="table table-sm table-striped">
-    	<tr>
-        	<th> Service </th>
-            <th> Code Logistique </th>
-            <th> Service pour adultes </th>
-            <th> Service pour enfants </th>
-        </tr>
+	<div id="bloc_etablissement_specialite">
+    	<div class="row">
+    		<div class="col-md-4 offset-md-4">
+    			<div class="progress" style="height: 25px;">
+    				<div class="progress-bar progress-bar-striped progress-bar-animated"
+    					role="progressbar" aria-valuenow="75" aria-valuemin="0"
+    					aria-valuemax="100" style="width: 50%">Chargement des
+    					informations de l'établissement...</div>
+    			</div>
+    		</div>
+    	</div>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="modal_specialite_global" tabindex="-1" role="dialog">
+    	<div class="modal-dialog" role="document">
+    		<div class="modal-content" id="bloc_modal"></div>
+    	</div>
+    </div>
+
+{% endblock %}
+
+{% block script %}
+ 	<script src="{{ asset('assets/js/specialite/Specialite.js') }}?{{ date().timestamp }}"></script>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+    
+    $(document).ready(function() {
+
+		var params = {
+				url_ajax_see : '{{path('etablissement_specialite_ajax_see', {'id': etablissement.id}) }}',
+				id_content_modal : '#bloc_modal',
+				id_modal : '#modal_specialite_global',
+				id_global : '#bloc_etablissement_specialite',
+				id_bloc_etablissement : '',
+				id_specialite : ''
+		};
         
-        {% for specialite in etablissement.specialites %}
-        	<tr>
-            	<td>{{ specialite.service }} </td>
-                <td>{{ specialite.codeLogistique }}</td>
-                <td>{{ specialite.adulte | bool }} </td>
-                <td>{{ specialite.pediatrie | bool }} </td>
-            </tr>
-        
-        {% endfor %}
-	</table>
-        	
-    {% if etablissement.specialites is empty %}
-    	<p class="text-info text-center">Il  n'y a aucune spécialité associée à cet établissement.</p>
-    {% endif %}
+    	Specialite.Launch(params);
+    	Specialite.LoadSpecialite();
+    });
+    
+    </script>
 {% endblock %}

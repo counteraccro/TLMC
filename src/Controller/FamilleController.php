@@ -206,12 +206,12 @@ class FamilleController extends AppController
                 $select_famille = -1;
             }
             
-            return $this->render('famille/ajax_add.html.twig', [
+            return $this->render('famille/ajax_add.html.twig', array(
                 'form' => $form->createView(),
                 'patient' => $patient,
                 'jsonPatient' => $jsonPatient,
                 'select_famille' => $select_famille
-            ]);
+            ));
         }
         
         return $this->render('famille/add.html.twig', [

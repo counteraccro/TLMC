@@ -1,0 +1,47 @@
+<div id="ajax_etablissement_specialite_see">
+    <div class="card">
+        <div class="card-header">
+        	Spécialité
+        	<a href="{{ path('specialite_ajax_add', {'id' : etablissement.id}) }}" id="btn-add-specialite" class="float-right"> Nouvelle spécialité</a>
+        </div>
+        
+        <div class="card-body">
+        
+            <table class="table table-sm table-striped">
+            	<tr>
+                	<th> Service </th>
+                    <th> Code Logistique </th>
+                    <th> Service pour adultes </th>
+                    <th> Service pour enfants </th>
+                    <th></th>
+                </tr>
+                
+                {% for specialite in specialites %}
+                	<tr>
+                    	<td>{{ specialite.service }} </td>
+                        <td>{{ specialite.codeLogistique }}</td>
+                        <td>{{ specialite.adulte | bool }} </td>
+                        <td>{{ specialite.pediatrie | bool }} </td>
+                        <td>
+            		        <!-- <a href="{#{ path('famille_ajax_edit', {'id' : famille.id}) }#}" id="btn-edit-famille-{#{ famille.id }#}"  title="Editer la fiche"><span class="oi oi-pencil"></span></a> -->
+                		    {#{ actionDelete(famille.disabled, path('famille_delete', {'id' : famille.id}), famille.id) | raw }#}
+                		</td>
+                    </tr>
+                
+                {% endfor %}
+        	</table>
+        	
+        	{% if etablissement.specialites is empty %}
+            	<p class="text-info text-center">Il  n'y a aucune spécialité associée à cet établissement.</p>
+            {% endif %}
+        	
+        </div>
+    </div>
+    
+    {% block javascripts %}
+        <script type="text/javascript">
+            var id_btn_add = '#btn-add-specialite';
+            //Specialite.EventAdd(id_btn_add);
+        </script>
+    {% endblock %}
+</div>

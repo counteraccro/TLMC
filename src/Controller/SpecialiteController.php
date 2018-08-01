@@ -8,6 +8,7 @@ use App\Entity\Specialite;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Form\SpecialiteType;
+use App\Entity\Etablissement;
 
 class SpecialiteController extends AppController
 {
@@ -74,7 +75,7 @@ class SpecialiteController extends AppController
     public function seeAction(SessionInterface $session, Specialite $specialite, int $page)
     {
         $arrayFilters = $this->getDatasFilter($session);
-        
+
         return $this->render('specialite/see.html.twig', [
             'page' => $page,
             'specialite' => $specialite,
@@ -91,22 +92,41 @@ class SpecialiteController extends AppController
             )
         ]);
     }
-    
+
     /**
      * Ajout d'une nouvelle spécialité
      *
      * @Route("/specialite/add/{page}", name="specialite_add")
+     * @Route("/specialite/ajax/add/{id}", name="specialite_ajax_add")
      * @Security("is_granted('ROLE_ADMIN')")
+     *
+     * @param SessionInterface $session
      * @param Request $request
+     * @param int $page
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function addAction(SessionInterface $session, Request $request, int $page)
+    public function addAction(SessionInterface $session, Request $request, int $page = 1, int $id = null)
     {
         $arrayFilters = $this->getDatasFilter($session);
 
         $specialite = new Specialite();
 
-        $form = $this->createForm(SpecialiteType::class, $specialite);
+        if ($request->isXmlHttpRequest()) {
+            $repository = $this->getDoctrine()->getRepository(Etablissement::class);
+            $result = $repository->findById($id);
+            $etablissement = $result[0];
+            $specialite->setPatient($etablissement);
+
+            $form = $this->createForm(SpecialiteType::class, $specialite, array(
+                'label_submit' => 'Ajouter',
+                'disabled_etablissement' => true
+            ));
+        } else {
+
+            $form = $this->createForm(SpecialiteType::class, $specialite, array(
+                'label_submit' => 'Ajouter'
+            ));
+        }
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -119,7 +139,22 @@ class SpecialiteController extends AppController
             $em->persist($specialite);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('specialite_listing'));
+            if ($request->isXmlHttpRequest()) {
+                return $this->json(array(
+                    'statut' => true
+                ));
+            } else {
+                return $this->redirect($this->generateUrl('specialite_listing'));
+            }
+        }
+
+        // Si appel Ajax, on renvoi sur la page ajax
+        if ($request->isXmlHttpRequest()) {
+
+            return $this->render('specialite/ajax_add.html.twig', array(
+                'form' => $form->createView(),
+                'etablissement' => $etablissement
+            ));
         }
 
         return $this->render('specialite/add.html.twig', [

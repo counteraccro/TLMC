@@ -93,6 +93,24 @@ class EtablissementController extends AppController
     }
     
     /**
+     * Bloc spécialité d'un établissement
+     *
+     * @Route("/etablissement/ajax/see/{id}", name="etablissement_specialite_ajax_see")
+     * @ParamConverter("etablissement", options={"mapping": {"id": "id"}})
+     * @Security("is_granted('ROLE_ADMIN')")
+     */
+    public function ajaxSeeAction(Etablissement $etablissement)
+    {
+        $specialites = $this->getElementsLiesActifs($etablissement, 'getSpecialites');
+        
+        return $this->render('etablissement/ajax_see_specialite.html.twig', [
+            'etablissement' => $etablissement,
+            'specialites' => $specialites
+        ]);
+    }
+    
+    
+    /**
      * Ajout d'un nouveau établissement
      *
      * @Route("/etablissement/add/{page}", name="etablissement_add")
