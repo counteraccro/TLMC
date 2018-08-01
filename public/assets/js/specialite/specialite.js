@@ -8,12 +8,21 @@ Specialite.Launch = function(params) {
 	//cible la div '#bloc_specialite'
 	Specialite.id_specialite = params.id_specialite;
 	//récupère l'id du bloc établissemnt
-	Specialite.id_bloc_etablissement = params.id_bloc_etablissement
+	Specialite.id_bloc_etablissement = params.id_bloc_etablissement;
+	
+	//cible la div '#bloc_patient'
+	Specialite.id_global = params.id_global;
+	//cible la div '#bloc_modal'
+	Specialite.id_modal = params.id_modal;
+
+	Specialite.id_content_modal = params.id_content_modal;
+
+	Specialite.id_container_global = '#container-global';
 
 	/**
-	 * fonction prévue pour le chargement des spécialités d'un établissement
+	 * fonction prévue pour le chargement d'un dropdown des spécialités d'un établissement
 	 */
-	Specialite.LoadSpecialite = function()
+	Specialite.LoadDropdownSpecialite = function()
 	{
 		Specialite.Ajax(Specialite.url_ajax_see + '/' + $(Specialite.id_bloc_etablissement).val(), Specialite.id_specialite);
 	}
@@ -40,8 +49,16 @@ Specialite.Launch = function(params) {
 		$(Specialite.id_bloc_etablissement).change(function(){
 			event.preventDefault();
 			
-			Specialite.LoadSpecialite();
+			Specialite.LoadDropdownSpecialite();
 			
 		});
+	}
+	
+	/**
+	 * fonction prévue pour le chargement des spécialités de l'établissement, paramètres url et id
+	 */
+	Specialite.LoadSpecialite = function()
+	{
+		Specialite.Ajax(Specialite.url_ajax_see, Specialite.id_global);
 	}
 }

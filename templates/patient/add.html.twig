@@ -44,7 +44,7 @@
 
 {% block script %}
  	<script src="{{ asset('assets/js/utils/FormAddCollection.js') }}?{{ date().timestamp }}"></script>
- 	<script src="{{ asset('assets/js/specialite/specialite.js') }}?{{ date().timestamp }}"></script>
+ 	<script src="{{ asset('assets/js/specialite/Specialite.js') }}?{{ date().timestamp }}"></script>
 {% endblock %}
 
 {% block javascripts %}
@@ -70,7 +70,7 @@
 		};
         
     	Specialite.Launch(params_spec);
-    	Specialite.LoadSpecialite();
+    	Specialite.LoadDropdownSpecialite();
 		Specialite.EventChange();
     });
     

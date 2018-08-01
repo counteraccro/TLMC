@@ -161,7 +161,7 @@ class MembreController extends AppController
 
             // TODO A changer
             $membre->setDisabled(0);
-            $membre->setSalt('41df4dgv54gfd5g');
+            $membre->setSalt($this->generateSalt());
 
             $encodePassword = $encoder->encodePassword($membre, $membre->getPassword());
             $membre->setPassword($encodePassword);
@@ -195,17 +195,26 @@ class MembreController extends AppController
      * @ParamConverter("membre", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function editAction(SessionInterface $session, Request $request, Membre $membre, int $page)
+    public function editAction(SessionInterface $session, Request $request, UserPasswordEncoderInterface $encoder, Membre $membre, int $page)
     {
         $arrayFilters = $this->getDatasFilter($session);
-
-        $form = $this->createForm(MembreType::class, $membre);
-
+        
+        $form = $this->createForm(MembreType::class, $membre, array('edit' => true));
+        $password = $membre->getPassword();
+        
         $form->handleRequest($request);
+        
         if ($form->isSubmitted() && $form->isValid()) {
-
+            
             $em = $this->getDoctrine()->getManager();
-
+            
+            if($membre->getPassword() == 'password'){
+                $membre->setPassword($password);
+            } else {
+                $encodePassword = $encoder->encodePassword($membre, $membre->getPassword());
+                $membre->setPassword($encodePassword);
+            }
+            
             $em->persist($membre);
             $em->flush();
 
@@ -262,5 +271,12 @@ class MembreController extends AppController
             'field' => $arrayFilters['field'],
             'order' => $arrayFilters['order']
         ));
+    }
+    
+    /**
+     * Création de salt
+     */
+    public function generateSalt(){
+        return base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
     }
 }

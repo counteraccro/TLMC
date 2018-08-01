@@ -22,6 +22,14 @@ class MembreType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $first_options = array(
+            'label' => 'Mot de passe',
+            'empty_data' => 'password'
+        );
+        if ($options['edit']) {
+            $first_options['help'] = 'Ne pas remplir les champs Mots de passe pour ne pas le modifier.';
+        }
+
         $builder->add('nom')
             ->add('prenom', TextType::class, array(
             'label' => 'Prénom'
@@ -30,17 +38,13 @@ class MembreType extends AbstractType
             'label' => 'Pseudo'
         ))
             ->add('password', RepeatedType::class, array(
-            'first_options' => array(
-                'always_empty' => false,
-                'label' => 'Mot de passe'
-            ),
+            'first_options' => $first_options,
             'second_options' => array(
-                'always_empty' => false,
-                'label' => 'Confirmation du mot de passe'
+                'label' => 'Confirmation du mot de passe',
+                'empty_data' => 'password'
             ),
             'type' => PasswordType::class,
-            'required' => false,
-
+            'required' => ($options['edit'] ? false : true),
             'invalid_message' => 'Les mots de passe doivent correspondre',
             'options' => array(
                 'attr' => array(
@@ -49,7 +53,8 @@ class MembreType extends AbstractType
             )
         ))
             ->add('numero_tel', TextType::class, array(
-            'label' => 'Numéro de téléphone'
+            'label' => 'Numéro de téléphone',
+            'required' => false
         ))
             ->add('email', EmailType::class, array(
             'label' => 'Adresse email'
@@ -96,7 +101,8 @@ class MembreType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Membre::class,
-            'label_submit' => 'Valider'
+            'label_submit' => 'Valider',
+            'edit' => false
         ]);
     }
 }

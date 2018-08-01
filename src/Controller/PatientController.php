@@ -152,7 +152,7 @@ class PatientController extends AppController
      */
     public function ajaxSeeAction(Patient $patient)
     {
-        $familles = $this->getFamillesActives($patient);
+        $familles = $this->getElementsLiesActifs($patient, 'getFamilles');
 
         return $this->render('patient/ajax_see_famille.html.twig', [
             'patient' => $patient,

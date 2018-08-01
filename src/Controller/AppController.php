@@ -207,11 +207,13 @@ class AppController extends Controller
     }
     
     /**
+     * Récupération des éléments liés et actifs pour un objet
      *
-     * @param Patient $patient
+     * @param $objet
+     * @param string $methode
      * @return array
      */
-    public function getFamillesActives(Patient $patient)
+    public function getElementsLiesActifs($objet, $methode)
     {
         $admin = false;
         foreach ($this->getUser()->getRoles() as $role) {
@@ -221,16 +223,16 @@ class AppController extends Controller
             }
         }
         
-        $familles = $patient->getFamilles();
+        $elements = $objet->{$methode}();
         
         if (! $admin) {
-            $familles = array();
-            foreach ($patient->getFamilles() as $family) {
-                if ($family->getDisabled() == 0) {
-                    $familles[] = $family;
+            $elements = array();
+            foreach ($objet->{$methode}() as $element) {
+                if ($elements->getDisabled() == 0) {
+                    $elements[] = $element;
                 }
             }
         }
-        return $familles;
+        return $elements;
     }
 }

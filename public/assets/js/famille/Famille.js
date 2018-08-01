@@ -5,7 +5,7 @@ Famille.Launch = function(params) {
 
 	//url de la fiche patient
 	Famille.url_ajax_see = params.url_ajax_see;
-	//cible la div '#bloc_patient'
+	//cible la div '#bloc_patient_famille'
 	Famille.id_global = params.id_global;
 	//cible la div '#bloc_modal'
 	Famille.id_modal = params.id_modal;

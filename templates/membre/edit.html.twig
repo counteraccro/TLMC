@@ -13,7 +13,9 @@
 	{{ form_row(form.nom) }}
 	{{ form_row(form.prenom) }}
 	{{ form_row(form.username) }}
-	{{ form_row(form.password) }}
+	<div class="shadow-sm p-3 mb-5 bg-white rounded border">
+        {{ form_row(form.password) }}
+	</div>
 	{{ form_row(form.email) }}
 	{{ form_row(form.numero_tel) }}
 	{{ form_row(form.fonction) }}
@@ -25,9 +27,6 @@
 	<div id="bloc_specialite">
 		{{ form_row(form.specialite) }}
 	</div>
-	
-	<input type="hidden" name="membre[password][first]" value="{{ membre.password }}">
-	<input type="hidden" name="membre[password][second]" value="{{ membre.password }}">
     
     {{ form_rest(form) }}
     {{ form_errors(form) }}
