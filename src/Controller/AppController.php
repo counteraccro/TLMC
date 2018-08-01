@@ -226,7 +226,7 @@ class AppController extends Controller
             if (! $admin) {
                 $elements = array();
                 foreach ($objet->{$methode}() as $element) {
-                    if ($elements->getDisabled() == 0) {
+                    if ($element->getDisabled() == 0) {
                         $elements[] = $element;
                     }
                 }
