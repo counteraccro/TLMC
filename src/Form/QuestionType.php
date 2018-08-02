@@ -92,7 +92,7 @@ class QuestionType extends AbstractType
         ))
             ->add('disabled', CheckboxType::class, array(
             'required' => false,
-            'label' => 'Actif'
+            'label' => 'Désactiver'
         ))
             ->add('save', SubmitType::class, array(
             'label' => 'Valider',

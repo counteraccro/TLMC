@@ -32,6 +32,14 @@ class LoadQuestionnaireData extends Fixture
                 'setDateFin' => '2019-01-30 17:00:00',
                 'setJourRelance' => '5',
                 'setDisabled' => '0'
+            ],
+            'Questionnaire-3' => [
+                'setTitre' => 'Enquête sur les bonbons ',
+                'setDescription' => 'Ce questionnaire va nous permettre de mieux connaître vos goûts.',
+                'setDateCreation' => '2018-08-02 19:00:00',
+                'setDateFin' => '2018-09-03 23:00:00',
+                'setJourRelance' => '5',
+                'setDisabled' => '0'
             ]
         ]
     ];
