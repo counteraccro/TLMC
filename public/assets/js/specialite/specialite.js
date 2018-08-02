@@ -20,14 +20,6 @@ Specialite.Launch = function(params) {
 	Specialite.id_container_global = '#container-global';
 
 	/**
-	 * fonction prévue pour le chargement d'un dropdown des spécialités d'un établissement
-	 */
-	Specialite.LoadDropdownSpecialite = function()
-	{
-		Specialite.Ajax(Specialite.url_ajax_see + '/' + $(Specialite.id_bloc_etablissement).val(), Specialite.id_specialite);
-	}
-	
-	/**
 	 * Méthode Ajax qui va charger l'element présent dans l'URL
 	 */
 	Specialite.Ajax = function(url, id_done, method = 'GET')
@@ -39,17 +31,30 @@ Specialite.Launch = function(params) {
 		.done(function( html ) {
 			$(id_done).html(html);
 			$(Specialite.id_container_global).hideLoading();
+			$(Specialite.id_specialite).hideLoading();
 		});
+	}
+	
+	/**
+	 * fonction prévue pour le chargement d'un dropdown des spécialités d'un établissement
+	 */
+	Specialite.LoadDropdownSpecialite = function()
+	{
+		Specialite.Ajax(Specialite.url_ajax_see + '/' + $(Specialite.id_bloc_etablissement).val(), Specialite.id_specialite);
 	}
 	
 	/**
 	 * Evénement changement du select établissement
 	 */
-	Specialite.EventChange = function()
+	Specialite.EventChange = function(id)
 	{
 		$(Specialite.id_bloc_etablissement).change(function(){
 			event.preventDefault();
-			
+			//désactivation du bouton de sauvegarde pour éviter les erreurs
+			$(id).prop('disabled', true);
+			//affichage du loader
+			$(Specialite.id_specialite).showLoading();
+			//chargement du dropdown
 			Specialite.LoadDropdownSpecialite();
 			
 		});

@@ -8,3 +8,13 @@
         </select>
     </div>
 </div>
+
+{% block javascripts %}
+    <script type="text/javascript">
+    	{% if(specialites is empty) %}
+			$('#ajax_membre_specialite').hide();
+    	{% endif %}
+    	$('#membre_save').prop('disabled', false);
+    	
+    </script>
+{% endblock %}
