@@ -14,16 +14,18 @@
 	{{ form_row(form.nom) }}
 	{{ form_row(form.prenom) }}
 	{{ form_row(form.date_naissance) }}
-	<div id="bloc_etablissement">
-	    <div class="form-group">
-        	<label for="patient_etablissement">Etablissement</label> 
-            <select id="patient_etablissement" name="patient[etablissement]" class="form-control">
-                {%  for etablissement in etablissements %}
-            		<option {% if etablissement.id == patient.specialite.etablissement.id %} selected {% endif %} value="{{ etablissement.id }}">{{ etablissement.nom }}</option>
-            	{% endfor %}
-            </select>
+	{% if etablissements is not empty %}
+    	<div id="bloc_etablissement">
+    	    <div class="form-group">
+            	<label for="patient_etablissement">Etablissement</label> 
+                <select id="patient_etablissement" name="patient[etablissement]" class="form-control">
+                    {%  for etablissement in etablissements %}
+                		<option {% if etablissement.id == patient.specialite.etablissement.id %} selected {% endif %} value="{{ etablissement.id }}">{{ etablissement.nom }}</option>
+                	{% endfor %}
+                </select>
+        	</div>
     	</div>
-	</div>
+	{% endif %}
 	<div id="bloc_specialite">
 	    {{ form_row(form.specialite) }}
 	</div>

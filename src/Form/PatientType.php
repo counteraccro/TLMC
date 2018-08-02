@@ -18,15 +18,6 @@ class PatientType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $specialite_options = array(
-            'class' => Specialite::class,
-            'label' => 'Spécialité',
-            'choice_label' => 'service'
-        );
-        if (count($options['specialites'])) {
-            $specialite_options['choices'] = $options['specialites'];
-        }
-
         $builder->add('nom')
             ->add('prenom', TextType::class, array(
             'label' => 'Prénom'
@@ -38,8 +29,13 @@ class PatientType extends AbstractType
             'required' => false,
             'label' => 'Personne à mobilité réduite'
         ))
-        ->add('specialite', EntityType::class, $specialite_options);
-        
+            ->add('specialite', EntityType::class, array(
+            'class' => Specialite::class,
+            'label' => 'Spécialité',
+            'choice_label' => 'service',
+            'disabled' => $options['disabled_specialite']
+        ));
+
         if ($options['add']) {
             $builder->add('familles', CollectionType::class, array(
                 'label' => 'Formulaire d\'ajout d\'un nouveau membre de famille',
@@ -72,8 +68,8 @@ class PatientType extends AbstractType
             'data_class' => Patient::class,
             'label_submit' => 'Valider',
             'allow_extra_fields' => true,
-            'add' => true,
-            'specialites' => array()
+            'disabled_specialite' => false,
+            'add' => true
         ));
     }
 }

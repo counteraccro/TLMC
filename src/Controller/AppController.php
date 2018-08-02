@@ -217,7 +217,7 @@ class AppController extends Controller
         }
         return false;
     }
-
+    
     /**
      * Récupération des éléments liés et actifs pour un objet
      *

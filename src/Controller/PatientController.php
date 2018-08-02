@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Form\PatientType;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Entity\Etablissement;
-use App\Entity\Specialite;
+use App\Entity\Membre;
 
 class PatientController extends AppController
 {
@@ -133,20 +133,38 @@ class PatientController extends AppController
     /**
      * Ajout d'un nouveau patient
      *
-     * @Route("/patient/add/{page}", name="patient_add")
+     * @Route("/patient/add/{page}/{membre_id}", name="patient_add")
+     * @ParamConverter("membre", options={"mapping": {"membre_id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      *
      * @param SessionInterface $session
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function addAction(SessionInterface $session, Request $request, int $page)
+    public function addAction(SessionInterface $session, Request $request, int $page, Membre $membre)
     {
         $arrayFilters = $this->getDatasFilter($session);
 
         $patient = new Patient();
-
-        $form = $this->createForm(PatientType::class, $patient);
+        
+        if($this->isAdmin()){
+            $repositoryE = $this->getDoctrine()->getRepository(Etablissement::class);
+            $etablissements = $repositoryE->findHopital();
+            
+            $form = $this->createForm(PatientType::class, $patient);
+        } else {
+            
+            if(!is_null($membre->getSpecialite())){
+                $etablissements = array();
+                $patient->setSpecialite($membre->getSpecialite());
+                $form = $this->createForm(PatientType::class, $patient, array('disabled_specialite' => true));
+            } else {
+                $repositoryE = $this->getDoctrine()->getRepository(Etablissement::class);
+                $etablissements = $repositoryE->findAll();
+                
+                $form = $this->createForm(PatientType::class, $patient);
+            }
+        }
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -168,9 +186,8 @@ class PatientController extends AppController
             return $this->redirect($this->generateUrl('patient_listing'));
         }
 
-        $repositoryE = $this->getDoctrine()->getRepository(Etablissement::class);
-        $etablissements = $repositoryE->findHopital();
-
+        
+        
         return $this->render('patient/add.html.twig', array(
             'page' => $page,
             'form' => $form->createView(),
@@ -205,15 +222,15 @@ class PatientController extends AppController
     public function editAction(SessionInterface $session, Request $request, Patient $patient, int $page)
     {
         $arrayFilters = $this->getDatasFilter($session);
-
-        $repositoryE = $this->getDoctrine()->getRepository(Etablissement::class);
-        $etablissements = $repositoryE->findHopital();
         
-        $repositoryS = $this->getDoctrine()->getRepository(Specialite::class);
-        $specialites = $repositoryS->findByEtablissement($patient->getSpecialite()->getEtablissement());
-        
-        $form = $this->createForm(PatientType::class, $patient, array('add' => false));
-        
+        if($this->isAdmin()){
+            $repositoryE = $this->getDoctrine()->getRepository(Etablissement::class);
+            $etablissements = $repositoryE->findHopital();
+            $form = $this->createForm(PatientType::class, $patient, array('add' => false));
+        } else {
+            $etablissements = array();
+            $form = $this->createForm(PatientType::class, $patient, array('add' => false, 'disabled_specialite' => true));
+        }
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             
@@ -229,14 +246,11 @@ class PatientController extends AppController
             )));
         }
         
-        
-        
         return $this->render('patient/edit.html.twig', array(
             'page' => $page,
             'form' => $form->createView(),
             'patient' => $patient,
             'etablissements' => $etablissements,
-            'specialites' => $specialites,
             'paths' => array(
                 'home' => $this->indexUrlProject(),
                 'urls' => array(
