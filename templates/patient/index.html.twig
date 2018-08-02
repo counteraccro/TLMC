@@ -8,11 +8,10 @@
 
 {% include 'elements/arborescence.html.twig' %}
 
-
 <div class="card">
 	<div class="card-header">
     	{{ pagination.nb_elements }} patients - Page {{ pagination.page }} / {{ pagination.pages_count }}
-  		<a href="{{ path('patient_add', {'page' : pagination.page}) }}" class="float-right"><span class="oi oi-person"></span> Nouveau patient</a>
+  		<a href="{{ path('patient_add', {'page' : pagination.page, 'membre_id':app.user.id}) }}" class="float-right"><span class="oi oi-person"></span> Nouveau patient</a>
   		{{ labelFilter(path('utils_delete-search', {'page' : pagination.page} ), current_search) | raw }}
   	</div>
   	<div class="card-body">
@@ -23,6 +22,7 @@
         		<th>{{ headerFilter(path('patient_listing', {'page' : pagination.page, 'field' : 'prenom'} ), 'Prénom', current_order, current_field) | raw }}</th>
         		<th>{{ headerFilter(path('patient_listing', {'page' : pagination.page, 'field' : 'date_naissance'} ), 'Date de naissance', current_order, current_field) | raw }}</th>
         		<th>Service</th>
+        		<th>Etablissement</th>
         		<th></th>
         	</tr>
         	<tr>
@@ -31,6 +31,7 @@
         		<td>{{ inputFilter(path('patient_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Patient-prenom', current_search, 'Prénom') | raw }}</td>
         		<td>{{ inputFilter(path('patient_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Patient-date_naissance', current_search, 'Date de naissance') | raw }}</td>
         		<td>{{ inputFilter(path('patient_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Patient-specialite-service', current_search, 'Service') | raw }}</td>
+        		<td></td>
         		<td></td>
         	</tr>
         	
@@ -41,6 +42,7 @@
         			<td>{{ patient.prenom }}</td>
         			<td>{{ patient.dateNaissance | date('d/m/Y') }} ({{ patient.dateNaissance | age }} ans)</td>
         			<td>{{ patient.specialite.service }}</td>
+        			<td>{{ patient.specialite.etablissement.nom }}</td>
         			<td>
         			    {{ actionSee(path('patient_see', {'id' : patient.id, 'page' : pagination.page})) | raw }}
         			    {{ actionEdit(path('patient_edit', {'id' : patient.id, 'page' : pagination.page})) | raw }}

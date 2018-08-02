@@ -49,11 +49,8 @@ class FamilleController extends AppController
             'repositoryMethode' => 'findAllFamilles'
         );
 
-        foreach ($this->getUser()->getRoles() as $role) {
-            if ($role == "ROLE_ADMIN") {
-                $params['sans_inactif'] = false;
-                break;
-            }
+        if ($this->isAdmin()) {
+            $params['sans_inactif'] = false;
         }
 
         $result = $this->genericSearch($request, $session, $params);

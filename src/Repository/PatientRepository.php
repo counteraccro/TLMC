@@ -34,7 +34,8 @@ class PatientRepository extends ServiceEntityRepository
      *            [search] => tableau contenant les éléments de la recherche
      *            [repository] => repository (objet courant)
      *            [field] => champ de tri,
-     *            [avec_disabled] => boolean
+     *            [sans_inactif] => boolean,
+     *            [condition] => tableau de conditions pour le listing des éléments
      * @throws \InvalidArgumentException
      * @throws NotFoundHttpException
      * @return \Doctrine\ORM\Tools\Pagination\Paginator[]|mixed[]|\Doctrine\DBAL\Driver\Statement[]|array[]|NULL[]
@@ -91,7 +92,8 @@ class PatientRepository extends ServiceEntityRepository
      *            [search] => tableau contenant les éléments de la recherche
      *            [repository] => repository (objet courant)
      *            [field] => champ de tri,
-     *            [avec_disabled] => boolean
+     *            [sans_inactif] => boolean,
+     *            [condition] => tableau de conditions pour le listing des éléments
      * @return \Doctrine\ORM\QueryBuilder
      */
     private function generateParamsSql(QueryBuilder $query, array $params)
@@ -112,6 +114,10 @@ class PatientRepository extends ServiceEntityRepository
                 }
                 $index ++;
             }
+        }
+        
+        if(isset($params['condition'])){
+            $query->andWhere($params['repository'] . '.' . $params['condition']['key'] . ' = '.$params['condition']['value']);
         }
 
         if (isset($params['sans_inactif']) && $params['sans_inactif']) {

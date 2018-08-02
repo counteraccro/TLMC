@@ -74,59 +74,6 @@ class MembreController extends AppController
     }
 
     /**
-     * Mise à jour du dropdown Spécialité lorsque l'établissement change dans le formulaire d'ajout d'un membre
-     *
-     * @Route("/membre/ajax/add/specialite/{id}", name="membre_ajax_add_specialite", defaults={"id" = 0})
-     * @ParamConverter("etablissement", options={"mapping": {"id": "id"}})
-     * @Security("is_granted('ROLE_ADMIN')")
-     *
-     * @param Request $request
-     * @param Etablissement $etablissement
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function addAjaxSpecialiteAction(Request $request, Etablissement $etablissement)
-    {
-        $specialites = $etablissement->getSpecialites();
-
-        return $this->render('membre/ajax_dropdown_specialite.html.twig', array(
-            'specialites' => $specialites,
-            'select_specialite' => 0
-        ));
-    }
-
-    /**
-     * Mise à jour du dropdown Spécialité lorsque l'établissement change dans le formulaire d'édition d'un membre
-     *
-     * @Route("/membre/ajax/edit/{membre_id}/{etablissement_id}", name="membre_ajax_edit_specialite", defaults={"etablissement_id" = 0})
-     * @ParamConverter("membre", options={"mapping": {"membre_id": "id"}})
-     * @ParamConverter("etablissement", options={"mapping": {"etablissement_id": "id"}})
-     * @Security("is_granted('ROLE_ADMIN')")
-     *
-     * @param Request $request
-     * @param Membre $membre
-     * @param Etablissement $etablissement
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function editAjaxSpecialiteAction(Request $request, Membre $membre, Etablissement $etablissement = null)
-    {
-        $select_specialite = 0;
-        if (! is_null($membre->getSpecialite())) {
-            $select_specialite = $membre->getSpecialite()->getId();
-        }
-
-        if (! is_null($etablissement)) {
-            $specialites = $etablissement->getSpecialites();
-        } else {
-            $specialites = $membre->getEtablissement()->getSpecialites();
-        }
-
-        return $this->render('membre/ajax_dropdown_specialite.html.twig', array(
-            'specialites' => $specialites,
-            'select_specialite' => $select_specialite
-        ));
-    }
-
-    /**
      * Fiche d'un membre
      *
      * @Route("/membre/see/{id}/{page}", name="membre_see")

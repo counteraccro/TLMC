@@ -32,24 +32,29 @@ class PatientType extends AbstractType
             ->add('specialite', EntityType::class, array(
             'class' => Specialite::class,
             'label' => 'Spécialité',
-            'choice_label' => 'service'
-        ))
-            ->add('familles', CollectionType::class, array(
-            'label' => 'Formulaire d\'ajout d\'un nouveau membre de famille',
-            'label_attr' => array(
-                'id' => 'label_collection_type'
-            ),
-            'entry_type' => FamilleType::class,
-            'entry_options' => array(
-                'label' => '--- Ajouter un nouveau membre de famille ---',
-                'avec_bouton' => false,
-                'avec_patient' => false
-            ),
+            'choice_label' => 'service',
+            'disabled' => $options['disabled_specialite']
+        ));
 
-            'allow_add' => true,
-            'auto_initialize' => true
-        ))
-            ->add('save', SubmitType::class, array(
+        if ($options['add']) {
+            $builder->add('familles', CollectionType::class, array(
+                'label' => 'Formulaire d\'ajout d\'un nouveau membre de famille',
+                'label_attr' => array(
+                    'id' => 'label_collection_type'
+                ),
+                'entry_type' => FamilleType::class,
+                'entry_options' => array(
+                    'label' => '--- Ajouter un nouveau membre de famille ---',
+                    'avec_bouton' => false,
+                    'avec_patient' => false
+                ),
+
+                'allow_add' => true,
+                'auto_initialize' => true
+            ));
+        }
+
+        $builder->add('save', SubmitType::class, array(
             'label' => $options['label_submit'],
             'attr' => array(
                 'class' => 'btn btn-primary'
@@ -59,10 +64,12 @@ class PatientType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
+        $resolver->setDefaults(array(
             'data_class' => Patient::class,
             'label_submit' => 'Valider',
-            'allow_extra_fields' => true
-        ]);
+            'allow_extra_fields' => true,
+            'disabled_specialite' => false,
+            'add' => true
+        ));
     }
 }

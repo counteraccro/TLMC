@@ -8,6 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use App\Entity\Membre;
 
 class AppController extends Controller
 {
@@ -199,11 +200,41 @@ class AppController extends Controller
             'sans_inactif' => (isset($params['sans_inactif']) ? $params['sans_inactif'] : true)
         );
 
+        if(isset($params['condition'])){
+            $paramsRepo['condition'] = $params['condition'];
+        }
+        
         $session->set(self::CURRENT_SEARCH, $paramsSearch);
 
         return $repository->{$params['repositoryMethode']}($params['page'], self::MAX_NB_RESULT, $paramsRepo);
     }
-
+    
+    /**
+     * Renvoie si l'utilisateur connecté a un role admin
+     * @return boolean
+     */
+    public function isAdmin(){
+        foreach ($this->getUser()->getRoles() as $role) {
+            if ($role == "ROLE_ADMIN") {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * Récupération des informations du membre connecté
+     * 
+     * @return Membre
+     */
+    public function getMembre(){
+        $repository = $this->getDoctrine()->getRepository(Membre::class);
+        $membres = $repository->findByUsername($this->getUser()->getUsername());
+        $membre = (isset($membres[0]) ? $membres[0] : new Membre());
+        
+        return $membre;
+    }
+    
     /**
      * Récupération des éléments liés et actifs pour un objet
      *
@@ -213,13 +244,7 @@ class AppController extends Controller
      */
     public function getElementsLiesActifs($objet, $methode)
     {
-        $admin = false;
-        foreach ($this->getUser()->getRoles() as $role) {
-            if ($role == "ROLE_ADMIN") {
-                $admin = true;
-                break;
-            }
-        }
+        $admin = $this->isAdmin();
 
         if (method_exists($objet, $methode)) {
 

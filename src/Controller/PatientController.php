@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Form\PatientType;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Entity\Etablissement;
-use App\Entity\Specialite;
+use App\Entity\Membre;
 
 class PatientController extends AppController
 {
@@ -47,13 +47,17 @@ class PatientController extends AppController
             'sans_inactif' => true
         );
 
-        foreach ($this->getUser()->getRoles() as $role) {
-            if ($role == "ROLE_ADMIN") {
-                $params['sans_inactif'] = false;
-                break;
+        if ($this->isAdmin()) {
+            $params['sans_inactif'] = false;
+        } else {
+            $membre = $this->getMembre();
+            if (! is_null($membre->getSpecialite())) {
+                $params['condition'] = array(
+                    'key' => 'specialite',
+                    'value' => $membre->getSpecialite()->getId()
+                );
             }
         }
-
         $result = $this->genericSearch($request, $session, $params);
 
         $pagination = array(
@@ -77,56 +81,6 @@ class PatientController extends AppController
                 'home' => $this->indexUrlProject(),
                 'active' => 'Liste des patients'
             )
-        ));
-    }
-
-    /**
-     * Mise à jour du dropdown Spécialité lorsque l'établissement change dans le formulaire d'ajout d'un patient
-     *
-     * @Route("/patient/ajax/add/specialite/{id}", name="patient_ajax_add_specialite", defaults={"id" = 0})
-     * @ParamConverter("etablissement", options={"mapping": {"id": "id"}})
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
-     *
-     * @param Request $request
-     * @param Etablissement $etablissement
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function addAjaxSpecialiteAction(Request $request, Etablissement $etablissement)
-    {
-        $specialites = $this->getElementsLiesActifs($etablissement, 'getSpecialites');
-
-        return $this->render('patient/ajax_dropdown_specialite.html.twig', array(
-            'specialites' => $specialites,
-            'select_specialite' => 0
-        ));
-    }
-
-    /**
-     * Mise à jour du dropdown Spécialité lorsque l'établissement change dans le formulaire d'édition d'un patient
-     *
-     * @Route("/patient/ajax/edit/specialite/{patient_id}/{etablissement_id}", name="patient_ajax_edit_specialite", defaults={"etablissement_id"=0})
-     * @ParamConverter("patient", options={"mapping": {"patient_id": "id"}})
-     * @ParamConverter("etablissement", options={"mapping": {"etablissement_id": "id"}})
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
-     *
-     * @param Request $request
-     * @param Patient $patient
-     * @param int $etablissement
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function editAjaxSpecialiteAction(Request $request, Patient $patient, int $etablissement = null)
-    {
-        $select_specialite = $patient->getSpecialite()->getId();
-        
-        if (! is_null($etablissement)) {
-            $specialites = $etablissement->getSpecialites();
-        } else {
-            $specialites = $patient->getEtablissement()->getSpecialites();
-        }
-
-        return $this->render('patient/ajax_dropdown_specialite.html.twig', array(
-            'specialites' => $specialites,
-            'select_specialite' => $select_specialite
         ));
     }
 
@@ -186,20 +140,40 @@ class PatientController extends AppController
     /**
      * Ajout d'un nouveau patient
      *
-     * @Route("/patient/add/{page}", name="patient_add")
+     * @Route("/patient/add/{page}/{membre_id}", name="patient_add")
+     * @ParamConverter("membre", options={"mapping": {"membre_id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      *
      * @param SessionInterface $session
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function addAction(SessionInterface $session, Request $request, int $page)
+    public function addAction(SessionInterface $session, Request $request, int $page, Membre $membre)
     {
         $arrayFilters = $this->getDatasFilter($session);
 
         $patient = new Patient();
 
-        $form = $this->createForm(PatientType::class, $patient);
+        if ($this->isAdmin()) {
+            $repositoryE = $this->getDoctrine()->getRepository(Etablissement::class);
+            $etablissements = $repositoryE->findHopital();
+
+            $form = $this->createForm(PatientType::class, $patient);
+        } else {
+
+            if (! is_null($membre->getSpecialite())) {
+                $etablissements = array();
+                $patient->setSpecialite($membre->getSpecialite());
+                $form = $this->createForm(PatientType::class, $patient, array(
+                    'disabled_specialite' => true
+                ));
+            } else {
+                $repositoryE = $this->getDoctrine()->getRepository(Etablissement::class);
+                $etablissements = $repositoryE->findAll();
+
+                $form = $this->createForm(PatientType::class, $patient);
+            }
+        }
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -220,9 +194,6 @@ class PatientController extends AppController
 
             return $this->redirect($this->generateUrl('patient_listing'));
         }
-
-        $repository = $this->getDoctrine()->getRepository(Etablissement::class);
-        $etablissements = $repository->findAll();
 
         return $this->render('patient/add.html.twig', array(
             'page' => $page,
@@ -259,17 +230,22 @@ class PatientController extends AppController
     {
         $arrayFilters = $this->getDatasFilter($session);
 
-        $repositoryE = $this->getDoctrine()->getRepository(Etablissement::class);
-        $etablissements = $repositoryE->findHopital();
-        
-        $repositoryS = $this->getDoctrine()->getRepository(Specialite::class);
-        $specialites = $repositoryS->findByEtablissement($patient->getSpecialite()->getEtablissement());
-        
-        $form = $this->createForm(PatientType::class, $patient, array('add' => false));
-        
+        if ($this->isAdmin()) {
+            $repositoryE = $this->getDoctrine()->getRepository(Etablissement::class);
+            $etablissements = $repositoryE->findHopital();
+            $form = $this->createForm(PatientType::class, $patient, array(
+                'add' => false
+            ));
+        } else {
+            $etablissements = array();
+            $form = $this->createForm(PatientType::class, $patient, array(
+                'add' => false,
+                'disabled_specialite' => true
+            ));
+        }
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            
+
             $em = $this->getDoctrine()->getManager();
 
             $em->persist($patient);
@@ -281,15 +257,12 @@ class PatientController extends AppController
                 'order' => $arrayFilters['order']
             )));
         }
-        
-        
-        
+
         return $this->render('patient/edit.html.twig', array(
             'page' => $page,
             'form' => $form->createView(),
             'patient' => $patient,
             'etablissements' => $etablissements,
-            'specialites' => $specialites,
             'paths' => array(
                 'home' => $this->indexUrlProject(),
                 'urls' => array(

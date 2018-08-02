@@ -14,12 +14,22 @@
 	{{ form_row(form.nom) }}
 	{{ form_row(form.prenom) }}
 	{{ form_row(form.date_naissance) }}
-	{{ form_row(form.specialite) }}
+	{% if etablissements is not empty %}
+    	<div id="bloc_etablissement">
+    	    <div class="form-group">
+            	<label for="patient_etablissement">Etablissement</label> 
+                <select id="patient_etablissement" name="patient[etablissement]" class="form-control">
+                    {%  for etablissement in etablissements %}
+                		<option {% if etablissement.id == patient.specialite.etablissement.id %} selected {% endif %} value="{{ etablissement.id }}">{{ etablissement.nom }}</option>
+                	{% endfor %}
+                </select>
+        	</div>
+    	</div>
+	{% endif %}
+	<div id="bloc_specialite">
+	    {{ form_row(form.specialite) }}
+	</div>
 	{{ form_row(form.PMR) }}
-
-	<div class="shadow-sm p-3 mb-5 bg-white rounded border">
-        {{ form_row(form.familles) }}
-  	</div>
     
     {{ form_rest(form) }}
     {{ form_errors(form) }}
@@ -27,4 +37,29 @@
     
 </div>
 	  
+{% endblock %}
+
+{% block script %}
+ 	<script src="{{ asset('assets/js/specialite/Specialite.js') }}?{{ date().timestamp }}"></script>
+{% endblock %}
+
+{% block javascripts %}
+
+    <script type="text/javascript">
+    
+    $(document).ready(function() {
+
+		var params_spec = {
+				url_ajax_see : '{{ path('patient_ajax_edit_specialite', {'patient_id': patient.id}) }}',
+				id_specialite : '#bloc_specialite',
+				id_bloc_etablissement : '#bloc_etablissement #patient_etablissement'
+		};
+        
+    	Specialite.Launch(params_spec);
+    	//Specialite.LoadDropdownSpecialite();
+		Specialite.EventChange('#patient_save');
+    });
+    
+    </script> 
+
 {% endblock %}
