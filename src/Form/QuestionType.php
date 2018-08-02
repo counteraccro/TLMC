@@ -57,10 +57,10 @@ class QuestionType extends AbstractType
             )
         ))
             ->add('valeur_defaut', TextType::class, array(
-            'label' => 'Valeur par défaut',
+            'label' => 'Texte informatif pré-indiqué dans la question',
             'required' => false,
             'attr' => array(
-                'class' => 'preview-hidden'
+                'class' => 'preview'
             )
         ))
             ->add('message_erreur', TextType::class, array(
@@ -72,10 +72,14 @@ class QuestionType extends AbstractType
             )
         ))
             ->add('ordre', NumberType::class, array(
-            'required' => false
+            'required' => false,
+             'attr' => array(
+                'size' => 1,
+                 'class' => 'form-control-sm'
+             )
         ))
             ->add('regles', ChoiceType::class, array(
-            'choices' => AppController::QUESTION_REGLES_REGEX,
+                'choices' => array_flip(AppController::QUESTION_REGLES_REGEX),
             'label' => 'Règles',
             'required' => false,
             'attr' => array(

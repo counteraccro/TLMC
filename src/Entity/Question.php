@@ -39,12 +39,12 @@ class Question
     private $type;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $valeur_defaut;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $liste_valeur;
 
@@ -69,7 +69,7 @@ class Question
     private $ordre;
 
     /**
-     * @ORM\Column(type="smallint")
+     * @ORM\Column(type="boolean")
      */
     private $disabled;
 
@@ -102,11 +102,11 @@ class Question
         $this->children = new ArrayCollection();
     }
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
-    
+
     public function getLibelle(): ?string
     {
         return $this->libelle;
@@ -160,7 +160,7 @@ class Question
         return $this->valeur_defaut;
     }
 
-    public function setValeurDefaut(string $valeur_defaut): self
+    public function setValeurDefaut(?string $valeur_defaut): self
     {
         $this->valeur_defaut = $valeur_defaut;
 
@@ -172,7 +172,7 @@ class Question
         return $this->liste_valeur;
     }
 
-    public function setListeValeur(string $liste_valeur): self
+    public function setListeValeur(?string $liste_valeur): self
     {
         $this->liste_valeur = $liste_valeur;
 
@@ -294,7 +294,7 @@ class Question
     {
         if (!$this->children->contains($child)) {
             $this->children[] = $child;
-            $child->setParent($this);
+            $child->setQuestion($this);
         }
 
         return $this;
@@ -305,8 +305,8 @@ class Question
         if ($this->children->contains($child)) {
             $this->children->removeElement($child);
             // set the owning side to null (unless already changed)
-            if ($child->getParent() === $this) {
-                $child->setParent(null);
+            if ($child->getQuestion() === $this) {
+                $child->setQuestion(null);
             }
         }
 
@@ -324,4 +324,5 @@ class Question
 
         return $this;
     }
-}
+
+  }

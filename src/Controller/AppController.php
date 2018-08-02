@@ -51,18 +51,17 @@ class AppController extends Controller
         'TextType' => 'Champ texte',
         'TextareaType' => 'Zone de texte',
         'CheckboxType' => 'Case à cocher',
-        'FileType' => 'Fichier joint',
+        //'FileType' => 'Fichier joint',
         'RadioType' => 'Choix unique'
     );
     
     const QUESTION_REGLES_REGEX = array(
-        'Chiffres uniquement' => 'd',
-        'Caractères spéciaux uniquement' => 'W',
-        'Lettres uniquement' => '[a-zA-Z]',
-        'Lettres minuscules uniquement' => '[a-z]',
-        'Lettres majuscules uniquement' => '[A-Z]',
-        'Lettres (min. & maj.) et chiffres' => '[[:alnum:]]',
-        'Tout accepter' => '.'
+        '.' => 'Tout accepter',
+        'd' => 'Chiffres uniquement',
+        '[a-zA-Z]' => 'Lettres uniquement',
+        '[a-z]' => 'Lettres minuscules uniquement',
+        '[A-Z]' => 'Lettres majuscules uniquement',
+        '[[:alnum:]]' => 'Lettres (min. & maj.) et chiffres',
     );
     
     const DROITS = array(

@@ -60,21 +60,24 @@
 		
 		</div>
 		<div class="col-md-6">
-			<h6>Avancée</h6>
+			<h6>Avancé</h6>
 			{{ form_row(form.libelle_top, {"id":"question_libelle_top"}) }}
 			{{ form_row(form.message_erreur, {"id":"question_message_erreur"}) }}
 			{{ form_row(form.regles, {"id":"question_regles"}) }}
               <div class="row">
-                <div class="col-sm">
-                  {{ form_row(form.ordre, {"id":"question_ordre"}) }}
-                </div>
-                <div class="col-sm">
-                  {{ form_row(form.obligatoire, {"id":"question_obligatoire"}) }}
-                </div>
-                <div class="col-sm">
-                  {{ form_row(form.disabled, {"id":"question_disabled"}) }}
-                </div>
+                    <div class="col-md-4">
+                      {{ form_row(form.obligatoire, {"id":"question_obligatoire"}) }}
+                    </div>
+                    <div class="col-md-4">
+                      {{ form_row(form.disabled, {"id":"question_disabled"}) }}
+                    </div>
+                    <div class="col-md-4 form-inline">
+                         {{ form_row(form.ordre, {"id":"question_ordre"}) }}
+                	</div>
               </div>
+    </div>
+  </form>
+</div>
 		</div>
 	</div>
 	
@@ -103,6 +106,8 @@
 	var url = '{{path('question_ajax_edit', {'id': question.id }) }}';
 	Question.EventEditSubmit(url);
 
+	$('#ajax_question_edit #question_liste_valeur').parent().hide();
+	
 	var params = {
 			id_global : '#ajax_question_edit',
 			id_preview : '#content-preview-question',

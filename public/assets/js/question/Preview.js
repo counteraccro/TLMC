@@ -9,6 +9,7 @@ Preview.Launch = function(params) {
 	Preview.id_contener_input_liste_val = '#contener-input-liste-val';
 	Preview.json_liste_val = '';
 	Preview.id_input_render = '#input-render-preview';
+	Preview.id_textarea_render = '#textarea-render-preview';
 	Preview.id_input_liste_valeur = '#question_liste_valeur';
 	Preview.id_contener_input_def_value = '#contener-input-def-value';
 
@@ -24,6 +25,9 @@ Preview.Launch = function(params) {
 
 	Preview.tabStructureElement = {
 			ChoiceType : '<select class="form-control" id="input-render-preview"><option>valeur</option></select>',
+			TextareaType : '<textarea class="form-control" id="input-render-preview" placeholder="[valeur]"></textarea>',
+			TextType : '<input type="text" class="form-control" id="input-render-preview" placeholder="[valeur]">',
+			CheckboxType: 'contruction faite dans GestionElementListe()'
 	};
 
 	/**
@@ -73,19 +77,35 @@ Preview.Launch = function(params) {
 
 		$(Preview.id_global + ' #checkbox_msg_erreur').change(function() {
 
-			console.log($(Preview.id_global +  " " + Preview.id_input_render));
-
-			if($(this).is(':checked'))
+			var _this = $(this);
+			
+			if($(Preview.id_global +  " " + Preview.id_input_render).tagName() != 'div')
 			{
-				$(Preview.id_global +  " " + Preview.id_input_render).addClass('is-invalid');
+				if(_this.is(':checked'))
+				{
+					$(Preview.id_global +  " " + Preview.id_input_render).addClass('is-invalid');
+				}
+				else
+				{
+					$(Preview.id_global +  " " + Preview.id_input_render).removeClass('is-invalid');
+				}
 			}
-			else
+			else 
 			{
-				$(Preview.id_global +  " " + Preview.id_input_render).removeClass('is-invalid');
+				$(Preview.id_global +  " " + Preview.id_input_render).each(function() {
+					
+					if(_this.is(':checked'))
+					{
+						$('#' + $(this).children()[0].id).addClass('is-invalid');
+						$(Preview.id_global +  " .invalid-feedback").show();
+					}
+					else
+					{
+						$('#' + $(this).children()[0].id).removeClass('is-invalid');
+						$(Preview.id_global +  " .invalid-feedback").hide();
+					}
+				});
 			}
-
-
-
 		})
 	}
 	
@@ -159,7 +179,9 @@ Preview.Launch = function(params) {
 			break;
 		case 'question_liste_valeur':
 
-			if(Preview.type == 'ChoiceType')
+			console.log('ici => ' + Preview.type);
+			
+			if(Preview.type == 'ChoiceType' || Preview.type == 'CheckboxType')
 			{
 				if(val !== '')
 				{
@@ -171,18 +193,13 @@ Preview.Launch = function(params) {
 				}
 				Preview.GestionElementListe();
 			}
-			
 			break;
 		case 'question_message_erreur' :
 			Preview.message_erreur = '<label>' + val + '</label>';
 			break;
 		case 'question_valeur_defaut' :
-			
-			console.log('question_valeur_defaut : ' + val);
-			
 			Preview.def_selected_valeur = val;
 			Preview.GestionDefaultData();
-			
 			break;
 		default:
 			console.log('Element ' + id + ' introuvable');
@@ -202,6 +219,8 @@ Preview.Launch = function(params) {
 
 		//Preview.html += 'Visualiser le message d\'erreur : <input type="checkbox" id="checkbox_msg_erreur">'; 
 		//Preview.html += '<p id="checkbox_message_erreur" style="display:none" class="btn btn-outline-danger btn-sm">' + $('#question_message_erreur').val() + '</p>';
+		
+		Preview.html = Preview.html.replace('[valeur]', Preview.def_selected_valeur);
 		$(Preview.id_preview).html(Preview.html);
 	}
 
@@ -228,7 +247,7 @@ Preview.Launch = function(params) {
 			}
 		}
 
-		if(Preview.type == 'ChoiceType')
+		if(Preview.type == 'ChoiceType' || Preview.type == 'CheckboxType')
 		{
 			$(Preview.id_global +  " " + Preview.id_input_liste_valeur).parent().hide();
 			$(Preview.id_global + " #input-liste-val").show();
@@ -257,6 +276,7 @@ Preview.Launch = function(params) {
 		var json = Preview.json_liste_val;
 		var html = '';
 		var options = "";
+		Preview.input = "";
 
 		for (var i in json)
 		{			
@@ -278,7 +298,14 @@ Preview.Launch = function(params) {
 				selected = 'selected';
 			}
 			
-			options += '<option value="' + json[i].value + '" ' + selected +'>' + json[i].libelle + '</option>';
+			if (Preview.type == 'ChoiceType') {
+				options += '<option value="' + json[i].value + '" ' + selected +'>' + json[i].libelle + '</option>';
+			}
+			else if(Preview.type == 'CheckboxType')
+			{
+				Preview.input += '<div class="form-check" id="input-render-preview"><input class="form-check-input" type="checkbox" value="' + json[i].value + '" id="check-' + i + '"><label class="form-check-label" for="check-' + i + '">' + json[i].libelle + '</label></div>';
+			}
+
 			Preview.options_liste_valeur = options;
 		}
 
@@ -291,27 +318,29 @@ Preview.Launch = function(params) {
 		}
 		
 		$(Preview.id_global + ' #question_liste_valeur').val(valJson);
-		Preview.input = Preview.tabStructureElement['ChoiceType'];
-		Preview.input = Preview.input.replace('<option>valeur</option>', options);
+		
+		if (Preview.type == 'ChoiceType') {
+			Preview.input = Preview.tabStructureElement['ChoiceType'];
+			Preview.input = Preview.input.replace('<option>valeur</option>', options);
+		}
+		
 	}
 	
+	/*
+	 * Fonction qui gère la prise en compte de la valeur par défaut, et qui la renvoie dans le preview
+	 */
 	Preview.GestionDefaultData = function()
 	{
-		var html = '';
-		
+		var html = '';	
 		if(Preview.type == 'ChoiceType')
 		{
 			html = '<div class="form-group"><label for="inputState">Selectionner une valeur par défaut</label><select id="select-default-input" class="form-control">' + Preview.options_liste_valeur + '</select></div>';
 			$(Preview.id_global + ' ' + Preview.id_contener_input_def_value).html(html);
 			$(Preview.id_global + ' #question_valeur_defaut').val(Preview.def_selected_valeur);
 		}
-		else
-		{
-			
-		}
 	}
 }
 
 
-
+$.fn.tagName = function() {    return this.get(0).tagName.toLowerCase(); }
 
