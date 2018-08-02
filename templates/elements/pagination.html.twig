@@ -1,17 +1,19 @@
 <nav>
     <ul class="pagination justify-content-center">
-        {% if pagination.page>1 %}
-            <li class="page-item"><a class="page-link" href="{{ path(pagination.route, pagination.route_params|merge({'page': 1})) }}"><span class="oi oi-media-skip-backward"></span></a></li>
-            <li class="page-item"><a class="page-link" href="{{ path(pagination.route, pagination.route_params|merge({'page': pagination.page-1})) }}"> <span class="oi oi-caret-left"></span> </a></li>
-        {% endif %}
-        {#display p numbers only from p-4 to p+4 but don't go <1 or >pages_count#}
-        {% for p in range(max(pagination.page-4, 1), 
-            min(pagination.page+4, pagination.pages_count)) %}
-            <li class="page-item {% if p == pagination.page %} active{% endif %}"><a class="page-link"  href="{{ path(pagination.route, pagination.route_params|merge({'page': p})) }}">{{ p }}</a></li>
-        {% endfor %}
-        {% if pagination.page<pagination.pages_count %}
-        	<li class="page-item"><a class="page-link" href="{{ path(pagination.route, pagination.route_params|merge({'page': pagination.page+1})) }}"><span class="oi oi-caret-right"></span></a></li>
-           	<li class="page-item"><a class="page-link" href="{{ path(pagination.route, pagination.route_params|merge({'page': pagination.pages_count})) }}"><span class="oi oi-media-skip-forward"></span></a></li>
+   	    {% if pagination.pages_count > 0 %}
+            {% if pagination.page>1 %}
+                <li class="page-item"><a class="page-link" href="{{ path(pagination.route, pagination.route_params|merge({'page': 1})) }}"><span class="oi oi-media-skip-backward"></span></a></li>
+                <li class="page-item"><a class="page-link" href="{{ path(pagination.route, pagination.route_params|merge({'page': pagination.page-1})) }}"> <span class="oi oi-caret-left"></span> </a></li>
+            {% endif %}
+            {#display p numbers only from p-4 to p+4 but don't go <1 or >pages_count#}
+            {% for p in range(max(pagination.page-4, 1), 
+                min(pagination.page+4, pagination.pages_count)) %}
+                <li class="page-item {% if p == pagination.page %} active{% endif %}"><a class="page-link"  href="{{ path(pagination.route, pagination.route_params|merge({'page': p})) }}">{{ p }}</a></li>
+            {% endfor %}
+            {% if pagination.page<pagination.pages_count %}
+            	<li class="page-item"><a class="page-link" href="{{ path(pagination.route, pagination.route_params|merge({'page': pagination.page+1})) }}"><span class="oi oi-caret-right"></span></a></li>
+               	<li class="page-item"><a class="page-link" href="{{ path(pagination.route, pagination.route_params|merge({'page': pagination.pages_count})) }}"><span class="oi oi-media-skip-forward"></span></a></li>
+            {% endif %}
         {% endif %}
     </ul>
 </nav>

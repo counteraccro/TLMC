@@ -1,83 +1,81 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello {{ controller_name }}!{% endblock %}
+{% block title %}Témoignages{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+<h1>Gestion des témoignages</h1>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+{% include 'elements/arborescence.html.twig' %}
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'src/Controller/TemoignageController.php'|file_link(0) }}">src/Controller/TemoignageController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'templates/temoignage/index.html.twig'|file_link(0) }}">templates/temoignage/index.html.twig</a></code></li>
-    </ul>
+<div class="card">
+	<div class="card-header">
+    	{{ pagination.nb_elements }} témoignages - Page {{ pagination.page }} / {{ pagination.pages_count }}
+  		{% if is_granted("ROLE_ADMIN") %}
+  			<a href="{{ path('temoignage_add', {'page' : pagination.page}) }}" class="float-right"><span class="oi oi-comment-square"></span> Nouveau témoignage</a>
+  	    {% endif %}
+  		{{ labelFilter(path('utils_delete-search', {'page' : pagination.page} ), current_search) | raw }}
+  	</div>
+  	<div class="card-body">
+      	<table class="table table-sm table-striped">
+        	<tr>
+        		<th>{{ headerFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : 'id'} ), '#', current_order, current_field) | raw }}</th>
+        		<th>{{ headerFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : 'titre'} ), 'Titre', current_order, current_field) | raw }}</th>
+        		<th>{{ headerFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : 'corps'} ), 'Contenu', current_order, current_field) | raw }}</th>
+        		<th>{{ headerFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : 'prenom_temoin'} ), 'Prénom du témoin', current_order, current_field) | raw }}</th>
+        		<th>{{ headerFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : 'lien_parente'} ), 'Lien de parenté', current_order, current_field) | raw }}</th>
+        		<th>{{ headerFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : 'age'} ), 'Age', current_order, current_field) | raw }}</th>
+        		<th>{{ headerFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : 'ville'} ), 'Ville', current_order, current_field) | raw }}</th>
+        		<th>{{ headerFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : 'date_creation'} ), 'Date de création', current_order, current_field) | raw }}</th>
+        		<th>{{ headerFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : 'evenement'} ), 'Evénement', current_order, current_field) | raw }}</th>
+        		<th>{{ headerFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : 'produit'} ), 'Produit', current_order, current_field) | raw }}</th>
+        		<th>{{ headerFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : 'membre'} ), 'Membre', current_order, current_field) | raw }}</th>
+        		<th></th>
+        	</tr>
+        	<tr>
+        		<td>{{ inputFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Temoignage-id', current_search, 'Identifiant') | raw }}</td>
+        		<td>{{ inputFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Temoignage-titre', current_search, 'Titre') | raw }}</td>
+        		<td>{{ inputFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Temoignage-corps', current_search, 'Contenu') | raw }}</td>
+        		<td>{{ inputFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Temoignage-prenom_temoin', current_search, 'Prénom du témoin') | raw }}</td>
+        		<td>{{ inputFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Temoignage-lien_parente', current_search, '', constant('App\\Controller\\AppController::FAMILLE_PARENTE')) | raw }}</td>
+        		<td>{{ inputFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Temoignage-age', current_search, 'Age') | raw }}</td>
+        		<td>{{ inputFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Temoignage-ville', current_search, 'Identifiant') | raw }}</td>
+        		<td>{{ inputFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Temoignage-date_creation', current_search, 'Titre') | raw }}</td>
+        		<td>{{ inputFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Temoignage-evenement-nom', current_search, 'Evénement') | raw }}</td>
+        		<td>{{ inputFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Temoignage-produit-titre', current_search, 'Produit') | raw }}</td>
+        		<td>{{ inputFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Temoignage-membre-nom', current_search, 'Nom du membre') | raw }}</td>
+        		<td></td>
+        	</tr>
+        	
+  		{% for temoignage in temoignages %}
+        		<tr>
+        			<td>{{ temoignage.id }}</td>
+        			<td>{{ temoignage.titre }}</td>
+        			<td>{{ temoignage.corps }}</td>
+        			<td>{{ temoignage.prenomTemoin }}</td>
+        			<td>{{ temoignage.lienParente | lienParente }}</td>
+        			<td>{{ temoignage.age }}</td>
+        			<td>{{ temoignage.ville }}</td>
+        			<td>{{ temoignage.dateCreation |date("m/d/Y H:i") }}</td>
+        			<td>{% if temoignage.evenement != null %} {{ temoignage.evenement.nom }} {% endif %}</td>
+                	<td>{% if temoignage.produit != null %} {{ temoignage.produit.titre }} {% endif %}</td>
+        			<td>{{ temoignage.membre.prenom }} {{ temoignage.membre.nom }}</td>
+        			<td>
+        				{% if is_granted("ROLE_ADMIN") %}
+            				{{ actionDelete(temoignage.disabled, path('temoignage_delete', {'id' : temoignage.id, 'page' : pagination.page})) | raw }}
+            			{% endif %}
+        			</td>
+        		</tr>
+        	{% endfor %}
+        </table>
+                
+    	{% if temoignages is empty %}
+        	<p class="text-info text-center">Il  n'y a aucun témoignage correspondant à votre recherche.</p>
+        {% endif %}
+        
+  	</div>
+  	<div class="card-footer">
+    	{% include 'elements/pagination.html.twig' %}
+  	</div>
 </div>
-
-<div>
-
-	{% for temoignage in temoignages %}
-
-		
-		<br /> Titre :
-	    {{ temoignage.titre }}
-		<br />
-
-		Description :
-	   	{{ temoignage.corps }}
-	   	<br />
-	   	
-	   	Prénom témoin :
-	   	{{ temoignage.prenomTemoin }}
-	   	<br />
-	   	
-	   	Lien de parenté :
-	   	{{ temoignage.lienParente }}
-	   	<br />
-	   		   	
-	   	Age :
-	   	{{ temoignage.age }}
-	   	<br />
-	   
-	   	Ville :
-	   	{{ temoignage.ville }}
-	   	<br />
-
-	   	Date création :
-	   	{{ temoignage.dateCreation |date("m/d/Y H:i") }}
-	   	<br />
-	   	
-	   	Actif ?
-	   	{{ temoignage.disabled }}
-	   	<br />
-	   	
-	    {% if temoignage.evenement != null %}
-	    Evenement :
-	   	{{ temoignage.evenement.nom }}
-	   	<br />
-	   	{% endif %}
-	   	
-	   	{% if temoignage.produit != null %}
-	    Produit :
-	   	{{ temoignage.produit.titre }}
-	   	<br />
-	   	{% endif %}
-	   	
-	   	Membre :
-	   	{{ temoignage.membre.prenom }} - {{ temoignage.membre.nom }}
-	   	<br />
-	   	
-	   	{#}<br/>Ev�nements :
-	   	{% for evenement in specialite.evenements %}
-	   		Nom : {{ evenement.nom }}
-	   	{% endfor %#}
-		<hr>
-	{% endfor %}
-
-</div>
-
+	  
 {% endblock %}
