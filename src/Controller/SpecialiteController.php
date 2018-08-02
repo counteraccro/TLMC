@@ -335,7 +335,7 @@ class SpecialiteController extends AppController
      */
     public function editAjaxMembreAction(Request $request, Membre $membre, Etablissement $etablissement = null)
     {
-        $select_specialite = $select_specialite = $membre->getSpecialite()->getId();
+        $select_specialite = (! is_null($membre->getSpecialite()) ? $membre->getSpecialite()->getId() : 0);
         
         if (! is_null($etablissement)) {
             $specialites = $etablissement->getSpecialites();

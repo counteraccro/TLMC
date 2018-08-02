@@ -200,6 +200,10 @@ class AppController extends Controller
             'sans_inactif' => (isset($params['sans_inactif']) ? $params['sans_inactif'] : true)
         );
 
+        if(isset($params['condition'])){
+            $paramsRepo['condition'] = $params['condition'];
+        }
+        
         $session->set(self::CURRENT_SEARCH, $paramsSearch);
 
         return $repository->{$params['repositoryMethode']}($params['page'], self::MAX_NB_RESULT, $paramsRepo);

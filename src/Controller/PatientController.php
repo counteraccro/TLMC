@@ -49,8 +49,19 @@ class PatientController extends AppController
 
         if ($this->isAdmin()) {
             $params['sans_inactif'] = false;
-        }
+        } else {
+            $repository = $this->getDoctrine()->getRepository(Membre::class);
 
+            $username = $this->getUser()->getUsername();
+            $membres = $repository->findByUsername($username);
+            $membre = $membres[0];
+            if (! is_null($membre->getSpecialite())) {
+                $params['condition'] = array(
+                    'key' => 'specialite',
+                    'value' => $membre->getSpecialite()->getId()
+                );
+            }
+        }
         $result = $this->genericSearch($request, $session, $params);
 
         $pagination = array(
@@ -146,22 +157,24 @@ class PatientController extends AppController
         $arrayFilters = $this->getDatasFilter($session);
 
         $patient = new Patient();
-        
-        if($this->isAdmin()){
+
+        if ($this->isAdmin()) {
             $repositoryE = $this->getDoctrine()->getRepository(Etablissement::class);
             $etablissements = $repositoryE->findHopital();
-            
+
             $form = $this->createForm(PatientType::class, $patient);
         } else {
-            
-            if(!is_null($membre->getSpecialite())){
+
+            if (! is_null($membre->getSpecialite())) {
                 $etablissements = array();
                 $patient->setSpecialite($membre->getSpecialite());
-                $form = $this->createForm(PatientType::class, $patient, array('disabled_specialite' => true));
+                $form = $this->createForm(PatientType::class, $patient, array(
+                    'disabled_specialite' => true
+                ));
             } else {
                 $repositoryE = $this->getDoctrine()->getRepository(Etablissement::class);
                 $etablissements = $repositoryE->findAll();
-                
+
                 $form = $this->createForm(PatientType::class, $patient);
             }
         }
@@ -186,8 +199,6 @@ class PatientController extends AppController
             return $this->redirect($this->generateUrl('patient_listing'));
         }
 
-        
-        
         return $this->render('patient/add.html.twig', array(
             'page' => $page,
             'form' => $form->createView(),
@@ -222,18 +233,23 @@ class PatientController extends AppController
     public function editAction(SessionInterface $session, Request $request, Patient $patient, int $page)
     {
         $arrayFilters = $this->getDatasFilter($session);
-        
-        if($this->isAdmin()){
+
+        if ($this->isAdmin()) {
             $repositoryE = $this->getDoctrine()->getRepository(Etablissement::class);
             $etablissements = $repositoryE->findHopital();
-            $form = $this->createForm(PatientType::class, $patient, array('add' => false));
+            $form = $this->createForm(PatientType::class, $patient, array(
+                'add' => false
+            ));
         } else {
             $etablissements = array();
-            $form = $this->createForm(PatientType::class, $patient, array('add' => false, 'disabled_specialite' => true));
+            $form = $this->createForm(PatientType::class, $patient, array(
+                'add' => false,
+                'disabled_specialite' => true
+            ));
         }
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            
+
             $em = $this->getDoctrine()->getManager();
 
             $em->persist($patient);
@@ -245,7 +261,7 @@ class PatientController extends AppController
                 'order' => $arrayFilters['order']
             )));
         }
-        
+
         return $this->render('patient/edit.html.twig', array(
             'page' => $page,
             'form' => $form->createView(),
