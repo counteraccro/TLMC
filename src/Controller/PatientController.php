@@ -50,11 +50,7 @@ class PatientController extends AppController
         if ($this->isAdmin()) {
             $params['sans_inactif'] = false;
         } else {
-            $repository = $this->getDoctrine()->getRepository(Membre::class);
-
-            $username = $this->getUser()->getUsername();
-            $membres = $repository->findByUsername($username);
-            $membre = $membres[0];
+            $membre = $this->getMembre();
             if (! is_null($membre->getSpecialite())) {
                 $params['condition'] = array(
                     'key' => 'specialite',
