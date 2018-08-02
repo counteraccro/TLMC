@@ -27,7 +27,8 @@ Preview.Launch = function(params) {
 			ChoiceType : '<select class="form-control" id="input-render-preview"><option>valeur</option></select>',
 			TextareaType : '<textarea class="form-control" id="input-render-preview" placeholder="[valeur]"></textarea>',
 			TextType : '<input type="text" class="form-control" id="input-render-preview" placeholder="[valeur]">',
-			CheckboxType: 'contruction faite dans GestionElementListe()'
+			CheckboxType: 'contruction faite dans GestionElementListe()',
+			RadioType: 'contruction faite dans GestionElementListe()'
 	};
 
 	/**
@@ -61,12 +62,12 @@ Preview.Launch = function(params) {
 			{
 				// Cercher meilleur moyens de trouver la dernière clée en JSON
 			}
-			
+
 			if (isNaN(i))
 			{
 				i = -1;
 			}
-			
+
 			Preview.json_liste_val[parseInt(i) + 1] = {'value' : '', 'libelle' : ''};
 			Preview.GestionElementListe();
 			Preview.GestionDefaultData();
@@ -78,7 +79,7 @@ Preview.Launch = function(params) {
 		$(Preview.id_global + ' #checkbox_msg_erreur').change(function() {
 
 			var _this = $(this);
-			
+
 			if($(Preview.id_global +  " " + Preview.id_input_render).tagName() != 'div')
 			{
 				if(_this.is(':checked'))
@@ -93,7 +94,7 @@ Preview.Launch = function(params) {
 			else 
 			{
 				$(Preview.id_global +  " " + Preview.id_input_render).each(function() {
-					
+
 					if(_this.is(':checked'))
 					{
 						$('#' + $(this).children()[0].id).addClass('is-invalid');
@@ -108,7 +109,7 @@ Preview.Launch = function(params) {
 			}
 		})
 	}
-	
+
 	Preview.subRepeatEvent = function()
 	{
 		// évènement à la suppression d'une valeur de réponse possible
@@ -134,16 +135,16 @@ Preview.Launch = function(params) {
 			Preview.Render();
 			Preview.subRepeatEvent();
 		});
-		
+
 		$(Preview.id_global + ' #select-default-input').change(function() {
-			
+
 			Preview.def_selected_valeur = $(this).val();			
 			Preview.GestionElementListe();
 			Preview.GestionDefaultData();
 			Preview.Render();
 			Preview.subRepeatEvent();
 		})
-		
+
 	}
 
 
@@ -179,9 +180,9 @@ Preview.Launch = function(params) {
 			break;
 		case 'question_liste_valeur':
 
-			console.log('ici => ' + Preview.type);
-			
-			if(Preview.type == 'ChoiceType' || Preview.type == 'CheckboxType')
+			//console.log('ici => ' + Preview.type);
+
+			if(Preview.type == 'ChoiceType' || Preview.type == 'CheckboxType' || Preview.type == 'RadioType')
 			{
 				if(val !== '')
 				{
@@ -219,7 +220,7 @@ Preview.Launch = function(params) {
 
 		//Preview.html += 'Visualiser le message d\'erreur : <input type="checkbox" id="checkbox_msg_erreur">'; 
 		//Preview.html += '<p id="checkbox_message_erreur" style="display:none" class="btn btn-outline-danger btn-sm">' + $('#question_message_erreur').val() + '</p>';
-		
+
 		Preview.html = Preview.html.replace('[valeur]', Preview.def_selected_valeur);
 		$(Preview.id_preview).html(Preview.html);
 	}
@@ -247,12 +248,12 @@ Preview.Launch = function(params) {
 			}
 		}
 
-		if(Preview.type == 'ChoiceType' || Preview.type == 'CheckboxType')
+		if(Preview.type == 'ChoiceType' || Preview.type == 'CheckboxType' || Preview.type == 'RadioType')
 		{
 			$(Preview.id_global +  " " + Preview.id_input_liste_valeur).parent().hide();
 			$(Preview.id_global + " #input-liste-val").show();
 			Preview.ConstructHtml($(Preview.id_global +  " " + Preview.id_input_liste_valeur));
-			
+
 			$(Preview.id_global + ' #question_valeur_defaut').parent().hide();
 			Preview.GestionDefaultData();
 			Preview.subRepeatEvent();
@@ -262,7 +263,7 @@ Preview.Launch = function(params) {
 			$(Preview.id_global +  " " + Preview.id_input_liste_valeur).val('');
 			$(Preview.id_contener_input_liste_val).html('');
 			$(Preview.id_global + " #input-liste-val").hide();
-			
+
 			$(Preview.id_global + ' ' + Preview.id_contener_input_def_value).html('');
 			$(Preview.id_global + ' #question_valeur_defaut').parent().show();
 		}
@@ -297,7 +298,7 @@ Preview.Launch = function(params) {
 			{
 				selected = 'selected';
 			}
-			
+
 			if (Preview.type == 'ChoiceType') {
 				options += '<option value="' + json[i].value + '" ' + selected +'>' + json[i].libelle + '</option>';
 			}
@@ -305,10 +306,13 @@ Preview.Launch = function(params) {
 			{
 				Preview.input += '<div class="form-check" id="input-render-preview"><input class="form-check-input" type="checkbox" value="' + json[i].value + '" id="check-' + i + '"><label class="form-check-label" for="check-' + i + '">' + json[i].libelle + '</label></div>';
 			}
-
+			else if(Preview.type == 'RadioType')
+			{
+				Preview.input += '<div class="form-check" id="input-render-preview"><input class="form-check-input" type="radio" name="radio-choice" value="' + json[i].value + '" id="radio-' + i + ' checked"><label class="form-check-label" for="radio-' + i + '">' + json[i].libelle + '</label></div>';
+			}
+	             
 			Preview.options_liste_valeur = options;
 		}
-
 		$(Preview.id_contener_input_liste_val).html(html);
 
 		valJson = JSON.stringify(json);
@@ -316,16 +320,16 @@ Preview.Launch = function(params) {
 		{
 			valJson = '';
 		}
-		
+
 		$(Preview.id_global + ' #question_liste_valeur').val(valJson);
-		
+
 		if (Preview.type == 'ChoiceType') {
 			Preview.input = Preview.tabStructureElement['ChoiceType'];
 			Preview.input = Preview.input.replace('<option>valeur</option>', options);
 		}
-		
+
 	}
-	
+
 	/*
 	 * Fonction qui gère la prise en compte de la valeur par défaut, et qui la renvoie dans le preview
 	 */
