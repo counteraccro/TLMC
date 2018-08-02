@@ -204,6 +204,19 @@ class AppController extends Controller
 
         return $repository->{$params['repositoryMethode']}($params['page'], self::MAX_NB_RESULT, $paramsRepo);
     }
+    
+    /**
+     * Renvoie si l'utilisateur connecté a un role admin
+     * @return boolean
+     */
+    public function isAdmin(){
+        foreach ($this->getUser()->getRoles() as $role) {
+            if ($role == "ROLE_ADMIN") {
+                return true;
+            }
+        }
+        return false;
+    }
 
     /**
      * Récupération des éléments liés et actifs pour un objet
@@ -214,13 +227,7 @@ class AppController extends Controller
      */
     public function getElementsLiesActifs($objet, $methode)
     {
-        $admin = false;
-        foreach ($this->getUser()->getRoles() as $role) {
-            if ($role == "ROLE_ADMIN") {
-                $admin = true;
-                break;
-            }
-        }
+        $admin = $this->isAdmin();
 
         if (method_exists($objet, $methode)) {
 

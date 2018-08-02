@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Form\SpecialiteType;
 use App\Entity\Etablissement;
 use App\Entity\Membre;
+use App\Entity\Patient;
 
 class SpecialiteController extends AppController
 {
@@ -299,21 +300,21 @@ class SpecialiteController extends AppController
     }
     
     /**
-     * Mise à jour du dropdown Spécialité lorsque l'établissement change dans le formulaire d'ajout d'un membre
+     * Mise à jour du dropdown Spécialité lorsque l'établissement change dans le formulaire d'ajout d'un membre ou d'un patient
      *
-     * @Route("/specialite/ajax/add/dropdown/{id}", name="membre_ajax_add_specialite", defaults={"id" = 0})
+     * @Route("/specialite/ajax/add/dropdown/{objet}/{id}", name="ajax_add_dropdown", defaults={"id" = 0})
      * @ParamConverter("etablissement", options={"mapping": {"id": "id"}})
-     * @Security("is_granted('ROLE_ADMIN')")
+     * Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      *
      * @param Request $request
      * @param Etablissement $etablissement
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function addAjaxSpecialiteAction(Request $request, Etablissement $etablissement)
+    public function addAjaxSpecialiteAction(Request $request, Etablissement $etablissement, string $objet)
     {
-        $specialites = $etablissement->getSpecialites();
+        $specialites = $this->getElementsLiesActifs($etablissement, 'getSpecialites');
         
-        return $this->render('membre/ajax_dropdown_specialite.html.twig', array(
+        return $this->render($objet.'/ajax_dropdown_specialite.html.twig', array(
             'specialites' => $specialites,
             'select_specialite' => 0
         ));
@@ -322,7 +323,7 @@ class SpecialiteController extends AppController
     /**
      * Mise à jour du dropdown Spécialité lorsque l'établissement change dans le formulaire d'édition d'un membre
      *
-     * @Route("/specialite/ajax/edit/dropdown/{membre_id}/{etablissement_id}", name="membre_ajax_edit_specialite", defaults={"etablissement_id" = 0})
+     * @Route("/specialite/ajax/edit_membre/{membre_id}/{etablissement_id}", name="membre_ajax_edit_specialite", defaults={"etablissement_id" = 0})
      * @ParamConverter("membre", options={"mapping": {"membre_id": "id"}})
      * @ParamConverter("etablissement", options={"mapping": {"etablissement_id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
@@ -332,12 +333,9 @@ class SpecialiteController extends AppController
      * @param Etablissement $etablissement
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function editAjaxSpecialiteAction(Request $request, Membre $membre, Etablissement $etablissement = null)
+    public function editAjaxMembreAction(Request $request, Membre $membre, Etablissement $etablissement = null)
     {
-        $select_specialite = 0;
-        if (! is_null($membre->getSpecialite())) {
-            $select_specialite = $membre->getSpecialite()->getId();
-        }
+        $select_specialite = $select_specialite = $membre->getSpecialite()->getId();
         
         if (! is_null($etablissement)) {
             $specialites = $etablissement->getSpecialites();
@@ -346,6 +344,36 @@ class SpecialiteController extends AppController
         }
         
         return $this->render('membre/ajax_dropdown_specialite.html.twig', array(
+            'specialites' => $specialites,
+            'select_specialite' => $select_specialite
+        ));
+    }
+    
+    /**
+     * Mise à jour du dropdown Spécialité lorsque l'établissement change dans le formulaire d'édition d'un patient
+     *
+     * @Route("/specialite/ajax/edit_patient/{patient_id}/{etablissement_id}", name="patient_ajax_edit_specialite", defaults={"etablissement_id"=0})
+     * @ParamConverter("patient", options={"mapping": {"patient_id": "id"}})
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
+     *
+     * @param Request $request
+     * @param Patient $patient
+     * @param int $etablissement
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function editAjaxPatientAction(Request $request, Patient $patient, int $etablissement_id)
+    {
+        $select_specialite = $patient->getSpecialite()->getId();
+        
+        $repository = $this->getDoctrine()->getRepository(Specialite::class);
+        
+        if ($etablissement_id) {
+            $specialites = $repository->findByEtablissement($etablissement_id);
+        } else {
+            $specialites = $repository->findAll();
+        }
+        
+        return $this->render('patient/ajax_dropdown_specialite.html.twig', array(
             'specialites' => $specialites,
             'select_specialite' => $select_specialite
         ));

@@ -64,14 +64,14 @@
 		FormAddCollection.Event();
 
 		var params_spec = {
-				url_ajax_see : '{{ path('patient_ajax_add_specialite') }}',
+				url_ajax_see : '{{ path('ajax_add_dropdown', {'objet': 'patient'}) }}',
 				id_specialite : '#bloc_specialite',
 				id_bloc_etablissement : '#bloc_etablissement #patient_etablissement'
 		};
         
     	Specialite.Launch(params_spec);
     	Specialite.LoadDropdownSpecialite();
-		Specialite.EventChange();
+		Specialite.EventChange('#patient_save');
     });
     
     </script> 

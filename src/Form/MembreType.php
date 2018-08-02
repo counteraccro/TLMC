@@ -17,7 +17,6 @@ use App\Entity\Etablissement;
 use App\Entity\Specialite;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use App\Controller\AppController;
-
 class MembreType extends AbstractType
 {
 

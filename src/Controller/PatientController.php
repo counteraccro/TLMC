@@ -47,11 +47,8 @@ class PatientController extends AppController
             'sans_inactif' => true
         );
 
-        foreach ($this->getUser()->getRoles() as $role) {
-            if ($role == "ROLE_ADMIN") {
-                $params['sans_inactif'] = false;
-                break;
-            }
+        if ($this->isAdmin()) {
+            $params['sans_inactif'] = false;
         }
 
         $result = $this->genericSearch($request, $session, $params);
@@ -77,56 +74,6 @@ class PatientController extends AppController
                 'home' => $this->indexUrlProject(),
                 'active' => 'Liste des patients'
             )
-        ));
-    }
-
-    /**
-     * Mise à jour du dropdown Spécialité lorsque l'établissement change dans le formulaire d'ajout d'un patient
-     *
-     * @Route("/patient/ajax/add/specialite/{id}", name="patient_ajax_add_specialite", defaults={"id" = 0})
-     * @ParamConverter("etablissement", options={"mapping": {"id": "id"}})
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
-     *
-     * @param Request $request
-     * @param Etablissement $etablissement
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function addAjaxSpecialiteAction(Request $request, Etablissement $etablissement)
-    {
-        $specialites = $this->getElementsLiesActifs($etablissement, 'getSpecialites');
-
-        return $this->render('patient/ajax_dropdown_specialite.html.twig', array(
-            'specialites' => $specialites,
-            'select_specialite' => 0
-        ));
-    }
-
-    /**
-     * Mise à jour du dropdown Spécialité lorsque l'établissement change dans le formulaire d'édition d'un patient
-     *
-     * @Route("/patient/ajax/edit/specialite/{patient_id}/{etablissement_id}", name="patient_ajax_edit_specialite", defaults={"etablissement_id"=0})
-     * @ParamConverter("patient", options={"mapping": {"patient_id": "id"}})
-     * @ParamConverter("etablissement", options={"mapping": {"etablissement_id": "id"}})
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
-     *
-     * @param Request $request
-     * @param Patient $patient
-     * @param int $etablissement
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function editAjaxSpecialiteAction(Request $request, Patient $patient, int $etablissement = null)
-    {
-        $select_specialite = $patient->getSpecialite()->getId();
-        
-        if (! is_null($etablissement)) {
-            $specialites = $etablissement->getSpecialites();
-        } else {
-            $specialites = $patient->getEtablissement()->getSpecialites();
-        }
-
-        return $this->render('patient/ajax_dropdown_specialite.html.twig', array(
-            'specialites' => $specialites,
-            'select_specialite' => $select_specialite
         ));
     }
 
@@ -221,8 +168,8 @@ class PatientController extends AppController
             return $this->redirect($this->generateUrl('patient_listing'));
         }
 
-        $repository = $this->getDoctrine()->getRepository(Etablissement::class);
-        $etablissements = $repository->findAll();
+        $repositoryE = $this->getDoctrine()->getRepository(Etablissement::class);
+        $etablissements = $repositoryE->findHopital();
 
         return $this->render('patient/add.html.twig', array(
             'page' => $page,
