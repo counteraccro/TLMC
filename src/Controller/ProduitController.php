@@ -67,4 +67,39 @@ class ProduitController extends AppController
             )
         ));
     }
+    
+    /**
+     * Désactivation d'un produit
+     *
+     * @Route("/produit/delete/{id}/{page}", name="produit_delete")
+     * @ParamConverter("produit", options={"mapping": {"id": "id"}})
+     * @Security("is_granted('ROLE_ADMIN')")
+     *
+     * @param SessionInterface $session
+     * @param Produit $produit
+     * @param int $page
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function deleteAction(SessionInterface $session, Produit $produit, int $page)
+    {
+        $arrayFilters = $this->getDatasFilter($session);
+        
+        if ($produit->getDisabled() == 1) {
+            $produit->setDisabled(0);
+        } else {
+            $produit->setDisabled(1);
+        }
+        
+        $entityManager = $this->getDoctrine()->getManager();
+        
+        $entityManager->persist($produit);
+        
+        $entityManager->flush();
+        
+        return $this->redirectToRoute('produit_listing', array(
+            'page' => $page,
+            'field' => $arrayFilters['field'],
+            'order' => $arrayFilters['order']
+        ));
+    }
 }

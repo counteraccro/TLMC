@@ -10,8 +10,8 @@
     
     <div class="card">
     	<div class="card-header">
-            {{ pagination.nb_elements }} produits - Page {{ pagination.page }} / {{ pagination.pages_count }}
-        	<!-- <a href="{#{ path('produit_add', {'page' : pagination.page}) }#}" class="float-right"><span class="oi oi-person"></span> Nouvel produit</a> -->
+            {{ pagination.nb_elements }} produit{% if pagination.nb_elements > 1 %}s{% endif %} - Page {{ pagination.page }} / {{ pagination.pages_count }}
+        	<!-- <a href="{#{ path('produit_add', {'page' : pagination.page}) }#}" class="float-right"><span class="oi oi-person"></span> Nouveau produit</a> -->
       		{{ labelFilter(path('utils_delete-search', {'page' : pagination.page} ), current_search) | raw }}
       	</div>
       	
@@ -38,7 +38,7 @@
         		<td>{{ inputFilter(path('produit_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Produit-genre', current_search, 'Genre') | raw }}</td>
         		<td>{{ inputFilter(path('produit_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Produit-quantite', current_search, 'Quantité') | raw }}</td>
         		<td>{{ inputFilter(path('produit_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Produit-date_envoi', current_search, "Date d'envoi") | raw }}</td>
-        		<td>{{ inputFilter(path('produit_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Produit-date_cretion', current_search, 'Date de création') | raw }}</td>
+        		<td>{{ inputFilter(path('produit_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Produit-date_creation', current_search, 'Date de création') | raw }}</td>
         		<td></td>
         	</tr>
         	
@@ -57,7 +57,7 @@
         			    {#{ actionSee(path('produit_see', {'id' : produit.id, 'page' : pagination.page})) | raw }#}
         			    {% if is_granted("ROLE_ADMIN") %}
         			        {#{ actionEdit(path('produit_edit', {'id' : produit.id, 'page' : pagination.page})) | raw }#}
-        			        {#{ actionDelete(produit.disabled, path('produit_delete', {'id' : produit.id, 'page' : pagination.page})) | raw }#}
+        			        {{ actionDelete(produit.disabled, path('produit_delete', {'id' : produit.id, 'page' : pagination.page})) | raw }}
         			    {% endif %}
         			</td>
         		</tr>

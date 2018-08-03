@@ -67,4 +67,39 @@ class EvenementController extends AppController
             )
         ));
     }
+    
+    /**
+     * Désactivation d'un événement
+     *
+     * @Route("/evenement/delete/{id}/{page}", name="evenement_delete")
+     * @ParamConverter("evenement", options={"mapping": {"id": "id"}})
+     * @Security("is_granted('ROLE_ADMIN')")
+     *
+     * @param SessionInterface $session
+     * @param Evenement $evenement
+     * @param int $page
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function deleteAction(SessionInterface $session, Evenement $evenement, int $page)
+    {
+        $arrayFilters = $this->getDatasFilter($session);
+        
+        if ($evenement->getDisabled() == 1) {
+            $evenement->setDisabled(0);
+        } else {
+            $evenement->setDisabled(1);
+        }
+        
+        $entityManager = $this->getDoctrine()->getManager();
+        
+        $entityManager->persist($evenement);
+        
+        $entityManager->flush();
+        
+        return $this->redirectToRoute('evenement_listing', array(
+            'page' => $page,
+            'field' => $arrayFilters['field'],
+            'order' => $arrayFilters['order']
+        ));
+    }
 }

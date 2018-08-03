@@ -11,7 +11,7 @@
     
     <div class="card">
     	<div class="card-header">
-            {{ pagination.nb_elements }} événements - Page {{ pagination.page }} / {{ pagination.pages_count }}
+            {{ pagination.nb_elements }} événement{% if pagination.nb_elements > 1 %}s{% endif %} - Page {{ pagination.page }} / {{ pagination.pages_count }}
         	<!-- <a href="{#{ path('evenement_add', {'page' : pagination.page}) }#}" class="float-right"><span class="oi oi-person"></span> Nouvel événement</a> -->
       		{{ labelFilter(path('utils_delete-search', {'page' : pagination.page} ), current_search) | raw }}
       	</div>
@@ -57,8 +57,8 @@
         			<td>
         			    {#{ actionSee(path('evenement_see', {'id' : evenement.id, 'page' : pagination.page})) | raw }#}
         			    {% if is_granted("ROLE_ADMIN") %}
-            			    {#{ actionEdit(path('evenement_edit', {'id' : evenement.id, 'page' : pagination.page})) | raw }}
-            			    {#{ actionDelete(evenement.disabled, path('evenement_delete', {'id' : evenement.id, 'page' : pagination.page})) | raw }#}
+            			    {#{ actionEdit(path('evenement_edit', {'id' : evenement.id, 'page' : pagination.page})) | raw }#}
+            			    {{ actionDelete(evenement.disabled, path('evenement_delete', {'id' : evenement.id, 'page' : pagination.page})) | raw }}
             			{% endif %}
         			</td>
         		</tr>

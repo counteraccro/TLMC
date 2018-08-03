@@ -9,7 +9,7 @@
 
 <div class="card">
 	<div class="card-header">
-    	{{ pagination.nb_elements }} témoignages - Page {{ pagination.page }} / {{ pagination.pages_count }}
+    	{{ pagination.nb_elements }} témoignage{% if pagination.nb_elements > 1 %}s{% endif %} - Page {{ pagination.page }} / {{ pagination.pages_count }}
   		<a href="{{ path('temoignage_add', {'page' : pagination.page}) }}" class="float-right"><span class="oi oi-comment-square"></span> Nouveau témoignage</a>
   		{{ labelFilter(path('utils_delete-search', {'page' : pagination.page} ), current_search) | raw }}
   	</div>

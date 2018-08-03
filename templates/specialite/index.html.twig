@@ -10,7 +10,7 @@
     
     <div class="card">
     	<div class="card-header">
-            {{ pagination.nb_elements }} spécialités - Page {{ pagination.page }} / {{ pagination.pages_count }}
+            {{ pagination.nb_elements }} spécialité{% if pagination.nb_elements > 1 %}s{% endif %} - Page {{ pagination.page }} / {{ pagination.pages_count }}
         	<a href="{{ path('specialite_add', {'page' : pagination.page}) }}" class="float-right"><span class="oi oi-person"></span> Nouvelle spécialité</a>
       		{{ labelFilter(path('utils_delete-search', {'page' : pagination.page} ), current_search) | raw }}
       	</div>

@@ -10,7 +10,7 @@
 
 <div class="card">
 	<div class="card-header">
-    	{{ pagination.nb_elements }} patients - Page {{ pagination.page }} / {{ pagination.pages_count }}
+    	{{ pagination.nb_elements }} patient{% if pagination.nb_elements > 1 %}s{% endif %} - Page {{ pagination.page }} / {{ pagination.pages_count }}
   		<a href="{{ path('patient_add', {'page' : pagination.page, 'membre_id':app.user.id}) }}" class="float-right"><span class="oi oi-person"></span> Nouveau patient</a>
   		{{ labelFilter(path('utils_delete-search', {'page' : pagination.page} ), current_search) | raw }}
   	</div>
