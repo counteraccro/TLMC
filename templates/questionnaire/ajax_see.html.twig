@@ -1,25 +1,35 @@
 <div id="ajax_questionnaire_see">
-	<a href="{{path('questionnaire_ajax_edit', {'id': questionnaire.id }) }}" id="btn-edit-questionnaire" class="btn btn-primary float-right">Editer</a><br/>
-	
-    {{ questionnaire.titre }} <br />
+
+    	<div class="card shadow-lg">
+         	<div class="card-header bg-info">
+            	 <b>Titre du questionnaire :</b> {{ questionnaire.titre }}
+            	<div class="float-right"><a href="{{path('questionnaire_ajax_edit', {'id': questionnaire.id }) }}" id="btn-edit-questionnaire" class="btn btn-primary float-right">Editer</a><br/></div>
+            </div>
+          	<div class="card-body">
+            	<b>Date de création :</b> {{ questionnaire.dateCreation | date('d/m/Y') }} - Date de fin : {{ questionnaire.dateFin | date('d/m/Y') }}</br>
+            	<b>Description :</b> {{ questionnaire.description }}</br>
+            	<b>Nombre de jours avant relance :</b> {{ questionnaire.jourRelance }}</br>
+            	<b>Actif :</b> 
+            	{% if questionnaire.disabled == 0 %} Oui 
+            	{% else %} Non
+            	{% endif %}
+            	</br>
+          	</div>
+        </div>
 	<hr>
-	Date de creation : <b>{{ questionnaire.dateCreation | date('d/m/Y') }}</b> - Date de fin : <b>{{ questionnaire.dateFin | date('d/m/Y') }}</b>
-	
+
 	
 	{% for question in questionnaire.questions %}
-
         <div class="card">
         	<div class="card-header">
-        		{{ question.libelleTop }} #{{ question.id }}
+        		<b>Question ID :</b> #{{ question.id }}</br>
+        		{{ question.libelleTop }} 
         			<a href="{{path('question_ajax_edit', {'id': question.id }) }}" id="btn-edit-question" class="btn btn-primary float-right btn-edit-question">Editer la question</a><br/>
         	</div>
         
         	<div class="card-body">
         		
         		<table class="table table-sm table-striped">
-        			<tr>
-        				Description : {{ questionnaire.description }}
-        			</tr>
         			<tr>
         				<th>Libelle :  {{ question.libelle }}</th>
         			</tr>
@@ -46,7 +56,7 @@
         	
         	<div class="card-footer">
         		{{ question.libelleBottom }}<br/>
-        		Nombre de jours avant relance : {{ questionnaire.jourRelance }}
+
         	</div>
         </div>
 		<hr>
