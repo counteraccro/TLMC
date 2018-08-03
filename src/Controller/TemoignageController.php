@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\TemoignageType;
+use App\Entity\Membre;
 
 class TemoignageController extends AppController
 {
@@ -85,6 +86,59 @@ class TemoignageController extends AppController
     }
 
     /**
+     * Fiche d'un témoignage
+     *
+     * @Route("/temoignage/see/{id}/{page}", name="temoignage_see")
+     * @ParamConverter("temoignage", options={"mapping": {"id": "id"}})
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
+     *
+     * @param SessionInterface $session
+     * @param Temoignage $temoignage
+     * @param int $page
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function seeAction(SessionInterface $session, Temoignage $temoignage, int $page)
+    {
+        $arrayFilters = $this->getDatasFilter($session);
+        
+        return $this->render('temoignage/see.html.twig', array(
+            'page' => $page,
+            'temoignage' => $temoignage,
+            'paths' => array(
+                'home' => $this->indexUrlProject(),
+                'urls' => array(
+                    $this->generateUrl('temoignage_listing', array(
+                        'page' => $page,
+                        'field' => $arrayFilters['field'],
+                        'order' => $arrayFilters['order']
+                    )) => "Gestion de témoignages"
+                ),
+                'active' => 'Fiche d\'un témoignage'
+            )
+        ));
+    }
+    
+    /**
+     * Bloc témoignage d'un membre
+     *
+     * @Route("/membre/ajax/see/{id}", name="membre_temoignage_ajax_see")
+     * @ParamConverter("membre", options={"mapping": {"id": "id"}})
+     * @Security("is_granted('ROLE_ADMIN')")
+     *
+     * @param Membre $membre
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function ajaxSeeAction(Membre $membre)
+    {
+        $temoignages = $this->getElementsLiesActifs($membre, 'getTemoignages');
+        
+        return $this->render('membre/ajax_see_temoignage.html.twig', array(
+            'membre' => $membre,
+            'temoignages' => $temoignages
+        ));
+    }
+    
+    /**
      * Ajout d'une nouveau témoignage
      *
      * @Route("/temoignage/add/{page}", name="temoignage_add")
@@ -156,6 +210,58 @@ class TemoignageController extends AppController
                     )) => 'Gestion des témoignages'
                 ),
                 'active' => "Ajout d'un témoignage"
+            )
+        ));
+    }
+    
+    /**
+     * Edition d'un témoignage
+     *
+     * @Route("/temoignage/edit/{id}/{page}", name="temoignage_edit")
+     * @ParamConverter("temoignage", options={"mapping": {"id": "id"}})
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
+     *
+     * @param SessionInterface $session
+     * @param Request $request
+     * @param Temoignage $temoignage
+     * @param int $page
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function editAction(SessionInterface $session, Request $request, Temoignage $temoignage, int $page)
+    {
+        $arrayFilters = $this->getDatasFilter($session);
+        
+        $form = $this->createForm(TemoignageType::class, $temoignage);
+        
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+            $em = $this->getDoctrine()->getManager();
+            
+            $em->persist($temoignage);
+            $em->flush();
+            
+            return $this->redirect($this->generateUrl('temoignage_listing', array(
+                'page' => $page,
+                'field' => $arrayFilters['field'],
+                'order' => $arrayFilters['order']
+            )));
+        }
+        
+        return $this->render('temoignage/edit.html.twig', array(
+            'page' => $page,
+            'form' => $form->createView(),
+            'temoignage' => $temoignage,
+            'paths' => array(
+                'home' => $this->indexUrlProject(),
+                'urls' => array(
+                    $this->generateUrl('temoignage_listing', array(
+                        'page' => $page,
+                        'field' => $arrayFilters['field'],
+                        'order' => $arrayFilters['order']
+                    )) => 'Gestion des témoignages'
+                ),
+                'active' => 'Edition de #' . $temoignage->getId() . ' - ' . $temoignage->getTitre()
             )
         ));
     }

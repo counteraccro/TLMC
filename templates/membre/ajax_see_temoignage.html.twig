@@ -1,0 +1,53 @@
+<div id="ajax_membre_temoignage_see">
+    <div class="card">
+        <div class="card-header">
+        	Témoignages
+        	<!-- <a href="#{ path('temoignage_ajax_add', {'id' : membre.id}) }#}" id="btn-add-temoignage" class="float-right"><span class="oi oi-comment-square"></span>Nouveau membre</a> -->
+        </div>
+        
+        <div class="card-body">
+          	<table class="table table-sm table-striped">
+           		<tr>
+               		<th> Titre </th>
+               		<th> Contenu </th>
+               		<th> Prénom du témoin </th>
+               		<th> Age </th>
+               		<th> Lien de parenté </th>
+               		<th> Ville </th>
+               		<th> Date de création </th>
+               		<th> Evénement </th>
+               		<th> produit </th>
+               		<th></th>
+               	</tr>
+               	
+                {% for temoignage in temoignages %}
+               		<tr>
+               			<td>{{ temoignage.titre }}</td>
+               			<td>{{ temoignage.corps }}</td>
+               			<td>{{ temoignage.prenomTemoin }}</td>
+               			<td>{{ temoignage.age }}</td>
+                		<td>{{ temoignage.lienParente | lienParente }}</td>
+                		<td>{{ temoignage.ville }}</td>
+                		<td>{{ temoignage.dateCreation | date('d/m/Y H:i') }}</td>
+                		<td>{% if temoignage.evenement != null %} {{ temoignage.evenement.nom }} {% endif %}</td>
+                		<td>{% if temoignage.produit != null %} {{ temoignage.produit.titre }} {% endif %}</td>
+                		<td>
+            		        <!-- <a href="{#{ path('temoignage_ajax_edit', {'id' : temoignage.id}) }#}" id="btn-edit-famille-{#{ famille.id }#}"  title="Editer la fiche"><span class="oi oi-pencil"></span></a> -->
+                		    {#% if is_granted("ROLE_ADMIN") %}
+                		        {{ actionDelete(temoignage.disabled, path('famille_delete', {'id' : famille.id}), famille.id) | raw }}
+                		    {% endif %#}
+                		</td>
+                	</tr>
+                
+                {% endfor %}
+        	</table>
+        	
+        	{% if temoignages is empty %}
+            	<p class="text-info text-center">Il  n'y a aucun témoignage rédigé par ce membre.</p>
+            {% endif %}
+        	
+        </div>
+    </div>
+    
+    
+</div>
