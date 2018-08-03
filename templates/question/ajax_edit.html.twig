@@ -3,8 +3,12 @@
     {{ form_start(form) }}
 	<div class="modal-header">
 		<h5 class="modal-title">
+		{% if statut == 'edit' %}
 			Edition de la question #
 			{{ question.id }}
+		{% else %}
+			Ajout d'une nouvelle question
+		{%  endif %}
 		</h5>
 		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 			<span aria-hidden="true">&times;</span>
@@ -99,7 +103,12 @@
 
     //$('#ajax_question_edit #question_liste_valeur').parent().hide();
     
-	var url = '{{path('question_ajax_edit', {'id': question.id }) }}';
+    	{% if statut == 'edit' %}
+    		var url = '{{path('question_ajax_edit', {'id': question.id }) }}';
+		{% else %}
+			var url = '{{path('question_ajax_add') }}';
+		{%  endif %}
+			
 	Question.EventEditSubmit(url);
 
 	$('#ajax_question_edit #question_liste_valeur').parent().hide();
@@ -108,7 +117,9 @@
 			id_global : '#ajax_question_edit',
 			id_preview : '#content-preview-question',
 			def_selected_valeur : $('#question_valeur_defaut').val(),
-			liste_type_json : JSON.parse('{{ liste_type|json_encode() | raw }}')
+	    	{% if statut == 'edit' %}
+				liste_type_json : JSON.parse('{{ liste_type|json_encode() | raw }}')
+			{%  endif %}
 	};
 
 	Preview.Launch(params);

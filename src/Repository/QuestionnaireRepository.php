@@ -82,8 +82,9 @@ class QuestionnaireRepository extends ServiceEntityRepository
     }
 
     /**
-     * 
-     * @param unknown $id
+     * Fonction relative à l'ordre (position) des questions
+     * Remonte les infos depuis la BDD
+     * @param $id
      * @param string $order
      * @return mixed|\Doctrine\DBAL\Driver\Statement|array|NULL
      */

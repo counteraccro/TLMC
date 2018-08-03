@@ -45,12 +45,11 @@ class QuestionController extends AppController
         $arrayFilters = $this->getDatasFilter($session);
 
         $questions = array();
-        
-        foreach($question->getQuestionnaire()->getQuestions() as $q)
-        {
+
+        foreach ($question->getQuestionnaire()->getQuestions() as $q) {
             $questions[$q->getOrdre()] = 'Position ' . $q->getOrdre();
         }
-        
+
         if ($request->isXmlHttpRequest()) {
             $form = $this->createForm(QuestionType::class, $question, array(
                 'ajax_button' => true,
@@ -68,20 +67,22 @@ class QuestionController extends AppController
 
             $em = $this->getDoctrine()->getManager();
 
-            /*$find = false;
-            foreach($question->getQuestionnaire()->getQuestions() as $q)
-            {
-                if($find)
-                {
-                    $q->setOrdre($q->getOrdre() + 1);
-                }
-                
-                if($question->getOrdre() == $q->getOrdre())
-                {
-                    $find = true;
-                }
-            }*/
-            
+            /*
+             * $find = false;
+             * foreach($question->getQuestionnaire()->getQuestions() as $q)
+             * {
+             * if($find)
+             * {
+             * $q->setOrdre($q->getOrdre() + 1);
+             * }
+             *
+             * if($question->getOrdre() == $q->getOrdre())
+             * {
+             * $find = true;
+             * }
+             * }
+             */
+
             $em->persist($question);
             $em->flush();
 
@@ -105,26 +106,78 @@ class QuestionController extends AppController
                 'question' => $question,
                 'form' => $form->createView(),
                 'id' => $question->getId(),
-                'liste_type' => AppController::QUESTION_TYPE
+                'liste_type' => AppController::QUESTION_TYPE,
+                'statut' => 'edit'
             ]);
         }
 
+        /*
+         * return $this->render('question/edit.html.twig', [
+         * 'page' => $page,
+         * 'form' => $form->createView(),
+         * 'question' => $question,
+         * 'paths' => array(
+         * 'home' => $this->indexUrlProject(),
+         * 'urls' => array(
+         * $this->generateUrl('questionnaire_listing', array(
+         * 'page' => $page,
+         * 'field' => $arrayFilters['field'],
+         * 'order' => $arrayFilters['order']
+         * )) => 'Gestion de questions'
+         * ),
+         * 'active' => 'Edition de #' . $question->getId() . ' - ' . $question->getLibelle()
+         * )
+         * ]);
+         */
+    }
+
+    /**
+     * Ajout d'une nouvelle question
+     *
+     * @Route("/question/add/", name="question_add")
+     * @Route("/question/ajax/add/", name="question_ajax_add")
+     * @Security("is_granted('ROLE_ADMIN')")
+     */
+    public function addAction(Request $request) //Questionnaire $questionnaire
+    {
+        $question = new Question();
         
-        /*return $this->render('question/edit.html.twig', [
-            'page' => $page,
-            'form' => $form->createView(),
-            'question' => $question,
-            'paths' => array(
-                'home' => $this->indexUrlProject(),
-                'urls' => array(
-                    $this->generateUrl('questionnaire_listing', array(
-                        'page' => $page,
-                        'field' => $arrayFilters['field'],
-                        'order' => $arrayFilters['order']
-                    )) => 'Gestion de questions'
-                ),
-                'active' => 'Edition de #' . $question->getId() . ' - ' . $question->getLibelle()
-            )
-        ]);*/
+//         $question->setQuestionnaire($questionnaire->getId());
+//         var_dump($question->getQuestionnaire());
+        
+        if ($request->isXmlHttpRequest()) {
+
+            $form = $this->createForm(QuestionType::class, $question);
+        }
+        
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+            $em = $this->getDoctrine()->getManager();
+            $question->setDisabled(0);
+            $question->setOrdre(0);
+            
+
+            
+            $em->persist($question);
+            $em->flush();
+            
+            if ($request->isXmlHttpRequest()) {
+                return $this->json(array(
+                    'statut' => true
+                ));
+            } else {
+                return $this->redirect($this->generateUrl('questionnaire_listing'));
+            }
+        }
+        
+        // Si appel Ajax, on renvoi sur la page ajax
+        if ($request->isXmlHttpRequest()) {
+            
+            return $this->render('question/ajax_edit.html.twig', array(
+                'form' => $form->createView(),
+                'statut' => 'add'
+            ));
+        }
     }
 }

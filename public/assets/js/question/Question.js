@@ -37,11 +37,9 @@ Question.Launch = function(params) {
 			$(Questionnaire.id_container_global).hideLoading();
 		});
 	}
-
-	//	 ------- Vue question/ajax_see.html.twig ----------//
-
+	
 	/**
-	 * Evenement global
+	 * Evenement à l'édition
 	 */
 	Question.EventEdit = function(id)
 	{
@@ -56,7 +54,7 @@ Question.Launch = function(params) {
 
 
 	/**
-	 * 
+	 * Evenement à la soumission du formulaire d'édition (pop-in ajax)
 	 */
 	Question.EventEditSubmit = function(url)
 	{
@@ -85,5 +83,4 @@ Question.Launch = function(params) {
 			});
 		});
 	}
-
 }

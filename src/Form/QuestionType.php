@@ -70,7 +70,7 @@ class QuestionType extends AbstractType
             )
         ))
             ->add('ordre', ChoiceType::class, array(
-            'choices' => array_flip($options['questions']),
+            //'choices' => array_flip($options['questions']),
             'label' => 'Position dans le questionnaire',
             'required' => true
         ))

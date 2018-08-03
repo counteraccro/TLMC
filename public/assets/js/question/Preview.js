@@ -77,9 +77,11 @@ Preview.Launch = function(params) {
 		});
 
 		$(Preview.id_global + ' #checkbox_msg_erreur').change(function() {
-
+		
 			var _this = $(this);
-
+			console.log(Preview.id_global +  " " + Preview.id_input_render);
+			
+			
 			if($(Preview.id_global +  " " + Preview.id_input_render).tagName() != 'div')
 			{
 				if(_this.is(':checked'))
