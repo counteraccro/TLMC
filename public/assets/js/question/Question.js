@@ -60,8 +60,8 @@ Question.Launch = function(params) {
 	 */
 	Question.EventEditSubmit = function(url)
 	{
-		$("form[name*='question']").on( "submit", function( event ) {
 
+		$("form[name*='question']").on("submit", function( event ) {
 			$('#question_save').prop('disabled', true).html('loading...');
 
 			event.preventDefault();

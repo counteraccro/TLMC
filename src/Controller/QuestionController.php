@@ -11,6 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Response;
+use App\Entity\Questionnaire;
 
 class QuestionController extends AppController
 {
@@ -43,12 +44,20 @@ class QuestionController extends AppController
     {
         $arrayFilters = $this->getDatasFilter($session);
 
+        $questions = array();
+        
+        foreach($question->getQuestionnaire()->getQuestions() as $q)
+        {
+            $questions[$q->getOrdre()] = 'Position ' . $q->getOrdre();
+        }
+        
         if ($request->isXmlHttpRequest()) {
             $form = $this->createForm(QuestionType::class, $question, array(
                 'ajax_button' => true,
                 'attr' => array(
                     'id' => 'question_ajax_edit'
-                )
+                ),
+                'questions' => $questions
             ));
         } else {
             $form = $this->createForm(QuestionType::class, $question);
@@ -59,6 +68,20 @@ class QuestionController extends AppController
 
             $em = $this->getDoctrine()->getManager();
 
+            /*$find = false;
+            foreach($question->getQuestionnaire()->getQuestions() as $q)
+            {
+                if($find)
+                {
+                    $q->setOrdre($q->getOrdre() + 1);
+                }
+                
+                if($question->getOrdre() == $q->getOrdre())
+                {
+                    $find = true;
+                }
+            }*/
+            
             $em->persist($question);
             $em->flush();
 
@@ -86,7 +109,8 @@ class QuestionController extends AppController
             ]);
         }
 
-        return $this->render('question/edit.html.twig', [
+        
+        /*return $this->render('question/edit.html.twig', [
             'page' => $page,
             'form' => $form->createView(),
             'question' => $question,
@@ -101,6 +125,6 @@ class QuestionController extends AppController
                 ),
                 'active' => 'Edition de #' . $question->getId() . ' - ' . $question->getLibelle()
             )
-        ]);
+        ]);*/
     }
 }

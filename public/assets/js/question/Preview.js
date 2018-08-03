@@ -180,8 +180,6 @@ Preview.Launch = function(params) {
 			break;
 		case 'question_liste_valeur':
 
-			//console.log('ici => ' + Preview.type);
-
 			if(Preview.type == 'ChoiceType' || Preview.type == 'CheckboxType' || Preview.type == 'RadioType')
 			{
 				if(val !== '')

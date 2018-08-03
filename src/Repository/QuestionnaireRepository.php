@@ -42,43 +42,60 @@ class QuestionnaireRepository extends ServiceEntityRepository
         if (! is_numeric($page)) {
             throw new \InvalidArgumentException('$page doit être un integer (' . gettype($page) . ' : ' . $page . ')');
         }
-        
+
         if (! is_numeric($max)) {
             throw new \InvalidArgumentException('$max doit être un integer (' . gettype($max) . ' : ' . $max . ')');
         }
-        
+
         if (! isset($params['field']) && ! isset($params['order'])) {
             throw new \InvalidArgumentException('order et field ne sont pas présents comme clés dans $params');
         }
-        
+
         $firstResult = ($page - 1) * $max;
-        
+
         // pagination
         $query = $this->createQueryBuilder($params['repository'])->setFirstResult($firstResult);
-        
+
         if (isset($params['search'])) {
             foreach ($params['search'] as $searchKey => $valueKey) {
                 $query->andWhere(str_replace('-', '.', $searchKey) . " LIKE '%" . $valueKey . "%'");
             }
         }
-        
+
         $query->orderBy($params['repository'] . '.' . $params['field'], $params['order'])->setMaxResults($max);
         $paginator = new Paginator($query);
-        
+
         // Nombre total de patient
         $result = $this->createQueryBuilder($params['repository'])
             ->select('COUNT(' . $params['repository'] . '.id)')
             ->getQuery()
             ->getSingleScalarResult();
-        
+
         if (($paginator->count() <= $firstResult) && $page != 1) {
             throw new NotFoundHttpException('Page not found');
         }
-        
+
         return array(
             'paginator' => $paginator,
             'nb' => $result
         );
+    }
+
+    /**
+     * 
+     * @param unknown $id
+     * @param string $order
+     * @return mixed|\Doctrine\DBAL\Driver\Statement|array|NULL
+     */
+    public function getWithQuestionsOrderByOrdre($id, $order = 'ASC')
+    {
+        return $this->createQueryBuilder('q')
+            ->andWhere('q.id = :val')
+            ->setParameter('val', $id)
+            ->join('q.questions', 'qs')
+            ->orderBy('qs.ordre', $order)
+            ->getQuery()
+            ->getSingleResult();
     }
 
     // /**

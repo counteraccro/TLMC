@@ -104,6 +104,10 @@ class QuestionnaireController extends AppController
      */
     public function ajaxSeeAction(Questionnaire $questionnaire)
     {
+        
+        $repository = $this->getDoctrine()->getRepository(Questionnaire::class);
+        $questionnaire = $repository->getWithQuestionsOrderByOrdre($questionnaire->getId());
+        
         return $this->render('questionnaire/ajax_see.html.twig', [
             'questionnaire' => $questionnaire
         ]);

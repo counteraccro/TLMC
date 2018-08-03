@@ -10,7 +10,7 @@
 
         <div class="card">
         	<div class="card-header">
-        		{{ question.libelleTop }}
+        		{{ question.libelleTop }} #{{ question.id }}
         			<a href="{{path('question_ajax_edit', {'id': question.id }) }}" id="btn-edit-question" class="btn btn-primary float-right btn-edit-question">Editer la question</a><br/>
         	</div>
         
@@ -21,25 +21,25 @@
         				Description : {{ questionnaire.description }}
         			</tr>
         			<tr>
-        				<th>{{ question.libelle }}</th>
+        				<th>Libelle :  {{ question.libelle }}</th>
         			</tr>
         			<tr>
-        				<th>{{ question.type }}</th>
+        				<th>Type : {{ question.type }}</th>
         			</tr>
         			<tr>
-        				<th>{{ question.valeurDefaut }}</th>
+        				<th>valeurDefaut : {{ question.valeurDefaut }}</th>
         			</tr>
         			<tr>
-        				<th>{{ question.obligatoire }}</th>
+        				<th>obligatoire : {{ question.obligatoire }}</th>
         			</tr>
         			<tr>
-        				<th>{{ question.regles }}</th>
+        				<th>regles : {{ question.regles }}</th>
         			</tr>
         			<tr>
-        				<th>{{ question.messageErreur }}</th>
+        				<th>messageErreur : {{ question.messageErreur }}</th>
         			</tr>
         			<tr>
-        				<th>{{ question.ordre }}</th>
+        				<th>ORDRE : {{ question.ordre }}</th>
         			</tr>
         		</table>
         	</div>

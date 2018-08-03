@@ -52,11 +52,12 @@
 				</div>
 				<hr />
 			</div>
+			<div>
 			{{ form_row(form.liste_valeur, {"id":"question_liste_valeur"})}}
-			
-			<div id="contener-input-def-value"></div>
+			</div>
+			<div id="contener-input-def-value">
+			</div>
 			{{ form_row(form.valeur_defaut, {"id":"question_valeur_defaut"})}}
-
 		
 		</div>
 		<div class="col-md-6">
@@ -64,25 +65,20 @@
 			{{ form_row(form.libelle_top, {"id":"question_libelle_top"}) }}
 			{{ form_row(form.message_erreur, {"id":"question_message_erreur"}) }}
 			{{ form_row(form.regles, {"id":"question_regles"}) }}
-              <div class="row">
-                    <div class="col-md-4">
-                      {{ form_row(form.obligatoire, {"id":"question_obligatoire"}) }}
-                    </div>
-                    <div class="col-md-4">
-                      {{ form_row(form.disabled, {"id":"question_disabled"}) }}
-                    </div>
-                    <div class="col-md-4 form-inline">
-                         {{ form_row(form.ordre, {"id":"question_ordre"}) }}
-                	</div>
-              </div>
-    </div>
-  </form>
-</div>
-		</div>
+			{{ form_row(form.ordre, {"id":"question_ordre"}) }}
+         	<div class="row">
+            	<div class="col-md-6">
+                    {{ form_row(form.obligatoire, {"id":"question_obligatoire"}) }}
+               	</div>
+               	<div class="col-md-6">
+                    {{ form_row(form.disabled, {"id":"question_disabled"}) }}
+              	</div>
+        	</div>
+    	</div>
+	</div>
 	</div>
 	
 	<div class="modal-footer">
-		<!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
 		{{ form_widget(form.save) }}
 	</div>
 	    {# form_rest(form) #}

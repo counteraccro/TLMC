@@ -1,19 +1,17 @@
 <?php
 namespace App\Form;
 
+use App\Controller\AppController;
 use App\Entity\Question;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use App\Controller\AppController;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Doctrine\DBAL\Types\BooleanType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\DataMapper\CheckboxListMapper;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class QuestionType extends AbstractType
 {
@@ -71,28 +69,27 @@ class QuestionType extends AbstractType
                 'class' => 'preview'
             )
         ))
-            ->add('ordre', NumberType::class, array(
-            'required' => false,
-             'attr' => array(
-                'size' => 1,
-                 'class' => 'form-control-sm'
-             )
+            ->add('ordre', ChoiceType::class, array(
+            'choices' => array_flip($options['questions']),
+            'label' => 'Position dans le questionnaire',
+            'required' => true
         ))
             ->add('regles', ChoiceType::class, array(
-                'choices' => array_flip(AppController::QUESTION_REGLES_REGEX),
+            'choices' => array_flip(AppController::QUESTION_REGLES_REGEX),
             'label' => 'Règles',
-            'required' => false,
+            'empty_data' => '.',
+            'required' => true,
             'attr' => array(
                 'class' => 'preview'
             )
         ))
             ->add('obligatoire', CheckboxType::class, array(
             'required' => false,
-            'label' => 'Obligatoire'
+            'label' => 'Rendre cette question obligatoire'
         ))
             ->add('disabled', CheckboxType::class, array(
             'required' => false,
-            'label' => 'Désactiver'
+            'label' => 'Désactiver la question'
         ))
             ->add('save', SubmitType::class, array(
             'label' => 'Valider',
@@ -106,7 +103,8 @@ class QuestionType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Question::class,
-            'ajax_button' => false
+            'ajax_button' => false,
+            'questions' => Collection::class
         ]);
     }
 }
