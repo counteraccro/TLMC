@@ -32,10 +32,10 @@
                 		<td>{% if temoignage.evenement != null %} {{ temoignage.evenement.nom }} {% endif %}</td>
                 		<td>{% if temoignage.produit != null %} {{ temoignage.produit.titre }} {% endif %}</td>
                 		<td>
-            		        <!-- <a href="{#{ path('temoignage_ajax_edit', {'id' : temoignage.id}) }#}" id="btn-edit-famille-{#{ famille.id }#}"  title="Editer la fiche"><span class="oi oi-pencil"></span></a> -->
-                		    {#% if is_granted("ROLE_ADMIN") %}
-                		        {{ actionDelete(temoignage.disabled, path('famille_delete', {'id' : famille.id}), famille.id) | raw }}
-                		    {% endif %#}
+            		        <a href="{{ path('temoignage_ajax_edit', {'id' : temoignage.id}) }}" id="btn-edit-temoignage-{{ temoignage.id }}"  title="Editer la fiche"><span class="oi oi-pencil"></span></a>
+                		    {% if is_granted("ROLE_ADMIN") %}
+                		        {{ actionDelete(temoignage.disabled, path('temoignage_delete', {'id' : temoignage.id}), temoignage.id) | raw }}
+                		    {% endif %}
                 		</td>
                 	</tr>
                 
@@ -49,5 +49,19 @@
         </div>
     </div>
     
+    {% block javascripts %}
+        <script type="text/javascript">
+
+    		//on associe une action pour chaque bouton edit ou delete
+            {% for temoignage in temoignages %}
+                var id_btn_edit_{{ temoignage.id }} = '#btn-edit-temoignage-' + {{ temoignage.id }};
+            	Temoignage.EventEdit(id_btn_edit_{{ temoignage.id }});
+            	
+            	var id_delete = '#delete-' + {{ temoignage.id }};
+				Temoignage.EventDelete(id_delete);
+				
+            {% endfor %}
+        </script>
+    {% endblock %}
     
 </div>
