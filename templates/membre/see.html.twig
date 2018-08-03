@@ -63,6 +63,48 @@
     	</tr>
     </table>
     <br />
+    
+    <div id="bloc_membre_temoignage">
+    	<div class="row">
+    		<div class="col-md-4 offset-md-4">
+    			<div class="progress" style="height: 25px;">
+    				<div class="progress-bar progress-bar-striped progress-bar-animated"
+    					role="progressbar" aria-valuenow="75" aria-valuemin="0"
+    					aria-valuemax="100" style="width: 50%">Chargement des
+    					informations du membre...</div>
+    			</div>
+    		</div>
+    	</div>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="modal_temoignage_global" tabindex="-1" role="dialog">
+    	<div class="modal-dialog" role="document">
+    		<div class="modal-content" id="bloc_modal"></div>
+    	</div>
+    </div>
+    
+{% endblock %}
 
-	
+{% block script %}
+ 	<script src="{{ asset('assets/js/temoignage/Temoignage.js') }}?{{ date().timestamp }}"></script>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+    
+    $(document).ready(function() {
+
+		var params = {
+				url_ajax_see : '{{path('membre_temoignage_ajax_see', {'id': membre.id}) }}',
+				id_content_modal : '#bloc_modal',
+				id_modal : '#modal_temoignage_global',
+				id_global : '#bloc_membre_temoignage',
+		};
+        
+		Temoignage.Launch(params);
+		Temoignage.LoadTemoignage();
+    });
+    
+    </script>
 {% endblock %}

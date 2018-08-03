@@ -13,7 +13,7 @@ use App\Entity\Etablissement;
 
 class MembreController extends AppController
 {
-    
+
     /**
      * Listing des membres
      *
@@ -43,8 +43,7 @@ class MembreController extends AppController
             'page' => $page,
             'repositoryClass' => Membre::class,
             'repository' => 'Membre',
-            'repositoryMethode' => 'findAllMembres',
-            'sans_inactif' => false
+            'repositoryMethode' => 'findAllMembres'
         );
 
         $result = $this->genericSearch($request, $session, $params);

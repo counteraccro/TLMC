@@ -154,6 +154,7 @@ class AppController extends Controller
      *            [repositoryClass] => repository (classe) concerné
      *            [repositoryMethode] => méthode à utiliser dans le repository
      *            [page] => indication pour la pagination
+     *            [condition] => tableau contenant les filtres supplémentaires 
      * @return array @return liste des résultats de la recherche
      */
     public function genericSearch(Request $request, SessionInterface $session, array $params)
@@ -197,8 +198,7 @@ class AppController extends Controller
             'field' => $params['field'],
             'order' => $params['order'],
             'repository' => $params['repository'],
-            'search' => $paramsSearch,
-            'sans_inactif' => (isset($params['sans_inactif']) ? $params['sans_inactif'] : true)
+            'search' => $paramsSearch
         );
 
         if(isset($params['condition'])){

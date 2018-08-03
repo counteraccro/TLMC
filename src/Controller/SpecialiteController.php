@@ -44,8 +44,7 @@ class SpecialiteController extends AppController
             'page' => $page,
             'repositoryClass' => Specialite::class,
             'repository' => 'Specialite',
-            'repositoryMethode' => 'findAllSpecialites',
-            'sans_inactif' => false
+            'repositoryMethode' => 'findAllSpecialites'
         );
 
         $result = $this->genericSearch($request, $session, $params);
@@ -298,7 +297,7 @@ class SpecialiteController extends AppController
             'order' => $arrayFilters['order']
         ));
     }
-    
+
     /**
      * Mise à jour du dropdown Spécialité lorsque l'établissement change dans le formulaire d'ajout d'un membre ou d'un patient
      *
@@ -313,13 +312,13 @@ class SpecialiteController extends AppController
     public function addAjaxSpecialiteAction(Request $request, Etablissement $etablissement, string $objet)
     {
         $specialites = $this->getElementsLiesActifs($etablissement, 'getSpecialites');
-        
-        return $this->render($objet.'/ajax_dropdown_specialite.html.twig', array(
+
+        return $this->render($objet . '/ajax_dropdown_specialite.html.twig', array(
             'specialites' => $specialites,
             'select_specialite' => 0
         ));
     }
-    
+
     /**
      * Mise à jour du dropdown Spécialité lorsque l'établissement change dans le formulaire d'édition d'un membre
      *
@@ -336,19 +335,19 @@ class SpecialiteController extends AppController
     public function editAjaxMembreAction(Request $request, Membre $membre, Etablissement $etablissement = null)
     {
         $select_specialite = (! is_null($membre->getSpecialite()) ? $membre->getSpecialite()->getId() : 0);
-        
+
         if (! is_null($etablissement)) {
             $specialites = $etablissement->getSpecialites();
         } else {
             $specialites = $membre->getEtablissement()->getSpecialites();
         }
-        
+
         return $this->render('membre/ajax_dropdown_specialite.html.twig', array(
             'specialites' => $specialites,
             'select_specialite' => $select_specialite
         ));
     }
-    
+
     /**
      * Mise à jour du dropdown Spécialité lorsque l'établissement change dans le formulaire d'édition d'un patient
      *
@@ -364,15 +363,15 @@ class SpecialiteController extends AppController
     public function editAjaxPatientAction(Request $request, Patient $patient, int $etablissement_id)
     {
         $select_specialite = $patient->getSpecialite()->getId();
-        
+
         $repository = $this->getDoctrine()->getRepository(Specialite::class);
-        
+
         if ($etablissement_id) {
             $specialites = $repository->findByEtablissement($etablissement_id);
         } else {
             $specialites = $repository->findAll();
         }
-        
+
         return $this->render('patient/ajax_dropdown_specialite.html.twig', array(
             'specialites' => $specialites,
             'select_specialite' => $select_specialite

@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Fiche d'un témoignage {% endblock %}
+
+{% block body %}
+
+    <h1>Fiche du membre #{{ temoignage.id }} - {{ temoignage.titre }}</h1>
+    
+    {% include 'elements/arborescence.html.twig' %}
+    
+    <table  class="table table-sm table-striped">
+    	<tr>
+    		<th scope="col"> titre </th>
+    		<td> {{ temoignage.titre }} </td>
+    	</tr>
+    	<tr>
+    		<th scope="col"> Contenu </th>
+    		<td> {{ temoignage.corps }} </td>
+    	</tr>
+    	<tr>
+    		<th scope="col"> Témoin </th>
+    		<td> 
+    		    {{ temoignage.prenomTemoin }}, {{ temoignage.age }} ans, {{ temoignage.lienParente |lienParente }}, {{ temoignage.ville }} <br />
+    		</td>
+    	</tr>
+    	<tr>
+    		<th scope="col"> Evénement </th>
+    		<td> {% if temoignage.evenement != null %} {{ temoignage.evenement.nom }} {% endif %} </td>
+    	</tr>
+    	<tr>
+    		<th scope="col"> Produit </th>
+    		<td> {% if temoignage.produit != null %} {{ temoignage.produit.titre }} {% endif %} </td>
+    	</tr>
+    	{% if is_granted("ROLE_ADMIN") %}
+        	<tr>
+        		<th scope="col"> Membre </th>
+        		<td> {{ temoignage.membre.prenom }} {{ temoignage.membre.nom }}</td>
+        	</tr>
+    	{% endif %}
+    </table>
+    <br />
+    
+{% endblock %}

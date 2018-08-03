@@ -33,7 +33,8 @@ class FamilleAdresseRepository extends ServiceEntityRepository
      *            [page] => page (pagination)
      *            [search] => tableau contenant les éléments de la recherche
      *            [repository] => repository (objet courant)
-     *            [field] => champ de tri
+     *            [field] => champ de tri,
+     *            [condition] => tableau contenant des conditions supplémentaires en dehors des filtres de l'utilisateur
      * @throws \InvalidArgumentException
      * @throws NotFoundHttpException
      * @return \Doctrine\ORM\Tools\Pagination\Paginator[]|mixed[]|\Doctrine\DBAL\Driver\Statement[]|array[]|NULL[]
@@ -90,7 +91,7 @@ class FamilleAdresseRepository extends ServiceEntityRepository
      *            [search] => tableau contenant les éléments de la recherche
      *            [repository] => repository (objet courant)
      *            [field] => champ de tri,
-     *            [avec_disabled] => boolean
+     *            [condition] => tableau contenant des conditions supplémentaires en dehors des filtres de l'utilisateur
      * @return \Doctrine\ORM\QueryBuilder
      */
     private function generateParamsSql(QueryBuilder $query, array $params)
@@ -105,8 +106,10 @@ class FamilleAdresseRepository extends ServiceEntityRepository
             }
         }
 
-        if (isset($params['sans_inactif']) && $params['sans_inactif']) {
-            $query->andWhere($params['repository'] . '.disabled = 0');
+        if(isset($params['condition'])){
+            foreach ($params['condition'] as $condition){
+                $query->andWhere($params['repository'] . '.' . $condition['key'] . ' = '.$condition['value']);
+            }
         }
 
         return $query;
