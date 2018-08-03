@@ -5,9 +5,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use App\Entity\Membre;
 
 class AppController extends Controller
@@ -230,7 +227,7 @@ class AppController extends Controller
      */
     public function getMembre(){
         $repository = $this->getDoctrine()->getRepository(Membre::class);
-        $membres = $repository->findByUsername($this->getUser()->getUsername());
+        $membres = $repository->findById($this->getUser()->getId());
         $membre = (isset($membres[0]) ? $membres[0] : new Membre());
         
         return $membre;

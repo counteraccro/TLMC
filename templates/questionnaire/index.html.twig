@@ -47,8 +47,9 @@
    
             	   	<td>
         			    {{ actionSee(path('questionnaire_see', {'id' : questionnaire.id, 'page' : pagination.page})) | raw }}
-        			    {{ actionEdit(path('questionnaire_edit', {'id' : questionnaire.id, 'page' : pagination.page})) | raw }}
-           			    {% if is_granted("ROLE_ADMIN") %}
+        			    
+        			    {% if is_granted("ROLE_ADMIN") %}
+        			        {{ actionEdit(path('questionnaire_edit', {'id' : questionnaire.id, 'page' : pagination.page})) | raw }}
         			        {{ actionDelete(questionnaire.disabled, path('questionnaire_delete', {'id' : questionnaire.id, 'page' : pagination.page})) | raw }}
         			    {% endif %}
         			</td>
