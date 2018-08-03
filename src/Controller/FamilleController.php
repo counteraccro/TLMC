@@ -49,8 +49,13 @@ class FamilleController extends AppController
             'repositoryMethode' => 'findAllFamilles'
         );
 
-        if ($this->isAdmin()) {
-            $params['sans_inactif'] = false;
+        if (! $this->isAdmin()) {
+            $params['condition'] = array(
+                array(
+                    'key' => 'disabled',
+                    'value' => 0
+                )
+            );
         }
 
         $result = $this->genericSearch($request, $session, $params);

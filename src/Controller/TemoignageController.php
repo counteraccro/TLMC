@@ -44,13 +44,17 @@ class TemoignageController extends AppController
             'repositoryMethode' => 'findAllTemoignages'
         );
 
-        if ($this->isAdmin()) {
-            $params['sans_inactif'] = false;
-        } else {
+        if (! $this->isAdmin()) {
             $membre = $this->getMembre();
             $params['condition'] = array(
-                'key' => 'membre',
-                'value' => $membre->getId()
+                array(
+                    'key' => 'membre',
+                    'value' => $membre->getId()
+                ),
+                array(
+                    'key' => 'disabled',
+                    'value' => 0
+                )
             );
         }
 
@@ -85,7 +89,7 @@ class TemoignageController extends AppController
      *
      * @Route("/temoignage/add/{page}", name="temoignage_add")
      * @Route("/temoignage/ajax/add/{id}", name="temoignage_ajax_add")
-     * @Security("is_granted('ROLE_ADMIN')")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      *
      * @param SessionInterface $session
      * @param Request $request
@@ -99,7 +103,7 @@ class TemoignageController extends AppController
         $temoignage = new Temoignage();
 
         if ($request->isXmlHttpRequest()) {
-            
+
             $form = $this->createForm(TemoignageType::class, $temoignage, array(
                 'submit' => 'Ajouter'
             ));
@@ -114,7 +118,7 @@ class TemoignageController extends AppController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $em = $this->getDoctrine()->getManager();
-            
+
             $temoignage->setMembre($this->getMembre());
             $temoignage->setDisabled(0);
             $temoignage->setDateCreation(new \DateTime());
@@ -134,8 +138,8 @@ class TemoignageController extends AppController
         if ($request->isXmlHttpRequest()) {
 
             return $this->render('temoignage/ajax_add.html.twig', array(
-                'form' => $form->createView(),
-                //'membre' => $membre
+                'form' => $form->createView()
+                // 'membre' => $membre
             ));
         }
 

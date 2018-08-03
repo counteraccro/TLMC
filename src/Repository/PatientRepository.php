@@ -34,7 +34,6 @@ class PatientRepository extends ServiceEntityRepository
      *            [search] => tableau contenant les éléments de la recherche
      *            [repository] => repository (objet courant)
      *            [field] => champ de tri,
-     *            [sans_inactif] => boolean,
      *            [condition] => tableau de conditions pour le listing des éléments
      * @throws \InvalidArgumentException
      * @throws NotFoundHttpException
@@ -117,11 +116,9 @@ class PatientRepository extends ServiceEntityRepository
         }
         
         if(isset($params['condition'])){
-            $query->andWhere($params['repository'] . '.' . $params['condition']['key'] . ' = '.$params['condition']['value']);
-        }
-
-        if (isset($params['sans_inactif']) && $params['sans_inactif']) {
-            $query->andWhere($params['repository'] . '.disabled = 0');
+            foreach ($params['condition'] as $condition){
+                $query->andWhere($params['repository'] . '.' . $condition['key'] . ' = '.$condition['value']);
+            }
         }
         return $query;
     }

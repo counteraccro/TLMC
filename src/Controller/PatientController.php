@@ -43,21 +43,26 @@ class PatientController extends AppController
             'page' => $page,
             'repositoryClass' => Patient::class,
             'repository' => 'Patient',
-            'repositoryMethode' => 'findAllPatients',
-            'sans_inactif' => true
+            'repositoryMethode' => 'findAllPatients'
         );
 
-        if ($this->isAdmin()) {
-            $params['sans_inactif'] = false;
-        } else {
+        if (! $this->isAdmin()) {
             $membre = $this->getMembre();
+            $params['condition'] = array(
+                array(
+                    'key' => 'disabled',
+                    'value' => 0
+                )
+            );
+
             if (! is_null($membre->getSpecialite())) {
-                $params['condition'] = array(
+                $params['condition'][] = array(
                     'key' => 'specialite',
                     'value' => $membre->getSpecialite()->getId()
                 );
             }
         }
+
         $result = $this->genericSearch($request, $session, $params);
 
         $pagination = array(

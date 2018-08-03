@@ -41,8 +41,7 @@ class EtablissementController extends AppController
             'page' => $page,
             'repositoryClass' => Etablissement::class,
             'repository' => 'Etablissement',
-            'repositoryMethode' => 'findAllEtablissements',
-            'sans_inactif' => false
+            'repositoryMethode' => 'findAllEtablissements'
         );
 
         $result = $this->genericSearch($request, $session, $params);

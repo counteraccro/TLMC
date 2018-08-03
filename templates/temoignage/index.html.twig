@@ -10,9 +10,7 @@
 <div class="card">
 	<div class="card-header">
     	{{ pagination.nb_elements }} témoignages - Page {{ pagination.page }} / {{ pagination.pages_count }}
-  		{% if is_granted("ROLE_ADMIN") %}
-  			<a href="{{ path('temoignage_add', {'page' : pagination.page}) }}" class="float-right"><span class="oi oi-comment-square"></span> Nouveau témoignage</a>
-  	    {% endif %}
+  		<a href="{{ path('temoignage_add', {'page' : pagination.page}) }}" class="float-right"><span class="oi oi-comment-square"></span> Nouveau témoignage</a>
   		{{ labelFilter(path('utils_delete-search', {'page' : pagination.page} ), current_search) | raw }}
   	</div>
   	<div class="card-body">
@@ -55,7 +53,7 @@
         			<td>{{ temoignage.lienParente | lienParente }}</td>
         			<td>{{ temoignage.age }}</td>
         			<td>{{ temoignage.ville }}</td>
-        			<td>{{ temoignage.dateCreation |date("m/d/Y H:i") }}</td>
+        			<td>{{ temoignage.dateCreation |date("d/m/Y H:i") }}</td>
         			<td>{% if temoignage.evenement != null %} {{ temoignage.evenement.nom }} {% endif %}</td>
                 	<td>{% if temoignage.produit != null %} {{ temoignage.produit.titre }} {% endif %}</td>
         			<td>{{ temoignage.membre.prenom }} {{ temoignage.membre.nom }}</td>

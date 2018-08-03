@@ -33,7 +33,7 @@ class TemoignageRepository extends ServiceEntityRepository
      *            [search] => tableau contenant les éléments de la recherche
      *            [repository] => repository (objet courant)
      *            [field] => champ de tri,
-     *            [sans_inactif] => boolean
+     *            [condition] => tableau contenant des conditions supplémentaires en dehors des filtres de l'utilisateur
      * @throws \InvalidArgumentException
      * @throws NotFoundHttpException
      * @return \Doctrine\ORM\Tools\Pagination\Paginator[]|mixed[]|\Doctrine\DBAL\Driver\Statement[]|array[]|NULL[]
@@ -90,7 +90,7 @@ class TemoignageRepository extends ServiceEntityRepository
      *            [search] => tableau contenant les éléments de la recherche
      *            [repository] => repository (objet courant)
      *            [field] => champ de tri,
-     *            [sans_inactif] => boolean
+     *            [condition] => tableau contenant des conditions supplémentaires en dehors des filtres de l'utilisateur
      * @return \Doctrine\ORM\QueryBuilder
      */
     private function generateParamsSql(QueryBuilder $query, array $params)
@@ -113,11 +113,9 @@ class TemoignageRepository extends ServiceEntityRepository
         }
         
         if(isset($params['condition'])){
-            $query->andWhere($params['repository'] . '.' . $params['condition']['key'] . ' = '.$params['condition']['value']);
-        }
-        
-        if (isset($params['sans_inactif']) && $params['sans_inactif']) {
-            $query->andWhere($params['repository'] . '.disabled = 0');
+            foreach ($params['condition'] as $condition){
+                $query->andWhere($params['repository'] . '.' . $condition['key'] . ' = '.$condition['value']);
+            }
         }
         
         return $query;
