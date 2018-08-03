@@ -43,6 +43,15 @@ class ProduitController extends AppController
             'repositoryMethode' => 'findAllProduits'
         );
 
+        if (! $this->isAdmin()) {
+            $params['condition'] = array(
+                array(
+                    'key' => 'disabled',
+                    'value' => 0
+                )
+            );
+        }
+        
         $result = $this->genericSearch($request, $session, $params);
 
         $pagination = array(

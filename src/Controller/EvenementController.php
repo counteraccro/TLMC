@@ -43,6 +43,15 @@ class EvenementController extends AppController
             'repositoryMethode' => 'findAllEvenements'
         );
 
+        if (! $this->isAdmin()) {
+            $params['condition'] = array(
+                array(
+                    'key' => 'disabled',
+                    'value' => 0
+                )
+            );
+        }
+        
         $result = $this->genericSearch($request, $session, $params);
 
         $pagination = array(
