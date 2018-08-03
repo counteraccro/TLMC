@@ -4,7 +4,6 @@ namespace App\Form;
 use App\Entity\Temoignage;
 use App\Entity\Evenement;
 use App\Entity\Produit;
-use App\Entity\Membre;
 use App\Controller\AppController;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
