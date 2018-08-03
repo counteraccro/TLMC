@@ -1,63 +1,76 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello {{ controller_name }}!{% endblock %}
+{% block title %}Produits{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'src/Controller/ProduitController.php'|file_link(0) }}">src/Controller/ProduitController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'templates/produit/index.html.twig'|file_link(0) }}">templates/produit/index.html.twig</a></code></li>
-    </ul>
-</div>
-
-<div>
-	
-	{% for produit in produits %}
-		Type :
-	    {{ produit.type }}
-		
-		<br /> Titre :
-	    {{ produit.titre }}
-		<br />
-
-		Description :
-	   	{{ produit.texte }}
-	   	<br />
-	   	
-	   	Tranche d'âge :
-	   	{{ produit.trancheAge }}
-	   	<br />
-	   	
-	   	Genre :
-	   	{{ produit.genre }}
-	   	<br />
-	   	
-	   	Quantite :
-	   	{{ produit.quantite }}
-	   	<br />
-	   	
-	   	Date d'envoi :
-	   	{{ produit.dateEnvoi |date("m/d/Y H:i") }}
-	   	<br />
-	   	
-	   	Date création :
-	   	{{ produit.dateCreation |date("m/d/Y H:i") }}
-	   	<br />
-	   	
-	   	{#}<br/>Ev�nements :
-	   	{% for evenement in specialite.evenements %}
-	   		Nom : {{ evenement.nom }}
-	   	{% endfor %#}
-		<hr>
-	{% endfor %}
-
+    <h1>Gestion des produits</h1>
+    
+    {% include 'elements/arborescence.html.twig' %}
+    
+    <div class="card">
+    	<div class="card-header">
+            {{ pagination.nb_elements }} produits - Page {{ pagination.page }} / {{ pagination.pages_count }}
+        	<!-- <a href="{#{ path('produit_add', {'page' : pagination.page}) }#}" class="float-right"><span class="oi oi-person"></span> Nouvel produit</a> -->
+      		{{ labelFilter(path('utils_delete-search', {'page' : pagination.page} ), current_search) | raw }}
+      	</div>
+      	
+      	<div class="card-body">
+      	<table class="table table-sm table-striped">
+        	<tr>
+        		<th>{{ headerFilter(path('produit_listing', {'page' : pagination.page, 'field' : 'id'} ), '#', current_order, current_field) | raw }}</th>
+        		<th>{{ headerFilter(path('produit_listing', {'page' : pagination.page, 'field' : 'type'} ), 'Type', current_order, current_field) | raw }}</th>
+        		<th>{{ headerFilter(path('produit_listing', {'page' : pagination.page, 'field' : 'titre'} ), 'Titre', current_order, current_field) | raw }}</th>
+        		<th>{{ headerFilter(path('produit_listing', {'page' : pagination.page, 'field' : 'texte'} ), 'Description', current_order, current_field) | raw }} </th>
+            	<th>{{ headerFilter(path('produit_listing', {'page' : pagination.page, 'field' : 'trancheAge'} ), "Tranche d'âge", current_order, current_field) | raw }}</th>
+        		<th>Genre</th>
+        		<th>{{ headerFilter(path('produit_listing', {'page' : pagination.page, 'field' : 'quantite'} ), 'Quantité', current_order, current_field) | raw }}</th>
+        		<th>{{ headerFilter(path('produit_listing', {'page' : pagination.page, 'field' : 'date_envoi'} ), "Date d'envoi", current_order, current_field) | raw }} </th>
+            	<th>{{ headerFilter(path('produit_listing', {'page' : pagination.page, 'field' : 'date_creation'} ), 'Date de création', current_order, current_field) | raw }}</th>
+        		<th></th>
+        	</tr>
+        	<tr>
+        		<td>{{ inputFilter(path('produit_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Produit-id', current_search, 'Identifiant') | raw }}</td>
+        		<td>{{ inputFilter(path('produit_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Produit-type', current_search, 'Type') | raw }}</td>
+        		<td>{{ inputFilter(path('produit_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Produit-titre', current_search, 'Titre') | raw }}</td>
+        		<td>{{ inputFilter(path('produit_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Produit-texte', current_search, 'Texte') | raw }}</td>
+        		<td>{{ inputFilter(path('produit_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Produit-trancheAge', current_search, "Tranche d'âge") | raw }}</td>
+        		<td>{{ inputFilter(path('produit_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Produit-genre', current_search, 'Genre') | raw }}</td>
+        		<td>{{ inputFilter(path('produit_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Produit-quantite', current_search, 'Quantité') | raw }}</td>
+        		<td>{{ inputFilter(path('produit_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Produit-date_envoi', current_search, "Date d'envoi") | raw }}</td>
+        		<td>{{ inputFilter(path('produit_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Produit-date_cretion', current_search, 'Date de création') | raw }}</td>
+        		<td></td>
+        	</tr>
+        	
+  		{% for produit in produits %}
+        		<tr>
+        			<td>{{ produit.id }}</td>
+        			<td>{{ produit.type }}</td>
+        			<td>{{ produit.titre }}</td>
+        			<td>{{ produit.texte }}</td>
+        			<td>{{ produit.trancheAge }}</td>
+        			<td>{{ produit.genre }}</td>
+        			<td>{{ produit.quantite }}</td>
+        			<td>{{ produit.dateEnvoi |date("m/d/Y H:i") }}</td>
+        			<td>{{ produit.dateCreation |date("m/d/Y H:i") }}</td>
+        			<td>
+        			    {#{ actionSee(path('produit_see', {'id' : produit.id, 'page' : pagination.page})) | raw }#}
+        			    {% if is_granted("ROLE_ADMIN") %}
+        			        {#{ actionEdit(path('produit_edit', {'id' : produit.id, 'page' : pagination.page})) | raw }#}
+        			        {#{ actionDelete(produit.disabled, path('produit_delete', {'id' : produit.id, 'page' : pagination.page})) | raw }#}
+        			    {% endif %}
+        			</td>
+        		</tr>
+        	{% endfor %}
+        </table>
+                
+    	{% if produits is empty %}
+        	<p class="text-info text-center">Il  n'y a aucun produit correspondant à votre recherche.</p>
+        {% endif %}
+        
+  	</div>
+  	<div class="card-footer">
+    	{% include 'elements/pagination.html.twig' %}
+  	</div>
 </div>
 {% endblock %}

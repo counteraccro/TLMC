@@ -158,17 +158,9 @@ class TemoignageController extends AppController
 
         $temoignage = new Temoignage();
 
-        if ($request->isXmlHttpRequest()) {
-
-            $form = $this->createForm(TemoignageType::class, $temoignage, array(
-                'submit' => 'Ajouter'
-            ));
-        } else {
-
-            $form = $this->createForm(TemoignageType::class, $temoignage, array(
-                'submit' => 'Ajouter'
-            ));
-        }
+        $form = $this->createForm(TemoignageType::class, $temoignage, array(
+            'label_submit' => 'Ajouter'
+        ));
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

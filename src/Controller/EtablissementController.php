@@ -57,7 +57,6 @@ class EtablissementController extends AppController
         $this->setDatasFilter($session, $field, $order);
 
         return $this->render('etablissement/index.html.twig', array(
-            'controller_name' => 'EtablissementController',
             'etablissements' => $result['paginator'],
             'pagination' => $pagination,
             'current_order' => $order,

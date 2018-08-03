@@ -71,7 +71,6 @@ class FamilleController extends AppController
         $this->setDatasFilter($session, $field, $order);
 
         return $this->render('famille/index.html.twig', array(
-            'controller_name' => 'FamilleController',
             'familles' => $result['paginator'],
             'pagination' => $pagination,
             'current_order' => $order,

@@ -1,53 +1,77 @@
+
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello {{ controller_name }}!{% endblock %}
+{% block title %}Evénements{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'src/Controller/EvenementController.php'|file_link(0) }}">src/Controller/EvenementController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'templates/evenement/index.html.twig'|file_link(0) }}">templates/evenement/index.html.twig</a></code></li>
-    </ul>
-</div>
-
-<div>
-	
-	{% for evenement in evenements %}
-		Nom :
-	    {{ evenement.nom }}
-		<br /> Dates :
-	    {{ evenement.dateDebut |date("m/d/Y H:i") }} => {{ evenement.dateFin|date("m/d/Y H:i") }}
-		
-		<br />Nombre participants max :
-	    {{ evenement.nombreMax }}
-		
-		
-		<br />Description :
-	    {{ evenement.description }}
-	
-		
-		<br />Type : 
-		{{ evenement.type }}
-		
-		<br />Image : 
-		<img src="{{ evenement.image }}" height="200" width="200"/>
-		
-		<br />Info comp :
-	    {{ evenement.informationComplementaire }}
-		
-		<br />
-	
-		<hr>
-	{% endfor %}
-	
-
+    <h1>Gestion des événements</h1>
+    
+    {% include 'elements/arborescence.html.twig' %}
+    
+    <div class="card">
+    	<div class="card-header">
+            {{ pagination.nb_elements }} événements - Page {{ pagination.page }} / {{ pagination.pages_count }}
+        	<!-- <a href="{#{ path('evenement_add', {'page' : pagination.page}) }#}" class="float-right"><span class="oi oi-person"></span> Nouvel événement</a> -->
+      		{{ labelFilter(path('utils_delete-search', {'page' : pagination.page} ), current_search) | raw }}
+      	</div>
+      	
+      	<div class="card-body">
+      	<table class="table table-sm table-striped">
+        	<tr>
+        		<th>{{ headerFilter(path('evenement_listing', {'page' : pagination.page, 'field' : 'id'} ), '#', current_order, current_field) | raw }}</th>
+        		<th>{{ headerFilter(path('evenement_listing', {'page' : pagination.page, 'field' : 'nom'} ), 'Nom', current_order, current_field) | raw }}</th>
+        		<th>{{ headerFilter(path('evenement_listing', {'page' : pagination.page, 'field' : 'date_debut'} ), 'Date de début', current_order, current_field) | raw }}</th>
+        		<th>{{ headerFilter(path('evenement_listing', {'page' : pagination.page, 'field' : 'date_fin'} ), 'Date de fin', current_order, current_field) | raw }} </th>
+            	<th>{{ headerFilter(path('evenement_listing', {'page' : pagination.page, 'field' : 'nombre_max'} ), 'Nombre maximun de participants', current_order, current_field) | raw }}</th>
+        		<th>{{ headerFilter(path('evenement_listing', {'page' : pagination.page, 'field' : 'description'} ), 'Description', current_order, current_field) | raw }}</th>
+        		<th>{{ headerFilter(path('evenement_listing', {'page' : pagination.page, 'field' : 'information_complementaire'} ), 'Information complémentaire', current_order, current_field) | raw }}</th>
+        		<th>{{ headerFilter(path('evenement_listing', {'page' : pagination.page, 'field' : 'type'} ), 'Type', current_order, current_field) | raw }}</th>
+        		<th> Image </th>
+            	<th></th>
+        	</tr>
+        	<tr>
+        		<td>{{ inputFilter(path('evenement_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Evenement-id', current_search, 'Identifiant') | raw }}</td>
+        		<td>{{ inputFilter(path('evenement_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Evenement-nom', current_search, 'Nom') | raw }}</td>
+        		<td>{{ inputFilter(path('evenement_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Evenement-date_debut', current_search, 'Date début') | raw }}</td>
+        		<td>{{ inputFilter(path('evenement_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Evenement-date_fin', current_search, 'Date fin') | raw }}</td>
+        		<td>{{ inputFilter(path('evenement_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Evenement-nombre_max', current_search, 'Nombre max') | raw }}</td>
+        		<td>{{ inputFilter(path('evenement_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Evenement-description', current_search, 'Description') | raw }}</td>
+        		<td>{{ inputFilter(path('evenement_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Evenement-information_complementaire', current_search, 'info complémentaire') | raw }}</td>
+        		<td>{{ inputFilter(path('evenement_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Evenement-type', current_search, 'Type') | raw }}</td><!-- dropdown -->
+        		<td></td>
+        		<td></td>
+        	</tr>
+        	
+  		{% for evenement in evenements %}
+        		<tr>
+        			<td>{{ evenement.id }}</td>
+        			<td>{{ evenement.nom }}</td>
+        			<td>{{ evenement.dateDebut |date("m/d/Y H:i") }}</td>
+        			<td>{{ evenement.dateFin|date("m/d/Y H:i") }}</td>
+        			<td>{{ evenement.nombreMax }}</td>
+        			<td>{{ evenement.description }}</td>
+        			<td>{{ evenement.informationComplementaire }}</td>
+        			<td>{{ evenement.type }}</td>
+        			<td>{% if evenement.image != null %}<img src="{{ evenement.image }}" height="50" width="50"/> {% endif %}</td>
+        			<td>
+        			    {#{ actionSee(path('evenement_see', {'id' : evenement.id, 'page' : pagination.page})) | raw }#}
+        			    {% if is_granted("ROLE_ADMIN") %}
+            			    {#{ actionEdit(path('evenement_edit', {'id' : evenement.id, 'page' : pagination.page})) | raw }}
+            			    {#{ actionDelete(evenement.disabled, path('evenement_delete', {'id' : evenement.id, 'page' : pagination.page})) | raw }#}
+            			{% endif %}
+        			</td>
+        		</tr>
+        	{% endfor %}
+        </table>
+                
+    	{% if evenements is empty %}
+        	<p class="text-info text-center">Il  n'y a aucun événement correspondant à votre recherche.</p>
+        {% endif %}
+        
+  	</div>
+  	<div class="card-footer">
+    	{% include 'elements/pagination.html.twig' %}
+  	</div>
 </div>
 {% endblock %}

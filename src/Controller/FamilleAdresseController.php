@@ -67,7 +67,6 @@ class FamilleAdresseController extends AppController
         $this->setDatasFilter($session, $field, $order);
 
         return $this->render('famille_adresse/index.html.twig', array(
-            'controller_name' => 'FamilleAdresseController',
             'adresses' => $result['paginator'],
             'pagination' => $pagination,
             'current_order' => $order,

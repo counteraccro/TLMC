@@ -59,7 +59,6 @@ class MembreController extends AppController
         $this->setDatasFilter($session, $field, $order);
 
         return $this->render('membre/index.html.twig', array(
-            'controller_name' => 'MembreController',
             'membres' => $result['paginator'],
             'pagination' => $pagination,
             'current_order' => $order,

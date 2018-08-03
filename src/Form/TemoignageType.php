@@ -44,7 +44,7 @@ class TemoignageType extends AbstractType
             'required' => false
         ))
             ->add('save', SubmitType::class, array(
-            'label' => $options['submit'],
+            'label' => $options['label_submit'],
             'attr' => array(
                 'class' => 'btn btn-primary'
             )
@@ -55,7 +55,7 @@ class TemoignageType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Temoignage::class,
-            'submit' => 'Valider',
+            'label_submit' => 'Valider',
             'famille_parente' => AppController::FAMILLE_PARENTE,
             'disabled_event' => false,
             'disabled_prod' => false,

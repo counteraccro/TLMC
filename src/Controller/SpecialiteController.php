@@ -60,7 +60,6 @@ class SpecialiteController extends AppController
         $this->setDatasFilter($session, $field, $order);
 
         return $this->render('specialite/index.html.twig', array(
-            'controller_name' => 'SpecialiteController',
             'specialites' => $result['paginator'],
             'pagination' => $pagination,
             'current_order' => $order,

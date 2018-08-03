@@ -76,7 +76,6 @@ class PatientController extends AppController
         $this->setDatasFilter($session, $field, $order);
 
         return $this->render('patient/index.html.twig', array(
-            'controller_name' => 'PatientController',
             'patients' => $result['paginator'],
             'pagination' => $pagination,
             'current_order' => $order,
