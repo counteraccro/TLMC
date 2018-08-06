@@ -117,7 +117,7 @@ class QuestionnaireController extends AppController
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function addAction(SessionInterface $session, Request $request, int $page)
+    public function addAction(SessionInterface $session, Request $request, int $page = 1)
     {
         $arrayFilters = $this->getDatasFilter($session);
 

@@ -49,7 +49,7 @@ Question.Launch = function(params) {
 			$(Questionnaire.id_container_global).showLoading();
 			Question.Ajax($(this).attr('href'), Question.id_content_modal);
 			return false;
-		});;
+		});
 	}
 
 
