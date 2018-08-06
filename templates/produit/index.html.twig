@@ -11,7 +11,7 @@
     <div class="card">
     	<div class="card-header">
             {{ pagination.nb_elements }} produit{% if pagination.nb_elements > 1 %}s{% endif %} - Page {{ pagination.page }} / {{ pagination.pages_count }}
-        	<!-- <a href="{#{ path('produit_add', {'page' : pagination.page}) }#}" class="float-right"><span class="oi oi-person"></span> Nouveau produit</a> -->
+        	<a href="{{ path('produit_add', {'page' : pagination.page}) }}" class="float-right"> Nouveau produit</a>
       		{{ labelFilter(path('utils_delete-search', {'page' : pagination.page} ), current_search) | raw }}
       	</div>
       	
@@ -31,11 +31,11 @@
         	</tr>
         	<tr>
         		<td>{{ inputFilter(path('produit_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Produit-id', current_search, 'Identifiant') | raw }}</td>
-        		<td>{{ inputFilter(path('produit_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Produit-type', current_search, 'Type') | raw }}</td>
+        		<td>{{ inputFilter(path('produit_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Produit-type', current_search, '', constant('App\\Controller\\ProduitController::TYPE')) | raw }}</td>
         		<td>{{ inputFilter(path('produit_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Produit-titre', current_search, 'Titre') | raw }}</td>
         		<td>{{ inputFilter(path('produit_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Produit-texte', current_search, 'Texte') | raw }}</td>
         		<td>{{ inputFilter(path('produit_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Produit-trancheAge', current_search, "Tranche d'âge") | raw }}</td>
-        		<td>{{ inputFilter(path('produit_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Produit-genre', current_search, 'Genre') | raw }}</td>
+        		<td>{{ inputFilter(path('produit_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Produit-genre', current_search, '', constant('App\\Controller\\ProduitController::GENRE')) | raw }}</td>
         		<td>{{ inputFilter(path('produit_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Produit-quantite', current_search, 'Quantité') | raw }}</td>
         		<td>{{ inputFilter(path('produit_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Produit-date_envoi', current_search, "Date d'envoi") | raw }}</td>
         		<td>{{ inputFilter(path('produit_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Produit-date_creation', current_search, 'Date de création') | raw }}</td>
@@ -45,18 +45,18 @@
   		{% for produit in produits %}
         		<tr>
         			<td>{{ produit.id }}</td>
-        			<td>{{ produit.type }}</td>
+        			<td>{{ produit.type | typeProduit}}</td>
         			<td>{{ produit.titre }}</td>
         			<td>{{ produit.texte }}</td>
         			<td>{{ produit.trancheAge }}</td>
-        			<td>{{ produit.genre }}</td>
+        			<td>{{ produit.genre | genre }}</td>
         			<td>{{ produit.quantite }}</td>
         			<td>{{ produit.dateEnvoi |date("m/d/Y H:i") }}</td>
         			<td>{{ produit.dateCreation |date("m/d/Y H:i") }}</td>
         			<td>
-        			    {#{ actionSee(path('produit_see', {'id' : produit.id, 'page' : pagination.page})) | raw }#}
+        			    {{ actionSee(path('produit_see', {'id' : produit.id, 'page' : pagination.page})) | raw }}
         			    {% if is_granted("ROLE_ADMIN") %}
-        			        {#{ actionEdit(path('produit_edit', {'id' : produit.id, 'page' : pagination.page})) | raw }#}
+        			        {{ actionEdit(path('produit_edit', {'id' : produit.id, 'page' : pagination.page})) | raw }}
         			        {{ actionDelete(produit.disabled, path('produit_delete', {'id' : produit.id, 'page' : pagination.page})) | raw }}
         			    {% endif %}
         			</td>

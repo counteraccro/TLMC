@@ -55,8 +55,8 @@
         			<td>{{ evenement.nombreMax }}</td>
         			<td>{{ evenement.description }}</td>
         			<td>{{ evenement.informationComplementaire }}</td>
-        			<td>{{ evenement.type | type }}</td>
-        			<td>{{ evenement.statut | statut }}</td>
+        			<td>{{ evenement.type | typeEvent }}</td>
+        			<td>{{ evenement.statut | statutEvent }}</td>
         			<td>
         			    {{ actionSee(path('evenement_see', {'id' : evenement.id, 'page' : pagination.page})) | raw }}
         			    {% if is_granted("ROLE_ADMIN") %}

@@ -34,8 +34,8 @@ class EvenementType extends AbstractType
         ))
             ->add('description', TextareaType::class)
             ->add('type', ChoiceType::class, array(
-                'choices' => array_flip($options['types'])
-            ))
+            'choices' => array_flip($options['type'])
+        ))
             ->add('nom_lieu', TextType::class, array(
             'label' => 'Lieu'
         ))
@@ -50,10 +50,10 @@ class EvenementType extends AbstractType
         ))
             ->add('information_complementaire', TextareaType::class, array(
             'label' => "Information complémentaire",
-                'required' => false
+            'required' => false
         ))
-        ->add('statut', ChoiceType::class, array(
-            'choices' => array_flip($options['statuts'])
+            ->add('statut', ChoiceType::class, array(
+            'choices' => array_flip($options['statut'])
         ))
             ->add('date_fin_inscription', DateTimeType::class, array(
             'label' => "Date de fin d'inscription",
@@ -74,8 +74,8 @@ class EvenementType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Evenement::class,
             'label_submit' => 'Valider',
-            'statuts' => EvenementController::STATUT,
-            'types' => EvenementController::TYPE
+            'statut' => EvenementController::STATUT,
+            'type' => EvenementController::TYPE
         ]);
     }
 }

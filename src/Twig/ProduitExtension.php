@@ -7,44 +7,44 @@ namespace App\Twig;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
-use App\Controller\EvenementController;
+use App\Controller\ProduitController;
 
-class EvenementExtension extends AbstractExtension
+class ProduitExtension extends AbstractExtension
 {
     public function getFilters(): array
     {
         return [
-            new TwigFilter('typeEvent', array($this, 'getTypeEvenement')),
-            new TwigFilter('statutEvent', array($this, 'getStatutEvenement')),
+            new TwigFilter('typeProduit', array($this, 'getTypeProduit')),
+            new TwigFilter('genre', array($this, 'getGenre')),
         ];
     }
-
+    
     public function getFunctions(): array
     {
         return [
             new TwigFunction('function_name', [$this, 'doSomething']),
         ];
     }
-
+    
     /**
      * Renvoie le type correspondant à  une clé ou la clé s'il n'y a pas de correspondance
      *
      * @param int $key
      * @return string
      */
-    public function getTypeEvenement(int $key)
+    public function getTypeProduit(int $key)
     {
-        return (isset(EvenementController::TYPE[$key]) ? EvenementController::TYPE[$key] : $key);
+        return (isset(ProduitController::TYPE[$key]) ? ProduitController::TYPE[$key] : $key);
     }
     
     /**
-     * Renvoie le statut correspondant à  une clé ou la clé s'il n'y a pas de correspondance
+     * Renvoie le genre correspondant à  une clé ou la clé s'il n'y a pas de correspondance
      *
      * @param int $key
      * @return string
      */
-    public function getStatutEvenement(int $key)
+    public function getGenre(int $key)
     {
-        return (isset(EvenementController::STATUT[$key]) ? EvenementController::STATUT[$key] : $key);
+        return (isset(ProduitController::GENRE[$key]) ? ProduitController::GENRE[$key] : $key);
     }
 }
