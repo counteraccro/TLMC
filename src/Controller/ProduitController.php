@@ -13,6 +13,27 @@ use App\Form\ProduitType;
 class ProduitController extends AppController
 {
     /**
+     * Tableau de types
+     *
+     * @var array
+     */
+    const TYPE = array(
+        1 => 'Cadeau',
+        2 => 'Matériel',
+    );
+    
+    /**
+     * Tableau de genre
+     *
+     * @var array
+     */
+    const GENRE = array(
+        0 => 'Mixte',
+        1 => 'Fille',
+        2 => 'Garçon'
+    );
+    
+    /**
      * Listing des produits
      *
      * @Route("/produit/listing/{page}/{field}/{order}", name="produit_listing", defaults={"page" = 1, "field"= null, "order"= null})
@@ -74,6 +95,39 @@ class ProduitController extends AppController
             'paths' => array(
                 'home' => $this->indexUrlProject(),
                 'active' => 'Liste des produits'
+            )
+        ));
+    }
+    
+    /**
+     * Fiche d'un produit
+     *
+     * @Route("/produit/see/{id}/{page}", name="produit_see")
+     * @ParamConverter("produit", options={"mapping": {"id": "id"}})
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE')")
+     *
+     * @param SessionInterface $session
+     * @param Produit $produit
+     * @param int $page
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function seeAction(SessionInterface $session, Produit $produit, int $page)
+    {
+        $arrayFilters = $this->getDatasFilter($session);
+        
+        return $this->render('produit/see.html.twig', array(
+            'page' => $page,
+            'produit' => $produit,
+            'paths' => array(
+                'home' => $this->indexUrlProject(),
+                'urls' => array(
+                    $this->generateUrl('produit_listing', array(
+                        'page' => $page,
+                        'field' => $arrayFilters['field'],
+                        'order' => $arrayFilters['order']
+                    )) => "Gestion de produits"
+                ),
+                'active' => 'Fiche d\'un produit'
             )
         ));
     }

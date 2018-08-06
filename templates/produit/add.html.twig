@@ -11,17 +11,14 @@
 <div>
     {{ form_start(form) }}
     
-{{ form_row(form.nom) }}
+{{ form_row(form.titre) }}
 	{{ form_row(form.type) }}
-	{{ form_row(form.code_logistique) }}
-	{{ form_row(form.nb_lit) }}
-	{{ form_row(form.statut_convention) }}
-	{{ form_row(form.date_collaboration) }}
-	{{ form_row(form.numero_voie) }}
-	{{ form_row(form.voie) }}
-	{{ form_row(form.ville) }}
-	{{ form_row(form.code_postal) }}
-	{{ form_row(form.region) }}
+	{{ form_row(form.genre) }}
+	{{ form_row(form.texte) }}
+	{{ form_row(form.texte_2) }}
+	{{ form_row(form.tranche_age) }}
+	{{ form_row(form.quantite) }}
+	{{ form_row(form.date_envoi) }}
     
     {{ form_rest(form) }}
     {{ form_errors(form) }}

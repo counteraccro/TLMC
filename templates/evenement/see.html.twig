@@ -23,7 +23,7 @@
     	</tr>
     	<tr>
     		<th scope="col"> Type </th>
-    		<td> {{ evenement.type |type }} </td>
+    		<td> {{ evenement.type |typeEvent }} </td>
     	</tr>
     	<tr>
     		<th scope="col"> Nombre maximum de participants </th>
@@ -43,7 +43,7 @@
     	</tr>
     	<tr>
     		<th scope="col"> Statut </th>
-    		<td> {{ evenement.statut | statut }} </td>
+    		<td> {{ evenement.statut | statutEvent }} </td>
     	</tr>
     	<tr>
     		<th scope="col"> Lieu </th>
@@ -96,7 +96,7 @@
     
     $(document).ready(function() {
 
-		var params = {
+    	var params = {
 				url_ajax_see : '{{path('temoignage_ajax_see', {'id': evenement.id, 'type': 'evenement'}) }}',
 				id_content_modal : '#bloc_modal',
 				id_modal : '#modal_temoignage_global',

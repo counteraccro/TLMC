@@ -14,8 +14,8 @@ class EvenementExtension extends AbstractExtension
     public function getFilters(): array
     {
         return [
-            new TwigFilter('type', array($this, 'getType')),
-            new TwigFilter('statut', array($this, 'getStatut')),
+            new TwigFilter('typeEvent', array($this, 'getTypeEvenement')),
+            new TwigFilter('statutEvent', array($this, 'getStatutEvenement')),
         ];
     }
 
@@ -32,18 +32,18 @@ class EvenementExtension extends AbstractExtension
      * @param int $key
      * @return string
      */
-    public function getType(int $key)
+    public function getTypeEvenement(int $key)
     {
         return (isset(EvenementController::TYPE[$key]) ? EvenementController::TYPE[$key] : $key);
     }
     
     /**
-     * Renvoie le staut correspondant à  une clé ou la clé s'il n'y a pas de correspondance
+     * Renvoie le statut correspondant à  une clé ou la clé s'il n'y a pas de correspondance
      *
      * @param int $key
      * @return string
      */
-    public function getStatut(int $key)
+    public function getStatutEvenement(int $key)
     {
         return (isset(EvenementController::STATUT[$key]) ? EvenementController::STATUT[$key] : $key);
     }
