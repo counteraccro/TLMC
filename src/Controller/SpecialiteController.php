@@ -298,82 +298,98 @@ class SpecialiteController extends AppController
     }
 
     /**
+     * Bloc spécialité dans la vue d'un établissement
+     *
+     * @Route("/specialite/ajax/see/{id}", name="specialite_ajax_see")
+     * @ParamConverter("etablissement", options={"mapping": {"id": "id"}})
+     * @Security("is_granted('ROLE_ADMIN')")
+     *
+     * @param Etablissement $etablissement
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function ajaxSeeAction(Etablissement $etablissement)
+    {
+        $specialites = $this->getElementsLiesActifs($etablissement, 'getSpecialites');
+
+        return $this->render('specialite/ajax_see.html.twig', array(
+            'etablissement' => $etablissement,
+            'specialites' => $specialites
+        ));
+    }
+
+    /**
      * Mise à jour du dropdown Spécialité lorsque l'établissement change dans le formulaire d'ajout d'un membre ou d'un patient
      *
-     * @Route("/specialite/ajax/add/dropdown/{objet}/{id}", name="ajax_add_dropdown", defaults={"id" = 0})
+     * @Route("/specialite/ajax/add/dropdown/{type}/{id}", name="specialite_ajax_add_dropdown", defaults={"id" = 0})
      * @ParamConverter("etablissement", options={"mapping": {"id": "id"}})
      * Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      *
      * @param Request $request
      * @param Etablissement $etablissement
+     * @param string $type
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function addAjaxSpecialiteAction(Request $request, Etablissement $etablissement, string $objet)
+    public function addAjaxDropdownAction(Request $request, Etablissement $etablissement, string $type)
     {
         $specialites = $this->getElementsLiesActifs($etablissement, 'getSpecialites');
 
-        return $this->render($objet . '/ajax_dropdown_specialite.html.twig', array(
+        return $this->render('specialite/ajax_dropdown.html.twig', array(
             'specialites' => $specialites,
-            'select_specialite' => 0
+            'select_specialite' => 0,
+            'type' => $type
         ));
     }
 
     /**
      * Mise à jour du dropdown Spécialité lorsque l'établissement change dans le formulaire d'édition d'un membre
      *
-     * @Route("/specialite/ajax/edit_membre/{membre_id}/{etablissement_id}", name="membre_ajax_edit_specialite", defaults={"etablissement_id" = 0})
-     * @ParamConverter("membre", options={"mapping": {"membre_id": "id"}})
-     * @ParamConverter("etablissement", options={"mapping": {"etablissement_id": "id"}})
-     * @Security("is_granted('ROLE_ADMIN')")
-     *
-     * @param Request $request
-     * @param Membre $membre
-     * @param Etablissement $etablissement
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function editAjaxMembreAction(Request $request, Membre $membre, Etablissement $etablissement = null)
-    {
-        $select_specialite = (! is_null($membre->getSpecialite()) ? $membre->getSpecialite()->getId() : 0);
-
-        if (! is_null($etablissement)) {
-            $specialites = $etablissement->getSpecialites();
-        } else {
-            $specialites = $membre->getEtablissement()->getSpecialites();
-        }
-
-        return $this->render('membre/ajax_dropdown_specialite.html.twig', array(
-            'specialites' => $specialites,
-            'select_specialite' => $select_specialite
-        ));
-    }
-
-    /**
-     * Mise à jour du dropdown Spécialité lorsque l'établissement change dans le formulaire d'édition d'un patient
-     *
-     * @Route("/specialite/ajax/edit_patient/{patient_id}/{etablissement_id}", name="patient_ajax_edit_specialite", defaults={"etablissement_id"=0})
-     * @ParamConverter("patient", options={"mapping": {"patient_id": "id"}})
+     * @Route("/specialite/ajax/edit_dropdown/{id}/{type}/{etablissement_id}", name="specialite_ajax_edit_dropdown",)
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      *
      * @param Request $request
-     * @param Patient $patient
-     * @param int $etablissement
+     * @param int $id
+     * @param string $type
+     * @param int $etablissement_id
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function editAjaxPatientAction(Request $request, Patient $patient, int $etablissement_id)
+    public function editAjaxDropdownAction(Request $request, int $id, string $type, int $etablissement_id = 0)
     {
-        $select_specialite = $patient->getSpecialite()->getId();
+        // récupération de l'objet
+        switch ($type) {
+            case 'patient':
+                $repo_patient = $this->getDoctrine()->getRepository(Patient::class);
+                $objets = $repo_patient->findById($id);
+                $objet = $objets[0];
+
+                $etablissement = $objet->getSpecialite()->getEtablissement();
+
+                break;
+            case 'membre':
+                $repo_membre = $this->getDoctrine()->getRepository(Membre::class);
+                $objets = $repo_membre->findById($id);
+                $objet = $objets[0];
+
+                $etablissement = $objet->getEtablissement();
+                break;
+        }
+
+        $select_specialite = (! is_null($objet->getSpecialite()) ? $objet->getSpecialite()->getId() : 0);
 
         $repository = $this->getDoctrine()->getRepository(Specialite::class);
-
         if ($etablissement_id) {
             $specialites = $repository->findByEtablissement($etablissement_id);
         } else {
-            $specialites = $repository->findAll();
+            if (count($etablissement->getSpecialites())) {
+                $specialites = $etablissement->getSpecialites();
+            } else {
+                $specialites = $repository->findAll();
+            }
         }
 
-        return $this->render('patient/ajax_dropdown_specialite.html.twig', array(
+        return $this->render('specialite/ajax_dropdown.html.twig', array(
             'specialites' => $specialites,
-            'select_specialite' => $select_specialite
+            'select_specialite' => $select_specialite,
+            'type' => $type
         ));
     }
 }

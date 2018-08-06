@@ -122,26 +122,6 @@ class PatientController extends AppController
     }
 
     /**
-     * Bloc famille d'un patient
-     *
-     * @Route("/patient/ajax/see/{id}", name="patient_famille_ajax_see")
-     * @ParamConverter("patient", options={"mapping": {"id": "id"}})
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
-     *
-     * @param Patient $patient
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function ajaxSeeAction(Patient $patient)
-    {
-        $familles = $this->getElementsLiesActifs($patient, 'getFamilles');
-
-        return $this->render('patient/ajax_see_famille.html.twig', array(
-            'patient' => $patient,
-            'familles' => $familles
-        ));
-    }
-
-    /**
      * Ajout d'un nouveau patient
      *
      * @Route("/patient/add/{page}/{membre_id}", name="patient_add")

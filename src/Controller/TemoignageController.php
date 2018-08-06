@@ -286,14 +286,8 @@ class TemoignageController extends AppController
                 $opt_form['avec_event'] = false;
                 break;
             case 'membre':
-                /*if($temoignage->getEvenement())
-                {
-                    $opt_form['disabled_event'] = true;
-                    $opt_form['avec_prod'] = false;
-                } elseif($temoignage->getProduit()) {
-                    $opt_form['disabled_prod'] = true;
-                    $opt_form['avec_event'] = false;
-                }*/
+                $opt_form['disabled_event'] = true;
+                $opt_form['disabled_prod'] = true;
                 break;
         }
         

@@ -46,7 +46,7 @@
     $(document).ready(function() {
     	
 		var params = {
-				url_ajax_see : '{{ path('membre_ajax_edit_specialite', {'membre_id': membre.id}) }}',
+				url_ajax_see : '{{ path('specialite_ajax_edit_dropdown', {'id': membre.id, 'type': 'membre'}) }}',
 				id_specialite : '#bloc_specialite',
 				id_bloc_etablissement : '#membre_etablissement'
 		};

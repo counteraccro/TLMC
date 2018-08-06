@@ -1,7 +1,7 @@
-<div id="ajax_membre_specialite">
+<div id="ajax_{{ type }}_specialite">
 	<div class="form-group">
-    	<label for="membre_specialite">Spécialité</label> 
-        <select id="membre_specialite" name="membre[specialite]" class="form-control">
+    	<label for="{{ type }}_specialite">Spécialité</label> 
+        <select id="{{ type }}_specialite" name="{{ type }}[specialite]" class="form-control">
             {%  for specialite in specialites %}
             	<option {% if specialite.id == select_specialite %} selected {% endif %} value="{{ specialite.id }}">{{ specialite.service }}</option>
             {% endfor %}
@@ -12,9 +12,9 @@
 {% block javascripts %}
     <script type="text/javascript">
     	{% if(specialites is empty) %}
-			$('#ajax_membre_specialite').hide();
+			$('#ajax_{{ type }}_specialite').hide();
     	{% endif %}
-    	$('#membre_save').prop('disabled', false);
+    	$('#{{ type }}_save').prop('disabled', false);
     	
     </script>
 {% endblock %}
