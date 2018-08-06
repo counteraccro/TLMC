@@ -97,7 +97,7 @@ Questionnaire.Launch = function(params) {
 			//var textToSlug = "Sa mère prend de l'$Héroïne% et prépare des Crêpes.";
 			
 			//Passage en format 'slug' : Gestion des accents, minuscules, espaces, caractères spéciaux 
-			var sluggedText = textToSlug.sansAccent().toLowerCase().replace(/ +/g,'-').replace(/[.'$"&%#8217;]/g, '');
+			var sluggedText = textToSlug.sansAccent().toLowerCase().replace(/ +/g,'-').replace(/[.'$"&%#;]/g, '');
 			
 			//Renvoi des élements en slug dans les champs
 			$(id_slug).val(sluggedText);
