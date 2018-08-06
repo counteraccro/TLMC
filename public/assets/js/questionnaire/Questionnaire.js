@@ -60,11 +60,18 @@ Questionnaire.Launch = function(params) {
 			
 			Questionnaire.Ajax($(this).attr('href'), Questionnaire.id_content_modal);
 			return false;
-		});;
-		
-		// slug
+		});
 	}
-
+	
+	Questionnaire.EventOnTitle = function(id_title, id_slug, id_slug_text)
+	{
+		// Event au changement du titre d'un questionnaire, slug
+		$(id_title).change(function() {
+			$(id_slug).val($(this).val());
+			$(id_slug_text).html($(this).val());
+			return false;
+		});
+	}
 
 	/**
 	 * Fonction intervenant au moment de la soumission du formulaire Ajax d'édition

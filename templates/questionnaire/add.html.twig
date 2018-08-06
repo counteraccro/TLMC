@@ -10,8 +10,49 @@ Nouveau questionnaire
 
 {% include 'elements/arborescence.html.twig' %}
 
+<input hidden type="text" id="slug_hidden" value="#input slug"><br/>
+<div id="slug_text" class="d-inline p-2 bg-dark text-white"></div>
+<hr>
+
 <fieldset>
-	{{ form(form) }}
+
+    {{ form_start(form) }}
+    
+	{{ form_row(form.titre, {"id":"questionnaire_titre"}) }}
+	
+	{{ form_row(form.description) }}
+	{{ form_row(form.date_creation) }}
+	{{ form_row(form.date_fin) }}
+	{{ form_row(form.jour_relance) }}
+	
+    {{ form_rest(form) }}
+    {{ form_errors(form) }}
+    {{ form_end(form) }}
+
 </fieldset>
+
+	{% block script %}
+ 		<script src="{{ asset('assets/js/questionnaire/Questionnaire.js') }}?{{ date().timestamp }}"></script>
+    {% endblock %}
+ 
+	{% block javascripts %}
+    <script type="text/javascript">
+	
+    
+    $(document).ready(function() {
+
+		var params = {
+				url_ajax_see : '{{path('questionnaire_add') }}',
+				id_content_modal : '#bloc_modal',
+				id_modal : '#modal_questionnaire_global',
+				id_global : '#bloc_questionnaire'
+		};
+        
+		Questionnaire.Launch(params);
+		Questionnaire.EventOnTitle('#questionnaire_titre', '#slug_hidden', '#slug_text');
+    });
+		
+    </script>
+    {% endblock %}
 
 {% endblock %}
