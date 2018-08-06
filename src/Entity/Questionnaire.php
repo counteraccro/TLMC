@@ -47,6 +47,11 @@ class Questionnaire
      * @ORM\Column(type="boolean")
      */
     private $disabled;
+    
+    /**
+     * @ORM\Column(type="string", length=300, nullable=true)
+     */
+    private $slug;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Question", mappedBy="questionnaire")
@@ -237,6 +242,18 @@ class Questionnaire
                 $evenementQuestionnaire->setQuestionnaire(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }

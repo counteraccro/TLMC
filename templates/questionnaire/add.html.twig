@@ -10,14 +10,14 @@ Nouveau questionnaire
 
 {% include 'elements/arborescence.html.twig' %}
 
-<input hidden type="text" id="slug_hidden" value="#input slug"><br/>
+    {{ form_start(form) }}
+    
 <div id="slug_text" class="d-inline p-2 bg-dark text-white"></div>
 <hr>
 
 <fieldset>
 
-    {{ form_start(form) }}
-    
+    {{ form_row(form.slug) }}
 	{{ form_row(form.titre, {"id":"questionnaire_titre"}) }}
 	
 	{{ form_row(form.description) }}
@@ -48,8 +48,8 @@ Nouveau questionnaire
 				id_global : '#bloc_questionnaire'
 		};
         
-		Questionnaire.Launch(params);
-		Questionnaire.EventOnTitle('#questionnaire_titre', '#slug_hidden', '#slug_text');
+		Questionnaire.Launch(params);		
+		Questionnaire.EventOnTitle('#questionnaire_titre', '#questionnaire_slug', '#slug_text');
     });
 		
     </script>
