@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\TemoignageType;
 use App\Entity\Membre;
+use App\Entity\Evenement;
+use App\Entity\Produit;
 
 class TemoignageController extends AppController
 {
@@ -117,23 +119,40 @@ class TemoignageController extends AppController
             )
         ));
     }
-
+    
     /**
-     * Bloc témoignage d'un membre
+     * Bloc témoignage d'un membre / d'un événement / d'un produit
      *
-     * @Route("/membre/ajax/see/{id}", name="membre_temoignage_ajax_see")
-     * @ParamConverter("membre", options={"mapping": {"id": "id"}})
-     * @Security("is_granted('ROLE_ADMIN')")
+     * @Route("/membre/ajax/see/{id}/{type}", name="temoignage_ajax_see")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE')")
      *
-     * @param Membre $membre
+     * @param int $id
+     * @param string $type
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function ajaxSeeAction(Membre $membre)
+    public function ajaxSeeAction(int $id, string $type)
     {
-        $temoignages = $this->getElementsLiesActifs($membre, 'getTemoignages');
-
-        return $this->render('membre/ajax_see_temoignage.html.twig', array(
-            'membre' => $membre,
+        
+        switch($type){
+            case 'membre':
+                $repository = $this->getDoctrine()->getRepository(Membre::class);
+                break;
+            case 'evenement':
+                $repository = $this->getDoctrine()->getRepository(Evenement::class);
+                break;
+            case 'produit':
+                $repository = $this->getDoctrine()->getRepository(Produit::class);
+                break;
+        }
+        
+        $objets = $repository->findById($id);
+        $objet = $objets[0];
+        
+        $temoignages = $this->getElementsLiesActifs($objet, 'getTemoignages');
+        
+        return $this->render('temoignage/ajax_see.html.twig', array(
+            'objet' => $objet,
+            'type' => $type,
             'temoignages' => $temoignages
         ));
     }
@@ -142,25 +161,51 @@ class TemoignageController extends AppController
      * Ajout d'une nouveau témoignage
      *
      * @Route("/temoignage/add/{page}", name="temoignage_add")
-     * @Route("/temoignage/ajax/add/{id}", name="temoignage_ajax_add")
+     * @Route("/temoignage/ajax/add/{id}/{type}", name="temoignage_ajax_add")
      * @ParamConverter("membre", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      *
      * @param SessionInterface $session
      * @param Request $request
      * @param int $page
-     * @param Membre $membre
+     * @param int $id
+     * @param string $type
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function addAction(SessionInterface $session, Request $request, int $page = 1, Membre $membre = null)
+    public function addAction(SessionInterface $session, Request $request, int $page = 1, int $id = 0, string $type)
     {
         $arrayFilters = $this->getDatasFilter($session);
-
+        $opt_form = array('label_submit' => 'Ajouter');
+        
         $temoignage = new Temoignage();
-
-        $form = $this->createForm(TemoignageType::class, $temoignage, array(
-            'label_submit' => 'Ajouter'
-        ));
+        
+        if ($request->isXmlHttpRequest()) {
+            switch($type){
+                case 'evenement':
+                    $repository = $this->getDoctrine()->getRepository(Evenement::class);
+                    $objets = $repository->findById($id);
+                    $objet = $objets[0];
+                    
+                    $opt_form['disabled_event'] = true;
+                    $opt_form['avec_prod'] = false;
+                    
+                    $temoignage->setEvenement($objet);
+                    break;
+                case 'produit':
+                    $repository = $this->getDoctrine()->getRepository(Produit::class);
+                    $objets = $repository->findById($id);
+                    $objet = $objets[0];
+                    
+                    $opt_form['disabled_event'] = true;
+                    $opt_form['avec_prod'] = false;
+                    
+                    $temoignage->setProduit($objet);
+                    break;
+            }
+            
+        }
+        
+        $form = $this->createForm(TemoignageType::class, $temoignage, $opt_form);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -187,7 +232,8 @@ class TemoignageController extends AppController
 
             return $this->render('temoignage/ajax_add.html.twig', array(
                 'form' => $form->createView(),
-                'membre' => $membre
+                'objet' => $objet,
+                'type' => $type
             ));
         }
 
@@ -212,7 +258,7 @@ class TemoignageController extends AppController
      * Edition d'un témoignage
      *
      * @Route("/temoignage/edit/{id}/{page}", name="temoignage_edit")
-     * @Route("/temoignage/ajax/edit/{id}", name="temoignage_ajax_edit")
+     * @Route("/temoignage/ajax/edit/{id}/{objet_id}/{type}", name="temoignage_ajax_edit")
      * @ParamConverter("temoignage", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      *
@@ -220,9 +266,11 @@ class TemoignageController extends AppController
      * @param Request $request
      * @param Temoignage $temoignage
      * @param int $page
+     * @param int $objet_id
+     * @param string $type
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function editAction(SessionInterface $session, Request $request, Temoignage $temoignage, int $page = 1)
+    public function editAction(SessionInterface $session, Request $request, Temoignage $temoignage, int $page = 1, int $objet_id = 0, string $type)
     {
         $arrayFilters = $this->getDatasFilter($session);
 

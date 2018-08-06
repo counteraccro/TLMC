@@ -1,8 +1,8 @@
-<div id="ajax_membre_temoignage_see">
+<div id="ajax_{{ type }}_temoignage_see">
     <div class="card">
         <div class="card-header">
         	Témoignages
-        	<!-- <a href="#{ path('temoignage_ajax_add', {'id' : membre.id}) }#}" id="btn-add-temoignage" class="float-right"><span class="oi oi-comment-square"></span>Nouveau membre</a> -->
+        	<a href="{{ path('temoignage_ajax_add', {'id' : objet.id, 'type': type}) }}" id="btn-add-temoignage" class="float-right"><span class="oi oi-comment-square"></span> Nouveau témoignage</a>
         </div>
         
         <div class="card-body">
@@ -12,11 +12,13 @@
                		<th> Contenu </th>
                		<th> Prénom du témoin </th>
                		<th> Age </th>
-               		<th> Lien de parenté </th>
+               		<th> Lien de parenté</th>
                		<th> Ville </th>
                		<th> Date de création </th>
-               		<th> Evénement </th>
-               		<th> produit </th>
+               		{% if type == 'membre' %}
+                   		<th> Evénement </th>
+                   		<th> produit </th>
+               		{% endif %}
                		<th></th>
                	</tr>
                	
@@ -29,10 +31,12 @@
                 		<td>{{ temoignage.lienParente | lienParente }}</td>
                 		<td>{{ temoignage.ville }}</td>
                 		<td>{{ temoignage.dateCreation | date('d/m/Y H:i') }}</td>
-                		<td>{% if temoignage.evenement != null %} {{ temoignage.evenement.nom }} {% endif %}</td>
-                		<td>{% if temoignage.produit != null %} {{ temoignage.produit.titre }} {% endif %}</td>
+                		{% if type == 'membre' %}
+                    		<td>{% if temoignage.evenement != null %} {{ temoignage.evenement.nom }} {% endif %}</td>
+                    		<td>{% if temoignage.produit != null %} {{ temoignage.produit.titre }} {% endif %}</td>
+                    	{% endif %}
                 		<td>
-            		        <a href="{{ path('temoignage_ajax_edit', {'id' : temoignage.id}) }}" id="btn-edit-temoignage-{{ temoignage.id }}"  title="Editer la fiche"><span class="oi oi-pencil"></span></a>
+            		        <!-- <a href="{#{ path('temoignage_ajax_edit', {'id' : temoignage.id}) }#}" id="btn-edit-temoignage-{#{ temoignage.id }#}"  title="Editer la fiche"><span class="oi oi-pencil"></span></a> -->
                 		    {% if is_granted("ROLE_ADMIN") %}
                 		        {{ actionDelete(temoignage.disabled, path('temoignage_delete', {'id' : temoignage.id}), temoignage.id) | raw }}
                 		    {% endif %}
@@ -43,7 +47,16 @@
         	</table>
         	
         	{% if temoignages is empty %}
-            	<p class="text-info text-center">Il  n'y a aucun témoignage rédigé par ce membre.</p>
+            	<p class="text-info text-center">
+            		Il  n'y a aucun témoignage 
+            		{% if type == 'membre' %}
+            			rédigé par ce membre.
+            		{% elseif type == 'produit' %}
+            			associé à ce produit.
+            		{% elseif type == 'evenement' %}
+            			associé à cet événement.
+            		{% endif %}
+            	</p>
             {% endif %}
         	
         </div>
@@ -52,6 +65,9 @@
     {% block javascripts %}
         <script type="text/javascript">
 
+            var id_btn_add = '#btn-add-temoignage';
+        	Temoignage.EventEdit(id_btn_add);
+			
     		//on associe une action pour chaque bouton edit ou delete
             {% for temoignage in temoignages %}
                 var id_btn_edit_{{ temoignage.id }} = '#btn-edit-temoignage-' + {{ temoignage.id }};

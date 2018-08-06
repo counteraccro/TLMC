@@ -38,6 +38,60 @@ Temoignage.Launch = function(params) {
 	}
 	
 	/**
+	 * Evenement ajout d'un témoignage
+	 */
+	Temoignage.EventAdd = function(id)
+	{
+		// Event sur le bouton edit d'un témoignage
+		$(id).click(function() {
+			//on passe l'url et l'id_done
+
+			$(Temoignage.id_container_global).showLoading();
+			console.log($(this).attr('href'));
+			Temoignage.Ajax($(this).attr('href'), Temoignage.id_content_modal);
+			return false;
+		});
+	}
+
+	/**
+	 * traitement du formulaire d'ajout d'un témoignage
+	 */
+	Temoignage.EventAddSubmit = function(url)
+	{
+		$("form[name*='temoignage']").on( "submit", function( event ) {
+			
+			$('#ajax_temoignage_add').showLoading();
+
+			$('#temoignage_save').prop('disabled', true).html('loading...');
+
+			event.preventDefault();
+
+			//envoi d'une requête POST en AJAX
+			$.ajax({
+				method: 'POST',
+				url: url,
+				data: $(this).serialize()
+			})
+			.done(function( reponse ) {
+
+				$('#ajax_temoignage_add').hideLoading();
+
+				if(reponse.statut === true)
+				{
+					//on cache la modale si le formulaire est valide
+					$(Temoignage.id_modal).modal('hide');
+					Temoignage.Ajax(Temoignage.url_ajax_see, Temoignage.id_global);
+				}
+				else
+				{
+					//on revient sur le formulaire s'il est incorrect
+					$(Temoignage.id_content_modal).html(reponse);
+				}
+			});
+		});
+	}
+	
+	/**
 	 * Evenement édition d'un témoignage
 	 */
 	Temoignage.EventEdit = function(id)

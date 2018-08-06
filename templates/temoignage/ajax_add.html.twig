@@ -2,7 +2,14 @@
 	{{ form_start(form) }}
 	<div class="modal-header">
 		<h5 class="modal-title">
-			Ajout d'un témoignage au membre {{ membre.prenom }} {{ membre.nom }}
+			Ajout d'un témoignage 
+			{% if type == 'membre' %}
+				au membre {{ objet.prenom }} {{ objet.nom }}
+			{% elseif type == 'evenement' %}
+				à l'événement {{ objet.nom }}
+			{% elseif type == 'produit' %}
+				au produit {{ objet.titre }}
+			{% endif %}
 		</h5>
 		<button type="button" class="close" data-dismiss="modal"
 			aria-label="Close">
@@ -13,14 +20,22 @@
 	<div class="modal-body">
         {{ form_start(form) }}
     
+    	{% if type == 'membre' %}
+    		{{ form_row(form.evenement) }}
+    	    {{ form_row(form.produit) }}
+    	{% elseif type == 'evenement' %}
+    		{{ form_row(form.evenement) }}
+    	{% elseif type == 'produit' %}
+    	    {{ form_row(form.produit) }}
+    	{% endif %}
+    	
         {{ form_row(form.titre) }}
     	{{ form_row(form.corps) }}
     	{{ form_row(form.prenom_temoin) }}
     	{{ form_row(form.age) }}
     	{{ form_row(form.lien_parente) }}
     	{{ form_row(form.ville) }}
-    	{{ form_row(form.evenement) }}
-    	{{ form_row(form.produit) }}
+    	
 	</div>
 
 	<div class="modal-footer">
@@ -38,8 +53,8 @@
     		   'backdrop' : 'static'
     	});
     	
-		var url = '{{path('temoignage_ajax_add', {'id': membre.id }) }}';
-		//Temoignage.EventAddSubmit(url);
+		var url = '{{path('temoignage_ajax_add', {'id': objet.id, 'type': type }) }}';
+		Temoignage.EventAddSubmit(url);
 	</script>
 	{% endblock %}
 </div>
