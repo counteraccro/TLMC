@@ -24,12 +24,12 @@ class Question
     private $libelle;
 
     /**
-     * @ORM\Column(type="string", length=300)
+     * @ORM\Column(type="string", length=300, nullable=true)
      */
     private $libelle_top;
 
     /**
-     * @ORM\Column(type="string", length=300)
+     * @ORM\Column(type="string", length=300, nullable=true)
      */
     private $libelle_bottom;
 
@@ -94,7 +94,6 @@ class Question
      * @ORM\JoinColumn(name="question_id", referencedColumnName="id")
      */
     private $question;
-    
 
     public function __construct()
     {
@@ -124,7 +123,7 @@ class Question
         return $this->libelle_top;
     }
 
-    public function setLibelleTop(string $libelle_top): self
+    public function setLibelleTop(?string $libelle_top): self
     {
         $this->libelle_top = $libelle_top;
 
@@ -136,7 +135,7 @@ class Question
         return $this->libelle_bottom;
     }
 
-    public function setLibelleBottom(string $libelle_bottom): self
+    public function setLibelleBottom(?string $libelle_bottom): self
     {
         $this->libelle_bottom = $libelle_bottom;
 

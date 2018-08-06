@@ -1,9 +1,12 @@
 <div id="ajax_questionnaire_see">
 
-    	<div class="card shadow-lg">
-         	<div class="card-header bg-info">
+    	<div class="card shadow-sm">
+         	<div class="card-header bg-light">
             	 <b>Titre du questionnaire :</b> {{ questionnaire.titre }}
-            	<div class="float-right"><a href="{{path('questionnaire_ajax_edit', {'id': questionnaire.id }) }}" id="btn-edit-questionnaire" class="btn btn-primary float-right">Editer le questionnaire</a><br/></div>
+            	<div class="float-right">
+            		<a href="{{path('question_ajax_add', {'id': questionnaire.id }) }}" id="btn-add-question" class="btn btn-success btn-add-question"> <span class="oi oi-plus"></span> Nouvelle question</a>  
+            		<a href="{{path('questionnaire_ajax_edit', {'id': questionnaire.id }) }}" id="btn-edit-questionnaire" class="btn btn-dark"><span class="oi oi-pencil"></span> Editer le questionnaire</a>
+            	</div>
             </div>
           	<div class="card-body">
             	<b>Date de création :</b> {{ questionnaire.dateCreation | date('d/m/Y') }} - Date de fin : {{ questionnaire.dateFin | date('d/m/Y') }}</br>
@@ -22,10 +25,11 @@
 	{% for question in questionnaire.questions %}
         <div class="card">
         	<div class="card-header">
+        		<div class="float-right">
+        			<a href="{{path('question_ajax_edit', {'id': question.id }) }}" id="btn-edit-question" class="btn btn-primary btn-edit-question"><span class="oi oi-pencil"></span> Edition</a>
+        		</div>
         		<b>Question ID :</b> #{{ question.id }}</br>
         		{{ question.libelleTop }}
-        		<a href="{{path('question_ajax_edit', {'id': question.id }) }}" id="btn-edit-question" class="btn btn-primary float-right btn-edit-question">Editer la question</a>
-        		<a href="{{path('question_ajax_add', {'id': question.id }) }}" id="btn-add-question" class="btn btn-success float-right btn-edit-question">Ajouter une question</a>
         	</div>
         
         	<div class="card-body">

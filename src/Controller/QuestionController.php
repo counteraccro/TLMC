@@ -12,6 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Response;
 use App\Entity\Questionnaire;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class QuestionController extends AppController
 {
@@ -45,9 +46,10 @@ class QuestionController extends AppController
         $arrayFilters = $this->getDatasFilter($session);
 
         $questions = array();
+        $ordre_tmp = $question->getOrdre();
 
-        foreach ($question->getQuestionnaire()->getQuestions() as $q) {
-            $questions[$q->getOrdre()] = 'Position ' . $q->getOrdre();
+        foreach ($question->getQuestionnaire()->getQuestions() as $qu) {
+            $questions[$qu->getOrdre()] = 'Position ' . $qu->getOrdre();
         }
 
         if ($request->isXmlHttpRequest()) {
@@ -56,7 +58,8 @@ class QuestionController extends AppController
                 'attr' => array(
                     'id' => 'question_ajax_edit'
                 ),
-                'questions' => $questions
+                'questions' => $questions,
+                'statut' => 'edit'
             ));
         } else {
             $form = $this->createForm(QuestionType::class, $question);
@@ -67,21 +70,31 @@ class QuestionController extends AppController
 
             $em = $this->getDoctrine()->getManager();
 
-            /*
-             * $find = false;
-             * foreach($question->getQuestionnaire()->getQuestions() as $q)
-             * {
-             * if($find)
-             * {
-             * $q->setOrdre($q->getOrdre() + 1);
-             * }
-             *
-             * if($question->getOrdre() == $q->getOrdre())
-             * {
-             * $find = true;
-             * }
-             * }
-             */
+            // Gestion de l'ordre
+            $tab = $question->getQuestionnaire()
+                ->getQuestions()
+                ->toArray();
+
+            foreach ($tab as $q) {
+
+                if ($question->getOrdre() == $q->getOrdre() && $question->getId() != $q->getId()) {
+                    $q->setOrdre($ordre_tmp);
+                }
+            }
+
+            usort($tab, function ($objetB1, $objetB2) {
+                return $objetB1->getOrdre() > $objetB2->getOrdre();
+            });
+
+            foreach ($tab as $q) {
+                foreach ($question->getQuestionnaire()->getQuestions() as $qf) {
+                    if($qf->getId() == $q->getId())
+                    {
+                        $qf->setOrdre($q->getOrdre());
+                    }
+                }
+            }
+            // Fin ordre
 
             $em->persist($question);
             $em->flush();
@@ -107,6 +120,7 @@ class QuestionController extends AppController
                 'form' => $form->createView(),
                 'id' => $question->getId(),
                 'liste_type' => AppController::QUESTION_TYPE,
+                'questionnaire' => null,
                 'statut' => 'edit'
             ]);
         }
@@ -134,34 +148,36 @@ class QuestionController extends AppController
     /**
      * Ajout d'une nouvelle question
      *
-     * @Route("/question/add/", name="question_add")
-     * @Route("/question/ajax/add/", name="question_ajax_add")
+     * @Route("/question/add/{id}", name="question_add")
+     * @Route("/question/ajax/add/{id}", name="question_ajax_add")
+     * @ParamConverter("questionnaire", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function addAction(Request $request) //Questionnaire $questionnaire
+    public function addAction(Request $request, Questionnaire $questionnaire)
     {
         $question = new Question();
-        
-//         $question->setQuestionnaire($questionnaire->getId());
-//         var_dump($question->getQuestionnaire());
-        
+
         if ($request->isXmlHttpRequest()) {
 
-            $form = $this->createForm(QuestionType::class, $question);
+            $form = $this->createForm(QuestionType::class, $question, array(
+                'statut' => 'add'
+            ));
         }
-        
+
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            
+
             $em = $this->getDoctrine()->getManager();
             $question->setDisabled(0);
-            $question->setOrdre(0);
-            
 
-            
+            $repository = $this->getDoctrine()->getRepository(Question::class);
+            $question->setOrdre(($repository->getMaxOrdre($questionnaire->getId())['max_ordre'] + 1));
+
+            $question->setQuestionnaire($questionnaire);
+
             $em->persist($question);
             $em->flush();
-            
+
             if ($request->isXmlHttpRequest()) {
                 return $this->json(array(
                     'statut' => true
@@ -170,12 +186,14 @@ class QuestionController extends AppController
                 return $this->redirect($this->generateUrl('questionnaire_listing'));
             }
         }
-        
+
         // Si appel Ajax, on renvoi sur la page ajax
         if ($request->isXmlHttpRequest()) {
-            
+
             return $this->render('question/ajax_edit.html.twig', array(
                 'form' => $form->createView(),
+                'questionnaire' => $questionnaire,
+                'liste_type' => AppController::QUESTION_TYPE,
                 'statut' => 'add'
             ));
         }

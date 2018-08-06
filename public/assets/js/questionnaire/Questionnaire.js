@@ -61,6 +61,8 @@ Questionnaire.Launch = function(params) {
 			Questionnaire.Ajax($(this).attr('href'), Questionnaire.id_content_modal);
 			return false;
 		});;
+		
+		// slug
 	}
 
 
