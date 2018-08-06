@@ -27,6 +27,7 @@
         		<th>{{ headerFilter(path('evenement_listing', {'page' : pagination.page, 'field' : 'description'} ), 'Description', current_order, current_field) | raw }}</th>
         		<th>{{ headerFilter(path('evenement_listing', {'page' : pagination.page, 'field' : 'information_complementaire'} ), 'Information complémentaire', current_order, current_field) | raw }}</th>
         		<th>{{ headerFilter(path('evenement_listing', {'page' : pagination.page, 'field' : 'type'} ), 'Type', current_order, current_field) | raw }}</th>
+            	<th>{{ headerFilter(path('evenement_listing', {'page' : pagination.page, 'field' : 'statut'} ), 'Statut', current_order, current_field) | raw }}</th>
             	<th></th>
         	</tr>
         	<tr>
@@ -37,7 +38,8 @@
         		<td>{{ inputFilter(path('evenement_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Evenement-nombre_max', current_search, 'Nombre max') | raw }}</td>
         		<td>{{ inputFilter(path('evenement_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Evenement-description', current_search, 'Description') | raw }}</td>
         		<td>{{ inputFilter(path('evenement_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Evenement-information_complementaire', current_search, 'info complémentaire') | raw }}</td>
-        		<td>{{ inputFilter(path('evenement_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Evenement-type', current_search, 'Type') | raw }}</td><!-- dropdown -->
+        		<td>{{ inputFilter(path('evenement_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Evenement-type', current_search, '', constant('App\\Controller\\EvenementController::TYPE')) | raw }}</td>
+        		<td>{{ inputFilter(path('evenement_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Evenement-statut', current_search, '', constant('App\\Controller\\EvenementController::STATUT')) | raw }}</td>
         		<td></td>
         	</tr>
         	
@@ -53,7 +55,8 @@
         			<td>{{ evenement.nombreMax }}</td>
         			<td>{{ evenement.description }}</td>
         			<td>{{ evenement.informationComplementaire }}</td>
-        			<td>{{ evenement.type }}</td>
+        			<td>{{ evenement.type | type }}</td>
+        			<td>{{ evenement.statut | statut }}</td>
         			<td>
         			    {{ actionSee(path('evenement_see', {'id' : evenement.id, 'page' : pagination.page})) | raw }}
         			    {% if is_granted("ROLE_ADMIN") %}

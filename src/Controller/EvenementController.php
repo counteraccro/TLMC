@@ -13,6 +13,30 @@ use App\Form\EvenementType;
 class EvenementController extends AppController
 {
     /**
+     * Tableau de types
+     *
+     * @var array
+     */
+    const TYPE = array(
+        1 => 'Repas',
+        2 => 'Sortie',
+        3 => 'Spectacle',
+        4 => 'Fête',
+    );
+    
+    /**
+     * Tableau de statuts
+     *
+     * @var array
+     */
+    const STATUT = array(
+        1 => 'Ouvert',
+        2 => 'Inscription',
+        3 => 'Annulé',
+        4 => 'Fermé'
+    );
+    
+    /**
      * Listing des événements
      *
      * @Route("/evenement/listing/{page}/{field}/{order}", name="evenement_listing", defaults={"page" = 1, "field"= null, "order"= null})
