@@ -10,6 +10,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use App\Controller\EvenementController;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class EvenementType extends AbstractType
 {
@@ -31,9 +33,9 @@ class EvenementType extends AbstractType
             'label' => 'Nombre maximun de participant'
         ))
             ->add('description', TextareaType::class)
-            ->
-        // @todo choix prédéfinis
-        add('type', IntegerType::class)
+            ->add('type', ChoiceType::class, array(
+                'choices' => array_flip($options['types'])
+            ))
             ->add('nom_lieu', TextType::class, array(
             'label' => 'Lieu'
         ))
@@ -47,11 +49,12 @@ class EvenementType extends AbstractType
             'label' => "Tranche d'âge"
         ))
             ->add('information_complementaire', TextareaType::class, array(
-            'label' => "Information complémentaire"
+            'label' => "Information complémentaire",
+                'required' => false
         ))
-            ->
-        // @todo statut prédéfinis
-        add('statut', IntegerType::class)
+        ->add('statut', ChoiceType::class, array(
+            'choices' => array_flip($options['statuts'])
+        ))
             ->add('date_fin_inscription', DateTimeType::class, array(
             'label' => "Date de fin d'inscription",
             'widget' => 'choice',
@@ -70,7 +73,9 @@ class EvenementType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Evenement::class,
-            'label_submit' => 'Valider'
+            'label_submit' => 'Valider',
+            'statuts' => EvenementController::STATUT,
+            'types' => EvenementController::TYPE
         ]);
     }
 }

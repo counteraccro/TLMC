@@ -11,14 +11,22 @@
 	</div>
 
 	<div class="modal-body">
+	
+		{% if type == 'membre' %}
+    		{{ form_row(form.evenement) }}
+    	    {{ form_row(form.produit) }}
+    	{% elseif type == 'evenement' %}
+    		{{ form_row(form.evenement) }}
+    	{% elseif type == 'produit' %}
+    	    {{ form_row(form.produit) }}
+    	{% endif %}
+		
         {{ form_row(form.titre) }}
     	{{ form_row(form.corps) }}
     	{{ form_row(form.prenom_temoin) }}
     	{{ form_row(form.age) }}
     	{{ form_row(form.lien_parente) }}
     	{{ form_row(form.ville) }}
-    	{{ form_row(form.evenement) }}
-    	{{ form_row(form.produit) }}
     </div>
 
 	<div class="modal-footer">
@@ -37,7 +45,7 @@
     			   'backdrop' : 'static'
     		});
     		
-			var url = '{{path('temoignage_ajax_edit', {'id': temoignage.id }) }}';
+			var url = '{{path('temoignage_ajax_edit', {'id': temoignage.id, 'type': type }) }}';
 			
 			Temoignage.EventEditSubmit(url);
 	

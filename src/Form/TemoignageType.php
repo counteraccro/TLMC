@@ -30,20 +30,24 @@ class TemoignageType extends AbstractType
             'label' => 'Lien de parenté avec le patient',
             'choices' => array_flip($options['famille_parente'])
         ))
-            ->add('ville')
-            ->add('evenement', EntityType::class, array(
-            'class' => Evenement::class,
-            'disabled' => $options['disabled_event'],
-            'choice_label' => 'nom',
-            'required' => false
-        ))
-            ->add('produit', EntityType::class, array(
-            'class' => Produit::class,
-            'disabled' => $options['disabled_prod'],
-            'choice_label' => 'titre',
-            'required' => false
-        ))
-            ->add('save', SubmitType::class, array(
+            ->add('ville');
+        if ($options['avec_event']) {
+            $builder->add('evenement', EntityType::class, array(
+                'class' => Evenement::class,
+                'disabled' => $options['disabled_event'],
+                'choice_label' => 'nom',
+                'required' => false
+            ));
+        }
+        if ($options['avec_prod']) {
+            $builder->add('produit', EntityType::class, array(
+                'class' => Produit::class,
+                'disabled' => $options['disabled_prod'],
+                'choice_label' => 'titre',
+                'required' => false
+            ));
+        }
+        $builder->add('save', SubmitType::class, array(
             'label' => $options['label_submit'],
             'attr' => array(
                 'class' => 'btn btn-primary'
@@ -59,7 +63,8 @@ class TemoignageType extends AbstractType
             'famille_parente' => AppController::FAMILLE_PARENTE,
             'disabled_event' => false,
             'disabled_prod' => false,
-            'disabled_membre' => false
+            'avec_event' => true,
+            'avec_prod' => true
         ]);
     }
 }
