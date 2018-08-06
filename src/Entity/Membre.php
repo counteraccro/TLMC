@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MembreRepository")
@@ -36,6 +37,10 @@ class Membre implements AdvancedUserInterface
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
+     * @Assert\Regex(
+     *     pattern="/(\+\d+(\s|-))?\d(\s|-)?(\d{2}(\s|-)?){4}/",
+     *     message="Le numéro de téléphone est invalide"
+     * )
      */
     private $numero_tel;
 

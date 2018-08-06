@@ -78,6 +78,39 @@ class EvenementController extends AppController
     }
     
     /**
+     * Fiche d'un événement
+     *
+     * @Route("/evenement/see/{id}/{page}", name="evenement_see")
+     * @ParamConverter("evenement", options={"mapping": {"id": "id"}})
+     * @Security("is_granted('ROLE_ADMIN')")
+     *
+     * @param SessionInterface $session
+     * @param Evenement $evenement
+     * @param int $page
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function seeAction(SessionInterface $session, Evenement $evenement, int $page)
+    {
+        $arrayFilters = $this->getDatasFilter($session);
+        
+        return $this->render('evenement/see.html.twig', array(
+            'page' => $page,
+            'evenement' => $evenement,
+            'paths' => array(
+                'home' => $this->indexUrlProject(),
+                'urls' => array(
+                    $this->generateUrl('evenement_listing', array(
+                        'page' => $page,
+                        'field' => $arrayFilters['field'],
+                        'order' => $arrayFilters['order']
+                    )) => "Gestion d'événements"
+                ),
+                'active' => 'Fiche d\'un événement'
+            )
+        ));
+    }
+    
+    /**
      * Désactivation d'un événement
      *
      * @Route("/evenement/delete/{id}/{page}", name="evenement_delete")

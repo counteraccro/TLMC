@@ -1,92 +1,59 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} Fiche d'un établissement {% endblock %}
+{% block title %} Fiche d'un événement {% endblock %}
 
 {% block body %}
 
-    <h1>Fiche de l'établissement #{{ etablissement.id }} - {{ etablissement.nom }}</h1>
+    <h1>Fiche de l'événement #{{ evenement.id }} - {{ evenement.nom }}</h1>
     
     {% include 'elements/arborescence.html.twig' %}
     
     <table  class="table table-sm">
     	<tr>
     		<th scope="col"> Nom </th>
-    		<td> {{ etablissement.nom }} </td>
+    		<td> {{ evenement.nom }} </td>
+    	</tr>
+    	<tr>
+    		<th scope="col"> Date</th>
+    		<td> {{ evenement.dateDebut | date('d/m/Y H:i') }} - {{ evenement.dateFin | date('d/m/Y H:i') }} </td>
+    	</tr>
+    	<tr>
+    		<th scope="col"> Description </th>
+    		<td> {{ evenement.description }} </td>
     	</tr>
     	<tr>
     		<th scope="col"> Type </th>
-    		<td> {{ etablissement.type }} </td>
+    		<td> {{ evenement.type }} </td>
     	</tr>
     	<tr>
-    		<th scope="col"> Code Logistique </th>
-    		<td> {{ etablissement.codeLogistique }} </td>
+    		<th scope="col"> Nombre maximum de participants </th>
+    		<td> {{ evenement.nombreMax }} </td>
     	</tr>
     	<tr>
-    		<th scope="col"> Date de début de collaboration </th>
-    		<td> {{ etablissement.dateCollaboration | date('d/m/Y') }} </td>
+    		<th scope="col"> Trabnche d'âge </th>
+    		<td> {{ evenement.trancheAge }} </td>
     	</tr>
     	<tr>
-    		<th scope="col"> Statut de la convention </th>
-    		<td> {{ etablissement.statutConvention }} </td>
+    		<th scope="col"> Date limite d'inscription </th>
+    		<td> {{ evenement.dateFinInscription | date('d/m/Y H:i') }} </td>
     	</tr>
     	<tr>
-    		<th scope="col"> Nombre de lit </th>
-    		<td> {{ etablissement.nbLit }} </td>
+    		<th scope="col"> Informations complémentaires </th>
+    		<td> {{ evenement.informationComplementaire }} </td>
     	</tr>
     	<tr>
-    		<th scope="col"> Adresse </th>
+    		<th scope="col"> Statut </th>
+    		<td> {{ evenement.statut }} </td>
+    	</tr>
+    	<tr>
+    		<th scope="col"> Lieu </th>
     		<td>
-    		    {{ etablissement.numeroVoie }}, {{ etablissement.voie }} <br />
-    			{{ etablissement.codePostal }} {{ etablissement.ville }} <br />
-    			{{ etablissement.region }}
+    			{{ evenement.nomLieu }}<br />
+    		    {{ evenement.numeroVoie }}, {{ evenement.voie }} <br />
+    			{{ evenement.codePostal }} {{ evenement.ville }} <br />
     		</td>
     	</tr>
     </table>
     <br />
 
-	<div id="bloc_etablissement_specialite">
-    	<div class="row">
-    		<div class="col-md-4 offset-md-4">
-    			<div class="progress" style="height: 25px;">
-    				<div class="progress-bar progress-bar-striped progress-bar-animated"
-    					role="progressbar" aria-valuenow="75" aria-valuemin="0"
-    					aria-valuemax="100" style="width: 50%">Chargement des
-    					informations de l'établissement...</div>
-    			</div>
-    		</div>
-    	</div>
-    </div>
-    
-    <!-- Modal -->
-    <div class="modal fade" id="modal_specialite_global" tabindex="-1" role="dialog">
-    	<div class="modal-dialog" role="document">
-    		<div class="modal-content" id="bloc_modal"></div>
-    	</div>
-    </div>
-
-{% endblock %}
-
-{% block script %}
- 	<script src="{{ asset('assets/js/specialite/Specialite.js') }}?{{ date().timestamp }}"></script>
-{% endblock %}
-
-{% block javascripts %}
-    <script type="text/javascript">
-    
-    $(document).ready(function() {
-
-		var params = {
-				url_ajax_see : '{{path('etablissement_specialite_ajax_see', {'id': etablissement.id}) }}',
-				id_content_modal : '#bloc_modal',
-				id_modal : '#modal_specialite_global',
-				id_global : '#bloc_etablissement_specialite',
-				id_bloc_etablissement : '',
-				id_specialite : ''
-		};
-        
-    	Specialite.Launch(params);
-    	Specialite.LoadSpecialite();
-    });
-    
-    </script>
 {% endblock %}
