@@ -50,13 +50,12 @@
     $(document).ready(function() {
 
 		var params_spec = {
-				url_ajax_see : '{{ path('patient_ajax_edit_specialite', {'patient_id': patient.id}) }}',
+				url_ajax_see : '{{ path('specialite_ajax_edit_dropdown', {'id': patient.id, 'type':'patient'}) }}',
 				id_specialite : '#bloc_specialite',
 				id_bloc_etablissement : '#bloc_etablissement #patient_etablissement'
 		};
         
     	Specialite.Launch(params_spec);
-    	//Specialite.LoadDropdownSpecialite();
 		Specialite.EventChange('#patient_save');
     });
     

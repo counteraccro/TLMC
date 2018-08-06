@@ -107,7 +107,7 @@ class EvenementController extends AppController
      *
      * @Route("/evenement/see/{id}/{page}", name="evenement_see")
      * @ParamConverter("evenement", options={"mapping": {"id": "id"}})
-     * @Security("is_granted('ROLE_ADMIN')")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE')")
      *
      * @param SessionInterface $session
      * @param Evenement $evenement

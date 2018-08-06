@@ -68,7 +68,7 @@
 
 		{% if etablissements is not empty %}
     		var params_spec = {
-    				url_ajax_see : '{{ path('ajax_add_dropdown', {'objet': 'patient'}) }}',
+    				url_ajax_see : '{{ path('specialite_ajax_add_dropdown', {'type': 'patient'}) }}',
     				id_specialite : '#bloc_specialite',
     				id_bloc_etablissement : '#bloc_etablissement #patient_etablissement'
     		};
