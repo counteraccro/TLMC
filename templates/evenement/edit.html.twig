@@ -1,27 +1,34 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} Edition d'un établissement {% endblock %}
+{% block title %} Edition d'un événement {% endblock %}
 
 {% block body %}
 
-<h1>Modification de l'établissement #{{ etablissement.id }} - {{ etablissement.nom }}</h1>
+<h1>Modification de l'événement #{{ evenement.id }} - {{ evenement.nom }}</h1>
 
 {% include 'elements/arborescence.html.twig' %}
 
 <div>
-    {{ form_start(form) }}
+{{ form_start(form) }}
     
 	{{ form_row(form.nom) }}
 	{{ form_row(form.type) }}
-	{{ form_row(form.code_logistique) }}
-	{{ form_row(form.nb_lit) }}
-	{{ form_row(form.statut_convention) }}
-	{{ form_row(form.date_collaboration) }}
+	
+	{{ form_row(form.date_debut) }}
+	{{ form_row(form.date_fin) }}
+	
+	{{ form_row(form.description) }}
+	{{ form_row(form.nombre_max) }}
+	{{ form_row(form.information_complementaire) }}
+	
+	{{ form_row(form.nom_lieu) }}
 	{{ form_row(form.numero_voie) }}
 	{{ form_row(form.voie) }}
 	{{ form_row(form.ville) }}
 	{{ form_row(form.code_postal) }}
-	{{ form_row(form.region) }}
+	{{ form_row(form.nom_lieu) }}
+	
+	{{ form_row(form.statut) }}
     
     {{ form_rest(form) }}
     {{ form_errors(form) }}

@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use App\Entity\Produit;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use App\Form\ProduitType;
 
 class ProduitController extends AppController
 {
@@ -73,6 +74,107 @@ class ProduitController extends AppController
             'paths' => array(
                 'home' => $this->indexUrlProject(),
                 'active' => 'Liste des produits'
+            )
+        ));
+    }
+    
+    /**
+     * Ajout d'un nouvel produit
+     *
+     * @Route("/produit/add/{page}", name="produit_add")
+     * @Security("is_granted('ROLE_ADMIN')")
+     *
+     * @param SessionInterface $session
+     * @param Request $request
+     * @param int $page
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function addAction(SessionInterface $session, Request $request, int $page)
+    {
+        $arrayFilters = $this->getDatasFilter($session);
+        
+        $produit = new Produit();
+        
+        $form = $this->createForm(ProduitType::class, $produit);
+        
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+            $em = $this->getDoctrine()->getManager();
+            
+            $produit->setDisabled(0);
+            
+            $em->persist($produit);
+            $em->flush();
+            
+            return $this->redirect($this->generateUrl('produit_listing'));
+        }
+        
+        return $this->render('produit/add.html.twig', array(
+            'page' => $page,
+            'form' => $form->createView(),
+            'paths' => array(
+                'home' => $this->indexUrlProject(),
+                'urls' => array(
+                    $this->generateUrl('produit_listing', array(
+                        'page' => $page,
+                        'field' => $arrayFilters['field'],
+                        'order' => $arrayFilters['order']
+                    )) => 'Gestion des produits'
+                ),
+                'active' => "Ajout d'un produit"
+            )
+        ));
+    }
+    
+    /**
+     * Edition d'un produit
+     *
+     * @Route("/produit/edit/{id}/{page}", name="produit_edit")
+     * @ParamConverter("produit", options={"mapping": {"id": "id"}})
+     * @Security("is_granted('ROLE_ADMIN')")
+     *
+     * @param SessionInterface $session
+     * @param Request $request
+     * @param Produit $produit
+     * @param int $page
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function editAction(SessionInterface $session, Request $request, Produit $produit, int $page)
+    {
+        $arrayFilters = $this->getDatasFilter($session);
+        
+        $form = $this->createForm(ProduitType::class, $produit);
+        
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+            $em = $this->getDoctrine()->getManager();
+            
+            $em->persist($produit);
+            $em->flush();
+            
+            return $this->redirect($this->generateUrl('produit_listing', array(
+                'page' => $page,
+                'field' => $arrayFilters['field'],
+                'order' => $arrayFilters['order']
+            )));
+        }
+        
+        return $this->render('produit/edit.html.twig', array(
+            'page' => $page,
+            'form' => $form->createView(),
+            'produit' => $produit,
+            'paths' => array(
+                'home' => $this->indexUrlProject(),
+                'urls' => array(
+                    $this->generateUrl('produit_listing', array(
+                        'page' => $page,
+                        'field' => $arrayFilters['field'],
+                        'order' => $arrayFilters['order']
+                    )) => 'Gestion de produits'
+                ),
+                'active' => 'Edition de #' . $produit->getId() . ' - ' . $produit->getTitre()
             )
         ));
     }

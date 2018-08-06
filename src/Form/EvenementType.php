@@ -47,7 +47,8 @@ class EvenementType extends AbstractType
             'label' => "Tranche d'âge"
         ))
             ->add('information_complementaire', TextareaType::class, array(
-            'label' => "Information complémentaire"
+            'label' => "Information complémentaire",
+                'required' => false
         ))
             ->
         // @todo statut prédéfinis
