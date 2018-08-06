@@ -258,7 +258,7 @@ class TemoignageController extends AppController
      * Edition d'un témoignage
      *
      * @Route("/temoignage/edit/{id}/{page}", name="temoignage_edit")
-     * @Route("/temoignage/ajax/edit/{id}/{objet_id}/{type}", name="temoignage_ajax_edit")
+     * @Route("/temoignage/ajax/edit/{id}/{type}", name="temoignage_ajax_edit")
      * @ParamConverter("temoignage", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      *
@@ -270,11 +270,34 @@ class TemoignageController extends AppController
      * @param string $type
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function editAction(SessionInterface $session, Request $request, Temoignage $temoignage, int $page = 1, int $objet_id = 0, string $type)
+    public function editAction(SessionInterface $session, Request $request, Temoignage $temoignage, int $page = 1, string $type)
     {
         $arrayFilters = $this->getDatasFilter($session);
 
-        $form = $this->createForm(TemoignageType::class, $temoignage);
+        $opt_form = array('label_submit' => 'Ajouter');
+        
+        switch($type){
+            case 'evenement':
+                $opt_form['disabled_event'] = true;
+                $opt_form['avec_prod'] = false;
+                break;
+            case 'produit':
+                $opt_form['disabled_prod'] = true;
+                $opt_form['avec_event'] = false;
+                break;
+            case 'membre':
+                /*if($temoignage->getEvenement())
+                {
+                    $opt_form['disabled_event'] = true;
+                    $opt_form['avec_prod'] = false;
+                } elseif($temoignage->getProduit()) {
+                    $opt_form['disabled_prod'] = true;
+                    $opt_form['avec_event'] = false;
+                }*/
+                break;
+        }
+        
+        $form = $this->createForm(TemoignageType::class, $temoignage, $opt_form);
 
         $form->handleRequest($request);
 
@@ -302,7 +325,8 @@ class TemoignageController extends AppController
         if ($request->isXmlHttpRequest()) {
             return $this->render('temoignage/ajax_edit.html.twig', array(
                 'form' => $form->createView(),
-                'temoignage' => $temoignage
+                'temoignage' => $temoignage,
+                'type' => $type
             ));
         }
 
