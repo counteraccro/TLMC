@@ -103,11 +103,7 @@ class QuestionnaireController extends AppController
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      */
     public function ajaxSeeAction(Questionnaire $questionnaire)
-    {
-        
-        $repository = $this->getDoctrine()->getRepository(Questionnaire::class);
-        $questionnaire = $repository->getWithQuestionsOrderByOrdre($questionnaire->getId());
-        
+    {        
         return $this->render('questionnaire/ajax_see.html.twig', [
             'questionnaire' => $questionnaire
         ]);

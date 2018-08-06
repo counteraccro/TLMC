@@ -50,6 +50,7 @@ class Questionnaire
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Question", mappedBy="questionnaire")
+     * @ORM\OrderBy({"ordre" = "ASC"})
      */
     private $questions;
 

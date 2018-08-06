@@ -39,9 +39,7 @@ Preview.Launch = function(params) {
 		$(Preview.id_global + " .preview, " + Preview.id_global + " .preview-hidden").each(function(){
 			Preview.ConstructHtml($(this));
 		});
-
 		Preview.Render();
-
 	}
 
 	/**
@@ -76,12 +74,13 @@ Preview.Launch = function(params) {
 			return false;
 		});
 
+		/**
+		 * 
+		 */
 		$(Preview.id_global + ' #checkbox_msg_erreur').change(function() {
 		
 			var _this = $(this);
-			console.log(Preview.id_global +  " " + Preview.id_input_render);
-			
-			
+				
 			if($(Preview.id_global +  " " + Preview.id_input_render).tagName() != 'div')
 			{
 				if(_this.is(':checked'))
@@ -112,6 +111,9 @@ Preview.Launch = function(params) {
 		})
 	}
 
+	/**
+	 * 
+	 */
 	Preview.subRepeatEvent = function()
 	{
 		// évènement à la suppression d'une valeur de réponse possible
@@ -146,9 +148,7 @@ Preview.Launch = function(params) {
 			Preview.Render();
 			Preview.subRepeatEvent();
 		})
-
 	}
-
 
 	/**
 	 * Identification de l'élément ciblé par l'utilisateur pour le preview
@@ -213,14 +213,6 @@ Preview.Launch = function(params) {
 	Preview.Render = function()
 	{
 		Preview.html = '<div class="form-group">' + Preview.label_top + Preview.label + Preview.input + Preview.label_bottom + '<div class="invalid-feedback">' + Preview.message_erreur + '</div></div>';
-		/*<label for="exampleInputEmail1">Email address</label>
-		    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-		    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-		  </div>'*/
-
-		//Preview.html += 'Visualiser le message d\'erreur : <input type="checkbox" id="checkbox_msg_erreur">'; 
-		//Preview.html += '<p id="checkbox_message_erreur" style="display:none" class="btn btn-outline-danger btn-sm">' + $('#question_message_erreur').val() + '</p>';
-
 		Preview.html = Preview.html.replace('[valeur]', Preview.def_selected_valeur);
 		$(Preview.id_preview).html(Preview.html);
 	}
@@ -257,6 +249,11 @@ Preview.Launch = function(params) {
 			$(Preview.id_global + ' #question_valeur_defaut').parent().hide();
 			Preview.GestionDefaultData();
 			Preview.subRepeatEvent();
+			
+			if(Preview.type == 'CheckboxType' || Preview.type == 'RadioType')
+			{
+				$(Preview.id_global + ' ' + Preview.id_contener_input_def_value).html('');
+			}
 		}
 		else
 		{
@@ -330,7 +327,7 @@ Preview.Launch = function(params) {
 
 	}
 
-	/*
+	/**
 	 * Fonction qui gère la prise en compte de la valeur par défaut, et qui la renvoie dans le preview
 	 */
 	Preview.GestionDefaultData = function()
@@ -345,6 +342,4 @@ Preview.Launch = function(params) {
 	}
 }
 
-
 $.fn.tagName = function() {    return this.get(0).tagName.toLowerCase(); }
-

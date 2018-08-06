@@ -68,13 +68,15 @@ class QuestionType extends AbstractType
             'attr' => array(
                 'class' => 'preview'
             )
-        ))
-            ->add('ordre', ChoiceType::class, array(
-            //'choices' => array_flip($options['questions']),
-            'label' => 'Position dans le questionnaire',
-            'required' => true
-        ))
-            ->add('regles', ChoiceType::class, array(
+        ));
+        if ($options['statut'] == 'edit') {
+            $builder->add('ordre', ChoiceType::class, array(
+                'choices' => array_flip($options['questions']),
+                'label' => 'Position dans le questionnaire',
+                'required' => true
+            ));
+        }
+        $builder->add('regles', ChoiceType::class, array(
             'choices' => array_flip(AppController::QUESTION_REGLES_REGEX),
             'label' => 'Règles',
             'empty_data' => '.',
@@ -82,16 +84,18 @@ class QuestionType extends AbstractType
             'attr' => array(
                 'class' => 'preview'
             )
-        ))
-            ->add('obligatoire', CheckboxType::class, array(
+        ))->add('obligatoire', CheckboxType::class, array(
             'required' => false,
             'label' => 'Rendre cette question obligatoire'
-        ))
-            ->add('disabled', CheckboxType::class, array(
-            'required' => false,
-            'label' => 'Désactiver la question'
-        ))
-            ->add('save', SubmitType::class, array(
+        ));
+
+        if ($options['statut'] == 'edit') {
+            $builder->add('disabled', CheckboxType::class, array(
+                'required' => false,
+                'label' => 'Désactiver la question'
+            ));
+        }
+        $builder->add('save', SubmitType::class, array(
             'label' => 'Valider',
             'attr' => array(
                 'class' => 'btn btn-primary'
@@ -104,7 +108,8 @@ class QuestionType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Question::class,
             'ajax_button' => false,
-            'questions' => Collection::class
+            'questions' => Collection::class,
+            'statut' => false
         ]);
     }
 }

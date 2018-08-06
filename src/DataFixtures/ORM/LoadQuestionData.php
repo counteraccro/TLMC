@@ -73,7 +73,7 @@ class LoadQuestionData extends Fixture implements DependentFixtureInterface
                 'setObligatoire' => 'true',
                 'setRegles' => '[a-zA-Z]',
                 'setMessageErreur' => 'Merci d\'indiquer le bonbon que vous préférez',
-                'setOrdre' => '1'
+                'setOrdre' => '5'
             ],
             'Question-5' => [
                 'setQuestionnaire' => 'Questionnaire-3',
@@ -129,7 +129,7 @@ class LoadQuestionData extends Fixture implements DependentFixtureInterface
                 'setObligatoire' => 'true',
                 'setRegles' => 'd',
                 'setMessageErreur' => 'Merci d\'indiquer votre fréquence de consommation de bonbons',
-                'setOrdre' => '5'
+                'setOrdre' => '1'
             ]
         ]
     ];

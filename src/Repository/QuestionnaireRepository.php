@@ -81,24 +81,6 @@ class QuestionnaireRepository extends ServiceEntityRepository
         );
     }
 
-    /**
-     * Fonction relative à l'ordre (position) des questions
-     * Remonte les infos depuis la BDD
-     * @param $id
-     * @param string $order
-     * @return mixed|\Doctrine\DBAL\Driver\Statement|array|NULL
-     */
-    public function getWithQuestionsOrderByOrdre($id, $order = 'ASC')
-    {
-        return $this->createQueryBuilder('q')
-            ->andWhere('q.id = :val')
-            ->setParameter('val', $id)
-            ->join('q.questions', 'qs')
-            ->orderBy('qs.ordre', $order)
-            ->getQuery()
-            ->getSingleResult();
-    }
-
     // /**
     // * @return Questionnaire[] Returns an array of Questionnaire objects
     // */
