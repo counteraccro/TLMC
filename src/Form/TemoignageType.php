@@ -59,7 +59,8 @@ class TemoignageType extends AbstractType
             'famille_parente' => AppController::FAMILLE_PARENTE,
             'disabled_event' => false,
             'disabled_prod' => false,
-            'disabled_membre' => false
+            'avec_event' => true,
+            'avec_prod' => true
         ]);
     }
 }
