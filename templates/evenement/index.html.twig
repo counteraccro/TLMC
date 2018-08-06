@@ -55,7 +55,7 @@
         			<td>{{ evenement.type }}</td>
         			<td>{% if evenement.image != null %}<img src="{{ evenement.image }}" height="50" width="50"/> {% endif %}</td>
         			<td>
-        			    {#{ actionSee(path('evenement_see', {'id' : evenement.id, 'page' : pagination.page})) | raw }#}
+        			    {{ actionSee(path('evenement_see', {'id' : evenement.id, 'page' : pagination.page})) | raw }}
         			    {% if is_granted("ROLE_ADMIN") %}
             			    {#{ actionEdit(path('evenement_edit', {'id' : evenement.id, 'page' : pagination.page})) | raw }#}
             			    {{ actionDelete(evenement.disabled, path('evenement_delete', {'id' : evenement.id, 'page' : pagination.page})) | raw }}

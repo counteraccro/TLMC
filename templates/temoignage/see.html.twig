@@ -23,14 +23,18 @@
     		    {{ temoignage.prenomTemoin }}, {{ temoignage.age }} ans, {{ temoignage.lienParente |lienParente }}, {{ temoignage.ville }} <br />
     		</td>
     	</tr>
-    	<tr>
-    		<th scope="col"> Evénement </th>
-    		<td> {% if temoignage.evenement != null %} {{ temoignage.evenement.nom }} {% endif %} </td>
-    	</tr>
-    	<tr>
-    		<th scope="col"> Produit </th>
-    		<td> {% if temoignage.produit != null %} {{ temoignage.produit.titre }} {% endif %} </td>
-    	</tr>
+    	{% if temoignage.evenement != null %}
+        	<tr>
+        		<th scope="col"> Evénement </th>
+        		<td> {{ temoignage.evenement.nom }} </td>
+        	</tr>
+    	{% endif %}
+    	{% if temoignage.produit != null %}
+        	<tr>
+        		<th scope="col"> Produit </th>
+        		<td> {{ temoignage.produit.titre }} </td>
+        	</tr>
+    	{% endif %}
     	{% if is_granted("ROLE_ADMIN") %}
         	<tr>
         		<th scope="col"> Membre </th>
