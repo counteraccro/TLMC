@@ -8,63 +8,7 @@
     
     {% include 'elements/arborescence.html.twig' %}
     
-    <table  class="table table-sm table-striped">
-    	<tr>
-    		<th scope="col"> Prénom </th>
-    		<td> {{ membre.prenom }} </td>
-    	</tr>
-    	<tr>
-    		<th scope="col"> Nom </th>
-    		<td> {{ membre.nom }} </td>
-    	</tr>
-    	<tr>
-    		<th scope="col"> Pseudo </th>
-    		<td> {{ membre.username }} </td>
-    	</tr>
-    	<tr>
-    		<th scope="col"> Numéro de téléphone </th>
-    		<td> {{ membre.numeroTel }} </td>
-    	</tr>
-    	<tr>
-    		<th scope="col"> Email </th>
-    		<td> {{ membre.email }} </td>
-    	</tr>
-    	<tr>
-    		<th scope="col"> Etablissement </th>
-    		<td> {{ membre.etablissement.nom }} </td>
-    	</tr>
-    	<tr>
-    		<th scope="col"> Spécialité </th>
-    		<td> {% if membre.specialite != null %} {{ membre.specialite.service }} {% endif %} </td>
-    	</tr>
-    	<tr>
-    		<th scope="col"> Fonction </th>
-    		<td> {{ membre.fonction }} </td>
-    	</tr>
-    	<tr>
-    		<th scope="col"> Signature </th>
-    		<td> {{ membre.signature }} </td>
-    	</tr>
-    	<tr>
-    		<th scope="col"> Membre décideur </th>
-    		<td> {{ membre.decideur | bool }} </td>
-    	</tr>
-    	<tr>
-    		<th scope="col"> Membre présent dans l'annuaire </th>
-    		<td> {{ membre.annuaire | bool }} </td>
-    	</tr>
-    	<tr>
-    		<th scope="col"> Droits </th>
-    		<td> 
-    		    {% for role in membre.roles %}
-    		    	{{ role | droit }}<br />
-    		   	{% endfor %} 
-    		</td>
-    	</tr>
-    </table>
-    <br />
-    
-    <div id="bloc_membre_temoignage">
+    <div id="bloc_membre">
     	<div class="row">
     		<div class="col-md-4 offset-md-4">
     			<div class="progress" style="height: 25px;">
@@ -77,8 +21,23 @@
     	</div>
     </div>
     
+    <hr>
+    
+    <div id="bloc_membre_temoignage">
+    	<div class="row">
+    		<div class="col-md-4 offset-md-4">
+    			<div class="progress" style="height: 25px;">
+    				<div class="progress-bar progress-bar-striped progress-bar-animated"
+    					role="progressbar" aria-valuenow="75" aria-valuemin="0"
+    					aria-valuemax="100" style="width: 50%">Chargement des
+    					témoignages du membre...</div>
+    			</div>
+    		</div>
+    	</div>
+    </div>
+    
     <!-- Modal -->
-    <div class="modal fade" id="modal_temoignage_global" tabindex="-1" role="dialog">
+    <div class="modal fade" id="modal_membre_global" tabindex="-1" role="dialog">
     	<div class="modal-dialog" role="document">
     		<div class="modal-content" id="bloc_modal"></div>
     	</div>
@@ -92,6 +51,7 @@
 
 {% block script %}
  	<script src="{{ asset('assets/js/temoignage/Temoignage.js') }}?{{ date().timestamp }}"></script>
+ 	<script src="{{ asset('assets/js/membre/Membre.js') }}?{{ date().timestamp }}"></script>
 {% endblock %}
 
 {% block javascripts %}
@@ -99,6 +59,16 @@
     
     $(document).ready(function() {
 
+    	var paramsM = {
+				url_ajax_see : '{{path('membre_ajax_see', {'id': membre.id}) }}',
+				id_content_modal : '#bloc_modal',
+				id_modal : '#modal_membre_global',
+				id_global : '#bloc_membre'
+		};
+        
+    	Membre.Launch(paramsM);
+    	Membre.LoadMembre();
+		
 		var params = {
 				url_ajax_see : '{{path('temoignage_ajax_see', {'id': membre.id, 'type': 'membre'}) }}',
 				id_content_modal : '#bloc_modal',

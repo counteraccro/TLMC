@@ -23,7 +23,7 @@ class ProduitEtablissement
     private $etablissement;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Produit", inversedBy="etablissement")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Produit", inversedBy="produitEtablissements")
      * @ORM\JoinColumn(nullable=false)
      */
     private $produit;

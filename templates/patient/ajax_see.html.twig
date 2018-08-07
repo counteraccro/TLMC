@@ -1,0 +1,28 @@
+	<div class="card shadow-sm">
+         <div class="card-header bg-light">
+           	 <b>Patient :</b> {{ patient.prenom }} {{ patient.nom }}
+           	<div class="float-right"> 
+           		<a href="{{path('patient_ajax_edit', {'id': patient.id }) }}" id="btn-edit-patient" class="btn btn-dark"><span class="oi oi-pencil"></span> Editer le patient</a>
+           	</div>
+         </div>
+         <div class="card-body">
+          	<b>Date naissance :</b> {{ patient.dateNaissance | date('d/m/Y') }} </br>
+          	<b>Personne à mobilité réduite :</b> {{ patient.pmr | bool }}<br>
+           	<b> Spécialité :</b> {{ patient.specialite.service }} ({{ patient.specialite.etablissement.nom }})</br>
+           	<b>Actif :</b> {{ patient.disabled | bool }}
+         </div>
+    </div>
+    
+    
+{% block javascripts %}
+
+    <script type="text/javascript">
+
+    $(document).ready(function() {
+        var id_btn_patient = '#btn-edit-patient';
+        Patient.EventEdit(id_btn_patient);
+    });
+    
+    </script> 
+
+{% endblock %}

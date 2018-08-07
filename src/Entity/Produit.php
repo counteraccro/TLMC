@@ -84,12 +84,12 @@ class Produit
     private $extensionFormulaires;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ProduitEtablissement", mappedBy="produit")
+     * @ORM\OneToMany(targetEntity="App\Entity\ProduitEtablissement", mappedBy="produit", cascade={"persist"})
      */
-    private $etablissement;
+    private $produitEtablissements;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ProduitSpecialite", mappedBy="produit")
+     * @ORM\OneToMany(targetEntity="App\Entity\ProduitSpecialite", mappedBy="produit", cascade={"persist"})
      */
     private $produitSpecialites;
 
@@ -102,8 +102,7 @@ class Produit
     {
         $this->temoignages = new ArrayCollection();
         $this->extensionFormulaires = new ArrayCollection();
-        $this->etablissement = new ArrayCollection();
-        $this->specialite = new ArrayCollection();
+        $this->produitEtablissements = new ArrayCollection();
         $this->produitSpecialites = new ArrayCollection();
         $this->produitQuestionnaires = new ArrayCollection();
     }
@@ -308,37 +307,6 @@ class Produit
     }
 
     /**
-     * @return Collection|ProduitEtablissement[]
-     */
-    public function getEtablissement(): Collection
-    {
-        return $this->etablissement;
-    }
-
-    public function addEtablissement(ProduitEtablissement $etablissement): self
-    {
-        if (!$this->etablissement->contains($etablissement)) {
-            $this->etablissement[] = $etablissement;
-            $etablissement->setProduit($this);
-        }
-
-        return $this;
-    }
-
-    public function removeEtablissement(ProduitEtablissement $etablissement): self
-    {
-        if ($this->etablissement->contains($etablissement)) {
-            $this->etablissement->removeElement($etablissement);
-            // set the owning side to null (unless already changed)
-            if ($etablissement->getProduit() === $this) {
-                $etablissement->setProduit(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|ProduitSpecialite[]
      */
     public function getProduitSpecialites(): Collection
@@ -394,6 +362,37 @@ class Produit
             // set the owning side to null (unless already changed)
             if ($produitQuestionnaire->getProduit() === $this) {
                 $produitQuestionnaire->setProduit(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ProduitEtablissement[]
+     */
+    public function getProduitEtablissements(): Collection
+    {
+        return $this->produitEtablissements;
+    }
+
+    public function addProduitEtablissement(ProduitEtablissement $produitEtablissement): self
+    {
+        if (!$this->produitEtablissements->contains($produitEtablissement)) {
+            $this->produitEtablissements[] = $produitEtablissement;
+            $produitEtablissement->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProduitEtablissement(ProduitEtablissement $produitEtablissement): self
+    {
+        if ($this->produitEtablissements->contains($produitEtablissement)) {
+            $this->produitEtablissements->removeElement($produitEtablissement);
+            // set the owning side to null (unless already changed)
+            if ($produitEtablissement->getProduit() === $this) {
+                $produitEtablissement->setProduit(null);
             }
         }
 

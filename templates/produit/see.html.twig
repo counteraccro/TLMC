@@ -70,9 +70,65 @@
     		<div class="modal-content" id="bloc_modal"></div>
     	</div>
     </div>
+    <br>
     
-    <div>établissements</div>
-    <div>spécialité</div>
+    <div id="bloc_produit_etablissement" class="card">
+    	<div class="card-header">
+    		Etablissements
+    	</div>
+    	<div class="card-body">
+    		{% for etablissement in produit.produitEtablissements %}
+            	<ul>
+            		<li><b>{{ etablissement.etablissement.nom }}</b></li>
+            			<ul>
+                    		<li><b>Quantité :</b> {{ etablissement.quantite }}</li>
+                    		<li><b>Date :</b> {{ etablissement.date | date('d/m/Y') }}</li>
+                    		<li><b>Spécialités :</b></li>
+                        	    {% for specialite in produit.produitSpecialites %}
+                                  	{% if specialite.specialite.etablissement.id == etablissement.etablissement.id %}
+                                   		<li class="list-unstyled">
+                                   			<ul>
+                                   				<li>{{ specialite.specialite.service }} </li>
+                                					<ul>
+                                        				<li><b>Quantité :</b> {{ specialite.quantite }}</li> 
+                                        				<li><b>Date :</b> {{ specialite.date | date('d/m/Y') }}</li>
+                                    				</ul>
+                                    			</ul>
+                                    		</li>
+                                	   {% endif %}
+                                {% endfor %}
+                        	</ul>
+                		</ul>
+        	{% endfor %}
+    	</div>
+    </div>
+    
+    <br>
+    
+    <!-- <div id="bloc_produit_specialite" class="card">
+    	<div class="card-header">
+    		Spécialités
+    	</div>
+    	<div class="card-body">
+        	<table class="table table-sm table-striped">
+        		<tr>
+        			<th>Nom</th>
+        			<th>Quantité</th>
+        			<th>Date</th>
+        		</tr>
+                	{# for specialite in produit.produitSpecialites %#}
+                		<tr>
+                			<td>{#{ specialite.specialite.service }#}</td>
+                			<td>{#{ specialite.quantite }#}</td>
+                			<td>{#{ specialite.date | date('d/m/Y') }#}</td>
+                		</tr>
+                	{#% endfor %#}
+        	</table>
+    	</div>
+    </div> -->
+    
+    <br>
+    
     <div>extension de formulaire</div>
     <div>questionnaire</div>
 

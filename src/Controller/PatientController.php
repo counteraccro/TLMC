@@ -92,18 +92,28 @@ class PatientController extends AppController
      * Fiche d'un patient
      *
      * @Route("/patient/see/{id}/{page}", name="patient_see")
+     * @Route("/patient/ajax/see/{id}", name="patient_ajax_see")
      * @ParamConverter("patient", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      *
+     * @param Request $request
      * @param SessionInterface $session
      * @param Patient $patient
      * @param int $page
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function seeAction(SessionInterface $session, Patient $patient, int $page)
+    public function seeAction(Request $request, SessionInterface $session, Patient $patient, int $page = 1)
     {
         $arrayFilters = $this->getDatasFilter($session);
-
+        
+        // Si appel Ajax, on renvoi sur la page ajax
+        if ($request->isXmlHttpRequest()) {
+            
+            return $this->render('patient/ajax_see.html.twig', array(
+                'patient' => $patient,
+            ));
+        }
+        
         return $this->render('patient/see.html.twig', array(
             'page' => $page,
             'patient' => $patient,
@@ -201,6 +211,7 @@ class PatientController extends AppController
      * Edition d'un patient
      *
      * @Route("/patient/edit/{id}/{page}", name="patient_edit")
+     * @Route("/patient/ajax/edit/{id}", name="patient_ajax_edit")
      * @ParamConverter("patient", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      *
@@ -210,7 +221,7 @@ class PatientController extends AppController
      * @param int $page
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function editAction(SessionInterface $session, Request $request, Patient $patient, int $page)
+    public function editAction(SessionInterface $session, Request $request, Patient $patient, int $page = 0)
     {
         $arrayFilters = $this->getDatasFilter($session);
 
@@ -227,6 +238,7 @@ class PatientController extends AppController
                 'disabled_specialite' => true
             ));
         }
+        
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -235,6 +247,12 @@ class PatientController extends AppController
             $em->persist($patient);
             $em->flush();
 
+            if ($request->isXmlHttpRequest()) {
+                return $this->json(array(
+                    'statut' => true
+                ));
+            }
+            
             return $this->redirect($this->generateUrl('patient_listing', array(
                 'page' => $page,
                 'field' => $arrayFilters['field'],
@@ -242,6 +260,16 @@ class PatientController extends AppController
             )));
         }
 
+        // Si appel Ajax, on renvoi sur la page ajax
+        if ($request->isXmlHttpRequest()) {
+            
+            return $this->render('patient/ajax_edit.html.twig', [
+                'patient' => $patient,
+                'form' => $form->createView(),
+                'etablissements' => $etablissements,
+            ]);
+        }
+        
         return $this->render('patient/edit.html.twig', array(
             'page' => $page,
             'form' => $form->createView(),
