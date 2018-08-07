@@ -75,18 +75,28 @@ class MembreController extends AppController
      * Fiche d'un membre
      *
      * @Route("/membre/see/{id}/{page}", name="membre_see")
+     * @Route("/membre/ajax/see/{id}", name="membre_ajax_see")
      * @ParamConverter("membre", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
-     *
+     * 
+     * @param Request $request
      * @param SessionInterface $session
      * @param Membre $membre
      * @param int $page
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function seeAction(SessionInterface $session, Membre $membre, int $page)
+    public function seeAction(Request $request, SessionInterface $session, Membre $membre, int $page = 1)
     {
         $arrayFilters = $this->getDatasFilter($session);
 
+        // Si appel Ajax, on renvoi sur la page ajax
+        if ($request->isXmlHttpRequest()) {
+            
+            return $this->render('membre/ajax_see.html.twig', array(
+                'membre' => $membre,
+            ));
+        }
+        
         return $this->render('membre/see.html.twig', array(
             'page' => $page,
             'membre' => $membre,
@@ -161,6 +171,7 @@ class MembreController extends AppController
      * Edition d'un membre
      *
      * @Route("/membre/edit/{id}/{page}", name="membre_edit")
+     * @Route("/membre/ajax/edit/{id}", name="membre_ajax_edit")
      * @ParamConverter("membre", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
      *
@@ -171,7 +182,7 @@ class MembreController extends AppController
      * @param int $page
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function editAction(SessionInterface $session, Request $request, UserPasswordEncoderInterface $encoder, Membre $membre, int $page)
+    public function editAction(SessionInterface $session, Request $request, UserPasswordEncoderInterface $encoder, Membre $membre, int $page = 1)
     {
         $arrayFilters = $this->getDatasFilter($session);
 
@@ -196,13 +207,28 @@ class MembreController extends AppController
             $em->persist($membre);
             $em->flush();
 
+            if ($request->isXmlHttpRequest()) {
+                return $this->json(array(
+                    'statut' => true
+                ));
+            }
+            
             return $this->redirect($this->generateUrl('membre_listing', array(
                 'page' => $page,
                 'field' => $arrayFilters['field'],
                 'order' => $arrayFilters['order']
             )));
         }
-
+        
+        // Si appel Ajax, on renvoi sur la page ajax
+        if ($request->isXmlHttpRequest()) {
+            
+            return $this->render('membre/ajax_edit.html.twig', [
+                'membre' => $membre,
+                'form' => $form->createView()
+            ]);
+        }
+        
         return $this->render('membre/edit.html.twig', array(
             'page' => $page,
             'form' => $form->createView(),

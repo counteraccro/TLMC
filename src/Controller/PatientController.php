@@ -96,6 +96,7 @@ class PatientController extends AppController
      * @ParamConverter("patient", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      *
+     * @param Request $request
      * @param SessionInterface $session
      * @param Patient $patient
      * @param int $page

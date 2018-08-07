@@ -22,7 +22,6 @@
     </div>
     
 	<hr>
-	</br>
 	
     <div id="bloc_patient_famille">
     	<div class="row">
@@ -31,13 +30,27 @@
     				<div class="progress-bar progress-bar-striped progress-bar-animated"
     					role="progressbar" aria-valuenow="75" aria-valuemin="0"
     					aria-valuemax="100" style="width: 50%">Chargement des
-    					informations du patient...</div>
+    					informations de la famille du patient...</div>
     			</div>
     		</div>
     	</div>
     </div>
     
-    <div>Evenement (trinaire)</div>
+	<hr>
+	
+    <div id="bloc_patient_evenement">
+    	<div class="row">
+    		<div class="col-md-4 offset-md-4">
+    			<!-- <div class="progress" style="height: 25px;">
+    				<div class="progress-bar progress-bar-striped progress-bar-animated"
+    					role="progressbar" aria-valuenow="75" aria-valuemin="0"
+    					aria-valuemax="100" style="width: 50%">Chargement des
+    					informations des événements du patient...</div>
+    			</div> -->
+    			Evenement (trinaire)
+    		</div>
+    	</div>
+    </div>
     
     <!-- Modal -->
     <div class="modal fade" id="modal_patient_global" tabindex="-1" role="dialog">
@@ -57,16 +70,6 @@
     <script type="text/javascript">
     
     $(document).ready(function() {
-        
-		var paramsF = {
-				url_ajax_see : '{{path('famille_ajax_see', {'id': patient.id}) }}',
-				id_content_modal : '#bloc_modal',
-				id_modal : '#modal_patient_global',
-				id_global : '#bloc_patient_famille',
-		};
-        
-    	Famille.Launch(paramsF);
-    	Famille.LoadFamille();
 
     	var paramsP = {
 				url_ajax_see : '{{path('patient_ajax_see', {'id': patient.id}) }}',
@@ -77,6 +80,16 @@
         
     	Patient.Launch(paramsP);
     	Patient.LoadPatient();
+        
+		var paramsF = {
+				url_ajax_see : '{{path('famille_ajax_see', {'id': patient.id}) }}',
+				id_content_modal : '#bloc_modal',
+				id_modal : '#modal_patient_global',
+				id_global : '#bloc_patient_famille',
+		};
+        
+    	Famille.Launch(paramsF);
+    	Famille.LoadFamille();
     });
     
     </script>
