@@ -155,6 +155,11 @@ class ProduitController extends AppController
         if ($form->isSubmitted() && $form->isValid()) {
             
             $em = $this->getDoctrine()->getManager();
+            
+            foreach ($produit->getProduitEtablissements() as $etablissement){
+                $etablissement->setProduit($produit);
+            }
+            
             $produit->setDateCreation(new \DateTime());
             $produit->setDisabled(0);
             

@@ -20,10 +20,39 @@
 	{{ form_row(form.quantite) }}
 	{{ form_row(form.date_envoi) }}
     
+    <div class="shadow-sm p-3 mb-5 bg-white rounded border">
+        {{ form_row(form.produitEtablissements) }}
+      	<a href="#" id="add_etablissement" class="btn btn-primary btn-sm">Ajouter un établissement</a>
+  	</div>
+    
     {{ form_rest(form) }}
     {{ form_errors(form) }}
     {{ form_end(form) }}
     
 </div>
 	  
+{% endblock %}
+
+{% block script %}
+ 	<script src="{{ asset('assets/js/utils/FormAddCollection.js') }}?{{ date().timestamp }}"></script>
+{% endblock %}
+
+{% block javascripts %}
+
+    <script type="text/javascript">
+    
+    $(document).ready(function() {
+
+		var params = {
+				id_container : 'div#produit_produitEtablissements',
+				id_btn_add : '#add_etablissement',
+				id_label_fieldset : '#label_collection_type',
+				btn_delete : '<a href="#" class="btn btn-danger btn-sm">Supprimer</a>',
+		};
+        
+    	FormAddCollection.Launch(params);
+		FormAddCollection.Event();
+    });
+    </script> 
+
 {% endblock %}

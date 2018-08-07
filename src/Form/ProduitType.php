@@ -12,6 +12,7 @@ use App\Controller\ProduitController;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use App\Controller\AppController;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class ProduitType extends AbstractType
 {
@@ -44,6 +45,21 @@ class ProduitType extends AbstractType
             'label' => "Date d'envoi",
             'widget' => 'choice',
             'years' => range(date('Y'), date('Y') + 2)
+        ))
+            ->add('produitEtablissements', CollectionType::class, array(
+            'label' => 'Etablissements',
+            'label_attr' => array(
+                'id' => 'label_collection_type'
+            ),
+            'entry_type' => ProduitEtablissementType::class,
+            'entry_options' => array(
+                'label' => ' ',
+                'avec_produit' => false,
+                'avec_bouton' => false
+            ),
+
+            'allow_add' => true,
+            'auto_initialize' => true
         ))
             ->add('save', SubmitType::class, array(
             'label' => $options['label_submit'],
