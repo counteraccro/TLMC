@@ -48,6 +48,7 @@ encoding//templates/question/ajax_edit.html.twig=UTF-8
 encoding//templates/questionnaire/add.html.twig=UTF-8
 encoding//templates/questionnaire/ajax_edit.html.twig=UTF-8
 encoding//templates/questionnaire/ajax_see.html.twig=UTF-8
+encoding//templates/questionnaire/demo.html.twig=UTF-8
 encoding//templates/questionnaire/edit.html.twig=UTF-8
 encoding//templates/questionnaire/index.html.twig=UTF-8
 encoding//templates/questionnaire/see.html.twig=UTF-8
