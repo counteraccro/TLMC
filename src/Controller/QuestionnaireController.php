@@ -123,7 +123,7 @@ class QuestionnaireController extends AppController
 
         $questionnaire = new Questionnaire();
 
-        $form = $this->createForm(QuestionnaireType::class, $questionnaire);
+        $form = $this->createForm(QuestionnaireType::class, $questionnaire, array('isAdd' => true));
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -167,7 +167,6 @@ class QuestionnaireController extends AppController
 
         if ($request->isXmlHttpRequest()) {
             $form = $this->createForm(QuestionnaireType::class, $questionnaire, array(
-                'ajax_button' => true,
                 'attr' => array(
                     'id' => 'questionnaire_ajax_edit'
                 )

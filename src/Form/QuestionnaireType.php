@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 class QuestionnaireType extends AbstractType
 {
@@ -40,13 +41,27 @@ class QuestionnaireType extends AbstractType
                 'class' => 'btn btn-primary'
             )
         ));
+        if ($options['isAdd'] == true) {
+            $builder->add('slug', HiddenType::class, array(
+                'attr' => [
+                    'id' => 'slug_hidden'
+                ],
+            ));
+        } else {
+            $builder->add('slug', TextType::class, array(
+                'attr' => [
+                    'id' => 'slug_hidden'
+                ],
+                'disabled' => true
+            ));
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => Questionnaire::class,
-            'ajax_button' => false
+            'isAdd' => false
         ]);
     }
 }

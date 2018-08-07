@@ -14,7 +14,23 @@ Edition d'un questionnaire
 {% include 'elements/arborescence.html.twig' %}
 
 <fieldset>
-	{{ form(form) }}
+    {{ form_start(form) }}
+    
+<div id="slug_text" class="d-inline p-2 bg-dark text-white"></div>
+<hr>
+
+    {{ form_row(form.slug) }}
+	{{ form_row(form.titre, {"id":"questionnaire_titre"}) }}
+	
+	{{ form_row(form.description) }}
+	{{ form_row(form.date_creation) }}
+	{{ form_row(form.date_fin) }}
+	{{ form_row(form.jour_relance) }}
+	
+    {{ form_rest(form) }}
+    {{ form_errors(form) }}
+    {{ form_end(form) }}
+    
 </fieldset>
 
 {% endblock %}
