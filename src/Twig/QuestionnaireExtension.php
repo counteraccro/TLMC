@@ -48,6 +48,7 @@ class QuestionnaireExtension extends AbstractExtension
                     $html .= $this->ChoiceType($question);
                     break;
                 case 'TextType':
+
                     ;
                     break;
                 case 'TextareaType':
@@ -57,6 +58,7 @@ class QuestionnaireExtension extends AbstractExtension
                     ;
                     break;
                 case 'RadioType':
+                    $html .= $this->RadioType($question);
                     ;
                     break;
                 default:
@@ -85,7 +87,7 @@ class QuestionnaireExtension extends AbstractExtension
 
         $html .= '<div class="form-group">
                     <label for="q-' . $question->getId() . '">' . $question->getLibelle() . '</label>
-                    <select class="form-control" id="q-' . $question->getId() . '" name="questionnaire[question][q-' . $question->getId() . '">';
+                    <select class="form-control" id="q-' . $question->getId() . '" name="questionnaire[question][q-' . $question->getId() . ']">';
         
         $data_value = json_decode($question->getListeValeur());
         foreach($data_value as $val)
@@ -112,6 +114,49 @@ class QuestionnaireExtension extends AbstractExtension
     }
     
     /**
+     *
+     * @param Question $question
+     */
+    private function RadioType(Question $question)
+    {
+        $html = '';
+        $html .= '<div id="bloc-' . $question->getId() . '">';
+        
+        if (! empty($question->getLibelleTop())) {
+            $html .= '<p>' . $question->getLibelleTop() . '</p>';
+        }
+        
+        $html .= '<div class="form-group">
+                    <label for="q-' . $question->getId() . '">' . $question->getLibelle() . '</label>
+                    <div class="form-check">';
+        
+        $data_value = json_decode($question->getListeValeur());
+        foreach($data_value as $val)
+        {
+            $checked = '';
+            if($val->value == $question->getValeurDefaut())
+            {
+                $checked = ' checked';
+            }
+            
+            $html .='<input class="form-check-input" type="radio" value="' . $val->value . '"' . $checked . '" id="q-' . $question->getId() . '" name="questionnaire[question][q-' . $question->getId() . ']">';
+            $html .= '<label class="form-check-label" for="q-' . $question->getId() . '">' .$val->value . '</label><br>';
+        }
+        
+        if (! empty($question->getLibelleBottom())) {
+            $html .= '<small id="help-q-' . $question->getId() . '" class="form-text text-muted">' . $question->getLibelleBottom() . '</small>';
+        }
+        
+        $html .= '</div>';
+        
+        $html .= '</div>';
+        
+        $html .= '</div>';
+        
+        return $html;
+    }  
+    
+    /**
      * 
      */
     private function BeginForm()
@@ -130,7 +175,7 @@ class QuestionnaireExtension extends AbstractExtension
     {
         $html = "";
         
-        $html .= '<button type="submit" class="btn btn-primary mb-2">Valider</button>';
+        $html .= '<button type="submit" name="validation" class="btn btn-primary mb-2">Valider</button>';
         $html .="</form>";
         
         return $html;

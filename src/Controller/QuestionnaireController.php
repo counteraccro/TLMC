@@ -12,7 +12,6 @@ use App\Form\QuestionnaireType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Response;
 use App\Entity\Reponse;
-
 class QuestionnaireController extends AppController
 {
 
@@ -74,7 +73,7 @@ class QuestionnaireController extends AppController
      * @ParamConverter("questionnaire", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      */
-    public function seeAction(SessionInterface $session, Questionnaire $questionnaire, int $page)
+    public function seeAction(SessionInterface $session, Questionnaire $questionnaire, int $page = 1)
     {
         $arrayFilters = $this->getDatasFilter($session);
 
@@ -98,12 +97,12 @@ class QuestionnaireController extends AppController
     /**
      * Fiche d'un questionnaire
      *
-     * @Route("/questionnaire/ajax/see/{id}", name="questionnaire_ajax_see")
+     * @Route("/questionnaire/ajax/see/{id}/", name="questionnaire_ajax_see")
      * @ParamConverter("questionnaire", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      */
     public function ajaxSeeAction(Questionnaire $questionnaire)
-    {        
+    {
         return $this->render('questionnaire/ajax_see.html.twig', [
             'questionnaire' => $questionnaire
         ]);
@@ -123,13 +122,14 @@ class QuestionnaireController extends AppController
 
         $questionnaire = new Questionnaire();
 
-        $form = $this->createForm(QuestionnaireType::class, $questionnaire, array('isAdd' => true));
+        $form = $this->createForm(QuestionnaireType::class, $questionnaire, array(
+            'isAdd' => true
+        ));
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $questionnaire->setDisabled(0);
-       
-            
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($questionnaire);
             $em->flush();
@@ -254,7 +254,7 @@ class QuestionnaireController extends AppController
             'order' => $arrayFilters['order']
         ));
     }
-    
+
     /**
      * Démo questionnaire
      *
@@ -264,8 +264,15 @@ class QuestionnaireController extends AppController
      */
     public function demoAction(Request $request, Questionnaire $questionnaire)
     {
-        
-        $this->pre(array());
+        if (isset($_POST['validation']))
+        {
+            if ($_SERVER['REQUEST_METHOD'] == "POST") 
+            {
+                $this->pre($_POST);
+
+                //$this->pre($request->request->all());
+            }
+        }
         
         return $this->render('questionnaire/demo.html.twig', [
             'controller_name' => 'QuestionnaireDemoController',
