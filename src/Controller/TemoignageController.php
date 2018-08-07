@@ -172,7 +172,7 @@ class TemoignageController extends AppController
      * @param string $type
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function addAction(SessionInterface $session, Request $request, int $page = 1, int $id = 0, string $type)
+    public function addAction(SessionInterface $session, Request $request, int $page = 1, int $id = 0, string $type = null)
     {
         $arrayFilters = $this->getDatasFilter($session);
         $opt_form = array('label_submit' => 'Ajouter');
@@ -270,7 +270,7 @@ class TemoignageController extends AppController
      * @param string $type
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function editAction(SessionInterface $session, Request $request, Temoignage $temoignage, int $page = 1, string $type)
+    public function editAction(SessionInterface $session, Request $request, Temoignage $temoignage, int $page = 1, string $type = null)
     {
         $arrayFilters = $this->getDatasFilter($session);
 

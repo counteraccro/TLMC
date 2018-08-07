@@ -46,7 +46,7 @@
     
     <blockquote class="blockquote">
 		<p class="mb-0">{{ temoignage.corps }}</p>
-        <footer class="blockquote-footer">{{ temoignage.prenomTemoin }}, {{ temoignage.age }} ans, {{ temoignage.lienParente |lienParente }}, {{ temoignage.ville }} à propos 
+        <footer class="blockquote-footer">{{ temoignage.prenomTemoin }}, {{ temoignage.age }} ans, {{ temoignage.lienParente |lienParente }}, à {{ temoignage.ville }}, à propos 
 			{% if temoignage.evenement != null %}
 				de l'événement 
             	<cite title="Source Title"> {{ temoignage.evenement.nom }} </cite>
