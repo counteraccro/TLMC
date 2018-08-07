@@ -1,17 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} Nouvel établissement {% endblock %}
+{% block title %} Nouveau produit {% endblock %}
 
 {% block body %}
 
-<h1>Ajout d'un nouvel établissement</h1>
+<h1>Ajout d'un nouveau produit</h1>
 
 {% include 'elements/arborescence.html.twig' %}
 
 <div>
     {{ form_start(form) }}
     
-{{ form_row(form.titre) }}
+    {{ form_row(form.titre) }}
 	{{ form_row(form.type) }}
 	{{ form_row(form.genre) }}
 	{{ form_row(form.texte) }}

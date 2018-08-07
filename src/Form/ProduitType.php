@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use App\Controller\ProduitController;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use App\Controller\AppController;
 
 class ProduitType extends AbstractType
 {
@@ -24,8 +25,10 @@ class ProduitType extends AbstractType
             ->add('texte', TextareaType::class, array(
             'label' => 'Description'
         ))
-            ->add('tranche_age', TextareaType::class, array(
-            'label' => "Tranche d'âge"
+            ->add('tranche_age', ChoiceType::class, array(
+            'label' => "Tranche d'âge",
+            'choices' => array_flip($options['trancheAge']),
+            'multiple' => true
         ))
             ->add('genre', ChoiceType::class, array(
             'choices' => array_flip($options['genre'])
@@ -57,7 +60,8 @@ class ProduitType extends AbstractType
             'data_class' => Produit::class,
             'label_submit' => 'Valider',
             'genre' => ProduitController::GENRE,
-            'type' => ProduitController::TYPE
+            'type' => ProduitController::TYPE,
+            'trancheAge' => AppController::TRANCHE_AGE
         ]);
     }
 }

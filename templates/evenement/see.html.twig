@@ -31,7 +31,11 @@
     	</tr>
     	<tr>
     		<th scope="col"> Tranche d'âge </th>
-    		<td> {{ evenement.trancheAge }} </td>
+    		<td>
+    			{% for tranche in evenement.trancheAge %} 
+    		        {{ tranche | trancheAge }}<br />
+    		    {% endfor %}
+    		</td>
     	</tr>
     	<tr>
     		<th scope="col"> Date limite d'inscription </th>
