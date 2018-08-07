@@ -79,7 +79,7 @@ class Evenement
     private $code_postal;
 
     /**
-     * @ORM\Column(type="string", length=300)
+     * @ORM\Column(type="array")
      */
     private $tranche_age;
 
@@ -280,18 +280,18 @@ class Evenement
         return $this;
     }
 
-    public function getTrancheAge(): ?string
+    public function getTrancheAge(): ?array
     {
         return $this->tranche_age;
     }
-
-    public function setTrancheAge(string $tranche_age): self
+    
+    public function setTrancheAge(array $tranche_age): self
     {
         $this->tranche_age = $tranche_age;
-
+        
         return $this;
     }
-
+    
     public function getInformationComplementaire(): ?string
     {
         return $this->information_complementaire;
@@ -325,6 +325,18 @@ class Evenement
     {
         $this->date_fin_inscription = $date_fin_inscription;
 
+        return $this;
+    }
+    
+    public function getDisabled(): ?int
+    {
+        return $this->disabled;
+    }
+    
+    public function setDisabled(int $disabled): self
+    {
+        $this->disabled = $disabled;
+        
         return $this;
     }
 
@@ -448,18 +460,6 @@ class Evenement
                 $participant->setEvenement(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getDisabled(): ?int
-    {
-        return $this->disabled;
-    }
-
-    public function setDisabled(int $disabled): self
-    {
-        $this->disabled = $disabled;
 
         return $this;
     }

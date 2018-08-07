@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use App\Controller\EvenementController;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use App\Controller\AppController;
 
 class EvenementType extends AbstractType
 {
@@ -32,7 +33,9 @@ class EvenementType extends AbstractType
             ->add('nombre_max', IntegerType::class, array(
             'label' => 'Nombre maximun de participant'
         ))
-            ->add('description', TextareaType::class)
+            ->add('description', TextareaType::class, array(
+            'required' => false
+        ))
             ->add('type', ChoiceType::class, array(
             'choices' => array_flip($options['type'])
         ))
@@ -45,8 +48,10 @@ class EvenementType extends AbstractType
             ->add('voie')
             ->add('ville')
             ->add('code_postal')
-            ->add('tranche_age', TextType::class, array(
-            'label' => "Tranche d'âge"
+            ->add('tranche_age', ChoiceType::class, array(
+            'label' => "Tranche d'âge",
+            'choices' => array_flip($options['trancheAge']),
+            'multiple' => true
         ))
             ->add('information_complementaire', TextareaType::class, array(
             'label' => "Information complémentaire",
@@ -71,11 +76,12 @@ class EvenementType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
+        $resolver->setDefaults(array(
             'data_class' => Evenement::class,
             'label_submit' => 'Valider',
             'statut' => EvenementController::STATUT,
-            'type' => EvenementController::TYPE
-        ]);
+            'type' => EvenementController::TYPE,
+            'trancheAge' => AppController::TRANCHE_AGE
+        ));
     }
 }

@@ -69,6 +69,17 @@ class AppController extends Controller
         'ROLE_BENEFICIAIRE' => 'Bénéficiaire',
         'ROLE_BENEVOLE' => 'Bénévole' 
     );
+    
+    const TRANCHE_AGE = array(
+        0 => 'Tout âge',
+        1 => '0-3 ans',
+        2 => '4-7 ans',
+        3 => '8-11 ans',
+        4 => '12-17 ans',
+        5 => '18-30 ans',
+        6 => '31-64 ans',
+        7 => '65 ans et +'
+    );
 
     /**
      * Supprime une recherche de la session

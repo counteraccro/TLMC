@@ -39,7 +39,7 @@ class Produit
     private $image;
 
     /**
-     * @ORM\Column(type="string", length=300)
+     * @ORM\Column(type="array")
      */
     private $tranche_age;
 
@@ -160,16 +160,16 @@ class Produit
 
         return $this;
     }
-
-    public function getTrancheAge(): ?string
+    
+    public function getTrancheAge(): ?array
     {
         return $this->tranche_age;
     }
-
-    public function setTrancheAge(string $tranche_age): self
+    
+    public function setTrancheAge(array $tranche_age): self
     {
         $this->tranche_age = $tranche_age;
-
+        
         return $this;
     }
 
@@ -230,6 +230,18 @@ class Produit
     {
         $this->date_creation = $date_creation;
 
+        return $this;
+    }
+    
+    public function getDisabled(): ?int
+    {
+        return $this->disabled;
+    }
+    
+    public function setDisabled(int $disabled): self
+    {
+        $this->disabled = $disabled;
+        
         return $this;
     }
 
@@ -384,18 +396,6 @@ class Produit
                 $produitQuestionnaire->setProduit(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getDisabled(): ?int
-    {
-        return $this->disabled;
-    }
-
-    public function setDisabled(int $disabled): self
-    {
-        $this->disabled = $disabled;
 
         return $this;
     }

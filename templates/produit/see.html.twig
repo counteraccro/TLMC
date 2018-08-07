@@ -19,11 +19,18 @@
     	</tr>
     	<tr>
     		<th scope="col"> Description </th>
-    		<td> {{ produit.texte }} </td>
+    		<td> 
+    		    {{ produit.texte }} <br />
+    		    {{ produit.texte2 }} 
+    		</td>
     	</tr>
     	<tr>
-    		<th scope="col">  </th>
-    		<td> {{ produit.texte2 }} </td>
+    		<th scope="col"> Tranche d'âge </th>
+    		<td> 
+    			{% for tranche in produit.trancheAge %}
+    		        {{ tranche | trancheAge}} <br/> 
+    		    {% endfor %}
+    		</td>
     	</tr>
     	<tr>
     		<th scope="col"> Genre </th>
@@ -36,6 +43,10 @@
     	<tr>
     		<th scope="col">Date d'envoi </th>
     		<td> {{ produit.dateEnvoi | date('d/m/Y') }} </td>
+    	</tr>
+    	<tr>
+    		<th scope="col">Date de création </th>
+    		<td> {{ produit.dateCreation | date('d/m/Y') }} </td>
     	</tr>
     </table>
     <br />

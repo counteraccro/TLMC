@@ -44,4 +44,19 @@
     </table>
     <br />
     
+    <blockquote class="blockquote">
+		<p class="mb-0">{{ temoignage.corps }}</p>
+        <footer class="blockquote-footer">{{ temoignage.prenomTemoin }}, {{ temoignage.age }} ans, {{ temoignage.lienParente |lienParente }}, à {{ temoignage.ville }}, à propos 
+			{% if temoignage.evenement != null %}
+				de l'événement 
+            	<cite title="Source Title"> {{ temoignage.evenement.nom }} </cite>
+    	    {% elseif temoignage.produit != null %}
+    	    	du produit
+        		<cite title="Source Title"> {{ temoignage.produit.titre }} </cite>
+    	    {% endif %}
+			
+        </footer>
+	</blockquote>
+    
+    
 {% endblock %}
