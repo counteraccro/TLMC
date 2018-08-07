@@ -1,0 +1,65 @@
+<div class="card shadow-sm">
+	<div class="card-header bg-light">
+    	<b>Produit :</b> {{ produit.titre }}
+       	<div class="float-right"> 
+       		<a href="{{path('produit_ajax_edit', {'id': produit.id }) }}" id="btn-edit-produit" class="btn btn-dark"><span class="oi oi-pencil"></span> Editer le produit</a>
+       	</div>
+    </div>
+    <div class="card-body">
+    	<table  class="table table-sm">
+        	<tr>
+        		<th scope="col"> Titre </th>
+        		<td> {{ produit.titre }} </td>
+        	</tr>
+        	<tr>
+        		<th scope="col"> Type </th>
+        		<td> {{ produit.type | typeProduit }} </td>
+        	</tr>
+        	<tr>
+        		<th scope="col"> Description </th>
+        		<td> 
+        		    {{ produit.texte }} <br />
+        		    {{ produit.texte2 }} 
+        		</td>
+        	</tr>
+        	<tr>
+        		<th scope="col"> Tranche d'âge </th>
+        		<td> 
+        			{% for tranche in produit.trancheAge %}
+        		        {{ tranche | trancheAge}} <br/> 
+        		    {% endfor %}
+        		</td>
+        	</tr>
+        	<tr>
+        		<th scope="col"> Genre </th>
+        		<td> {{ produit.genre | genre}} </td>
+        	</tr>
+        	<tr>
+        		<th scope="col"> Quantité </th>
+        		<td> {{ produit.quantite }} </td>
+        	</tr>
+        	<tr>
+        		<th scope="col">Date d'envoi </th>
+        		<td> {{ produit.dateEnvoi | date('d/m/Y') }} </td>
+        	</tr>
+        	<tr>
+        		<th scope="col">Date de création </th>
+        		<td> {{ produit.dateCreation | date('d/m/Y') }} </td>
+        	</tr>
+        </table>
+    </div>
+    </div>
+    
+    
+{% block javascripts %}
+
+    <script type="text/javascript">
+
+    $(document).ready(function() {
+        var id_btn_produit = '#btn-edit-produit';
+        Produit.EventEdit(id_btn_produit);
+    });
+    
+    </script> 
+
+{% endblock %}

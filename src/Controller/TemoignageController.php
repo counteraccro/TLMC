@@ -196,8 +196,8 @@ class TemoignageController extends AppController
                     $objets = $repository->findById($id);
                     $objet = $objets[0];
                     
-                    $opt_form['disabled_event'] = true;
-                    $opt_form['avec_prod'] = false;
+                    $opt_form['disabled_prod'] = true;
+                    $opt_form['avec_event'] = false;
                     
                     $temoignage->setProduit($objet);
                     break;

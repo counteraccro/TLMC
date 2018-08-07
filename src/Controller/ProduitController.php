@@ -103,17 +103,27 @@ class ProduitController extends AppController
      * Fiche d'un produit
      *
      * @Route("/produit/see/{id}/{page}", name="produit_see")
+     * @Route("/produit/ajax/see/{id}/{page}", name="produit_ajax_see")
      * @ParamConverter("produit", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE')")
-     *
+     * 
+     * @param Request $request
      * @param SessionInterface $session
      * @param Produit $produit
      * @param int $page
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function seeAction(SessionInterface $session, Produit $produit, int $page)
+    public function seeAction(Request $request, SessionInterface $session, Produit $produit, int $page = 1)
     {
         $arrayFilters = $this->getDatasFilter($session);
+        
+        // Si appel Ajax, on renvoi sur la page ajax
+        if ($request->isXmlHttpRequest()) {
+            
+            return $this->render('produit/ajax_see.html.twig', array(
+                'produit' => $produit,
+            ));
+        }
         
         return $this->render('produit/see.html.twig', array(
             'page' => $page,
@@ -190,6 +200,7 @@ class ProduitController extends AppController
      * Edition d'un produit
      *
      * @Route("/produit/edit/{id}/{page}", name="produit_edit")
+     * @Route("/produit/ajax/edit/{id}/{page}", name="produit_ajax_edit")
      * @ParamConverter("produit", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
      *
@@ -199,7 +210,7 @@ class ProduitController extends AppController
      * @param int $page
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function editAction(SessionInterface $session, Request $request, Produit $produit, int $page)
+    public function editAction(SessionInterface $session, Request $request, Produit $produit, int $page = 1)
     {
         $arrayFilters = $this->getDatasFilter($session);
         
@@ -213,11 +224,26 @@ class ProduitController extends AppController
             $em->persist($produit);
             $em->flush();
             
+            if ($request->isXmlHttpRequest()) {
+                return $this->json(array(
+                    'statut' => true
+                ));
+            }
+            
             return $this->redirect($this->generateUrl('produit_listing', array(
                 'page' => $page,
                 'field' => $arrayFilters['field'],
                 'order' => $arrayFilters['order']
             )));
+        }
+        
+        // Si appel Ajax, on renvoi sur la page ajax
+        if ($request->isXmlHttpRequest()) {
+            
+            return $this->render('produit/ajax_edit.html.twig', [
+                'produit' => $produit,
+                'form' => $form->createView()
+            ]);
         }
         
         return $this->render('produit/edit.html.twig', array(
