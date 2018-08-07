@@ -123,7 +123,7 @@ class TemoignageController extends AppController
     /**
      * Bloc témoignage d'un membre / d'un événement / d'un produit
      *
-     * @Route("/membre/ajax/see/{id}/{type}", name="temoignage_ajax_see")
+     * @Route("/temoignage/ajax/see/{id}/{type}", name="temoignage_ajax_see")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE')")
      *
      * @param int $id
