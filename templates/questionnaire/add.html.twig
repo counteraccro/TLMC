@@ -10,33 +10,43 @@ Nouveau questionnaire
 
 {% include 'elements/arborescence.html.twig' %}
 
-    {{ form_start(form) }}
-    
-<div id="slug_text" class="d-inline p-2 bg-dark text-white"></div>
-<hr>
+{{ form_start(form) }}
 
-<fieldset>
+{{ form_row(form.slug) }}
+<div class="row">
+	<div class="col-sm">
+		{{ form_row(form.titre, {"id":"questionnaire_titre"}) }}
+	</div>
+	<div class="col-sm">
+		<div id="slug_text"></div>
+	</div>
+</div>
 
-    {{ form_row(form.slug) }}
-	{{ form_row(form.titre, {"id":"questionnaire_titre"}) }}
-	
-	{{ form_row(form.description) }}
-	{{ form_row(form.date_creation) }}
-	{{ form_row(form.date_fin) }}
-	{{ form_row(form.jour_relance) }}
-	
-    {{ form_rest(form) }}
-    {{ form_errors(form) }}
-    {{ form_end(form) }}
 
-</fieldset>
+{{ form_row(form.description) }}
+{{ form_row(form.date_creation) }}
+{{ form_row(form.date_fin) }}
+{{ form_row(form.jour_relance) }}
 
-	{% block script %}
- 		<script src="{{ asset('assets/js/questionnaire/Questionnaire.js') }}?{{ date().timestamp }}"></script>
-    {% endblock %}
- 
-	{% block javascripts %}
-    <script type="text/javascript">
+{{ form_rest(form) }}
+{{ form_errors(form) }}
+{{ form_end(form) }}
+
+{% block stylesheets %}
+	<style>
+    	#slug_text {
+            margin-top: 40px;
+        }
+    </style>
+{% endblock %}
+
+{% block script %}
+<script
+	src="{{ asset('assets/js/questionnaire/Questionnaire.js') }}?{{ date().timestamp }}"></script>
+{% endblock %}
+
+{% block javascripts %}
+<script type="text/javascript">
 	
     
     $(document).ready(function() {
@@ -53,6 +63,6 @@ Nouveau questionnaire
     });
 		
     </script>
-    {% endblock %}
+{% endblock %}
 
 {% endblock %}

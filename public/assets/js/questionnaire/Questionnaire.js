@@ -93,17 +93,13 @@ Questionnaire.Launch = function(params) {
 			    return str;
 			}
 			
-			//A SUPPRIMER
-			//var textToSlug = "Sa mère prend de l'$Héroïne% et prépare des Crêpes.";
-			
 			//Passage en format 'slug' : Gestion des accents, minuscules, espaces, caractères spéciaux 
-			var sluggedText = textToSlug.sansAccent().toLowerCase().replace(/ +/g,'-').replace(/[.'$"&%#;]/g, '');
+			var sluggedText = textToSlug.sansAccent().toLowerCase().replace(/ +/g,'-').replace(/[.'^$"_&@%#;\,!:²><()\[\]\/\{\}\*\+\-\=]/g, '');
 			
 			//Renvoi des élements en slug dans les champs
 			$(id_slug).val(sluggedText);
-			$(id_slug_text).html(sluggedText);
-			
-			
+			$(id_slug_text).html('<div class="d-inline p-2 bg-dark text-white">URL public du questionnaire : http://[URL-A-MODIFIER]/' + sluggedText + '</div>');
+					
 			return false;
 		});
 	}
