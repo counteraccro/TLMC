@@ -123,7 +123,7 @@ class TemoignageController extends AppController
     /**
      * Bloc témoignage d'un membre / d'un événement / d'un produit
      *
-     * @Route("/membre/ajax/see/{id}/{type}", name="temoignage_ajax_see")
+     * @Route("/temoignage/ajax/see/{id}/{type}", name="temoignage_ajax_see")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE')")
      *
      * @param int $id
@@ -196,8 +196,8 @@ class TemoignageController extends AppController
                     $objets = $repository->findById($id);
                     $objet = $objets[0];
                     
-                    $opt_form['disabled_event'] = true;
-                    $opt_form['avec_prod'] = false;
+                    $opt_form['disabled_prod'] = true;
+                    $opt_form['avec_event'] = false;
                     
                     $temoignage->setProduit($objet);
                     break;

@@ -7,62 +7,21 @@
     <h1>Fiche de l'événement #{{ evenement.id }} - {{ evenement.nom }}</h1>
     
     {% include 'elements/arborescence.html.twig' %}
+    <div id="bloc_evenement">
+    	<div class="row">
+    		<div class="col-md-4 offset-md-4">
+    			<div class="progress" style="height: 25px;">
+    				<div class="progress-bar progress-bar-striped progress-bar-animated"
+    					role="progressbar" aria-valuenow="75" aria-valuemin="0"
+    					aria-valuemax="100" style="width: 50%">Chargement des
+    					informations de l'événement...</div>
+    			</div>
+    		</div>
+    	</div>
+    </div>
     
-    <table  class="table table-sm">
-    	<tr>
-    		<th scope="col"> Nom </th>
-    		<td> {{ evenement.nom }} </td>
-    	</tr>
-    	<tr>
-    		<th scope="col"> Date</th>
-    		<td> {{ evenement.dateDebut | date('d/m/Y H:i') }} - {{ evenement.dateFin | date('d/m/Y H:i') }} </td>
-    	</tr>
-    	<tr>
-    		<th scope="col"> Description </th>
-    		<td> {{ evenement.description }} </td>
-    	</tr>
-    	<tr>
-    		<th scope="col"> Type </th>
-    		<td> {{ evenement.type |typeEvent }} </td>
-    	</tr>
-    	<tr>
-    		<th scope="col"> Nombre maximum de participants </th>
-    		<td> {{ evenement.nombreMax }} </td>
-    	</tr>
-    	<tr>
-    		<th scope="col"> Tranche d'âge </th>
-    		<td>
-    			{% for tranche in evenement.trancheAge %} 
-    		        {{ tranche | trancheAge }}<br />
-    		    {% endfor %}
-    		</td>
-    	</tr>
-    	<tr>
-    		<th scope="col"> Date limite d'inscription </th>
-    		<td> {{ evenement.dateFinInscription | date('d/m/Y H:i') }} </td>
-    	</tr>
-    	<tr>
-    		<th scope="col"> Informations complémentaires </th>
-    		<td> {{ evenement.informationComplementaire }} </td>
-    	</tr>
-    	<tr>
-    		<th scope="col"> Statut </th>
-    		<td> {{ evenement.statut | statutEvent }} </td>
-    	</tr>
-    	<tr>
-    		<th scope="col"> Lieu </th>
-    		<td>
-    			{{ evenement.nomLieu }}<br />
-    		    {{ evenement.numeroVoie }}, {{ evenement.voie }} <br />
-    			{{ evenement.codePostal }} {{ evenement.ville }} <br />
-    		</td>
-    	</tr>
-    </table>
-    <br />
-    
-    
-    
-
+	<hr>
+	
     <div id="bloc_evenement_temoignage">
     	<div class="row">
     		<div class="col-md-4 offset-md-4">
@@ -70,14 +29,14 @@
     				<div class="progress-bar progress-bar-striped progress-bar-animated"
     					role="progressbar" aria-valuenow="75" aria-valuemin="0"
     					aria-valuemax="100" style="width: 50%">Chargement des
-    					informations du patient...</div>
+    					témoignages sur l'événement...</div>
     			</div>
     		</div>
     	</div>
     </div>
     
     <!-- Modal -->
-    <div class="modal fade" id="modal_temoignage_global" tabindex="-1" role="dialog">
+    <div class="modal fade" id="modal_evenement_global" tabindex="-1" role="dialog">
     	<div class="modal-dialog" role="document">
     		<div class="modal-content" id="bloc_modal"></div>
     	</div>
@@ -93,6 +52,7 @@
 
 {% block script %}
  	<script src="{{ asset('assets/js/Temoignage/Temoignage.js') }}?{{ date().timestamp }}"></script>
+ 	<script src="{{ asset('assets/js/evenement/Evenement.js') }}?{{ date().timestamp }}"></script>
 {% endblock %}
 
 {% block javascripts %}
@@ -100,10 +60,20 @@
     
     $(document).ready(function() {
 
+    	var paramsE = {
+				url_ajax_see : '{{path('evenement_ajax_see', {'id': evenement.id}) }}',
+				id_content_modal : '#bloc_modal',
+				id_modal : '#modal_evenement_global',
+				id_global : '#bloc_evenement'
+		};
+        
+    	Evenement.Launch(paramsE);
+    	Evenement.LoadEvenement();
+		
     	var params = {
 				url_ajax_see : '{{path('temoignage_ajax_see', {'id': evenement.id, 'type': 'evenement'}) }}',
 				id_content_modal : '#bloc_modal',
-				id_modal : '#modal_temoignage_global',
+				id_modal : '#modal_evenement_global',
 				id_global : '#bloc_evenement_temoignage',
 		};
         

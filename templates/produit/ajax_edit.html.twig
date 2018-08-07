@@ -1,0 +1,53 @@
+<div id="ajax_produit_edit">
+	{{ form_start(form) }}
+	<div class="modal-header">
+		<h5 class="modal-title">
+			Modification du produit #{{ produit.id }} - {{ produit.titre }}
+		</h5>
+		<button type="button" class="close" data-dismiss="modal"
+			aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+
+	<div class="modal-body">
+		{{ form_row(form.titre) }}
+    	{{ form_row(form.type) }}
+    	{{ form_row(form.genre) }}
+    	{{ form_row(form.texte) }}
+    	{{ form_row(form.texte_2) }}
+    	{{ form_row(form.tranche_age) }}
+    	{{ form_row(form.quantite) }}
+    	{{ form_row(form.date_envoi) }}
+        
+        <div class="shadow-sm p-3 mb-5 bg-white rounded border">
+            {{ form_row(form.produitEtablissements) }}
+          	<a href="#" id="add_etablissement" class="btn btn-primary btn-sm">Ajouter un établissement</a>
+      	</div>
+	</div>
+        
+    <div class="modal-footer">
+		{{ form_widget(form.save) }}
+	</div>
+	
+	{{ form_rest(form) }}
+    {{ form_errors(form) }}
+    {{ form_end(form) }}
+
+</div>
+
+{% block javascripts %}
+
+    <script type="text/javascript">
+    
+    $('#modal_produit_global').modal({
+ 	   'show' : true,
+ 	   'backdrop' : 'static'
+ 	});
+
+ 	var url = '{{path('produit_ajax_edit', {'id': produit.id }) }}';
+	Produit.EventEditSubmit(url);
+	
+    </script> 
+
+{% endblock %}

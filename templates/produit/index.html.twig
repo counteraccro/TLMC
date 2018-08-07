@@ -55,8 +55,8 @@
         			</td>
         			<td>{{ produit.genre | genre }}</td>
         			<td>{{ produit.quantite }}</td>
-        			<td>{{ produit.dateEnvoi |date("m/d/Y H:i") }}</td>
-        			<td>{{ produit.dateCreation |date("m/d/Y H:i") }}</td>
+        			<td>{{ produit.dateEnvoi |date("d/m/Y H:i") }}</td>
+        			<td>{{ produit.dateCreation |date("d/m/Y H:i") }}</td>
         			<td>
         			    {{ actionSee(path('produit_see', {'id' : produit.id, 'page' : pagination.page})) | raw }}
         			    {% if is_granted("ROLE_ADMIN") %}
