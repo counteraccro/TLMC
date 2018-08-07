@@ -48,18 +48,16 @@ class QuestionnaireExtension extends AbstractExtension
                     $html .= $this->ChoiceType($question);
                     break;
                 case 'TextType':
-
-                    ;
+                    $html .= $this->TextType($question);
                     break;
                 case 'TextareaType':
-                    ;
+                    $html .= $this->TextAreaType($question);
                     break;
                 case 'CheckboxType':
-                    ;
+                    $html .= $this->CheckboxType($question);
                     break;
                 case 'RadioType':
                     $html .= $this->RadioType($question);
-                    ;
                     break;
                 default:
                     ;
@@ -86,7 +84,7 @@ class QuestionnaireExtension extends AbstractExtension
         }
 
         $html .= '<div class="form-group">
-                    <label for="q-' . $question->getId() . '">' . $question->getLibelle() . '</label>
+                    <label for="q-' . $question->getId() . '">' . $question->getLibelle() . " - " . "ID # " . $question->getId() . '</label>
                     <select class="form-control" id="q-' . $question->getId() . '" name="questionnaire[question][q-' . $question->getId() . ']">';
         
         $data_value = json_decode($question->getListeValeur());
@@ -108,8 +106,116 @@ class QuestionnaireExtension extends AbstractExtension
 
         $html .= '</div>';
 
-        $html .= '</div>';
+        $html .= '</div><hr>';
 
+        return $html;
+    }
+    
+    /**
+     *
+     * @param Question $question
+     */
+    private function TextType(Question $question)
+    {
+         $html = '';
+        $html .= '<div id="bloc-' . $question->getId() . '">';
+        
+        if (! empty($question->getLibelleTop())) {
+            $html .= '<p>' . $question->getLibelleTop() . '</p>';
+        }
+        
+        $html .= '<div class="form-group">
+                    <label for="q-' . $question->getId() . '">' . $question->getLibelle() . " - " . "ID # " . $question->getId() . '</label>
+                    <input class="form-control" id="q-' . $question->getId() . '" name="questionnaire[question][q-' . $question->getId() . ']">';
+            
+        if (! empty($question->getLibelleBottom())) {
+            $html .= '<small id="help-q-' . $question->getId() . '" class="form-text text-muted">' . $question->getLibelleBottom() . '</small>';
+        }
+        
+        $html .= '</div>';
+        
+        $html .= '</div><hr>';
+        
+        return $html;
+    }
+    
+    /**
+     *
+     * @param Question $question
+     */
+    private function TextAreaType(Question $question)
+    {
+        $html = '';
+        $html .= '<div id="bloc-' . $question->getId() . '">';
+        
+        if (! empty($question->getLibelleTop())) {
+            $html .= '<p>' . $question->getLibelleTop() . '</p>';
+        }
+        
+        $html .= '<div class="form-group">
+                    <label for="q-' . $question->getId() . '">' . $question->getLibelle() . " - " . "ID # " . $question->getId() . '</label>
+                    <textarea  class="form-control" id="q-' . $question->getId() . '" name="questionnaire[question][q-' . $question->getId() . ']">';
+        $html .= '</textarea>';
+        
+        if (! empty($question->getLibelleBottom())) {
+            $html .= '<small id="help-q-' . $question->getId() . '" class="form-text text-muted">' . $question->getLibelleBottom() . '</small>';
+        }
+     
+        $html .= '</div>';
+       
+        $html .= '</div><hr>';
+        
+        return $html;
+    }
+    
+    /**
+     *
+     * @param Question $question
+     */
+    private function CheckboxType(Question $question)
+    {
+        $html = '';
+        $html .= '<div id="bloc-' . $question->getId() . '">';
+        
+        if (! empty($question->getLibelleTop())) {
+            $html .= '<p>' . $question->getLibelleTop() . '</p>';
+        }
+        
+        $html .= '<div class="form-group">
+                    <label for="q-' . $question->getId() . '">' . $question->getLibelle() . " - " . "ID # " . $question->getId() . '</label>
+                    <div class="form-check">';
+                    
+        $data_value = json_decode($question->getListeValeur());
+        foreach($data_value as $val)
+        {
+            $checked = '';
+            if($val->value == $question->getValeurDefaut())
+            {
+                $checked = ' checked';
+            }
+          
+            $html .= '<input class="form-check-input" type="checkbox" value="' . $val->value . '"' . $checked . '" id="q-' . $question->getId() . '" name="questionnaire[question][q-' . $question->getId() . ']">';
+//             $tmp = $question->getListeValeur();
+//             $valeur_label = (json_decode($tmp));
+            
+//             foreach ($valeur_label as $key => $value)
+//             {
+//                 var_dump ('<strong>', $key, '</strong> => ', $value, '<br />');
+//             }
+            $html .= '<label class="form-check-label" for="q-' . $question->getId() . '">' . "récupérer les valeurs de l'objet (libelle)" . '</label><br>';
+        }
+        $html .= '</select>';
+        
+        if (! empty($question->getLibelleBottom())) {
+            $html .= '<small id="help-q-' . $question->getId() . '" class="form-text text-muted">' . $question->getLibelleBottom() . '</small>';
+        }
+        
+        $html .= '</div>';
+        
+        $html .= '</div>';
+        
+        $html .= '</div><hr>';
+        
         return $html;
     }
     
@@ -127,7 +233,7 @@ class QuestionnaireExtension extends AbstractExtension
         }
         
         $html .= '<div class="form-group">
-                    <label for="q-' . $question->getId() . '">' . $question->getLibelle() . '</label>
+                    <label for="q-' . $question->getId() . '">' . $question->getLibelle() . " - " . "ID # " . $question->getId() . '</label>
                     <div class="form-check">';
         
         $data_value = json_decode($question->getListeValeur());
@@ -151,7 +257,7 @@ class QuestionnaireExtension extends AbstractExtension
         
         $html .= '</div>';
         
-        $html .= '</div>';
+        $html .= '</div><hr>';
         
         return $html;
     }  

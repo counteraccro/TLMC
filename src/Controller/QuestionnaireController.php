@@ -269,8 +269,6 @@ class QuestionnaireController extends AppController
             if ($_SERVER['REQUEST_METHOD'] == "POST") 
             {
                 $this->pre($_POST);
-
-                //$this->pre($request->request->all());
             }
         }
         
