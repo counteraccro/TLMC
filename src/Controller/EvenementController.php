@@ -106,17 +106,27 @@ class EvenementController extends AppController
      * Fiche d'un événement
      *
      * @Route("/evenement/see/{id}/{page}", name="evenement_see")
+     * @Route("/evenement/ajax/see/{id}", name="evenement_ajax_see")
      * @ParamConverter("evenement", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE')")
-     *
+     * 
+     * @param Request $request
      * @param SessionInterface $session
      * @param Evenement $evenement
      * @param int $page
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function seeAction(SessionInterface $session, Evenement $evenement, int $page)
+    public function seeAction(Request $request, SessionInterface $session, Evenement $evenement, int $page = 1)
     {
         $arrayFilters = $this->getDatasFilter($session);
+        
+        // Si appel Ajax, on renvoi sur la page ajax
+        if ($request->isXmlHttpRequest()) {
+            
+            return $this->render('evenement/ajax_see.html.twig', array(
+                'evenement' => $evenement,
+            ));
+        }
         
         return $this->render('evenement/see.html.twig', array(
             'page' => $page,
@@ -189,6 +199,7 @@ class EvenementController extends AppController
      * Edition d'un événement
      *
      * @Route("/evenement/edit/{id}/{page}", name="evenement_edit")
+     * @Route("/evenement/ajax/edit/{id}", name="evenement_ajax_edit")
      * @ParamConverter("evenement", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
      *
@@ -198,7 +209,7 @@ class EvenementController extends AppController
      * @param int $page
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function editAction(SessionInterface $session, Request $request, Evenement $evenement, int $page)
+    public function editAction(SessionInterface $session, Request $request, Evenement $evenement, int $page = 1)
     {
         $arrayFilters = $this->getDatasFilter($session);
         
@@ -212,11 +223,26 @@ class EvenementController extends AppController
             $em->persist($evenement);
             $em->flush();
             
+            if ($request->isXmlHttpRequest()) {
+                return $this->json(array(
+                    'statut' => true
+                ));
+            }
+            
             return $this->redirect($this->generateUrl('evenement_listing', array(
                 'page' => $page,
                 'field' => $arrayFilters['field'],
                 'order' => $arrayFilters['order']
             )));
+        }
+        
+        // Si appel Ajax, on renvoi sur la page ajax
+        if ($request->isXmlHttpRequest()) {
+            
+            return $this->render('evenement/ajax_edit.html.twig', [
+                'evenement' => $evenement,
+                'form' => $form->createView()
+            ]);
         }
         
         return $this->render('evenement/edit.html.twig', array(

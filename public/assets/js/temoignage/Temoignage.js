@@ -47,7 +47,7 @@ Temoignage.Launch = function(params) {
 			//on passe l'url et l'id_done
 
 			$(Temoignage.id_container_global).showLoading();
-			console.log($(this).attr('href'));
+			
 			Temoignage.Ajax($(this).attr('href'), Temoignage.id_content_modal);
 			return false;
 		});
@@ -101,7 +101,7 @@ Temoignage.Launch = function(params) {
 			//on passe l'url et l'id_done
 
 			$(Temoignage.id_container_global).showLoading();
-			console.log($(this).attr('href'));
+			
 			Temoignage.Ajax($(this).attr('href'), Temoignage.id_content_modal);
 			return false;
 		});

@@ -2,18 +2,18 @@
 
 namespace App\Form;
 
-use App\Entity\ProduitSpecialite;
+use App\Entity\SpecialiteEvenement;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use App\Entity\Specialite;
-use App\Entity\Produit;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use App\Entity\Specialite;
+use App\Entity\Evenement;
 
-class ProduitSpecialiteType extends AbstractType
+class SpecialiteEvenementType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -24,11 +24,11 @@ class ProduitSpecialiteType extends AbstractType
                 'disabled' => $options['disabled_specialite']
             ));
         }
-        if ($options['avec_produit']) {
-            $builder->add('produit', EntityType::class, array(
-                'class' => Produit::class,
-                'choice_label' => 'titre',
-                'disabled' => $options['disabled_produit']
+        if ($options['avec_event']) {
+            $builder->add('evenement', EntityType::class, array(
+                'class' => Evenement::class,
+                'choice_label' => 'nom',
+                'disabled' => $options['disabled_event']
             ));
         }
         $builder->add('quantite', IntegerType::class, array(
@@ -52,13 +52,13 @@ class ProduitSpecialiteType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => ProduitSpecialite::class,
+            'data_class' => SpecialiteEvenement::class,
             'label_submit' => 'Valider',
             'avec_bouton' => true,
             'avec_specialite' => true,
-            'avec_produit' => true,
+            'avec_event' => true,
             'disabled_specialite' => false,
-            'disabled_produit' => false
+            'disabled_event' => false
         ]);
     }
 }

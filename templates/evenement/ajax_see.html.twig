@@ -1,0 +1,74 @@
+	<div class="card shadow-sm">
+         <div class="card-header bg-light">
+           	 <b>Evénement :</b> {{ evenement.nom }}
+           	<div class="float-right"> 
+           		<a href="{{path('evenement_ajax_edit', {'id': evenement.id }) }}" id="btn-edit-evenement" class="btn btn-dark"><span class="oi oi-pencil"></span> Editer l'événement</a>
+           	</div>
+         </div>
+         <div class="card-body">
+
+        	<table  class="table table-sm">
+            	<tr>
+            		<th scope="col"> Nom </th>
+            		<td> {{ evenement.nom }} </td>
+            	</tr>
+            	<tr>
+            		<th scope="col"> Date</th>
+            		<td> {{ evenement.dateDebut | date('d/m/Y H:i') }} - {{ evenement.dateFin | date('d/m/Y H:i') }} </td>
+            	</tr>
+            	<tr>
+            		<th scope="col"> Description </th>
+            		<td> {{ evenement.description }} </td>
+            	</tr>
+            	<tr>
+            		<th scope="col"> Type </th>
+            		<td> {{ evenement.type |typeEvent }} </td>
+            	</tr>
+            	<tr>
+            		<th scope="col"> Nombre maximum de participants </th>
+            		<td> {{ evenement.nombreMax }} </td>
+            	</tr>
+            	<tr>
+            		<th scope="col"> Tranche d'âge </th>
+            		<td>
+            			{% for tranche in evenement.trancheAge %} 
+            		        {{ tranche | trancheAge }}<br />
+            		    {% endfor %}
+            		</td>
+            	</tr>
+            	<tr>
+            		<th scope="col"> Date limite d'inscription </th>
+            		<td> {{ evenement.dateFinInscription | date('d/m/Y H:i') }} </td>
+            	</tr>
+            	<tr>
+            		<th scope="col"> Informations complémentaires </th>
+            		<td> {{ evenement.informationComplementaire }} </td>
+            	</tr>
+            	<tr>
+            		<th scope="col"> Statut </th>
+            		<td> {{ evenement.statut | statutEvent }} </td>
+            	</tr>
+            	<tr>
+            		<th scope="col"> Lieu </th>
+            		<td>
+            			{{ evenement.nomLieu }}<br />
+            		    {{ evenement.numeroVoie }}, {{ evenement.voie }} <br />
+            			{{ evenement.codePostal }} {{ evenement.ville }} <br />
+            		</td>
+            	</tr>
+            </table>
+    	</div>
+	</div>
+	
+{% block javascripts %}
+
+    <script type="text/javascript">
+
+    $(document).ready(function() {
+        var id_btn_evenement = '#btn-edit-evenement';
+        Evenement.EventEdit(id_btn_evenement);
+    });
+    
+    </script> 
+
+{% endblock %}
