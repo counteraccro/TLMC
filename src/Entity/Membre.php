@@ -38,7 +38,7 @@ class Membre implements AdvancedUserInterface
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
      * @Assert\Regex(
-     *     pattern="/(\+\d+(\s|-))?\d(\s|-)?(\d{2}(\s|-)?){4}/",
+     *     pattern="/(\+\d+(\s|-))?\d(\s|-)?(\d{2}(\s|-)?){5}/",
      *     message="Le numéro de téléphone est invalide"
      * )
      */
