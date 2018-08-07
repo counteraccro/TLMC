@@ -20,6 +20,7 @@ encoding//templates/extension_formulaire/index.html.twig=UTF-8
 encoding//templates/famille/add.html.twig=UTF-8
 encoding//templates/famille/ajax_add.html.twig=UTF-8
 encoding//templates/famille/ajax_edit.html.twig=UTF-8
+encoding//templates/famille/ajax_see.html.twig=UTF-8
 encoding//templates/famille/edit.html.twig=UTF-8
 encoding//templates/famille/index.html.twig=UTF-8
 encoding//templates/famille/see.html.twig=UTF-8
