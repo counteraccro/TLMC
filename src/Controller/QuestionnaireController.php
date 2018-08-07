@@ -128,7 +128,8 @@ class QuestionnaireController extends AppController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $questionnaire->setDisabled(0);
-
+       
+            
             $em = $this->getDoctrine()->getManager();
             $em->persist($questionnaire);
             $em->flush();
@@ -252,5 +253,23 @@ class QuestionnaireController extends AppController
             'field' => $arrayFilters['field'],
             'order' => $arrayFilters['order']
         ));
+    }
+    
+    /**
+     * Démo questionnaire
+     *
+     * @Route("/questionnaire/demo/{slug}", name="questionnaire_demo")
+     * @ParamConverter("questionnaire", options={"mapping": {"slug": "slug"}})
+     * @Security("is_granted('ROLE_ADMIN')")
+     */
+    public function demoAction(Request $request, Questionnaire $questionnaire)
+    {
+        
+        $this->pre(array());
+        
+        return $this->render('questionnaire/demo.html.twig', [
+            'controller_name' => 'QuestionnaireDemoController',
+            'questionnaire' => $questionnaire
+        ]);
     }
 }

@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+
+<h1>Titre</h1>
+
+{{ questionnaire(questionnaire, path('questionnaire_demo', {'slug': questionnaire.slug })) | raw }}
+
+
+{% endblock %}

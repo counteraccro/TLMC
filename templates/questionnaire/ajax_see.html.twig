@@ -6,6 +6,7 @@
             	<div class="float-right">
             		<a href="{{path('question_ajax_add', {'id': questionnaire.id }) }}" id="btn-add-question" class="btn btn-success btn-add-question"> <span class="oi oi-plus"></span> Nouvelle question</a>  
             		<a href="{{path('questionnaire_ajax_edit', {'id': questionnaire.id }) }}" id="btn-edit-questionnaire" class="btn btn-dark"><span class="oi oi-pencil"></span> Editer le questionnaire</a>
+            		<a href="{{path('questionnaire_demo', {'slug': questionnaire.slug }) }}" id="btn-demo-questionnaire" class="btn btn-info"><span class="oi oi-monitor"></span> Tester le questionnaire</a>
             	</div>
             </div>
           	<div class="card-body">
