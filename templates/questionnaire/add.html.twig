@@ -11,7 +11,7 @@ Nouveau questionnaire
 {% include 'elements/arborescence.html.twig' %}
 
 {{ form_start(form) }}
-
+{{ form_errors(form) }}
 {{ form_row(form.slug) }}
 <div class="row">
 	<div class="col-sm">
@@ -29,7 +29,6 @@ Nouveau questionnaire
 {{ form_row(form.jour_relance) }}
 
 {{ form_rest(form) }}
-{{ form_errors(form) }}
 {{ form_end(form) }}
 
 {% block stylesheets %}
@@ -60,6 +59,10 @@ Nouveau questionnaire
         
 		Questionnaire.Launch(params);		
 		Questionnaire.EventOnTitle('#questionnaire_titre', '#questionnaire_slug', '#slug_text');
+
+		{% if not form.vars.valid %}
+			Questionnaire.Slug('#questionnaire_titre', '#questionnaire_slug', '#slug_text');
+		{% endif %}
     });
 		
     </script>

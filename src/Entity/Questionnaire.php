@@ -4,10 +4,16 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\QuestionnaireRepository")
+ * @UniqueEntity(
+ *     fields={"slug"},
+ *     errorPath="slug",
+ *     message="L'url saisie est déjà utilisée pour un autre questionnaire"
+ * )
  */
 class Questionnaire
 {
@@ -49,7 +55,7 @@ class Questionnaire
     private $disabled;
     
     /**
-     * @ORM\Column(type="string", length=300, nullable=true)
+     * @ORM\Column(type="string", length=255)
      */
     private $slug;
 

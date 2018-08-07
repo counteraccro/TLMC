@@ -70,38 +70,43 @@ Questionnaire.Launch = function(params) {
 	Questionnaire.EventOnTitle = function(id_title, id_slug, id_slug_text)
 	{
 		$(id_title).change(function() {
-			//Récupération de la valeur saisie pour le slug	
-			var textToSlug = $(this).val();
-
-			//Gestion des accents (exporter dans AppController ?)
-			String.prototype.sansAccent = function(){
-			    var accent = [
-			        /[\300-\306]/g, /[\340-\346]/g, // A, a
-			        /[\310-\313]/g, /[\350-\353]/g, // E, e
-			        /[\314-\317]/g, /[\354-\357]/g, // I, i
-			        /[\322-\330]/g, /[\362-\370]/g, // O, o
-			        /[\331-\334]/g, /[\371-\374]/g, // U, u
-			        /[\321]/g, /[\361]/g, // N, n
-			        /[\307]/g, /[\347]/g, // C, c
-			    ];
-			    var noaccent = ['A','a','E','e','I','i','O','o','U','u','N','n','C','c'];
-			     
-			    var str = this;
-			    for(var i = 0; i < accent.length; i++){
-			        str = str.replace(accent[i], noaccent[i]);
-			    }     
-			    return str;
-			}
-			
-			//Passage en format 'slug' : Gestion des accents, minuscules, espaces, caractères spéciaux 
-			var sluggedText = textToSlug.sansAccent().toLowerCase().replace(/ +/g,'-').replace(/[.'^$"_&@%#;\,!:²><()\[\]\/\{\}\*\+\-\=]/g, '');
-			
-			//Renvoi des élements en slug dans les champs
-			$(id_slug).val(sluggedText);
-			$(id_slug_text).html('<div class="d-inline p-2 bg-dark text-white">URL public du questionnaire : http://[URL-A-MODIFIER]/' + sluggedText + '</div>');
-					
-			return false;
+			Questionnaire.Slug(id_title, id_slug, id_slug_text)
 		});
+	}
+	
+	Questionnaire.Slug = function(id_title, id_slug, id_slug_text)
+	{
+		//Récupération de la valeur saisie pour le slug	
+		var textToSlug = $(id_title).val();
+
+		//Gestion des accents (exporter dans AppController ?)
+		String.prototype.sansAccent = function(){
+		    var accent = [
+		        /[\300-\306]/g, /[\340-\346]/g, // A, a
+		        /[\310-\313]/g, /[\350-\353]/g, // E, e
+		        /[\314-\317]/g, /[\354-\357]/g, // I, i
+		        /[\322-\330]/g, /[\362-\370]/g, // O, o
+		        /[\331-\334]/g, /[\371-\374]/g, // U, u
+		        /[\321]/g, /[\361]/g, // N, n
+		        /[\307]/g, /[\347]/g, // C, c
+		    ];
+		    var noaccent = ['A','a','E','e','I','i','O','o','U','u','N','n','C','c'];
+		     
+		    var str = this;
+		    for(var i = 0; i < accent.length; i++){
+		        str = str.replace(accent[i], noaccent[i]);
+		    }     
+		    return str;
+		}
+		
+		//Passage en format 'slug' : Gestion des accents, minuscules, espaces, caractères spéciaux 
+		var sluggedText = textToSlug.sansAccent().toLowerCase().replace(/ +/g,'-').replace(/[.'^$"_&@%#;\,!:²><()\[\]\/\{\}\*\+\=]/g, '');
+		
+		//Renvoi des élements en slug dans les champs
+		$(id_slug).val(sluggedText);
+		$(id_slug_text).html('<div class="d-inline p-2 bg-dark text-white">URL public du questionnaire : http://[URL-A-MODIFIER]/' + sluggedText + '</div>');
+				
+		return false;
 	}
 
 	/**
