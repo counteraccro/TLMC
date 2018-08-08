@@ -12,6 +12,7 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 
 class QuestionnaireExtension extends AbstractExtension
 {
+
     public function getFunctions(): array
     {
         return array(
@@ -21,18 +22,23 @@ class QuestionnaireExtension extends AbstractExtension
             ))
         );
     }
-    
-    //permet de déterminer s'il s'agit d'un url prod ou de démo
+
+    // permet de déterminer s'il s'agit d'un statut prod ou de démo
     const DEMO = 'demo';
+
     const PROD = 'prod';
-    
+
+    const EDIT = 'edit';
+
     private $params = [
-        'url' => '',
-        'statut' => self::PROD,
+        'submit_url' => '',
+        'edit_url' => '',
+        'statut' => self::PROD
     ];
 
     /**
-     *Fonction permettant d'identifier le type de question envoyée et de retourner un format en conséquence
+     * Fonction permettant d'identifier le type de question envoyée et de retourner un format en conséquence
+     *
      * @param Questionnaire $questionnaire
      * @return string
      */
@@ -46,7 +52,7 @@ class QuestionnaireExtension extends AbstractExtension
 
         /* @var Question $question */
         foreach ($questionnaire->getQuestions() as $question) {
-            
+
             switch ($question->getType()) {
                 case 'ChoiceType':
                     $html .= $this->ChoiceType($question);
@@ -76,6 +82,7 @@ class QuestionnaireExtension extends AbstractExtension
 
     /**
      * Fonction prévue dans le cas où la question comprend une liste déroulante
+     *
      * @param Question $question
      */
     private function ChoiceType(Question $question)
@@ -104,6 +111,7 @@ class QuestionnaireExtension extends AbstractExtension
 
     /**
      * Fonction prévue dans le cas où la question comprend un champ texte
+     *
      * @param Question $question
      */
     private function TextType(Question $question)
@@ -113,7 +121,7 @@ class QuestionnaireExtension extends AbstractExtension
 
         $html .= '<label for="q-' . $question->getId() . '">' . $question->getLibelle() . " - " . "ID # " . $question->getId() . '</label>
                     <input class="form-control" id="q-' . $question->getId() . '" name="questionnaire[question][q-' . $question->getId() . ']">';
-        
+
         $html .= $this->endBloc($question);
 
         return $html;
@@ -121,6 +129,7 @@ class QuestionnaireExtension extends AbstractExtension
 
     /**
      * Fonction prévue dans le cas où la question comprend une zone de texte
+     *
      * @param Question $question
      */
     private function TextAreaType(Question $question)
@@ -139,6 +148,7 @@ class QuestionnaireExtension extends AbstractExtension
 
     /**
      * Fonction prévue dans le cas où la question comprend une liste de réponses en format cases à cocher
+     *
      * @param Question $question
      */
     private function CheckboxType(Question $question)
@@ -170,6 +180,7 @@ class QuestionnaireExtension extends AbstractExtension
 
     /**
      * Fonction prévue dans le cas où la question comprend une liste de réponses au format radio (choix unique)
+     *
      * @param Question $question
      */
     private function RadioType(Question $question)
@@ -199,17 +210,19 @@ class QuestionnaireExtension extends AbstractExtension
 
     /**
      * Début HTML du questionnaire
+     *
      * @return string
      */
     private function beginForm()
     {
         $html = "";
-        $html .= '<form action="' . $this->params['url'] . '" method="post" class="">';
+        $html .= '<form action="' . $this->params['submit_url'] . '" method="post" class="">';
         return $html;
     }
 
     /**
      * Fin HTML du questionnaire
+     *
      * @return string
      */
     private function endForm()
@@ -222,6 +235,7 @@ class QuestionnaireExtension extends AbstractExtension
 
     /**
      * Création du début du bloc pour chaque question
+     *
      * @param Question $question
      */
     private function beginBloc(Question $question)
@@ -229,8 +243,20 @@ class QuestionnaireExtension extends AbstractExtension
         $html = '';
         $html .= '<div id="bloc-' . $question->getId() . '" class="card">';
 
+        $edit = '';
+        if ($this->params['statut'] == self::EDIT) {
+            
+            $edit_url = str_replace('/0', '/' . $question->getId(), $this->params['edit_url']);
+            
+            $edit = '<div class="float-right">
+                <a href="' . $edit_url . '" id="btn-edit-question" class="btn btn-primary btn-edit-question"><span class="oi oi-pencil"></span> Edition</a>
+            </div>';
+        }
+
         if (! empty($question->getLibelleTop())) {
-            $html .= '<div class="card-header">' . $question->getLibelleTop() . '</div>';
+            $html .= '<div class="card-header">' . $question->getLibelleTop() . $edit . '</div>';
+        } else if ($this->params['statut'] == self::EDIT) {
+            $html .= '<div class="card-header">' . $edit . '</div>';
         }
 
         $html .= '<div class="card-body"><div class="form-group">';
@@ -239,6 +265,7 @@ class QuestionnaireExtension extends AbstractExtension
 
     /**
      * Création de la fin du bloc pour chaque question
+     *
      * @param Question $question
      */
     private function endBloc(Question $question)
@@ -252,45 +279,41 @@ class QuestionnaireExtension extends AbstractExtension
         $html .= '</div></div></div><br />';
         return $html;
     }
-    
+
     /**
      * Bloc permettant d'insérer un message d'information à l'utilisateur
+     *
      * @return string
      */
     private function infoBloc()
     {
         $html = '';
-        
-        if($this->params['statut'] == self::DEMO)
-        {
+
+        if ($this->params['statut'] == self::DEMO) {
             $html .= '<div class="alert alert-info">Vous êtes actuellement en démo, aucune donnée saisie ne sera prise en compte.</div>';
         }
-        
+
         return $html;
     }
-    
+
     /**
      * Vérifie si les paramètres sont corrects
+     *
      * @param array $params
      * @throws Exception
      */
     private function checkTabParams($params)
     {
-        foreach($params as $key => $value)
-        {
-            if(isset($this->params[$key]))
-            {
+        foreach ($params as $key => $value) {
+            if (isset($this->params[$key])) {
                 $this->params[$key] = $value;
-            }
-            else
-            {
+            } else {
                 $str = '';
-                foreach($this->params as $pkey => $pvalue)
-                {
+                foreach ($this->params as $pkey => $pvalue) {
                     $str .= $pkey . ', ';
                 }
-                $str = substr($str, 0, -2);
-                
+                $str = substr($str, 0, - 2);
+
                 throw new Exception('Le paramètre ' . $key . ' n\'existe pas, paramètres attendus : ' . $str);
             }
         }

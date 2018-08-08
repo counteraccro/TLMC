@@ -21,52 +21,18 @@
           	</div>
         </div>
 	<hr>
+     		
+	{{ questionnaire(questionnaire, {
+	'submit_url' : path('questionnaire_demo', {'slug': questionnaire.slug }),
+	'statut' : 'edit',
+	'edit_url' : path('question_ajax_edit', {'id': 0 })
+    }) | raw }}
 
-	
-	{% for question in questionnaire.questions %}
-        <div class="card">
-        	<div class="card-header">
-        		<div class="float-right">
-        			<a href="{{path('question_ajax_edit', {'id': question.id }) }}" id="btn-edit-question" class="btn btn-primary btn-edit-question"><span class="oi oi-pencil"></span> Edition</a>
-        		</div>
-        		<b>Question ID :</b> #{{ question.id }}</br>
-        		{{ question.libelleTop }}
-        	</div>
-        
-        	<div class="card-body">
-        		
-        		<table class="table table-sm table-striped">
-        			<tr>
-        				<th>Libelle :  {{ question.libelle }}</th>
-        			</tr>
-        			<tr>
-        				<th>Type : {{ question.type }}</th>
-        			</tr>
-        			<tr>
-        				<th>valeurDefaut : {{ question.valeurDefaut }}</th>
-        			</tr>
-        			<tr>
-        				<th>obligatoire : {{ question.obligatoire }}</th>
-        			</tr>
-        			<tr>
-        				<th>regles : {{ question.regles }}</th>
-        			</tr>
-        			<tr>
-        				<th>messageErreur : {{ question.messageErreur }}</th>
-        			</tr>
-        			<tr>
-        				<th>ORDRE : {{ question.ordre }}</th>
-        			</tr>
-        		</table>
-        	</div>
-        	
-        	<div class="card-footer">
-        		{{ question.libelleBottom }}<br/>
-
-        	</div>
-        </div>
-		<hr>
-    {% endfor %}
+	{#
+	<div class="float-right">
+		<a href="{{path('question_ajax_edit', {'id': question.id }) }}" id="btn-edit-question" class="btn btn-primary btn-edit-question"><span class="oi oi-pencil"></span> Edition</a>
+	</div>
+	#}
 
 	{% block javascripts %}
     <script type="text/javascript">
