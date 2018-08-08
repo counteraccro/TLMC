@@ -24,6 +24,11 @@ class ProduitEtablissementType extends AbstractType
                 'disabled' => $options['disabled_etablissement']
             ));
         }
+        
+        if ($options['query_specialite']) {
+            $opt_spe['query_builder'] = $options['query_specialite'];
+        }
+        
         if ($options['avec_produit']) {
             $builder->add('produit', EntityType::class, array(
                 'class' => Produit::class,
@@ -58,7 +63,8 @@ class ProduitEtablissementType extends AbstractType
             'avec_etablissement' => true,
             'avec_produit' => true,
             'disabled_etablissement' => false,
-            'disabled_produit' => false
+            'disabled_produit' => false,
+            'query_specialite' => null
         ]);
     }
 }

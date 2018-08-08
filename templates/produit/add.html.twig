@@ -20,10 +20,17 @@
 	{{ form_row(form.quantite) }}
 	{{ form_row(form.date_envoi) }}
     
-    <div class="shadow-sm p-3 mb-5 bg-white rounded border">
-        {{ form_row(form.produitEtablissements) }}
-      	<a href="#" id="add_etablissement" class="btn btn-primary btn-sm">Ajouter un établissement</a>
-  	</div>
+    {% if add_etablissement == true %}
+        <div class="shadow-sm p-3 mb-5 bg-white rounded border">
+            {{ form_row(form.produitEtablissements) }}
+          	<a href="#" id="add_etablissement" class="btn btn-primary btn-sm">Ajouter un établissement</a>
+      	</div>
+    {% elseif add_specialite == true %}
+      	<div class="shadow-sm p-3 mb-5 bg-white rounded border">
+            {{ form_row(form.produitSpecialites) }}
+          	<a href="#" id="add_specialite" class="btn btn-primary btn-sm">Ajouter une spécialité </a>
+      	</div>
+  	{% endif %}
     
     {{ form_rest(form) }}
     {{ form_errors(form) }}
@@ -43,15 +50,29 @@
     
     $(document).ready(function() {
 
-		var params = {
-				id_container : 'div#produit_produitEtablissements',
-				id_btn_add : '#add_etablissement',
-				id_label_fieldset : '#label_collection_type',
-				btn_delete : '<a href="#" class="btn btn-danger btn-sm">Supprimer</a>',
-		};
-        
-    	FormAddCollection.Launch(params);
-		FormAddCollection.Event();
+		{% if add_etablissement == true %}
+    		var params = {
+    				id_container : 'div#produit_produitEtablissements',
+    				id_btn_add : '#add_etablissement',
+    				id_label_fieldset : '#label_collection_type',
+    				btn_delete : '<a href="#" class="btn btn-danger btn-sm">Supprimer</a>',
+    		};
+            
+        	FormAddCollection.Launch(params);
+    		FormAddCollection.Event();
+    		
+    	{% elseif add_specialite == true %}
+    		var params = {
+    				id_container : 'div#produit_produitSpecialites',
+    				id_btn_add : '#add_specialite',
+    				id_label_fieldset : '#label_collection_type',
+    				btn_delete : '<a href="#" class="btn btn-danger btn-sm">Supprimer</a>',
+    		};
+            
+        	FormAddCollection.Launch(params);
+    		FormAddCollection.Event();
+    		
+		{% endif %}
     });
     </script> 
 

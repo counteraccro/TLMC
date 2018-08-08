@@ -159,15 +159,19 @@ class ProduitController extends AppController
         
         $produit = new Produit();
         
-        $form = $this->createForm(ProduitType::class, $produit);
+        $form = $this->createForm(ProduitType::class, $produit, array('add_specialite' => true));
         
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             
             $em = $this->getDoctrine()->getManager();
             
-            foreach ($produit->getProduitEtablissements() as $etablissement){
-                $etablissement->setProduit($produit);
+            foreach ($produit->getProduitEtablissements() as $produitEtablissement){
+                $produitEtablissement->setProduit($produit);
+            }
+            
+            foreach ($produit->getProduitSpecialites() as $produitSpecialite){
+                $produitSpecialite->setProduit($produit);
             }
             
             $produit->setDateCreation(new \DateTime());
@@ -182,6 +186,8 @@ class ProduitController extends AppController
         return $this->render('produit/add.html.twig', array(
             'page' => $page,
             'form' => $form->createView(),
+            'add_specialite' => true,
+            'add_etablissement' => false,
             'paths' => array(
                 'home' => $this->indexUrlProject(),
                 'urls' => array(

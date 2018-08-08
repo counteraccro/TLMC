@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Form;
 
 use App\Entity\ProduitSpecialite;
@@ -15,14 +14,21 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class ProduitSpecialiteType extends AbstractType
 {
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $opt_spe = array(
+            'label' => 'Spécialité',
+            'class' => Specialite::class,
+            'choice_label' => 'service',
+            'disabled' => $options['disabled_specialite'],
+            'group_by' => function (Specialite $specialite) {
+                return $specialite->getEtablissement()->getNom();
+            }
+        );
+
         if ($options['avec_specialite']) {
-            $builder->add('specialite', EntityType::class, array(
-                'class' => Specialite::class,
-                'choice_label' => 'service',
-                'disabled' => $options['disabled_specialite']
-            ));
+            $builder->add('specialite', EntityType::class, $opt_spe);
         }
         if ($options['avec_produit']) {
             $builder->add('produit', EntityType::class, array(
@@ -38,7 +44,7 @@ class ProduitSpecialiteType extends AbstractType
             'widget' => 'choice',
             'years' => range(date('Y') - 1, date('Y') + 2)
         ));
-        
+
         if ($options['avec_bouton']) {
             $builder->add('save', SubmitType::class, array(
                 'label' => $options['label_submit'],

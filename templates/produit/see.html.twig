@@ -42,40 +42,64 @@
     		<div class="modal-content" id="bloc_modal"></div>
     	</div>
     </div>
-    <br>
+    
+    <hr>
     
     <div id="bloc_produit_etablissement" class="card">
     	<div class="card-header">
     		Etablissements
     	</div>
     	<div class="card-body">
-    		{% for etablissement in produit.produitEtablissements %}
-            	<ul>
-            		<li><b>{{ etablissement.etablissement.nom }}</b></li>
-            			<ul>
-                    		<li><b>Quantité :</b> {{ etablissement.quantite }}</li>
-                    		<li><b>Date :</b> {{ etablissement.date | date('d/m/Y') }}</li>
-                    		<li><b>Spécialités :</b></li>
-                        	    {% for specialite in produit.produitSpecialites %}
-                                  	{% if specialite.specialite.etablissement.id == etablissement.etablissement.id %}
-                                   		<li class="list-unstyled">
-                                   			<ul>
-                                   				<li>{{ specialite.specialite.service }} </li>
-                                					<ul>
-                                        				<li><b>Quantité :</b> {{ specialite.quantite }}</li> 
-                                        				<li><b>Date :</b> {{ specialite.date | date('d/m/Y') }}</li>
-                                    				</ul>
-                                    			</ul>
-                                    		</li>
-                                	   {% endif %}
-                                {% endfor %}
-                        	</ul>
-                		</ul>
-        	{% endfor %}
+    		<table class="table table-sm table-striped">
+         		<tr>
+        	   		<th> Etablissement </th>
+               		<th> Date </th>
+               		<th> Quantité </th>
+               		<th></th>
+               	</tr>
+               	{% for produitEtablissement in produit.produitEtablissements %}
+                   	<tr>
+                	    <td> {{ produitEtablissement.etablissement.nom }} </td>
+                   		<td> {{ produitEtablissement.date | date('d/m/Y H:i')}} </td>
+                   		<td> {{ produitEtablissement.quantite }} </td>
+                  		<td></td>
+                	</tr>
+              	{% endfor %}
+            </table>
     	</div>
     </div>
     
-    <br>
+    <hr>
+    
+    <div id="bloc_produit_specialite" class="card">
+    	<div class="card-header">
+    		Spécialités
+    	</div>
+    	<div class="card-body">
+    		<table class="table table-sm table-striped">
+         		<tr>
+           			{% if is_granted('ROLE_ADMIN') %}
+        	   			<th> Etablissement </th>
+               		{% endif %}
+               		<th> Spécialité </th>
+               		<th> Date </th>
+               		<th> Quantité </th>
+               		<th></th>
+               	</tr>
+               	{% for produitSpecialite in produit.produitSpecialites %}
+                   	<tr>
+                	    {% if is_granted('ROLE_ADMIN') %}
+                   			<td> {{ produitSpecialite.specialite.etablissement.nom }} </td>
+                   		{% endif %}
+                   		<td> {{ produitSpecialite.specialite.service }} </td>
+                   		<td> {{ produitSpecialite.date | date('d/m/Y H:i')}} </td>
+                   		<td> {{ produitSpecialite.quantite }} </td>
+                  		<td></td>
+                	</tr>
+              	{% endfor %}
+            </table>
+    	</div>
+    </div>
     
     <!-- <div id="bloc_produit_specialite" class="card">
     	<div class="card-header">

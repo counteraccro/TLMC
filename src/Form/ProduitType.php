@@ -45,23 +45,43 @@ class ProduitType extends AbstractType
             'label' => "Date d'envoi",
             'widget' => 'choice',
             'years' => range(date('Y'), date('Y') + 2)
-        ))
-            ->add('produitEtablissements', CollectionType::class, array(
-            'label' => 'Etablissements',
-            'label_attr' => array(
-                'id' => 'label_collection_type'
-            ),
-            'entry_type' => ProduitEtablissementType::class,
-            'entry_options' => array(
-                'label' => ' ',
-                'avec_produit' => false,
-                'avec_bouton' => false
-            ),
+        ));
 
-            'allow_add' => true,
-            'auto_initialize' => true
-        ))
-            ->add('save', SubmitType::class, array(
+        if ($options['add_etablissement']) {
+            $builder->add('produitEtablissements', CollectionType::class, array(
+                'label' => 'Etablissements',
+                'label_attr' => array(
+                    'id' => 'label_collection_type'
+                ),
+                'entry_type' => ProduitEtablissementType::class,
+                'entry_options' => array(
+                    'label' => ' ',
+                    'avec_produit' => false,
+                    'avec_bouton' => false
+                ),
+
+                'allow_add' => true,
+                'auto_initialize' => true
+            ));
+        }
+
+        if ($options['add_specialite']) {
+            $builder->add('produitSpecialites', CollectionType::class, array(
+                'label' => 'Spécialités',
+                'label_attr' => array(
+                    'id' => 'label_collection_type'
+                ),
+                'entry_type' => ProduitSpecialiteType::class,
+                'entry_options' => array(
+                    'label' => ' ',
+                    'avec_produit' => false,
+                    'avec_bouton' => false
+                ),
+                'allow_add' => true,
+                'auto_initialize' => true
+            ));
+        }
+        $builder->add('save', SubmitType::class, array(
             'label' => $options['label_submit'],
             'attr' => array(
                 'class' => 'btn btn-primary'
@@ -77,7 +97,9 @@ class ProduitType extends AbstractType
             'label_submit' => 'Valider',
             'genre' => ProduitController::GENRE,
             'type' => ProduitController::TYPE,
-            'trancheAge' => AppController::TRANCHE_AGE
+            'trancheAge' => AppController::TRANCHE_AGE,
+            'add_specialite' => FALSE,
+            'add_etablissement' => false
         ]);
     }
 }
