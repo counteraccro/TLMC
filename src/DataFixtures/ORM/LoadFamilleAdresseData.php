@@ -13,32 +13,32 @@ class LoadFamilleAdresseData extends Fixture implements DependentFixtureInterfac
     private $tabFamilleAdresse = [
         'FamilleAdresse' => [
             'FamilleAdresse-1' => [
-                'setNumeroVoie' => '19',
+                'setNumeroVoie' => 19,
                 'setVoie' => 'Boulevard des Jonquilles',
                 'setVille' => 'Chilly-Mazarin',
-                'setCodePostal' => '91380',
-                'setDisabled' => 1
+                'setCodePostal' => 91380,
+                'setDisabled' => false
             ],
             'FamilleAdresse-2' => [
-                'setNumeroVoie' => '13',
+                'setNumeroVoie' => 13,
                 'setVoie' => 'Avenue des Coquelicots',
                 'setVille' => 'Chatenay-Malabry',
-                'setCodePostal' => '92290',
-                'setDisabled' => 0
+                'setCodePostal' => 92290,
+                'setDisabled' => true
             ],
             'FamilleAdresse-3' => [
-                'setNumeroVoie' => '178',
+                'setNumeroVoie' => 178,
                 'setVoie' => 'Rue des Lilas',
                 'setVille' => 'Montreuil',
-                'setCodePostal' => '93100',
-                'setDisabled' => 1
+                'setCodePostal' => 93100,
+                'setDisabled' => false
             ],
             'FamilleAdresse-4' => [
-                'setNumeroVoie' => '2',
+                'setNumeroVoie' => 2,
                 'setVoie' => 'Avenue Charles de Gaulle',
                 'setVille' => 'Paris',
-                'setCodePostal' => '75002',
-                'setDisabled' => 1
+                'setCodePostal' => 75002,
+                'setDisabled' => false
             ]
         ]
     ];

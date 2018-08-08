@@ -24,16 +24,28 @@ class LoadTemoignageData extends Fixture implements DependentFixtureInterface
             'Temoignage-1' => [
                 'setEvenement' => 'Evenement-1',
                 'setMembre' => 'Membre-1',
-                'setTitre' => 'Super soirée',
+                'setTitre' => 'Super déjeuner',
                 'setCorps' => 'On s\'est éclatés :)',
                 'setPrenomTemoin' => 'Suzy',
                 'setLienParente' => '2',
                 'setVille' => 'Paris',
                 'setAge' => '51',
-                'setDisabled' => '1',
+                'setDisabled' => 1,
                 'setDateCreation' => '2018-01-05 13:18:32'
             ],
             'Temoignage-2' => [
+                'setEvenement' => 'Evenement-1',
+                'setMembre' => 'Membre-2',
+                'setTitre' => 'Un plaisir',
+                'setCorps' => 'Le repas était très bon.',
+                'setPrenomTemoin' => 'Henriette',
+                'setLienParente' => '2',
+                'setVille' => 'Paris',
+                'setAge' => '62',
+                'setDisabled' => 0,
+                'setDateCreation' => '2018-01-05 13:18:32'
+            ],
+            'Temoignage-3' => [
                 'setProduit' => 'Produit-1',
                 'setMembre' => 'Membre-2',
                 'setTitre' => 'Super cadeau',
@@ -42,8 +54,20 @@ class LoadTemoignageData extends Fixture implements DependentFixtureInterface
                 'setLienParente' => '3',
                 'setVille' => 'Nice',
                 'setAge' => '8',
-                'setDisabled' => '1',
+                'setDisabled' => 1,
                 'setDateCreation' => '2018-05-23 17:45:12'
+            ],
+            'Temoignage-4' => [
+                'setProduit' => 'Produit-2',
+                'setMembre' => 'Membre-2',
+                'setTitre' => 'Super cadeau',
+                'setCorps' => 'J\'y joue dès que je peux avec mes amis, c\'est super drôle.',
+                'setPrenomTemoin' => 'Kevin',
+                'setLienParente' => '3',
+                'setVille' => 'Toulon',
+                'setAge' => '25',
+                'setDisabled' => 0,
+                'setDateCreation' => '2018-05-23 09:12:13'
             ]
         ]
     ];

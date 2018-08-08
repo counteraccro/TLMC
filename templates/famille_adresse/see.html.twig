@@ -25,6 +25,10 @@
 		<th scope="col"> Code postal </th>
 		<td> {{ adresse.codePostal }} </td>
 	</tr>
+	<tr>
+		<th scope="col">Actif</th>
+		<td> {{ adresse.disabled | actif }} </td>
+	</tr>
 
 </table>
 {% endblock %}

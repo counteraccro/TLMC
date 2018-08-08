@@ -17,57 +17,57 @@ class LoadFamilleData extends Fixture implements DependentFixtureInterface
             'Famille-1' => [
                 'setNom' => 'Dupont',
                 'setPrenom' => 'Jean-Henri',
-                'setLienFamille' => '1',
+                'setLienFamille' => 0,
                 'setEmail' => 'jh.dupont@gmail.com',
-                'setPmr' => '0',
+                'setPmr' => false,
                 'setNumeroTel' => '0146598756',
                 'setFamilleAdresse' => 'FamilleAdresse-1',
                 'setPatient' => 'Patient-1',
-                'setDisabled' => 1
+                'setDisabled' => false
             ],
             'Famille-2' => [
                 'setNom' => 'Martin',
                 'setPrenom' => 'Marie',
-                'setLienFamille' => '2',
+                'setLienFamille' => 2,
                 'setEmail' => 'marie.martin.256@gmail.com',
-                'setPmr' => '1',
+                'setPmr' => true,
                 'setNumeroTel' => '0381454546',
                 'setFamilleAdresse' => 'FamilleAdresse-2',
                 'setPatient' => 'Patient-2',
-                'setDisabled' => 0
+                'setDisabled' => true
             ],
             'Famille-3' => [
                 'setNom' => 'Garcia',
                 'setPrenom' => 'Sergio',
-                'setLienFamille' => '3',
+                'setLienFamille' => 3,
                 'setEmail' => 's.garcia@gmail.com',
-                'setPmr' => '0',
+                'setPmr' => false,
                 'setNumeroTel' => '+33785924563',
                 'setFamilleAdresse' => 'FamilleAdresse-3',
                 'setPatient' => 'Patient-3',
-                'setDisabled' => 1
+                'setDisabled' => false
             ],
             'Famille-4' => [
                 'setNom' => 'Garcia',
                 'setPrenom' => 'Sandra',
-                'setLienFamille' => '2',
+                'setLienFamille' => 2,
                 'setEmail' => 's.garcia2@gmail.com',
-                'setPmr' => '0',
+                'setPmr' => false,
                 'setNumeroTel' => '+33685924563',
                 'setFamilleAdresse' => 'FamilleAdresse-3',
                 'setPatient' => 'Patient-3',
-                'setDisabled' => 1
+                'setDisabled' => false
             ],
             'Famille-5' => [
                 'setNom' => 'Sasoeur',
                 'setPrenom' => 'Marlene',
-                'setLienFamille' => '4',
+                'setLienFamille' => 4,
                 'setEmail' => 'm.sasoeur@gmail.com',
-                'setPmr' => '0',
+                'setPmr' => false,
                 'setNumeroTel' => '+33145566778',
                 'setFamilleAdresse' => 'FamilleAdresse-4',
                 'setPatient' => 'Patient-2',
-                'setDisabled' => 1
+                'setDisabled' => false
             ]
         ]
     ];

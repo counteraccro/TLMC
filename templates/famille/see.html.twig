@@ -41,6 +41,10 @@
 		<th scope="col"> Personne à mobilité réduite </th>
 		<td> {{ famille.pmr | bool }} </td>
 	</tr>
+	<tr>
+		<th scope="col">Actif</th>
+		<td> {{ famille.disabled | actif }} </td>
+	</tr>
 </table>
 
 {% endblock %}
