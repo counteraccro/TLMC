@@ -29,7 +29,7 @@ class LoadEvenementData extends Fixture
                 'setVoie' => 'rue des Sapins',
                 'setVille' => 'Alaska City',
                 'setCodePostal' => '99821',
-                'setTrancheAge' => '5-80',
+                'setTrancheAge' => array('5-80'),
                 'setStatut' => '2',
                 'setDateFinInscription' => '2017-12-23 17:00:00',
                 'setDisabled' => 1
@@ -48,7 +48,7 @@ class LoadEvenementData extends Fixture
                 'setVoie' => 'Boulevard de la batte',
                 'setVille' => 'Montreal',
                 'setCodePostal' => '568465746',
-                'setTrancheAge' => '8-12',
+                'setTrancheAge' => array('8-12'),
                 'setStatut' => '1',
                 'setDateFinInscription' => '2018-09-20 00:00:00',
                 'setDisabled' => 0
