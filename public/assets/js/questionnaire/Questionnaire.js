@@ -45,10 +45,8 @@ Questionnaire.Launch = function(params) {
 		});
 	}
 
-	//	 ------- Vue questionnaire/ajax_see.html.twig ----------//
-
 	/**
-	 * Evenement global
+	 * Evenement à l'édition
 	 */
 	Questionnaire.EventEdit = function(id)
 	{
@@ -74,6 +72,9 @@ Questionnaire.Launch = function(params) {
 		});
 	}
 	
+	/**
+	 * Génération du slug (url au format exemple : "questionnaire-de-satisfaction-soiree-evenement")
+	 */
 	Questionnaire.Slug = function(id_title, id_slug, id_slug_text)
 	{
 		//Récupération de la valeur saisie pour le slug	

@@ -5,9 +5,11 @@
 {% block body %}
 
 <h1>Test de questionnaire #{{ questionnaire.id }}</h1>
-
-{{ questionnaire(questionnaire, path('questionnaire_demo', {'slug': questionnaire.slug })) | raw }}
-
 <a class="btn btn-secondary mb-2" href="{{ path('questionnaire_see', {'id':questionnaire.id}) }}">Retour</a>
+
+{{ questionnaire(questionnaire, {
+	'url' : path('questionnaire_demo', {'slug': questionnaire.slug }),
+	'statut' : 'demo'
+}) | raw }}
 
 {% endblock %}

@@ -44,7 +44,7 @@ Preview.Launch = function(params) {
 
 	/**
 	 * Fonction liée à l'évènement 'au changement' du type de champ souhaité
-	 * Préparation du HTML
+	 * Préparation du HTML, renvoi à la vue
 	 */
 	Preview.Event = function()
 	{
@@ -75,7 +75,7 @@ Preview.Launch = function(params) {
 		});
 
 		/**
-		 * 
+		 * Load du preview incluant le message d'erreur
 		 */
 		$(Preview.id_global + ' #checkbox_msg_erreur').change(function() {
 		
@@ -112,7 +112,7 @@ Preview.Launch = function(params) {
 	}
 
 	/**
-	 * 
+	 * Fonctions à répéter
 	 */
 	Preview.subRepeatEvent = function()
 	{
@@ -342,4 +342,5 @@ Preview.Launch = function(params) {
 	}
 }
 
+//extension de Jquery pour récupérer le type d'élément HTML (ex : tag = 'div')
 $.fn.tagName = function() {    return this.get(0).tagName.toLowerCase(); }
