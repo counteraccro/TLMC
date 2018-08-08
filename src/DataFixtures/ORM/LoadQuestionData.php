@@ -78,7 +78,7 @@ class LoadQuestionData extends Fixture implements DependentFixtureInterface
             'Question-5' => [
                 'setQuestionnaire' => 'Questionnaire-3',
                 'setLibelle' => 'Dans quel contexte mangez-vous le plus souvent des bonbons ?',
-                'setLibelleTop' => 'Nous allons vous poser quelques questions sur les bonbons en général',
+                'setLibelleTop' => '',
                 'setLibelleBottom' => 'Ceci nous permettra d\'améliorer notre qualité de service à l\'avenir',
                 'setType' => 'TextareaType',
                 'setValeurDefaut' => 'Au cinéma, ou dans un lieu de tranquilité',
@@ -92,7 +92,7 @@ class LoadQuestionData extends Fixture implements DependentFixtureInterface
             'Question-6' => [
                 'setQuestionnaire' => 'Questionnaire-3',
                 'setLibelle' => 'Merci de nous indiquer votre marque de bonbons préférée',
-                'setLibelleTop' => 'Nous allons vous poser quelques questions sur les bonbons en général',
+                'setLibelleTop' => '',
                 'setLibelleBottom' => 'Ceci nous permettra d\'améliorer notre qualité de service à l\'avenir',
                 'setType' => 'TextType',
                 'setValeurDefaut' => 'Haribo',
@@ -106,7 +106,7 @@ class LoadQuestionData extends Fixture implements DependentFixtureInterface
             'Question-7' => [
                 'setQuestionnaire' => 'Questionnaire-3',
                 'setLibelle' => 'Quels bonbons énumérés ci-dessous avez-vous déjà goûté ?',
-                'setLibelleTop' => 'Nous allons vous poser quelques questions sur les bonbons en général',
+                'setLibelleTop' => 'Nous allons maintenant vous posez des questions sur vos goûts',
                 'setLibelleBottom' => 'Ceci nous permettra d\'améliorer notre qualité de service à l\'avenir',
                 'setType' => 'CheckboxType',
                 'setValeurDefaut' => 'Oursons guimauve',
@@ -120,7 +120,7 @@ class LoadQuestionData extends Fixture implements DependentFixtureInterface
             'Question-8' => [
                 'setQuestionnaire' => 'Questionnaire-3',
                 'setLibelle' => 'Combien de fois par mois mangez-vous des bonbons ?',
-                'setLibelleTop' => 'Nous allons vous poser quelques questions sur les bonbons en général',
+                'setLibelleTop' => '',
                 'setLibelleBottom' => 'Ceci nous permettra d\'améliorer notre qualité de service à l\'avenir',
                 'setType' => 'RadioType',
                 'setValeurDefaut' => '2',
