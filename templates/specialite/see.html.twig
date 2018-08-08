@@ -34,7 +34,31 @@
 		<td> {{ specialite.disabled | actif }} </td>
 	</tr>
 </table>
-<br />
+<hr>
+
+<div id="bloc_specialite_evenement" class="card">
+    	<div class="card-header">
+    		Spécialités
+    	</div>
+    	<div class="card-body">
+    		<table class="table table-sm table-striped">
+           		<tr>
+               		<th> Evenement </th>
+               		<th> Date </th>
+               		<th> Statut </th>
+               		<th></th>
+               	</tr>
+               	{% for specialiteEvenement in specialite.specialiteEvenements %}
+               	<tr>
+               		<td> {{ specialiteEvenement.evenement.nom }} </td>
+               		<td> {{ specialiteEvenement.date | date('d/m/Y H:i')}} </td>
+               		<td> {{ specialiteEvenement.statut }} </td>
+               		<td></td>
+               		</tr>
+               	{% endfor %}
+        	</table>
+    	</div>
+    </div>
 
 <div>Membre</div>
 <div>Patients</div>

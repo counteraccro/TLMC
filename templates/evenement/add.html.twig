@@ -32,10 +32,41 @@
 	
 	{{ form_row(form.statut) }}
     
+    <div class="shadow-sm p-3 mb-5 bg-white rounded border">
+        {{ form_row(form.specialite_evenements) }}
+      		<a href="#" id="add_specialite" class="btn btn-primary btn-sm">Ajouter une spécialité</a>
+  	</div>
+    
     {{ form_rest(form) }}
     {{ form_errors(form) }}
     {{ form_end(form) }}
     
 </div>
 	  
+{% endblock %}
+
+{% block script %}
+	<script src="{{ asset('assets/js/utils/FormAddCollection.js') }}?{{ date().timestamp }}"></script>
+{% endblock %}
+
+{% block javascripts %}
+
+    <script type="text/javascript">
+    
+    $(document).ready(function() {
+
+		var params = {
+				id_container : 'div#evenement_specialite_evenements',
+				id_btn_add : '#add_specialite',
+				id_label_fieldset : '#label_collection_type',
+				btn_delete : '<a href="#" class="btn btn-danger btn-sm">Supprimer</a>',
+		};
+        
+    	FormAddCollection.Launch(params);
+		FormAddCollection.Event();
+		
+    });
+    
+    </script> 
+
 {% endblock %}

@@ -18,6 +18,20 @@ class PatientType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $opt_spe = array(
+            'class' => Specialite::class,
+            'label' => 'Spécialité',
+            'choice_label' => 'service',
+            'disabled' => $options['disabled_specialite'],
+            'group_by' => function (Specialite $specialite) {
+                return $specialite->getEtablissement()->getNom();
+            }
+        );
+        if ($options['query_specialite']) {
+
+            $opt_spe['query_builder'] = $options['query_specialite'];
+        }
+
         $builder->add('nom')
             ->add('prenom', TextType::class, array(
             'label' => 'Prénom'
@@ -29,12 +43,7 @@ class PatientType extends AbstractType
             'required' => false,
             'label' => 'Personne à mobilité réduite'
         ))
-            ->add('specialite', EntityType::class, array(
-            'class' => Specialite::class,
-            'label' => 'Spécialité',
-            'choice_label' => 'service',
-            'disabled' => $options['disabled_specialite']
-        ));
+        ->add('specialite', EntityType::class, $opt_spe);
 
         if ($options['add']) {
             $builder->add('familles', CollectionType::class, array(
@@ -69,7 +78,8 @@ class PatientType extends AbstractType
             'label_submit' => 'Valider',
             'allow_extra_fields' => true,
             'disabled_specialite' => false,
-            'add' => true
+            'add' => true,
+            'query_specialite' => null
         ));
     }
 }

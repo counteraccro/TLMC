@@ -119,6 +119,11 @@ class Evenement
     private $evenementQuestionnaires;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\SpecialiteEvenement", mappedBy="evenement", cascade={"persist"})
+     */
+    private $specialiteEvenements;
+    
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Participant", mappedBy="evenement")
      */
     private $participants;
@@ -128,10 +133,11 @@ class Evenement
         $this->temoignages = new ArrayCollection();
         $this->extensionFormulaires = new ArrayCollection();
         $this->evenementQuestionnaires = new ArrayCollection();
+        $this->specialiteEvenements = new ArrayCollection();
         $this->participants = new ArrayCollection();
     }
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -208,12 +214,12 @@ class Evenement
         return $this;
     }
 
-    public function getImage()
+    public function getImage(): ?string
     {
         return $this->image;
     }
 
-    public function setImage($image): self
+    public function setImage(string $image): self
     {
         $this->image = $image;
 
@@ -284,14 +290,14 @@ class Evenement
     {
         return $this->tranche_age;
     }
-    
+
     public function setTrancheAge(array $tranche_age): self
     {
         $this->tranche_age = $tranche_age;
-        
+
         return $this;
     }
-    
+
     public function getInformationComplementaire(): ?string
     {
         return $this->information_complementaire;
@@ -327,16 +333,16 @@ class Evenement
 
         return $this;
     }
-    
+
     public function getDisabled(): ?int
     {
         return $this->disabled;
     }
-    
+
     public function setDisabled(int $disabled): self
     {
         $this->disabled = $disabled;
-        
+
         return $this;
     }
 
@@ -434,6 +440,37 @@ class Evenement
     }
 
     /**
+     * @return Collection|SpecialiteEvenement[]
+     */
+    public function getSpecialiteEvenements(): Collection
+    {
+        return $this->specialiteEvenements;
+    }
+
+    public function addSpecialiteEvenement(SpecialiteEvenement $specialiteEvenement): self
+    {
+        if (!$this->specialiteEvenements->contains($specialiteEvenement)) {
+            $this->specialiteEvenements[] = $specialiteEvenement;
+            $specialiteEvenement->setSpecialite($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSpecialiteEvenement(SpecialiteEvenement $specialiteEvenement): self
+    {
+        if ($this->specialiteEvenements->contains($specialiteEvenement)) {
+            $this->specialiteEvenements->removeElement($specialiteEvenement);
+            // set the owning side to null (unless already changed)
+            if ($specialiteEvenement->getSpecialite() === $this) {
+                $specialiteEvenement->setSpecialite(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
      * @return Collection|Participant[]
      */
     public function getParticipants(): Collection
@@ -463,4 +500,5 @@ class Evenement
 
         return $this;
     }
+
 }

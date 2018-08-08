@@ -27,13 +27,13 @@ class SpecialiteEvenement
     private $statut;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Specialite")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Specialite", inversedBy="specialiteEvenements")
      * @ORM\JoinColumn(nullable=false)
      */
     private $specialite;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Evenement")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Evenement", inversedBy="specialiteEvenements")
      * @ORM\JoinColumn(nullable=false)
      */
     private $evenement;

@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use App\Controller\EvenementController;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use App\Controller\AppController;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class EvenementType extends AbstractType
 {
@@ -65,6 +66,23 @@ class EvenementType extends AbstractType
             'widget' => 'choice',
             'years' => range(date('Y'), date('Y') + 2)
         ))
+        
+        ->add('specialite_evenements', CollectionType::class, array(
+            'label' => 'Spécialités',
+            'label_attr' => array(
+                'id' => 'label_collection_type'
+            ),
+            'entry_type' => SpecialiteEvenementType::class,
+            'entry_options' => array(
+                'label' => ' ',
+                'avec_event' => false,
+                'avec_bouton' => false,
+                'query_specialite' => $options['query_specialite']
+            ),
+            
+            'allow_add' => true,
+            'auto_initialize' => true
+        ))
             ->add('save', SubmitType::class, array(
             'label' => $options['label_submit'],
             'attr' => array(
@@ -81,7 +99,8 @@ class EvenementType extends AbstractType
             'label_submit' => 'Valider',
             'statut' => EvenementController::STATUT,
             'type' => EvenementController::TYPE,
-            'trancheAge' => AppController::TRANCHE_AGE
+            'trancheAge' => AppController::TRANCHE_AGE,
+            'query_specialite' => null
         ));
     }
 }

@@ -9,6 +9,7 @@ use App\Entity\Evenement;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Form\EvenementType;
+use App\Entity\Specialite;
 
 class EvenementController extends AppController
 {
@@ -162,12 +163,27 @@ class EvenementController extends AppController
         
         $evenement = new Evenement();
         
-        $form = $this->createForm(EvenementType::class, $evenement);
+        // requête pour le champ spécialité
+        $membre = $this->getMembre();
+        $sr = $this->getDoctrine()->getRepository(Specialite::class);
+        $query = $sr->createQueryBuilder('specialite')->innerJoin('specialite.etablissement', 'etablissement');
+        if ($membre->getSpecialite() && !$this->isAdmin()) {
+            $query->andWhere("etablissement.id = " . $membre->getEtablissement()
+                ->getId());
+        }
+        $query->orderBy('etablissement.nom, specialite.service', 'ASC');
+        
+        
+        $form = $this->createForm(EvenementType::class, $evenement, array('query_specialite' => $query));
         
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             
             $em = $this->getDoctrine()->getManager();
+            
+            foreach ($evenement->getSpecialiteEvenements() as $specialiteEvenement){
+                $specialiteEvenement->setEvenement($evenement);
+            }
             
             $evenement->setImage('https://images-eu.ssl-images-amazon.com/images/I/81xfN64QjVL.png');
             $evenement->setDisabled(0);

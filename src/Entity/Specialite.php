@@ -68,34 +68,22 @@ class Specialite
      * @ORM\OneToMany(targetEntity="App\Entity\ProduitSpecialite", mappedBy="specialite")
      */
     private $produitSpecialites;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\SpecialiteEvenement", mappedBy="specialite")
+     */
+    private $specialiteEvenements;
 
     public function __construct()
     {
         $this->membres = new ArrayCollection();
         $this->historiques = new ArrayCollection();
-        $this->evenement = new ArrayCollection();
-        $this->produits = new ArrayCollection();
         $this->patients = new ArrayCollection();
         $this->produitSpecialites = new ArrayCollection();
+        $this->specialiteEvenements = new ArrayCollection();
     }
 
-    /**
-     * @return mixed
-     */
-    public function getService()
-    {
-        return $this->service;
-    }
-
-    /**
-     * @param mixed $service
-     */
-    public function setService($service)
-    {
-        $this->service = $service;
-    }
-
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -124,6 +112,18 @@ class Specialite
         return $this;
     }
 
+    public function getService(): ?string
+    {
+        return $this->service;
+    }
+
+    public function setService(string $service): self
+    {
+        $this->service = $service;
+
+        return $this;
+    }
+
     public function getCodeLogistique(): ?string
     {
         return $this->code_logistique;
@@ -132,6 +132,18 @@ class Specialite
     public function setCodeLogistique(string $code_logistique): self
     {
         $this->code_logistique = $code_logistique;
+
+        return $this;
+    }
+
+    public function getDisabled(): ?int
+    {
+        return $this->disabled;
+    }
+
+    public function setDisabled(int $disabled): self
+    {
+        $this->disabled = $disabled;
 
         return $this;
     }
@@ -209,7 +221,7 @@ class Specialite
 
         return $this;
     }
-    
+
     /**
      * @return Collection|Patient[]
      */
@@ -272,15 +284,36 @@ class Specialite
         return $this;
     }
 
-    public function getDisabled(): ?int
+    /**
+     * @return Collection|SpecialiteEvenement[]
+     */
+    public function getSpecialiteEvenements(): Collection
     {
-        return $this->disabled;
+        return $this->specialiteEvenements;
     }
 
-    public function setDisabled(int $disabled): self
+    public function addSpecialiteEvenement(SpecialiteEvenement $specialiteEvenement): self
     {
-        $this->disabled = $disabled;
+        if (!$this->specialiteEvenements->contains($specialiteEvenement)) {
+            $this->specialiteEvenements[] = $specialiteEvenement;
+            $specialiteEvenement->setSpecialite($this);
+        }
 
         return $this;
     }
+
+    public function removeSpecialiteEvenement(SpecialiteEvenement $specialiteEvenement): self
+    {
+        if ($this->specialiteEvenements->contains($specialiteEvenement)) {
+            $this->specialiteEvenements->removeElement($specialiteEvenement);
+            // set the owning side to null (unless already changed)
+            if ($specialiteEvenement->getSpecialite() === $this) {
+                $specialiteEvenement->setSpecialite(null);
+            }
+        }
+
+        return $this;
+    }
+
+    
 }

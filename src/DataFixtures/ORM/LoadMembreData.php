@@ -51,8 +51,9 @@ class LoadMembreData extends Fixture implements DependentFixtureInterface
                 'setDecideur' => false,
                 'setAnnuaire' => true,
                 'setSignature' => 'à votre disposition, Emilie Ratier',
-                'setDisabled' => 1,
-                'setEtablissement' => 'Etablissement-2',
+                'setDisabled' => 0,
+                'setEtablissement' => 'Etablissement-3',
+                'setSpecialite' => 'Specialite-3',
                 'setSalt' => '1A2B3C4D5E6F7G8901',
                 'setRoles' => array('ROLE_BENEFICIAIRE')
             ],
@@ -88,6 +89,38 @@ class LoadMembreData extends Fixture implements DependentFixtureInterface
                 'setEtablissement' => 'Etablissement-3',
                 'setSpecialite' => 'Specialite-3',
                 'setSalt' => '1A2B3C4D5E6F7G8902',
+                'setRoles' => array('ROLE_BENEVOLE')
+            ],
+            'Membre-5' => [
+                'setNom' => 'Lucas',
+                'setUsername' => 'beneficiaire2',
+                'setPassword' => 'beneficiaire2',
+                'setPrenom' => 'Maureen',
+                'setNumeroTel' => '0106070809',
+                'setEmail' => 'maureen.lucas@gmail.com',
+                'setFonction' => 'Directeur adjoint',
+                'setDecideur' => true,
+                'setAnnuaire' => true,
+                'setSignature' => 'à votre disposition, Maureen Lucas',
+                'setDisabled' => 0,
+                'setEtablissement' => 'Etablissement-2',
+                'setSalt' => '1A2B3C4D5E6F7G8905',
+                'setRoles' => array('ROLE_BENEFICIAIRE')
+            ],
+            'Membre-6' => [
+                'setNom' => 'Lucas',
+                'setUsername' => 'benevole2',
+                'setPassword' => 'benevole2',
+                'setPrenom' => 'Andréa',
+                'setNumeroTel' => '0106070809',
+                'setEmail' => 'andrea.lucas@gmail.com',
+                'setFonction' => 'Bénévole',
+                'setDecideur' => true,
+                'setAnnuaire' => true,
+                'setSignature' => 'à votre disposition, Andréa Lucas',
+                'setDisabled' => 1,
+                'setEtablissement' => 'Etablissement-2',
+                'setSalt' => '1A2B3C4D5E6F7G8905',
                 'setRoles' => array('ROLE_BENEVOLE')
             ]
         ]
