@@ -25,15 +25,15 @@ class QuestionnaireExtension extends AbstractExtension
 
     // permet de déterminer s'il s'agit d'un statut prod ou de démo
     const DEMO = 'demo';
-
     const PROD = 'prod';
-
     const EDIT = 'edit';
 
     private $params = [
         'submit_url' => '',
         'edit_url' => '',
-        'statut' => self::PROD
+        'statut' => self::PROD,
+        'reponses' => array(), // Donnée retournée après le submit dans le $_POST
+        'errors' => array()
     ];
 
     /**
@@ -90,7 +90,7 @@ class QuestionnaireExtension extends AbstractExtension
         $html = '';
         $html = $this->beginBloc($question);
 
-        $html .= '<label for="q-' . $question->getId() . '">' . $question->getLibelle() . " - " . "ID # " . $question->getId() . '</label>
+        $html .= '<label for="q-' . $question->getId() . '">' . $question->getLibelle() . '</label>
                     <select class="form-control" id="q-' . $question->getId() . '" name="questionnaire[question][q-' . $question->getId() . ']">';
 
         $data_value = json_decode($question->getListeValeur());
@@ -119,8 +119,8 @@ class QuestionnaireExtension extends AbstractExtension
         $html = '';
         $html = $this->beginBloc($question);
 
-        $html .= '<label for="q-' . $question->getId() . '">' . $question->getLibelle() . " - " . "ID # " . $question->getId() . '</label>
-                    <input class="form-control" id="q-' . $question->getId() . '" name="questionnaire[question][q-' . $question->getId() . ']">';
+        $html .= '<label for="q-' . $question->getId() . '">' . $question->getLibelle() . '</label>
+                    <input class="form-control" placeholder="' . $question->getValeurDefaut() . '" id="q-' . $question->getId() . '" name="questionnaire[question][q-' . $question->getId() . ']" />';
 
         $html .= $this->endBloc($question);
 
@@ -137,8 +137,8 @@ class QuestionnaireExtension extends AbstractExtension
         $html = '';
         $html = $this->beginBloc($question);
 
-        $html .= '<label for="q-' . $question->getId() . '">' . $question->getLibelle() . " - " . "ID # " . $question->getId() . '</label>
-                    <textarea  class="form-control" id="q-' . $question->getId() . '" name="questionnaire[question][q-' . $question->getId() . ']">';
+        $html .= '<label for="q-' . $question->getId() . '">' . $question->getLibelle() . '</label>
+                    <textarea  class="form-control" placeholder="' . $question->getValeurDefaut() . '" id="q-' . $question->getId() . '" name="questionnaire[question][q-' . $question->getId() . ']">';
         $html .= '</textarea>';
 
         $html .= $this->endBloc($question);
@@ -156,10 +156,11 @@ class QuestionnaireExtension extends AbstractExtension
         $html = '';
         $html = $this->beginBloc($question);
 
-        $html .= '<label for="q-' . $question->getId() . '">' . $question->getLibelle() . " - " . "ID # " . $question->getId() . '</label>
+        $html .= '<label for="q-' . $question->getId() . '">' . $question->getLibelle() . '</label>
           <div class="form-check">';
 
         $data_value = json_decode($question->getListeValeur());
+        $i = 0;
         foreach ($data_value as $val) {
 
             $checked = '';
@@ -167,8 +168,9 @@ class QuestionnaireExtension extends AbstractExtension
                 $checked = ' checked';
             }
 
-            $html .= '<input class="form-check-input" type="checkbox" value="' . $val->value . '"' . $checked . '" id="q-' . $question->getId() . '" name="questionnaire[question][q-' . $question->getId() . ']">';
-            $html .= '<label class="form-check-label" for="q-' . $question->getId() . '">' . $val->libelle . '</label><br>';
+            $html .= '<input class="form-check-input" type="checkbox" value="' . $val->value . '"' . $checked . '" id="q-' . $question->getId() . '-' . $i . '" name="questionnaire[question][q-' . $question->getId() . '][' . $i . ']">';
+            $html .= '<label class="form-check-label" for="q-' . $question->getId() . '-' . $i . '">' . $val->libelle . '</label><br>';
+            $i++;
         }
 
         $html .= '</div>';
@@ -188,18 +190,21 @@ class QuestionnaireExtension extends AbstractExtension
         $html = '';
         $html = $this->beginBloc($question);
 
-        $html .= '<label for="q-' . $question->getId() . '">' . $question->getLibelle() . " - " . "ID # " . $question->getId() . '</label>
+        $html .= '<label for="q-' . $question->getId() . '">' . $question->getLibelle() . '</label>
           <div class="form-check">';
 
         $data_value = json_decode($question->getListeValeur());
+        
+        $i = 0;
         foreach ($data_value as $val) {
             $checked = '';
             if ($val->value == $question->getValeurDefaut()) {
                 $checked = ' checked';
             }
 
-            $html .= '<input class="form-check-input" type="radio" value="' . $val->value . '"' . $checked . '" id="q-' . $question->getId() . '" name="questionnaire[question][q-' . $question->getId() . ']">';
-            $html .= '<label class="form-check-label" for="q-' . $question->getId() . '">' . $val->value . '</label><br>';
+            $html .= '<input class="form-check-input" type="radio" value="' . $val->value . '"' . $checked . '" id="q-' . $question->getId() . '-' . $i . '" name="questionnaire[question][q-' . $question->getId() . ']">';
+            $html .= '<label class="form-check-label" for="q-' . $question->getId() . '-' . $i . '">' . $val->value . '</label><br>';
+            $i++;
         }
 
         $html .= '</div>';
@@ -228,7 +233,10 @@ class QuestionnaireExtension extends AbstractExtension
     private function endForm()
     {
         $html = "";
-        $html .= '<br /><button type="submit" name="validation" class="btn btn-primary mb-2">Valider</button>';
+        if($this->params['statut'] != self::EDIT)
+        {
+            $html .= '<br /><button type="submit" name="validation" class="btn btn-primary mb-2">Valider</button>';
+        }
         $html .= "</form>";
         return $html;
     }
@@ -240,9 +248,15 @@ class QuestionnaireExtension extends AbstractExtension
      */
     private function beginBloc(Question $question)
     {
+        
         $html = '';
         $html .= '<div id="bloc-' . $question->getId() . '" class="card">';
 
+        $txt_id = '';
+        if ($this->params['statut'] == self::DEMO || $this->params['statut'] == self::EDIT) {
+            $txt_id = "#" . $question->getId();
+        }
+        
         $edit = '';
         if ($this->params['statut'] == self::EDIT) {
             
@@ -252,13 +266,17 @@ class QuestionnaireExtension extends AbstractExtension
                 <a href="' . $edit_url . '" id="btn-edit-question" class="btn btn-primary btn-edit-question"><span class="oi oi-pencil"></span> Edition</a>
             </div>';
         }
-
-        if (! empty($question->getLibelleTop())) {
-            $html .= '<div class="card-header">' . $question->getLibelleTop() . $edit . '</div>';
-        } else if ($this->params['statut'] == self::EDIT) {
-            $html .= '<div class="card-header">' . $edit . '</div>';
+            
+        if (!empty($question->getLibelleTop())) {
+            $html .= '<div class="card-header">' . $txt_id . ' - '. $question->getLibelleTop() . $edit . '</div>';
         }
-
+        else if ($this->params['statut'] == self::EDIT) {
+            $html .= '<div class="card-header">' . $txt_id . $edit . '</div>';
+        }
+        else if ($this->params['statut'] == self::DEMO) {
+            $html .= '<div class="card-header">' . $txt_id . '</div>';
+        }
+        
         $html .= '<div class="card-body"><div class="form-group">';
         return $html;
     }

@@ -28,12 +28,6 @@
 	'edit_url' : path('question_ajax_edit', {'id': 0 })
     }) | raw }}
 
-	{#
-	<div class="float-right">
-		<a href="{{path('question_ajax_edit', {'id': question.id }) }}" id="btn-edit-question" class="btn btn-primary btn-edit-question"><span class="oi oi-pencil"></span> Edition</a>
-	</div>
-	#}
-
 	{% block javascripts %}
     <script type="text/javascript">
 

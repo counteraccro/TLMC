@@ -7,9 +7,16 @@
 <h1>Test de questionnaire #{{ questionnaire.id }}</h1>
 <a class="btn btn-secondary mb-2" href="{{ path('questionnaire_see', {'id':questionnaire.id}) }}">Retour</a>
 
-{{ questionnaire(questionnaire, {
-	'submit_url' : path('questionnaire_demo', {'slug': questionnaire.slug }),
-	'statut' : 'demo'
-}) | raw }}
-
+<div class="row">
+	<div class="col-8">
+    {{ questionnaire(questionnaire, {
+    	'submit_url' : path('questionnaire_demo', {'slug': questionnaire.slug }),
+    	'statut' : 'demo'
+    }) | raw }}
+    </div>
+    <div class="col-4">
+    
+    	
+    </div>
+</div>
 {% endblock %}

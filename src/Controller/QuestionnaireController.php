@@ -12,6 +12,8 @@ use App\Form\QuestionnaireType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Response;
 use App\Entity\Reponse;
+use App\Service\QuestionnaireManager;
+
 class QuestionnaireController extends AppController
 {
 
@@ -262,19 +264,23 @@ class QuestionnaireController extends AppController
      * @ParamConverter("questionnaire", options={"mapping": {"slug": "slug"}})
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function demoAction(Request $request, Questionnaire $questionnaire)
+    public function demoAction(Request $request, Questionnaire $questionnaire, QuestionnaireManager $questionnaireManager)
     {
-        if (isset($_POST['validation']))
-        {
-            if ($_SERVER['REQUEST_METHOD'] == "POST") 
+        $reponses = array();
+        if ($request->isMethod('POST')) {
+            $reponses = $questionnaireManager->manage($questionnaire);
+            
+            foreach($reponses as $reponse)
             {
-                $this->pre($_POST);
+                echo $reponse->getValeur() . '<br />';
             }
+            
         }
-        
+
         return $this->render('questionnaire/demo.html.twig', [
             'controller_name' => 'QuestionnaireDemoController',
-            'questionnaire' => $questionnaire
+            'questionnaire' => $questionnaire,
+            'reponses' => $reponses
         ]);
     }
 }
