@@ -8,15 +8,17 @@ use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 use App\Controller\EvenementController;
+use App\Controller\SpecialiteEvenementController;
 
 class EvenementExtension extends AbstractExtension
 {
     public function getFilters(): array
     {
-        return [
+        return array(
             new TwigFilter('typeEvent', array($this, 'getTypeEvenement')),
             new TwigFilter('statutEvent', array($this, 'getStatutEvenement')),
-        ];
+            new TwigFilter('statutSpeEvent', array($this, 'getStatutSpecialiteEvenement')),
+        );
     }
 
     public function getFunctions(): array
@@ -46,5 +48,16 @@ class EvenementExtension extends AbstractExtension
     public function getStatutEvenement(int $key)
     {
         return (isset(EvenementController::STATUT[$key]) ? EvenementController::STATUT[$key] : $key);
+    }
+    
+    /**
+     * Renvoie le statut du lien evenement - spécialité correspondant à  une clé ou la clé s'il n'y a pas de correspondance
+     *
+     * @param int $key
+     * @return string
+     */
+    public function getStatutSpecialiteEvenement(int $key)
+    {
+        return (isset(SpecialiteEvenementController::STATUT[$key]) ? SpecialiteEvenementController::STATUT[$key] : $key);
     }
 }

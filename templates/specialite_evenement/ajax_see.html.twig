@@ -1,0 +1,48 @@
+<div id="bloc_evenement_specialite" class="card">
+	<div class="card-header">
+    	Spécialités
+    	<a href="{{ path('specialite_evenement_ajax_add', {'id' : evenement.id}) }}" id="btn-add-specialite-event" class="float-right"><span class="oi oi-link-intact"></span> Nouveau lien avec une spécialité</a>
+    </div>
+    <div class="card-body">
+    	<table class="table table-sm table-striped">
+     		<tr>
+       			{% if is_granted('ROLE_ADMIN') %}
+    	   			<th> Etablissement </th>
+           		{% endif %}
+           		<th> Spécialité </th>
+           		<th> Date </th>
+           		<th> Statut </th>
+           		<th></th>
+           	</tr>
+           	{% for specialiteEvenement in evenement.specialiteEvenements %}
+               	<tr>
+            	    {% if is_granted('ROLE_ADMIN') %}
+               			<td> {{ specialiteEvenement.specialite.etablissement.nom }} </td>
+               		{% endif %}
+               		<td> {{ specialiteEvenement.specialite.service }} </td>
+               		<td> {{ specialiteEvenement.date | date('d/m/Y H:i')}} </td>
+               		<td> {{ specialiteEvenement.statut | statutSpeEvent }} </td>
+              		<td>
+              			<a href="{{ path('specialite_evenement_ajax_edit', {'id' : specialiteEvenement.id}) }}" id="btn-edit-specialite-event-{{ specialiteEvenement.id }}"  title="Editer la fiche"><span class="oi oi-pencil"></span></a>
+                	</td>
+            	</tr>
+          	{% endfor %}
+        </table>
+    </div>
+    
+    {% block javascripts %}
+        <script type="text/javascript">
+            var id_btn_add = '#btn-add-specialite-event';
+            SpecialiteEvenement.EventAdd(id_btn_add);
+
+			//on associe une action pour chaque bouton edit ou delete
+            {% for specialiteEvenement in evenement.specialiteEvenements %}
+            	var id_btn_edit_{{ specialiteEvenement.id }} = '#btn-edit-specialite-event-' + {{ specialiteEvenement.id }};
+            	SpecialiteEvenement.EventEdit(id_btn_edit_{{ specialiteEvenement.id }});
+    		    
+            {% endfor %}
+            
+        </script>
+    {% endblock %}
+    
+</div>

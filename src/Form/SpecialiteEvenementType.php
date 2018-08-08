@@ -11,6 +11,8 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use App\Controller\SpecialiteEvenementController;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class SpecialiteEvenementType extends AbstractType
 {
@@ -18,6 +20,7 @@ class SpecialiteEvenementType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $opt_spe = array(
+            'label' => 'Spécialité',
             'class' => Specialite::class,
             'choice_label' => 'service',
             'disabled' => $options['disabled_specialite'],
@@ -34,12 +37,15 @@ class SpecialiteEvenementType extends AbstractType
         }
         if ($options['avec_event']) {
             $builder->add('evenement', EntityType::class, array(
+                'label' => 'Evénement',
                 'class' => Evenement::class,
                 'choice_label' => 'nom',
                 'disabled' => $options['disabled_event']
             ));
         }
-        $builder->add('statut', IntegerType::class)->add('date', DateTimeType::class, array(
+        $builder->add('statut', ChoiceType::class, array(
+            'choices' => array_flip($options['statut'])
+        ))->add('date', DateTimeType::class, array(
             'label' => "Date",
             'widget' => 'choice',
             'years' => range(date('Y') - 1, date('Y') + 2)
@@ -65,7 +71,8 @@ class SpecialiteEvenementType extends AbstractType
             'avec_event' => true,
             'disabled_specialite' => false,
             'disabled_event' => false,
-            'query_specialite' => null
+            'query_specialite' => null,
+            'statut' => SpecialiteEvenementController::STATUT
         ));
     }
 }
