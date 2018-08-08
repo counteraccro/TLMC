@@ -9,8 +9,8 @@
 
         	<table  class="table table-sm">
             	<tr>
-            		<th scope="col"> Nom </th>
-            		<td> {{ evenement.nom }} </td>
+            		<th scope="col"> Actif </th>
+            		<td> {{ evenement.disabled | bool }} </td>
             	</tr>
             	<tr>
             		<th scope="col"> Date</th>

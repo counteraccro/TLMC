@@ -8,10 +8,6 @@
     <div class="card-body">
     	<table  class="table table-sm">
         	<tr>
-        		<th scope="col"> Titre </th>
-        		<td> {{ produit.titre }} </td>
-        	</tr>
-        	<tr>
         		<th scope="col"> Type </th>
         		<td> {{ produit.type | typeProduit }} </td>
         	</tr>
@@ -45,6 +41,10 @@
         	<tr>
         		<th scope="col">Date de création </th>
         		<td> {{ produit.dateCreation | date('d/m/Y') }} </td>
+        	</tr>
+        	<tr>
+        		<th scope="col"> Actif </th>
+        		<td> {{ produit.disabled | bool }} </td>
         	</tr>
         </table>
     </div>
