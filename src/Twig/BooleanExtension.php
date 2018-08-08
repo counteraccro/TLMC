@@ -17,6 +17,10 @@ class BooleanExtension extends AbstractExtension
             new TwigFilter('bool', array(
                 $this,
                 'getOuiNon'
+            )),
+            new TwigFilter('actif', array(
+                $this,
+                'isActif'
             ))
         );
     }
@@ -40,5 +44,16 @@ class BooleanExtension extends AbstractExtension
     public function getOuiNon($value)
     {
         return ($value == 1 ? 'Oui' : 'Non');
+    }
+    
+    /**
+     * Renvoie Oui ou Non en fonction de $value
+     *
+     * @param boolean $value
+     * @return string
+     */
+    public function isActif($value)
+    {
+        return ($value == 0 ? 'Oui' : 'Non');
     }
 }

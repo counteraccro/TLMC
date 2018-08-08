@@ -8,6 +8,10 @@
          <div class="card-body">
 
 			<table  class="table table-sm">
+				<tr>
+            		<th scope="col"> Actif </th>
+            		<td> {{ etablissement.disabled | actif }} </td>
+            	</tr>
             	<tr>
             		<th scope="col"> Type </th>
             		<td> {{ etablissement.type }} </td>

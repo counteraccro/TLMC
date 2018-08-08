@@ -29,6 +29,10 @@
 		<th scope="col"> Service pour les enfants </th>
 		<td> {{ specialite.pediatrie | bool }} </td>
 	</tr>
+	<tr>
+		<th scope="col"> Actif </th>
+		<td> {{ specialite.disabled | actif }} </td>
+	</tr>
 </table>
 <br />
 
