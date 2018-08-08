@@ -10,6 +10,7 @@ use App\Form\PatientType;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Entity\Etablissement;
 use App\Entity\Membre;
+use App\Entity\Specialite;
 
 class PatientController extends AppController
 {
@@ -105,15 +106,15 @@ class PatientController extends AppController
     public function seeAction(Request $request, SessionInterface $session, Patient $patient, int $page = 1)
     {
         $arrayFilters = $this->getDatasFilter($session);
-        
+
         // Si appel Ajax, on renvoi sur la page ajax
         if ($request->isXmlHttpRequest()) {
-            
+
             return $this->render('patient/ajax_see.html.twig', array(
-                'patient' => $patient,
+                'patient' => $patient
             ));
         }
-        
+
         return $this->render('patient/see.html.twig', array(
             'page' => $page,
             'patient' => $patient,
@@ -148,25 +149,27 @@ class PatientController extends AppController
 
         $patient = new Patient();
 
-        if ($this->isAdmin()) {
-            $repositoryE = $this->getDoctrine()->getRepository(Etablissement::class);
-            $etablissements = $repositoryE->findHopital();
+        // requête pour le champ spécialité
+        $sr = $this->getDoctrine()->getRepository(Specialite::class);
+        $query = $sr->createQueryBuilder('specialite')->innerJoin('specialite.etablissement', 'etablissement');
+        if ($membre->getSpecialite()) {
+            $query->andWhere("etablissement.id = " . $membre->getEtablissement()
+                ->getId());
+        }
+        $query->orderBy('etablissement.nom, specialite.service', 'ASC');
 
-            $form = $this->createForm(PatientType::class, $patient);
+        if (! is_null($membre->getSpecialite())) {
+            $patient->setSpecialite($membre->getSpecialite());
+
+            $form = $this->createForm(PatientType::class, $patient, array(
+                'disabled_specialite' => true,
+                'query_specialite' => $query
+            ));
         } else {
 
-            if (! is_null($membre->getSpecialite())) {
-                $etablissements = array();
-                $patient->setSpecialite($membre->getSpecialite());
-                $form = $this->createForm(PatientType::class, $patient, array(
-                    'disabled_specialite' => true
-                ));
-            } else {
-                $repositoryE = $this->getDoctrine()->getRepository(Etablissement::class);
-                $etablissements = $repositoryE->findAll();
-
-                $form = $this->createForm(PatientType::class, $patient);
-            }
+            $form = $this->createForm(PatientType::class, $patient, array(
+                'query_specialite' => $query
+            ));
         }
 
         $form->handleRequest($request);
@@ -192,7 +195,6 @@ class PatientController extends AppController
         return $this->render('patient/add.html.twig', array(
             'page' => $page,
             'form' => $form->createView(),
-            'etablissements' => $etablissements,
             'paths' => array(
                 'home' => $this->indexUrlProject(),
                 'urls' => array(
@@ -238,7 +240,7 @@ class PatientController extends AppController
                 'disabled_specialite' => true
             ));
         }
-        
+
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -252,7 +254,7 @@ class PatientController extends AppController
                     'statut' => true
                 ));
             }
-            
+
             return $this->redirect($this->generateUrl('patient_listing', array(
                 'page' => $page,
                 'field' => $arrayFilters['field'],
@@ -262,14 +264,14 @@ class PatientController extends AppController
 
         // Si appel Ajax, on renvoi sur la page ajax
         if ($request->isXmlHttpRequest()) {
-            
+
             return $this->render('patient/ajax_edit.html.twig', [
                 'patient' => $patient,
                 'form' => $form->createView(),
-                'etablissements' => $etablissements,
+                'etablissements' => $etablissements
             ]);
         }
-        
+
         return $this->render('patient/edit.html.twig', array(
             'page' => $page,
             'form' => $form->createView(),
