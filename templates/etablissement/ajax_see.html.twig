@@ -1,0 +1,55 @@
+	<div class="card shadow-sm">
+         <div class="card-header bg-light">
+           	 <b>Etablissement :</b> {{ etablissement.nom }}
+           	<div class="float-right"> 
+           		<a href="{{path('etablissement_ajax_edit', {'id': etablissement.id }) }}" id="btn-edit-etablissement" class="btn btn-dark"><span class="oi oi-pencil"></span> Editer l'établissement</a>
+           	</div>
+         </div>
+         <div class="card-body">
+
+			<table  class="table table-sm">
+            	<tr>
+            		<th scope="col"> Type </th>
+            		<td> {{ etablissement.type }} </td>
+            	</tr>
+            	<tr>
+            		<th scope="col"> Code Logistique </th>
+            		<td> {{ etablissement.codeLogistique }} </td>
+            	</tr>
+            	<tr>
+            		<th scope="col"> Date de début de collaboration </th>
+            		<td> {{ etablissement.dateCollaboration | date('d/m/Y') }} </td>
+            	</tr>
+            	<tr>
+            		<th scope="col"> Statut de la convention </th>
+            		<td> {{ etablissement.statutConvention }} </td>
+            	</tr>
+            	<tr>
+            		<th scope="col"> Nombre de lit </th>
+            		<td> {{ etablissement.nbLit }} </td>
+            	</tr>
+            	<tr>
+            		<th scope="col"> Adresse </th>
+            		<td>
+            		    {{ etablissement.numeroVoie }}, {{ etablissement.voie }} <br />
+            			{{ etablissement.codePostal }} {{ etablissement.ville }} <br />
+            			{{ etablissement.region }}
+            		</td>
+            	</tr>
+            </table>
+        	
+    	</div>
+	</div>
+	
+{% block javascripts %}
+
+    <script type="text/javascript">
+
+    $(document).ready(function() {
+        var id_btn_etablissement = '#btn-edit-etablissement';
+        Etablissement.EventEdit(id_btn_etablissement);
+    });
+    
+    </script> 
+
+{% endblock %}

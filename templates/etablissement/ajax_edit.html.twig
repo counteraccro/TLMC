@@ -1,0 +1,53 @@
+<div id="ajax_etablissement_edit">
+	{{ form_start(form) }}
+	<div class="modal-header">
+		<h5 class="modal-title">
+			Modification de l'établissement #{{ etablissement.id }} - {{ etablissement.nom }}
+		</h5>
+		<button type="button" class="close" data-dismiss="modal"
+			aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+
+	<div class="modal-body">
+    
+        {{ form_row(form.nom) }}
+    	{{ form_row(form.type) }}
+    	{{ form_row(form.code_logistique) }}
+    	{{ form_row(form.nb_lit) }}
+    	{{ form_row(form.statut_convention) }}
+    	{{ form_row(form.date_collaboration) }}
+    	{{ form_row(form.numero_voie) }}
+    	{{ form_row(form.voie) }}
+    	{{ form_row(form.ville) }}
+    	{{ form_row(form.code_postal) }}
+    	{{ form_row(form.region) }}
+    
+    </div>
+        
+    <div class="modal-footer">
+		{{ form_widget(form.save) }}
+	</div>
+	{{ form_rest(form) }}
+    {{ form_errors(form) }}
+    {{ form_end(form) }}
+
+</div>
+
+{% block javascripts %}
+
+    <script type="text/javascript">
+    
+    
+    	$('#modal_etablissement_global').modal({
+ 		   'show' : true,
+ 		   'backdrop' : 'static'
+ 		});
+ 	
+		var url = '{{path('etablissement_ajax_edit', {'id': etablissement.id }) }}';
+		Etablissement.EventEditSubmit(url);
+    
+    </script> 
+
+{% endblock %}

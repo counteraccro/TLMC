@@ -73,18 +73,28 @@ class EtablissementController extends AppController
      * Fiche d'un établissement
      *
      * @Route("/etablissement/see/{id}/{page}", name="etablissement_see")
+     * @Route("/etablissement/ajax/see/{id}", name="etablissement_ajax_see")
      * @ParamConverter("etablissement", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
-     *
+     * 
+     * @param Request $request
      * @param SessionInterface $session
      * @param Etablissement $etablissement
      * @param int $page
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function seeAction(SessionInterface $session, Etablissement $etablissement, int $page)
+    public function seeAction(Request $request, SessionInterface $session, Etablissement $etablissement, int $page = 1)
     {
         $arrayFilters = $this->getDatasFilter($session);
 
+        // Si appel Ajax, on renvoi sur la page ajax
+        if ($request->isXmlHttpRequest()) {
+            
+            return $this->render('etablissement/ajax_see.html.twig', array(
+                'etablissement' => $etablissement,
+            ));
+        }
+        
         return $this->render('etablissement/see.html.twig', array(
             'page' => $page,
             'etablissement' => $etablissement,
@@ -155,6 +165,7 @@ class EtablissementController extends AppController
      * Edition d'un établissement
      *
      * @Route("/etablissement/edit/{id}/{page}", name="etablissement_edit")
+     * @Route("/etablissement/ajax/edit/{id}", name="etablissement_ajax_edit")
      * @ParamConverter("etablissement", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
      *
@@ -164,7 +175,7 @@ class EtablissementController extends AppController
      * @param int $page
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function editAction(SessionInterface $session, Request $request, Etablissement $etablissement, int $page)
+    public function editAction(SessionInterface $session, Request $request, Etablissement $etablissement, int $page = 1)
     {
         $arrayFilters = $this->getDatasFilter($session);
 
@@ -178,6 +189,12 @@ class EtablissementController extends AppController
             $em->persist($etablissement);
             $em->flush();
 
+            if ($request->isXmlHttpRequest()) {
+                return $this->json(array(
+                    'statut' => true
+                ));
+            }
+            
             return $this->redirect($this->generateUrl('etablissement_listing', array(
                 'page' => $page,
                 'field' => $arrayFilters['field'],
@@ -185,6 +202,15 @@ class EtablissementController extends AppController
             )));
         }
 
+        // Si appel Ajax, on renvoi sur la page ajax
+        if ($request->isXmlHttpRequest()) {
+            
+            return $this->render('etablissement/ajax_edit.html.twig', [
+                'etablissement' => $etablissement,
+                'form' => $form->createView()
+            ]);
+        }
+        
         return $this->render('etablissement/edit.html.twig', array(
             'page' => $page,
             'form' => $form->createView(),

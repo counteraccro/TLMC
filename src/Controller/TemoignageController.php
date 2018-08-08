@@ -91,18 +91,28 @@ class TemoignageController extends AppController
      * Fiche d'un témoignage
      *
      * @Route("/temoignage/see/{id}/{page}", name="temoignage_see")
+     * @Route("/temoignage/see/{id}", name="temoignage_ajax_see")
      * @ParamConverter("temoignage", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
-     *
+     * 
+     * @param Request $request
      * @param SessionInterface $session
      * @param Temoignage $temoignage
      * @param int $page
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function seeAction(SessionInterface $session, Temoignage $temoignage, int $page)
+    public function seeAction(Request $request, SessionInterface $session, Temoignage $temoignage, int $page = 1)
     {
         $arrayFilters = $this->getDatasFilter($session);
 
+        // Si appel Ajax, on renvoi sur la page ajax
+        if ($request->isXmlHttpRequest()) {
+            
+            return $this->render('temoignage/ajax_see.html.twig', array(
+                'temoignage' => $temoignage,
+            ));
+        }
+        
         return $this->render('temoignage/see.html.twig', array(
             'page' => $page,
             'temoignage' => $temoignage,
@@ -123,7 +133,7 @@ class TemoignageController extends AppController
     /**
      * Bloc témoignage d'un membre / d'un événement / d'un produit
      *
-     * @Route("/temoignage/ajax/see/{id}/{type}", name="temoignage_ajax_see")
+     * @Route("/temoignage/ajax/see/listing/{id}/{type}", name="temoignage_ajax_see_liste")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE')")
      *
      * @param int $id
@@ -150,7 +160,7 @@ class TemoignageController extends AppController
         
         $temoignages = $this->getElementsLiesActifs($objet, 'getTemoignages');
         
-        return $this->render('temoignage/ajax_see.html.twig', array(
+        return $this->render('temoignage/ajax_see_liste.html.twig', array(
             'objet' => $objet,
             'type' => $type,
             'temoignages' => $temoignages
