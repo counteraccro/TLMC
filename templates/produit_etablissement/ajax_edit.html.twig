@@ -1,0 +1,40 @@
+<div id="ajax_produit_etablissement_edit">
+	{{ form_start(form) }}
+	<div class="modal-header">
+		<h5 class="modal-title">
+			Modification du lien #{{ produitEtablissement.id }}
+		</h5>
+		<button type="button" class="close" data-dismiss="modal"
+			aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+
+	<div class="modal-body">
+	    {{ form_row(form.produit) }}
+		{{ form_row(form.etablissement) }}
+		{{ form_row(form.quantite) }}
+		{{ form_row(form.date) }}
+	</div>
+	
+	<div class="modal-footer">
+		{{ form_widget(form.save) }}
+	</div>
+	{{ form_rest(form) }}
+	{{ form_errors(form) }}
+	{{ form_end(form) }}
+</div>
+
+{% block javascripts %}
+	<script type="text/javascript">
+    
+    	$('#modal_produit_global').modal({
+    		   'show' : true,
+    		   'backdrop' : 'static'
+    	});
+    	
+		var url = '{{path('produit_etablissement_ajax_edit', {'id': produitEtablissement.id }) }}';
+		ProduitEtablissement.EventEditSubmit(url);
+		
+	</script>
+{% endblock %}

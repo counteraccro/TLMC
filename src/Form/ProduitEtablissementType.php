@@ -25,10 +25,6 @@ class ProduitEtablissementType extends AbstractType
             ));
         }
         
-        if ($options['query_specialite']) {
-            $opt_spe['query_builder'] = $options['query_specialite'];
-        }
-        
         if ($options['avec_produit']) {
             $builder->add('produit', EntityType::class, array(
                 'class' => Produit::class,
