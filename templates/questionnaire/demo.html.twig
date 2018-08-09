@@ -11,7 +11,8 @@
 	<div class="col-8">
     {{ questionnaire(questionnaire, {
     	'submit_url' : path('questionnaire_demo', {'slug': questionnaire.slug }),
-    	'statut' : 'demo'
+    	'statut' : 'demo',
+		'resultat' : questResultat
     }) | raw }}
     </div>
     <div class="col-4">

@@ -33,6 +33,16 @@ class QuestionnaireManager extends AppService
     private $questionnaire;
 
     /**
+     * Tableau de retour contenant une liste d'objet contenant
+     * stdClass->reponse => object reponse
+     * stdClass->question => object question
+     * stdClass->erreur => object stdClass contenant
+     * * *stdClass->isValide => true|false
+     * * *stdClass->label => texte de l'erreur
+     */
+    private $return = array();
+
+    /**
      *
      * @param Doctrine $doctrine
      * @param RequestStack $requestStack
@@ -49,25 +59,69 @@ class QuestionnaireManager extends AppService
      */
     public function manage(Questionnaire $questionnaire)
     {
-        $reponses = array();
+        $this->questionnaire = $questionnaire;
+        $this->initialize();
+        $this->createReponse();
+        
+        return $this->return;
+    }
 
-        $this->pre($reponses);
+    /**
+     * 
+     */
+    private function initialize()
+    {
+        foreach ($this->questionnaire->getQuestions() as $question) {
+            $array = [
+                'question' => $question,
+                'reponse' => '',
+                'erreur' => ''
+            ];
+            $this->return[$question->getid()] = (object) $array;
+        }
+    }
+    
+    /**
+     * 
+     */
+    private function validate()
+    {
+        
+    }
 
+    /**
+     * 
+     */
+    private function createReponse()
+    {
         /* @var Question $question */
-        foreach ($questionnaire->getQuestions() as $question) {
+        foreach ($this->questionnaire->getQuestions() as $question) {
+            
+            if($question->getDisabled())
+            {
+                continue;
+            }
+            
             foreach ($this->request->request->all()['questionnaire']['question'] as $keyR => $valR) {
                 $tmp = explode('-', $keyR);
                 if ($tmp[1] == $question->getId()) {
                     if (! is_array($valR)) {
-                        $reponse = new Reponse();
-                        $reponse->setValeur($valR);
-                        $reponse->setQuestion($question);
-                        $reponses[] = $reponse;
+                        $strValeur = $valR;
+                    } else {
+                        $strValeur = '';
+                        foreach ($valR as $v) {
+                            $strValeur .= $v . '|';
+                        }
+                        $strValeur = substr($strValeur, 0, - 1);
                     }
+
+                    $reponse = new Reponse();
+                    $reponse->setValeur($strValeur);
+                    //$reponse->setQuestion($question);
+                    
+                    $this->return[$question->getid()]->reponse = $reponse;
                 }
             }
         }
-        
-        return $reponses;
     }
 }

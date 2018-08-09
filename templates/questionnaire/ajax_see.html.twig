@@ -23,9 +23,8 @@
 	<hr>
      		
 	{{ questionnaire(questionnaire, {
-	'submit_url' : path('questionnaire_demo', {'slug': questionnaire.slug }),
 	'statut' : 'edit',
-	'edit_url' : path('question_ajax_edit', {'id': 0 })
+	'edit_url' : path('question_ajax_edit', {'id': 0 }),
     }) | raw }}
 
 	{% block javascripts %}

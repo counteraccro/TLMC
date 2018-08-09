@@ -8,7 +8,7 @@ class AppService {
      *
      * @param mixed $data
      */
-    public function pre($data)
+    protected function pre($data)
     {
         echo '<pre>';
         print_r($data);

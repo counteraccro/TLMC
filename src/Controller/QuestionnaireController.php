@@ -266,21 +266,15 @@ class QuestionnaireController extends AppController
      */
     public function demoAction(Request $request, Questionnaire $questionnaire, QuestionnaireManager $questionnaireManager)
     {
-        $reponses = array();
+        
+        $questResultat = array();
         if ($request->isMethod('POST')) {
-            $reponses = $questionnaireManager->manage($questionnaire);
-            
-            foreach($reponses as $reponse)
-            {
-                echo $reponse->getValeur() . '<br />';
-            }
-            
+            $questResultat = $questionnaireManager->manage($questionnaire);
         }
 
         return $this->render('questionnaire/demo.html.twig', [
-            'controller_name' => 'QuestionnaireDemoController',
             'questionnaire' => $questionnaire,
-            'reponses' => $reponses
+            'questResultat' => $questResultat 
         ]);
     }
 }
