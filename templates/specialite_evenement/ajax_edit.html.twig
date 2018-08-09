@@ -28,12 +28,12 @@
 {% block javascripts %}
 	<script type="text/javascript">
     
-    	$('#modal_evenement_global').modal({
+    	$('#modal_{{ type }}_global').modal({
     		   'show' : true,
     		   'backdrop' : 'static'
     	});
     	
-		var url = '{{path('specialite_evenement_ajax_edit', {'id': specialiteEvenement.id }) }}';
+		var url = '{{path('specialite_evenement_ajax_edit', {'id': specialiteEvenement.id, 'type': type }) }}';
 		SpecialiteEvenement.EventEditSubmit(url);
 		
 	</script>

@@ -28,12 +28,12 @@
 {% block javascripts %}
 	<script type="text/javascript">
     
-    	$('#modal_produit_global').modal({
+    	$('#modal_{{ type }}_global').modal({
     		   'show' : true,
     		   'backdrop' : 'static'
     	});
     	
-		var url = '{{path('produit_specialite_ajax_edit', {'id': produitSpecialite.id }) }}';
+		var url = '{{path('produit_specialite_ajax_edit', {'id': produitSpecialite.id, 'type':type }) }}';
 		ProduitSpecialite.EventEditSubmit(url);
 		
 	</script>

@@ -1,37 +1,54 @@
 <div id="bloc_evenement_specialite" class="card">
 	<div class="card-header">
-    	Spécialités
-    	<a href="{{ path('specialite_evenement_ajax_add', {'id' : evenement.id}) }}" id="btn-add-specialite-event" class="float-right"><span class="oi oi-link-intact"></span> Nouveau lien avec une spécialité</a>
+		{% if type == 'evenement' %}
+        	Spécialités
+        	<a href="{{ path('specialite_evenement_ajax_add', {'id' : objet.id, 'type':type}) }}" id="btn-add-specialite-event" class="float-right"><span class="oi oi-link-intact"></span> Nouveau lien avec une spécialité</a>
+        {% elseif type == 'specialite' %}
+    		Evénements
+        	<a href="{{ path('specialite_evenement_ajax_add', {'id' : objet.id, 'type':type}) }}" id="btn-add-specialite-event" class="float-right"><span class="oi oi-link-intact"></span> Nouveau lien avec un événement</a>
+        {% endif %}
     </div>
     <div class="card-body">
     	<table class="table table-sm table-striped">
      		<tr>
-       			{% if is_granted('ROLE_ADMIN') %}
-    	   			<th> Etablissement </th>
+     			{% if type == 'evenement' %}
+           			{% if is_granted('ROLE_ADMIN') %}
+        	   			<th> Etablissement </th>
+               		{% endif %}
+               		<th> Spécialité </th>
+               	{% elseif type == 'specialite' %}
+               		<th> Evénement </th>
            		{% endif %}
-           		<th> Spécialité </th>
            		<th> Date </th>
            		<th> Statut </th>
            		<th></th>
            	</tr>
-           	{% for specialiteEvenement in evenement.specialiteEvenements %}
+           	{% for specialiteEvenement in objet.specialiteEvenements %}
                	<tr>
-            	    {% if is_granted('ROLE_ADMIN') %}
-               			<td> {{ specialiteEvenement.specialite.etablissement.nom }} </td>
+                   	{% if type == 'evenement' %}
+               			{% if is_granted('ROLE_ADMIN') %}
+            	   			<td> {{ specialiteEvenement.specialite.etablissement.nom }} </td>
+                   		{% endif %}
+                   		<td> {{ specialiteEvenement.specialite.service }} </td>
+                   	{% elseif type == 'specialite' %}
+                   		<td> {{ specialiteEvenement.evenement.nom }} </td>
                		{% endif %}
-               		<td> {{ specialiteEvenement.specialite.service }} </td>
                		<td> {{ specialiteEvenement.date | date('d/m/Y H:i')}} </td>
                		<td> {{ specialiteEvenement.statut | statutSpeEvent }} </td>
               		<td>
-              			<a href="{{ path('specialite_evenement_ajax_edit', {'id' : specialiteEvenement.id}) }}" id="btn-edit-specialite-event-{{ specialiteEvenement.id }}"  title="Editer la fiche"><span class="oi oi-pencil"></span></a>
+              			<a href="{{ path('specialite_evenement_ajax_edit', {'id' : specialiteEvenement.id, 'type':type}) }}" id="btn-edit-specialite-event-{{ specialiteEvenement.id }}"  title="Editer la fiche"><span class="oi oi-pencil"></span></a>
                 	</td>
             	</tr>
           	{% endfor %}
         </table>
         
-        {% if evenement.specialiteEvenements is empty %}
-           	<p class="text-info text-center">Il  n'y a aucune spécialités associée à cet événement.</p>
-          	
+        {% if objet.specialiteEvenements is empty %}
+           	<p class="text-info text-center">Il  n'y a 
+           	{% if type == 'evenement' %}
+           		aucune spécialité associée à cet événement.</p>
+          	{% elseif type == 'specialite' %}
+          		aucun événement associé à cette spécialité.</p>
+          	{% endif %}
         {% endif %}
         
     </div>
@@ -42,7 +59,7 @@
             SpecialiteEvenement.EventAdd(id_btn_add);
 
 			//on associe une action pour chaque bouton edit ou delete
-            {% for specialiteEvenement in evenement.specialiteEvenements %}
+            {% for specialiteEvenement in objet.specialiteEvenements %}
             	var id_btn_edit_{{ specialiteEvenement.id }} = '#btn-edit-specialite-event-' + {{ specialiteEvenement.id }};
             	SpecialiteEvenement.EventEdit(id_btn_edit_{{ specialiteEvenement.id }});
     		    

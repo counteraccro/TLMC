@@ -8,6 +8,7 @@ use App\Entity\Evenement;
 use App\Entity\SpecialiteEvenement;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\SpecialiteEvenementType;
+use App\Entity\Specialite;
 
 class SpecialiteEvenementController extends AppController
 {
@@ -37,39 +38,71 @@ class SpecialiteEvenementController extends AppController
     /**
      * Bloc spécialité - événement dans la vue d'un événement
      *
-     * @Route("/specialite_evenement/ajax/see/{id}", name="specialite_evenement_ajax_see")
-     * @ParamConverter("evenement", options={"mapping": {"id": "id"}})
+     * @Route("/specialite_evenement/ajax/see/{id}/{type}", name="specialite_evenement_ajax_see")
      * @Security("is_granted('ROLE_ADMIN')")
      *
      * @param Evenement $evenement
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function ajaxSeeAction(Evenement $evenement)
+    public function ajaxSeeAction(int $id, string $type)
     {
+        switch($type){
+            case 'evenement':
+                $repository = $this->getDoctrine()->getRepository(Evenement::class);
+                break;
+            case 'specialite':
+                $repository = $this->getDoctrine()->getRepository(Specialite::class);
+                break;
+        }
+        
+        $objets = $repository->findById($id);
+        $objet = $objets[0];
+        
         return $this->render('specialite_evenement/ajax_see.html.twig', array(
-            'evenement' => $evenement
+            'objet' => $objet,
+            'type' => $type
         ));
     }
 
     /**
      * Ajout d'un lien spécialité - événement
      *
-     * @Route("/specialite_evenement/ajax/add/{id}", name="specialite_evenement_ajax_add")
-     * @ParamConverter("evenement", options={"mapping": {"id": "id"}})
+     * @Route("/specialite_evenement/ajax/add/{id}/{type}", name="specialite_evenement_ajax_add")
      * @Security("is_granted('ROLE_ADMIN')")
      *
      * @param Request $request
+     * @param int $id
+     * @param string $type
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function addAction(Request $request, Evenement $evenement)
+    public function addAction(Request $request, int $id, string $type)
     {
         $specialiteEvenement = new SpecialiteEvenement();
 
-        $specialiteEvenement->setEvenement($evenement);
+        switch($type){
+            case 'evenement':
+                $repository = $this->getDoctrine()->getRepository(Evenement::class);
+                $methode = 'setEvenement';
+                $disabled_evenement = true;
+                $disabled_specialite = false;
+                break;
+            case 'specialite':
+                $repository = $this->getDoctrine()->getRepository(Specialite::class);
+                $methode = 'setSpecialite';
+                $disabled_evenement = false;
+                $disabled_specialite = true;
+                break;
+        }
+        
+        $objets = $repository->findById($id);
+        $objet = $objets[0];
+        
+        $specialiteEvenement->{$methode}($objet);
 
         $form = $this->createForm(SpecialiteEvenementType::class, $specialiteEvenement, array(
             'label_submit' => 'Ajouter',
-            'disabled_event' => true
+            'disabled_event' => $disabled_evenement,
+            'disabled_specialite' => $disabled_specialite
         ));
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -86,22 +119,24 @@ class SpecialiteEvenementController extends AppController
 
         return $this->render('specialite_evenement/ajax_add.html.twig', array(
             'form' => $form->createView(),
-            'evenement' => $evenement
+            'objet' => $objet,
+            'type' => $type
         ));
     }
 
     /**
      * Edition d'un lien spécialité - événement
      *
-     * @Route("/specialite_evenement/ajax/edit/{id}", name="specialite_evenement_ajax_edit")
+     * @Route("/specialite_evenement/ajax/edit/{id}/{type}", name="specialite_evenement_ajax_edit")
      * @ParamConverter("specialiteEvenement", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
      *
      * @param Request $request
      * @param SpecialiteEvenement $specialiteEvenement
+     * @param string $type
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function editAction(Request $request, SpecialiteEvenement $specialiteEvenement)
+    public function editAction(Request $request, SpecialiteEvenement $specialiteEvenement, string $type)
     {
         $form = $this->createForm(SpecialiteEvenementType::class, $specialiteEvenement, array(
             'label_submit' => 'Modifier',
@@ -124,7 +159,8 @@ class SpecialiteEvenementController extends AppController
 
         return $this->render('specialite_evenement/ajax_edit.html.twig', array(
             'form' => $form->createView(),
-            'specialiteEvenement' => $specialiteEvenement
+            'specialiteEvenement' => $specialiteEvenement,
+            'type' => $type
         ));
     }
 }

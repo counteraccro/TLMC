@@ -65,25 +65,27 @@ class EvenementType extends AbstractType
             'label' => "Date de fin d'inscription",
             'widget' => 'choice',
             'years' => range(date('Y'), date('Y') + 2)
-        ))
-        
-        ->add('specialite_evenements', CollectionType::class, array(
-            'label' => 'Spécialités',
-            'label_attr' => array(
-                'id' => 'label_collection_type'
-            ),
-            'entry_type' => SpecialiteEvenementType::class,
-            'entry_options' => array(
-                'label' => ' ',
-                'avec_event' => false,
-                'avec_bouton' => false,
-                'query_specialite' => $options['query_specialite']
-            ),
-            
-            'allow_add' => true,
-            'auto_initialize' => true
-        ))
-            ->add('save', SubmitType::class, array(
+        ));
+
+        if ($options['add']) {
+            $builder->add('specialite_evenements', CollectionType::class, array(
+                'label' => 'Spécialités',
+                'label_attr' => array(
+                    'id' => 'label_collection_type'
+                ),
+                'entry_type' => SpecialiteEvenementType::class,
+                'entry_options' => array(
+                    'label' => ' ',
+                    'avec_event' => false,
+                    'avec_bouton' => false,
+                    'query_specialite' => $options['query_specialite']
+                ),
+
+                'allow_add' => true,
+                'auto_initialize' => true
+            ));
+        }
+        $builder->add('save', SubmitType::class, array(
             'label' => $options['label_submit'],
             'attr' => array(
                 'class' => 'btn btn-primary'
@@ -97,6 +99,7 @@ class EvenementType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => Evenement::class,
             'label_submit' => 'Valider',
+            'add' => false,
             'statut' => EvenementController::STATUT,
             'type' => EvenementController::TYPE,
             'trancheAge' => AppController::TRANCHE_AGE,
