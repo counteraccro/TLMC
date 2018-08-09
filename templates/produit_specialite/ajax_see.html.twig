@@ -28,6 +28,12 @@
             	</tr>
           	{% endfor %}
         </table>
+        
+        {% if produit.produitSpecialites is empty %}
+           	<p class="text-info text-center">Il  n'y a aucune spécialité associée au produit.</p>
+           	
+        {% endif %}
+        
     </div>
     
     {% block javascripts %}

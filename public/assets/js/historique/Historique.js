@@ -37,7 +37,57 @@ Historique.Launch = function(params){
 	}
 	
 	/**
-	 * Evenement global
+	 * Evenement ajout historique
+	 */
+	Historique.EventAdd = function(id)
+	{
+		// Event sur le bouton edit d'un Historique
+		$(id).click(function() {
+			//on passe l'url et l'id_done
+			
+			$(Historique.id_container_global).showLoading();
+			Historique.Ajax($(this).attr('href'), Historique.id_content_modal);
+			return false;
+		});
+	}
+	
+	/**
+	 * Fonction intervenant au moment de la soumission du formulaire Ajax d'édition
+	 */
+	Historique.EventAddSubmit = function(url)
+	{
+		$("form[name*='historique']").on( "submit", function( event ) {
+			
+			$('#ajax_historique_add').showLoading();
+			
+			$('#historique_save').prop('disabled', true).html('loading...');
+			
+			event.preventDefault();
+
+			$.ajax({
+				method: 'POST',
+				url: url,
+				data: $(this).serialize()
+			})
+			.done(function( reponse ) {
+	
+				$('#ajax_historique_add').hideLoading();
+				
+				if(reponse.statut === true)
+				{
+					$(Historique.id_modal).modal('hide');
+					Historique.Ajax(Historique.url_ajax_see, Historique.id_global);
+				}
+				else
+				{
+					$(Historique.id_content_modal).html(reponse);
+				}
+			});
+		});
+	}
+	
+	/**
+	 * Evenement édition
 	 */
 	Historique.EventEdit = function(id)
 	{

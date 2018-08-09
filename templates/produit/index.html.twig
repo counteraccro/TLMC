@@ -26,8 +26,7 @@
         		<th>Genre</th>
         		<th>{{ headerFilter(path('produit_listing', {'page' : pagination.page, 'field' : 'quantite'} ), 'Quantité', current_order, current_field) | raw }}</th>
         		<th>{{ headerFilter(path('produit_listing', {'page' : pagination.page, 'field' : 'date_envoi'} ), "Date d'envoi", current_order, current_field) | raw }} </th>
-            	<th>{{ headerFilter(path('produit_listing', {'page' : pagination.page, 'field' : 'date_creation'} ), 'Date de création', current_order, current_field) | raw }}</th>
-        		<th></th>
+            	<th></th>
         	</tr>
         	<tr>
         		<td>{{ inputFilter(path('produit_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Produit-id', current_search, 'Identifiant') | raw }}</td>
@@ -38,7 +37,6 @@
         		<td>{{ inputFilter(path('produit_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Produit-genre', current_search, '', constant('App\\Controller\\ProduitController::GENRE')) | raw }}</td>
         		<td>{{ inputFilter(path('produit_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Produit-quantite', current_search, 'Quantité') | raw }}</td>
         		<td>{{ inputFilter(path('produit_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Produit-date_envoi', current_search, "Date d'envoi") | raw }}</td>
-        		<td>{{ inputFilter(path('produit_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Produit-date_creation', current_search, 'Date de création') | raw }}</td>
         		<td></td>
         	</tr>
         	
@@ -56,7 +54,6 @@
         			<td>{{ produit.genre | genre }}</td>
         			<td>{{ produit.quantite }}</td>
         			<td>{{ produit.dateEnvoi |date("d/m/Y H:i") }}</td>
-        			<td>{{ produit.dateCreation |date("d/m/Y H:i") }}</td>
         			<td>
         			    {{ actionSee(path('produit_see', {'id' : produit.id, 'page' : pagination.page})) | raw }}
         			    {% if is_granted("ROLE_ADMIN") %}
