@@ -2,9 +2,9 @@ Membre = {};
 
 Membre.Launch = function(params){
 
-	//url de la fiche questionnaire
+	//url de la fiche membre
 	Membre.url_ajax_see = params.url_ajax_see;
-	//cible la div '#bloc_questionnaire'
+	//cible la div '#bloc_membre'
 	Membre.id_global = params.id_global;
 	//cible la div '#bloc_modal'
 	Membre.id_modal = params.id_modal;

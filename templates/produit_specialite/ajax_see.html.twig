@@ -1,0 +1,48 @@
+<div id="bloc_produit_specialite" class="card">
+	<div class="card-header">
+    	Spécialités
+    	<a href="{{ path('produit_specialite_ajax_add', {'id' : produit.id}) }}" id="btn-add-produit-specialite" class="float-right"><span class="oi oi-link-intact"></span> Nouveau lien avec une spécialité</a>
+    </div>
+    <div class="card-body">
+    	<table class="table table-sm table-striped">
+     		<tr>
+       			{% if is_granted('ROLE_ADMIN') %}
+    	   			<th> Etablissement </th>
+           		{% endif %}
+           		<th> Spécialité </th>
+           		<th> Quantité </th>
+           		<th> Date </th>
+           		<th></th>
+           	</tr>
+           	{% for produitSpecialite in produit.produitSpecialites %}
+               	<tr>
+            	    {% if is_granted('ROLE_ADMIN') %}
+               			<td> {{ produitSpecialite.specialite.etablissement.nom }} </td>
+               		{% endif %}
+               		<td> {{ produitSpecialite.specialite.service }} </td>
+               		<td> {{ produitSpecialite.quantite }} </td>
+               		<td> {{ produitSpecialite.date | date('d/m/Y H:i')}} </td>
+              		<td>
+              			<a href="{{ path('produit_specialite_ajax_edit', {'id' : produitSpecialite.id}) }}" id="btn-edit-produit-specialite-{{ produitSpecialite.id }}"  title="Editer la fiche"><span class="oi oi-pencil"></span></a>
+                	</td>
+            	</tr>
+          	{% endfor %}
+        </table>
+    </div>
+    
+    {% block javascripts %}
+        <script type="text/javascript">
+            var id_btn_add = '#btn-add-produit-specialite';
+            ProduitSpecialite.EventAdd(id_btn_add);
+
+			//on associe une action pour chaque bouton edit ou delete
+            {% for produitSpecialite in produit.produitSpecialites %}
+            	var id_btn_edit_{{ produitSpecialite.id }} = '#btn-edit-produit-specialite-' + {{ produitSpecialite.id }};
+            	ProduitSpecialite.EventEdit(id_btn_edit_{{ produitSpecialite.id }});
+    		    
+            {% endfor %}
+            
+        </script>
+    {% endblock %}
+    
+</div>

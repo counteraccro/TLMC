@@ -28,7 +28,7 @@ class Historique
     private $membre;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Evenement", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\Evenement", inversedBy="historiques")
      * @ORM\JoinColumn(nullable=false)
      */
     private $evenement;

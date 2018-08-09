@@ -1,0 +1,56 @@
+<div id="bloc_produit_etablissement" class="card">
+	<div class="card-header">
+	{% if type == 'produit' %}
+    	Etablissements
+    	<a href="{{ path('produit_etablissement_ajax_add', {'id' : objet.id, 'type': type}) }}" id="btn-add-produit-etablissement" class="float-right"><span class="oi oi-link-intact"></span> Nouveau lien avec un établissement</a>
+   	{% elseif type == 'etablissement' %}
+   		Produits
+    	<a href="{{ path('produit_etablissement_ajax_add', {'id' : objet.id, 'type': type}) }}" id="btn-add-produit-etablissement" class="float-right"><span class="oi oi-link-intact"></span> Nouveau lien avec un produit</a>
+   	{% endif %}
+    </div>
+    <div class="card-body">
+    	<table class="table table-sm table-striped">
+     		<tr>
+     		
+       			{% if type == 'produit' and is_granted('ROLE_ADMIN')  %}
+    	   			<th> Etablissement </th>
+    	   		{% elseif type == 'etablissement' %}
+    	   			<th> Produit </th>
+           		{% endif %}
+           		<th> Quantité </th>
+           		<th> Date </th>
+           		<th></th>
+           	</tr>
+           	{% for produitEtablissement in objet.produitEtablissements %}
+               	<tr>
+            	    {% if type == 'produit' and is_granted('ROLE_ADMIN') %}
+               			<td> {{ produitEtablissement.etablissement.nom }} </td>
+               		{% elseif type == 'etablissement' %}
+        	   			<td> {{ produitEtablissement.produit.titre }} </td>
+               		{% endif %}
+               		<td> {{ produitEtablissement.quantite }} </td>
+               		<td> {{ produitEtablissement.date | date('d/m/Y H:i')}} </td>
+              		<td>
+              			<a href="{{ path('produit_etablissement_ajax_edit', {'id' : produitEtablissement.id, 'type':type}) }}" id="btn-edit-produit-etablissement-{{ produitEtablissement.id }}"  title="Editer la fiche"><span class="oi oi-pencil"></span></a>
+                	</td>
+            	</tr>
+          	{% endfor %}
+        </table>
+    </div>
+    
+    {% block javascripts %}
+        <script type="text/javascript">
+            var id_btn_add = '#btn-add-produit-etablissement';
+            ProduitEtablissement.EventAdd(id_btn_add);
+
+			//on associe une action pour chaque bouton edit ou delete
+            {% for produitEtablissement in objet.produitEtablissements %}
+            	var id_btn_edit_{{ produitEtablissement.id }} = '#btn-edit-produit-etablissement-' + {{ produitEtablissement.id }};
+            	ProduitEtablissement.EventEdit(id_btn_edit_{{ produitEtablissement.id }});
+    		    
+            {% endfor %}
+            
+        </script>
+    {% endblock %}
+    
+</div>

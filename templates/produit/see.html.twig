@@ -35,6 +35,35 @@
     		</div>
     	</div>
     </div>
+    <hr>
+
+	<div id="bloc_produit_etablissement">
+    	<div class="row">
+    		<div class="col-md-4 offset-md-4">
+    			<div class="progress" style="height: 25px;">
+    				<div class="progress-bar progress-bar-striped progress-bar-animated"
+    					role="progressbar" aria-valuenow="75" aria-valuemin="0"
+    					aria-valuemax="100" style="width: 50%">Chargement des
+    					établissements associés au produit...</div>
+    			</div>
+    		</div>
+    	</div>
+    </div>
+    
+    <hr>
+
+	<div id="bloc_produit_specialite">
+    	<div class="row">
+    		<div class="col-md-4 offset-md-4">
+    			<div class="progress" style="height: 25px;">
+    				<div class="progress-bar progress-bar-striped progress-bar-animated"
+    					role="progressbar" aria-valuenow="75" aria-valuemin="0"
+    					aria-valuemax="100" style="width: 50%">Chargement des
+    					spécialités associées au produit...</div>
+    			</div>
+    		</div>
+    	</div>
+    </div>
     
     <!-- Modal -->
     <div class="modal fade" id="modal_produit_global" tabindex="-1" role="dialog">
@@ -45,86 +74,6 @@
     
     <hr>
     
-    <div id="bloc_produit_etablissement" class="card">
-    	<div class="card-header">
-    		Etablissements
-    	</div>
-    	<div class="card-body">
-    		<table class="table table-sm table-striped">
-         		<tr>
-        	   		<th> Etablissement </th>
-               		<th> Date </th>
-               		<th> Quantité </th>
-               		<th></th>
-               	</tr>
-               	{% for produitEtablissement in produit.produitEtablissements %}
-                   	<tr>
-                	    <td> {{ produitEtablissement.etablissement.nom }} </td>
-                   		<td> {{ produitEtablissement.date | date('d/m/Y H:i')}} </td>
-                   		<td> {{ produitEtablissement.quantite }} </td>
-                  		<td></td>
-                	</tr>
-              	{% endfor %}
-            </table>
-    	</div>
-    </div>
-    
-    <hr>
-    
-    <div id="bloc_produit_specialite" class="card">
-    	<div class="card-header">
-    		Spécialités
-    	</div>
-    	<div class="card-body">
-    		<table class="table table-sm table-striped">
-         		<tr>
-           			{% if is_granted('ROLE_ADMIN') %}
-        	   			<th> Etablissement </th>
-               		{% endif %}
-               		<th> Spécialité </th>
-               		<th> Date </th>
-               		<th> Quantité </th>
-               		<th></th>
-               	</tr>
-               	{% for produitSpecialite in produit.produitSpecialites %}
-                   	<tr>
-                	    {% if is_granted('ROLE_ADMIN') %}
-                   			<td> {{ produitSpecialite.specialite.etablissement.nom }} </td>
-                   		{% endif %}
-                   		<td> {{ produitSpecialite.specialite.service }} </td>
-                   		<td> {{ produitSpecialite.date | date('d/m/Y H:i')}} </td>
-                   		<td> {{ produitSpecialite.quantite }} </td>
-                  		<td></td>
-                	</tr>
-              	{% endfor %}
-            </table>
-    	</div>
-    </div>
-    
-    <!-- <div id="bloc_produit_specialite" class="card">
-    	<div class="card-header">
-    		Spécialités
-    	</div>
-    	<div class="card-body">
-        	<table class="table table-sm table-striped">
-        		<tr>
-        			<th>Nom</th>
-        			<th>Quantité</th>
-        			<th>Date</th>
-        		</tr>
-                	{# for specialite in produit.produitSpecialites %#}
-                		<tr>
-                			<td>{#{ specialite.specialite.service }#}</td>
-                			<td>{#{ specialite.quantite }#}</td>
-                			<td>{#{ specialite.date | date('d/m/Y') }#}</td>
-                		</tr>
-                	{#% endfor %#}
-        	</table>
-    	</div>
-    </div> -->
-    
-    <br>
-    
     <div>extension de formulaire</div>
     <div>questionnaire</div>
 
@@ -133,6 +82,8 @@
 {% block script %}
  	<script src="{{ asset('assets/js/temoignage/Temoignage.js') }}?{{ date().timestamp }}"></script>
  	<script src="{{ asset('assets/js/produit/Produit.js') }}?{{ date().timestamp }}"></script>
+ 	<script src="{{ asset('assets/js/produit_etablissement/ProduitEtablissement.js') }}?{{ date().timestamp }}"></script>
+ 	<script src="{{ asset('assets/js/produit_specialite/ProduitSpecialite.js') }}?{{ date().timestamp }}"></script>
 {% endblock %}
 
 {% block javascripts %}
@@ -159,6 +110,26 @@
         
     	Temoignage.Launch(paramsT);
     	Temoignage.LoadTemoignage();
+
+    	var paramsPE = {
+				url_ajax_see : '{{path('produit_etablissement_ajax_see', {'id': produit.id, 'type': 'produit'}) }}',
+				id_content_modal : '#bloc_modal',
+				id_modal : '#modal_produit_global',
+				id_global : '#bloc_produit_etablissement',
+		};
+        
+    	ProduitEtablissement.Launch(paramsPE);
+    	ProduitEtablissement.LoadProduitEtablissement();
+
+    	var paramsPS = {
+				url_ajax_see : '{{path('produit_specialite_ajax_see', {'id': produit.id}) }}',
+				id_content_modal : '#bloc_modal',
+				id_modal : '#modal_produit_global',
+				id_global : '#bloc_produit_specialite',
+		};
+        
+    	ProduitSpecialite.Launch(paramsPS);
+    	ProduitSpecialite.LoadProduitSpecialite();
     });
     
     </script>

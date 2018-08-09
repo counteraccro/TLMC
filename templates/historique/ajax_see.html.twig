@@ -1,0 +1,63 @@
+<div id="ajax_historique_see">
+    <div class="card">
+        <div class="card-header">
+        	Historique
+       	</div>
+        
+        <div class="card-body">
+        	<table class="table table-sm table-striped">
+            	<tr>
+            		{% if type != 'membre' %}
+                		<th> Membre </th>
+                	{% endif %}
+                	{% if type != 'specialite' %}
+                    	<th> Spécialité </th>
+                    {% endif %}
+                    {% if type != 'evenement' %}
+                    	<th> Evénement </th>
+                    {% endif %}
+                    {% if type != 'patient' %}
+                    	<th> Patient </th>
+                    {% endif %}
+                    <th> Date </th>
+                    <th></th>
+                </tr>
+                
+                {% for historique in objet.historiques %}
+                	<tr>
+                		{% if type != 'specialite' %}
+                    		<td>{{ historique.membre.prenom }} {{ historique.membre.nom }} </td>
+                    	{% endif %}
+                    	{% if type != 'specialite' %}
+                        	<td>{{ historique.specialite.service }}</td>
+                        {% endif %}
+                        {% if type != 'specialite' %}
+                        	<td>{{ historique.evenement.nom }}</td>
+                       	{% endif %}
+                        {% if type != 'specialite' %}
+                        	<td>{{ historique.patient.prenom }} {{ historique.patient.nom }}</td>
+                        {% endif %}
+                        <td>{{ historique.date | date('d/m/Y H:i') }}</td>
+                        <td></td>
+                    </tr>
+                
+                {% endfor %}
+        	</table>
+        	
+        	{% if objet.historiques is empty %}
+            	<p class="text-info text-center">Il  n'y a aucun historique pour 
+            	
+        	    {% if type == 'membre' or type == 'patient' %}
+            		ce {{ type }}.</p>
+            	{% elseif type == 'specialite' %}
+            		pour cette spécialité.</p>
+            	{% elseif type == 'evenement' %}
+            		pour cet événement.</p>
+            	{% endif %}
+            	
+            {% endif %}
+        	
+    
+     	</div>
+    </div>
+</div>

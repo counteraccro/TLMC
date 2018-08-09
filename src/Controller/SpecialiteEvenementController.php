@@ -4,14 +4,12 @@ namespace App\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use App\Entity\Evenement;
 use App\Entity\SpecialiteEvenement;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\SpecialiteEvenementType;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-class SpecialiteEvenementController extends Controller
+class SpecialiteEvenementController extends AppController
 {
 
     /**
@@ -43,7 +41,7 @@ class SpecialiteEvenementController extends Controller
      * @ParamConverter("evenement", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
      *
-     * @param Evenement $etablissement
+     * @param Evenement $evenement
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function ajaxSeeAction(Evenement $evenement)

@@ -160,7 +160,7 @@ class TemoignageController extends AppController
         
         $temoignages = $this->getElementsLiesActifs($objet, 'getTemoignages');
         
-        return $this->render('temoignage/ajax_see_liste.html.twig', array(
+        return $this->render('temoignage/ajax_see_list.html.twig', array(
             'objet' => $objet,
             'type' => $type,
             'temoignages' => $temoignages
@@ -295,6 +295,7 @@ class TemoignageController extends AppController
                 $opt_form['disabled_prod'] = true;
                 $opt_form['avec_event'] = false;
                 break;
+            case 'temoignage':
             case 'membre':
                 $opt_form['disabled_event'] = true;
                 $opt_form['disabled_prod'] = true;
