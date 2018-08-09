@@ -82,7 +82,7 @@
 {% block script %}
  	<script src="{{ asset('assets/js/temoignage/Temoignage.js') }}?{{ date().timestamp }}"></script>
  	<script src="{{ asset('assets/js/produit/Produit.js') }}?{{ date().timestamp }}"></script>
- 	<script src="{{ asset('assets/js/produit_etablissement/ProduitEtablissment.js') }}?{{ date().timestamp }}"></script>
+ 	<script src="{{ asset('assets/js/produit_etablissement/ProduitEtablissement.js') }}?{{ date().timestamp }}"></script>
  	<script src="{{ asset('assets/js/produit_specialite/ProduitSpecialite.js') }}?{{ date().timestamp }}"></script>
 {% endblock %}
 
@@ -112,7 +112,7 @@
     	Temoignage.LoadTemoignage();
 
     	var paramsPE = {
-				url_ajax_see : '{{path('produit_etablissement_ajax_see', {'id': produit.id}) }}',
+				url_ajax_see : '{{path('produit_etablissement_ajax_see', {'id': produit.id, 'type': 'produit'}) }}',
 				id_content_modal : '#bloc_modal',
 				id_modal : '#modal_produit_global',
 				id_global : '#bloc_produit_etablissement',
