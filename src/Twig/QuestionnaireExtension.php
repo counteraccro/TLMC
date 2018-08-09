@@ -48,6 +48,12 @@ class QuestionnaireExtension extends AbstractExtension
         $this->checkTabParams($params);
 
         $html = '';
+        
+        if($questionnaire->getQuestions()->isEmpty())
+        {
+            return '<div class="text-center text-info">Aucune question n\'est associée à ce questionnaire</div>';
+        }
+        
         $html .= $this->infoBloc();
         $html .= $this->beginForm();
 
@@ -79,6 +85,8 @@ class QuestionnaireExtension extends AbstractExtension
                     $html .= '<div class="alert alert-danger">Le type ' . $question->getType() . ' n\'existe pas</div>';
                     break;
             }
+            
+            $html = $this->isObligatoire($question, $html);
         }
 
         $html .= $this->endForm();
@@ -96,7 +104,7 @@ class QuestionnaireExtension extends AbstractExtension
         $html = '';
         $html = $this->beginBloc($question);
 
-        $html .= '<label for="q-' . $question->getId() . '">' . $question->getLibelle() . '</label>
+        $html .= '<label for="q-' . $question->getId() . '">' . $question->getLibelle() . '%o%</label>
                     <select class="form-control" id="q-' . $question->getId() . '" name="questionnaire[question][q-' . $question->getId() . ']">';
 
         $data_value = json_decode($question->getListeValeur());
@@ -137,7 +145,7 @@ class QuestionnaireExtension extends AbstractExtension
             $strReponse = 'value="' . $reponse->getValeur() . '"';
         }
 
-        $html .= '<label for="q-' . $question->getId() . '">' . $question->getLibelle() . '</label>
+        $html .= '<label for="q-' . $question->getId() . '">' . $question->getLibelle() . '%o%</label>
                     <input type="text" class="form-control" ' . $strReponse . ' placeholder="' . $question->getValeurDefaut() . '" id="q-' . $question->getId() . '" name="questionnaire[question][q-' . $question->getId() . ']" />';
 
         $html .= $this->endBloc($question);
@@ -161,7 +169,7 @@ class QuestionnaireExtension extends AbstractExtension
             $strReponse = $reponse->getValeur();
         }
 
-        $html .= '<label for="q-' . $question->getId() . '">' . $question->getLibelle() . '</label>
+        $html .= '<label for="q-' . $question->getId() . '">' . $question->getLibelle() . '%o%</label>
                     <textarea  class="form-control" placeholder="' . $question->getValeurDefaut() . '" id="q-' . $question->getId() . '" name="questionnaire[question][q-' . $question->getId() . ']">';
         $html .= $strReponse;
         $html .= '</textarea>';
@@ -181,7 +189,7 @@ class QuestionnaireExtension extends AbstractExtension
         $html = '';
         $html = $this->beginBloc($question);
 
-        $html .= '<label for="q-' . $question->getId() . '">' . $question->getLibelle() . '</label>
+        $html .= '<label for="q-' . $question->getId() . '">' . $question->getLibelle() . '%o%</label>
           <div class="form-check">';
 
         $data_value = json_decode($question->getListeValeur());
@@ -224,7 +232,7 @@ class QuestionnaireExtension extends AbstractExtension
         $html = '';
         $html = $this->beginBloc($question);
 
-        $html .= '<label for="q-' . $question->getId() . '">' . $question->getLibelle() . '</label>
+        $html .= '<label for="q-' . $question->getId() . '">' . $question->getLibelle() . '%o%</label>
           <div class="form-check">';
 
         $data_value = json_decode($question->getListeValeur());
@@ -301,16 +309,30 @@ class QuestionnaireExtension extends AbstractExtension
         if ($this->params['statut'] == self::EDIT) {
 
             $edit_url = str_replace('/0', '/' . $question->getId(), $this->params['edit_url']);
-
+            
+            $disabled = '';
+            if($question->getDisabled())
+            {
+                $disabled = '<i class="text-secondary"><span class="oi oi-info"></span> Cette question est désactivée</i> &nbsp;&nbsp;&nbsp;';
+            }
+            
+            $btn_disabled = '';
+            if(new \DateTime('now') > $question->getQuestionnaire()->getDateFin())
+            {
+                $btn_disabled = 'disabled';
+            }
+            
+            
             $edit = '<div class="float-right">
-                <a href="' . $edit_url . '" id="btn-edit-question" class="btn btn-primary btn-edit-question"><span class="oi oi-pencil"></span> Edition</a>
+                ' . $disabled . '
+                <a href="' . $edit_url . '" id="btn-edit-question" class="btn btn-primary btn-edit-question ' . $btn_disabled . '"><span class="oi oi-pencil"></span> Edition</a>
             </div>';
         }
 
         if (! empty($question->getLibelleTop())) {
             $html .= '<div class="card-header">' . $txt_id . ' - ' . $question->getLibelleTop() . $edit . '</div>';
         } else if ($this->params['statut'] == self::EDIT) {
-            $html .= '<div class="card-header">' . $txt_id . $edit . '</div>';
+            $html .= '<div class="card-header">' . $txt_id .  $edit . '</div>';
         } else if ($this->params['statut'] == self::DEMO) {
             $html .= '<div class="card-header">' . $txt_id . '</div>';
         }
@@ -348,8 +370,26 @@ class QuestionnaireExtension extends AbstractExtension
         if ($this->params['statut'] == self::DEMO) {
             $html .= '<div class="alert alert-info">Vous êtes actuellement en démo, aucune donnée saisie ne sera prise en compte.</div>';
         }
+        $html .= '<small class="text-danger"><i>Les champs marqués d\'une * sont obligatoires</i></small>';
 
         return $html;
+    }
+    
+    /**
+     * 
+     * @param Question $question
+     * @param string $html
+     */
+    private function isObligatoire(Question $question, $html)
+    {        
+        if($question->getObligatoire() === true)
+        {
+            return str_replace('%o%', ' <span class="text-danger">*</span>', $html);
+        }
+        else
+        {
+            return str_replace('%o%', '', $html);
+        }
     }
 
     /**
