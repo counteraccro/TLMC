@@ -95,14 +95,14 @@
 		Temoignage.Launch(params);
 		Temoignage.LoadTemoignage();
 
-		var params = {
+		var paramsH = {
 				url_ajax_see : '{{path('historique_ajax_see', {'id': membre.id, 'type': 'membre'}) }}',
 				id_content_modal : '#bloc_modal',
 				id_modal : '#modal_membre_global',
 				id_global : '#bloc_membre_historique',
 		};
         
-		Historique.Launch(params);
+		Historique.Launch(paramsH);
 		Historique.LoadHistorique();
     });
     

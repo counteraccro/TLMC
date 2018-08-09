@@ -55,15 +55,10 @@ class Specialite
     private $membres;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Historique", mappedBy="specialite")
-     */
-    private $historiques;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Patient", mappedBy="specialite")
      */
     private $patients;
-
+    
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\ProduitSpecialite", mappedBy="specialite")
      */
@@ -74,13 +69,49 @@ class Specialite
      */
     private $specialiteEvenements;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Historique", mappedBy="specialite")
+     */
+    private $historiques;
+
     public function __construct()
     {
-        $this->membres = new ArrayCollection();
         $this->historiques = new ArrayCollection();
+        $this->membres = new ArrayCollection();
         $this->patients = new ArrayCollection();
         $this->produitSpecialites = new ArrayCollection();
         $this->specialiteEvenements = new ArrayCollection();
+    }
+
+    /**
+     * @return Collection|Historique[]
+     */
+    public function getHistoriques(): Collection
+    {
+        return $this->historiques;
+    }
+
+    public function addHistorique(Historique $historique): self
+    {
+        if (!$this->historiques->contains($historique)) {
+            $this->historiques[] = $historique;
+            $historique->setSpecialite($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHistorique(Historique $historique): self
+    {
+        if ($this->historiques->contains($historique)) {
+            $this->historiques->removeElement($historique);
+            // set the owning side to null (unless already changed)
+            if ($historique->getSpecialite() === $this) {
+                $historique->setSpecialite(null);
+            }
+        }
+
+        return $this;
     }
 
     public function getId(): ?int
@@ -185,37 +216,6 @@ class Specialite
             // set the owning side to null (unless already changed)
             if ($membre->getSpecialite() === $this) {
                 $membre->setSpecialite(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Historique[]
-     */
-    public function getHistoriques(): Collection
-    {
-        return $this->historiques;
-    }
-
-    public function addHistorique(Historique $historique): self
-    {
-        if (!$this->historiques->contains($historique)) {
-            $this->historiques[] = $historique;
-            $historique->setSpecialite($this);
-        }
-
-        return $this;
-    }
-
-    public function removeHistorique(Historique $historique): self
-    {
-        if ($this->historiques->contains($historique)) {
-            $this->historiques->removeElement($historique);
-            // set the owning side to null (unless already changed)
-            if ($historique->getSpecialite() === $this) {
-                $historique->setSpecialite(null);
             }
         }
 

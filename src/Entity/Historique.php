@@ -28,15 +28,10 @@ class Historique
     private $membre;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Evenement", inversedBy="historiques")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Evenement", inversedBy="historiques")
      * @ORM\JoinColumn(nullable=false)
      */
     private $evenement;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Specialite", inversedBy="historiques")
-     */
-    private $specialite;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Patient", inversedBy="historiques")
@@ -44,7 +39,25 @@ class Historique
      */
     private $patient;
 
-    public function getId()
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Specialite", inversedBy="historiques")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $specialite;
+
+    public function getSpecialite(): ?Specialite
+    {
+        return $this->specialite;
+    }
+
+    public function setSpecialite(?Specialite $specialite): self
+    {
+        $this->specialite = $specialite;
+
+        return $this;
+    }
+
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -78,21 +91,9 @@ class Historique
         return $this->evenement;
     }
 
-    public function setEvenement(Evenement $evenement): self
+    public function setEvenement(?Evenement $evenement): self
     {
         $this->evenement = $evenement;
-
-        return $this;
-    }
-
-    public function getSpecialite(): ?Specialite
-    {
-        return $this->specialite;
-    }
-
-    public function setSpecialite(?Specialite $specialite): self
-    {
-        $this->specialite = $specialite;
 
         return $this;
     }
@@ -108,4 +109,5 @@ class Historique
 
         return $this;
     }
+
 }

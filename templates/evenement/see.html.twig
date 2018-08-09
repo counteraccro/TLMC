@@ -50,6 +50,21 @@
     	</div>
     </div>
     
+    <hr>
+    
+    <div id="bloc_evenement_historique">
+    	<div class="row">
+    		<div class="col-md-4 offset-md-4">
+    			<div class="progress" style="height: 25px;">
+    				<div class="progress-bar progress-bar-striped progress-bar-animated"
+    					role="progressbar" aria-valuenow="75" aria-valuemin="0"
+    					aria-valuemax="100" style="width: 50%">Chargement de
+    					l'historique de l'événement...</div>
+    			</div>
+    		</div>
+    	</div>
+    </div>
+    
     <!-- Modal -->
     <div class="modal fade" id="modal_evenement_global" tabindex="-1" role="dialog">
     	<div class="modal-dialog" role="document">
@@ -57,7 +72,6 @@
     	</div>
     </div>
     
-    <div>Historique</div>
     <div>patient (trinaire)</div>
     <div>extension de formulaire</div>
     <div>questionnaire</div>
@@ -68,6 +82,7 @@
  	<script src="{{ asset('assets/js/Temoignage/Temoignage.js') }}?{{ date().timestamp }}"></script>
  	<script src="{{ asset('assets/js/evenement/Evenement.js') }}?{{ date().timestamp }}"></script>
  	<script src="{{ asset('assets/js/specialite_evenement/SpecialiteEvenement.js') }}?{{ date().timestamp }}"></script>
+ 	<script src="{{ asset('assets/js/historique/Historique.js') }}?{{ date().timestamp }}"></script>
 {% endblock %}
 
 {% block javascripts %}
@@ -104,6 +119,16 @@
         
     	SpecialiteEvenement.Launch(paramsSE);
     	SpecialiteEvenement.LoadSpecialiteEvenement();
+
+    	var paramsH = {
+				url_ajax_see : '{{path('historique_ajax_see', {'id': evenement.id, 'type': 'evenement'}) }}',
+				id_content_modal : '#bloc_modal',
+				id_modal : '#modal_evenement_global',
+				id_global : '#bloc_evenement_historique',
+		};
+        
+		Historique.Launch(paramsH);
+		Historique.LoadHistorique();
     });
     
     </script>

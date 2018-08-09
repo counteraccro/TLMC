@@ -25,16 +25,16 @@
                 
                 {% for historique in objet.historiques %}
                 	<tr>
-                		{% if type != 'specialite' %}
+                		{% if type != 'membre' %}
                     		<td>{{ historique.membre.prenom }} {{ historique.membre.nom }} </td>
                     	{% endif %}
                     	{% if type != 'specialite' %}
                         	<td>{{ historique.specialite.service }}</td>
                         {% endif %}
-                        {% if type != 'specialite' %}
+                        {% if type != 'evenement' %}
                         	<td>{{ historique.evenement.nom }}</td>
                        	{% endif %}
-                        {% if type != 'specialite' %}
+                        {% if type != 'patient' %}
                         	<td>{{ historique.patient.prenom }} {{ historique.patient.nom }}</td>
                         {% endif %}
                         <td>{{ historique.date | date('d/m/Y H:i') }}</td>
@@ -56,8 +56,6 @@
             	{% endif %}
             	
             {% endif %}
-        	
-    
      	</div>
     </div>
 </div>

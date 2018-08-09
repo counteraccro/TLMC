@@ -2,10 +2,8 @@
 namespace App\DataFixtures\ORM;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use App\Entity\Patient;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Validator\Constraints\DateTime;
 use App\Entity\Membre;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
