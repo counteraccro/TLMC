@@ -28,6 +28,12 @@
             	</tr>
           	{% endfor %}
         </table>
+        
+        {% if evenement.specialiteEvenements is empty %}
+           	<p class="text-info text-center">Il  n'y a aucune spécialités associée à cet événement.</p>
+          	
+        {% endif %}
+        
     </div>
     
     {% block javascripts %}

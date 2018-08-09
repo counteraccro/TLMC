@@ -1,0 +1,38 @@
+<div id="ajax_historique_edit">
+	{{ form_start(form) }}
+	<div class="modal-header">
+		<h5 class="modal-title">
+			Modification de l'historique #{{ historique.id }}
+		</h5>
+		<button type="button" class="close" data-dismiss="modal"
+			aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+
+	<div class="modal-body">
+	    {{ form_row(form.evenement) }}
+	    {{ form_row(form.specialite) }}
+		{{ form_row(form.patient) }}
+		{{ form_row(form.date) }}
+		
+		<div class="modal-footer">
+		{{ form_widget(form.save) }}
+	</div>
+	{{ form_rest(form) }}
+	{{ form_errors(form) }}
+	{{ form_end(form) }}
+</div>
+
+	{% block javascripts %}
+	<script type="text/javascript">
+    
+    	$('#modal_{{ type }}_global').modal({
+    		   'show' : true,
+    		   'backdrop' : 'static'
+    	});
+    	
+		var url = '{{path('historique_ajax_edit', {'id': historique.id, 'objet_id': objet.id, 'type':type }) }}';
+		Historique.EventEditSubmit(url);
+	    </script>
+	{% endblock %}

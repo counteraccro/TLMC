@@ -36,6 +36,18 @@
             	</tr>
           	{% endfor %}
         </table>
+        
+        {% if objet.produitEtablissements is empty %}
+           	<p class="text-info text-center">Il  n'y a aucun 
+           	
+            {% if type == 'produit' %}
+           		établissement associé à ce produit.</p>
+           	{% elseif type == 'etablissement' %}
+           		produit associé à cet établissement.</p>
+           	{% endif %}
+          	
+        {% endif %}
+        
     </div>
     
     {% block javascripts %}

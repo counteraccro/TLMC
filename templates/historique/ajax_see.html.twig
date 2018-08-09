@@ -2,7 +2,8 @@
     <div class="card">
         <div class="card-header">
         	Historique
-       	</div>
+        	<a href="{{ path('historique_ajax_add', {'id' : objet.id, 'type':type}) }}" id="btn-add-historique" class="float-right"><span class="oi oi-book"></span> Nouvel historique</a>
+        </div>
         
         <div class="card-body">
         	<table class="table table-sm table-striped">
@@ -38,7 +39,9 @@
                         	<td>{{ historique.patient.prenom }} {{ historique.patient.nom }}</td>
                         {% endif %}
                         <td>{{ historique.date | date('d/m/Y H:i') }}</td>
-                        <td></td>
+                        <td>
+                        	<a href="{{ path('historique_ajax_edit', {'id' : historique.id, 'objet_id': objet.id, 'type':type}) }}" id="btn-edit-historique-{{ historique.id }}"  title="Editer la fiche"><span class="oi oi-pencil"></span></a>
+                        </td>
                     </tr>
                 
                 {% endfor %}
@@ -58,4 +61,19 @@
             {% endif %}
      	</div>
     </div>
+    
+    
+    {% block javascripts %}
+        <script type="text/javascript">
+            var id_btn_add = '#btn-add-historique';
+            Historique.EventAdd(id_btn_add);
+
+          	//on associe une action pour chaque bouton edit
+            {% for historique in objet.historiques %}
+            	var id_btn_edit_{{ historique.id }} = '#btn-edit-historique-' + {{ historique.id }};
+            	Historique.EventEdit(id_btn_edit_{{ historique.id }});
+            {% endfor %}
+			
+        </script>
+    {% endblock %}
 </div>
