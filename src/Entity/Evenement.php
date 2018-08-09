@@ -127,6 +127,11 @@ class Evenement
      * @ORM\OneToMany(targetEntity="App\Entity\Participant", mappedBy="evenement")
      */
     private $participants;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Historique", mappedBy="evenement")
+     */
+    private $historiques;
 
     public function __construct()
     {
@@ -135,6 +140,7 @@ class Evenement
         $this->evenementQuestionnaires = new ArrayCollection();
         $this->specialiteEvenements = new ArrayCollection();
         $this->participants = new ArrayCollection();
+        $this->historiques = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -495,6 +501,37 @@ class Evenement
             // set the owning side to null (unless already changed)
             if ($participant->getEvenement() === $this) {
                 $participant->setEvenement(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Historique[]
+     */
+    public function getHistoriques(): Collection
+    {
+        return $this->historiques;
+    }
+
+    public function addHistorique(Historique $historique): self
+    {
+        if (!$this->historiques->contains($historique)) {
+            $this->historiques[] = $historique;
+            $historique->setEvenement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHistorique(Historique $historique): self
+    {
+        if ($this->historiques->contains($historique)) {
+            $this->historiques->removeElement($historique);
+            // set the owning side to null (unless already changed)
+            if ($historique->getEvenement() === $this) {
+                $historique->setEvenement(null);
             }
         }
 
