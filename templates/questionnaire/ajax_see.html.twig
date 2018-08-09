@@ -4,13 +4,33 @@
          	<div class="card-header bg-light">
             	 <b>Titre du questionnaire :</b> {{ questionnaire.titre }}
             	<div class="float-right">
-            		<a href="{{path('question_ajax_add', {'id': questionnaire.id }) }}" id="btn-add-question" class="btn btn-success btn-add-question"> <span class="oi oi-plus"></span> Nouvelle question</a>  
-            		<a href="{{path('questionnaire_ajax_edit', {'id': questionnaire.id }) }}" id="btn-edit-questionnaire" class="btn btn-dark"><span class="oi oi-pencil"></span> Editer le questionnaire</a>
-            		<a href="{{path('questionnaire_demo', {'slug': questionnaire.slug }) }}" id="btn-demo-questionnaire" class="btn btn-info"><span class="oi oi-monitor"></span> Tester le questionnaire</a>
+            		 {% if "now"|date('Y-m-d') > questionnaire.dateFin|date('Y-m-d') %}
+            		 
+            		 	<a href="#" id="btn-add-question" class="btn btn-primary btn-add-question disabled"> <span class="oi oi-plus"></span> Nouvelle question</a>  
+            			<a href="{{path('questionnaire_ajax_edit', {'id': questionnaire.id }) }}" id="btn-edit-questionnaire" class="btn btn-dark"><span class="oi oi-pencil"></span> Editer</a>
+            			<a href="#" id="btn-edit-questionnaire" class="btn btn-success disabled"><span class="oi oi-share"></span> Publier</a>
+            			<a href="{{path('questionnaire_demo', {'slug': questionnaire.slug }) }}" id="btn-demo-questionnaire" class="btn btn-info disabled"><span class="oi oi-monitor"></span> Tester</a>
+            			<a href="#" id="btn-demo-questionnaire" class="btn btn-secondary"><span class="oi oi-fork"></span> Dupliquer</a>
+            		 
+            		 {% else %}
+            		  
+            		  	<a href="{{path('question_ajax_add', {'id': questionnaire.id }) }}" id="btn-add-question" class="btn btn-primary btn-add-question"> <span class="oi oi-plus"></span> Nouvelle question</a>  
+            			<a href="{{path('questionnaire_ajax_edit', {'id': questionnaire.id }) }}" id="btn-edit-questionnaire" class="btn btn-dark"><span class="oi oi-pencil"></span> Editer</a>
+            			<a href="#" id="btn-edit-questionnaire" class="btn btn-success"><span class="oi oi-share"></span> Publier</a>
+            			<a href="{{path('questionnaire_demo', {'slug': questionnaire.slug }) }}" id="btn-demo-questionnaire" class="btn btn-info"><span class="oi oi-monitor"></span> Tester</a>
+            			<a href="#" id="btn-demo-questionnaire" class="btn btn-secondary"><span class="oi oi-fork"></span> Dupliquer</a>
+            		  
+            		  {% endif %}
             	</div>
             </div>
           	<div class="card-body">
-            	<b>Date de création :</b> {{ questionnaire.dateCreation | date('d/m/Y') }} - Date de fin : {{ questionnaire.dateFin | date('d/m/Y') }}</br>
+            	<b>Date de création :</b> {{ questionnaire.dateCreation | date('d/m/Y') }} - 
+                {% if "now"|date('Y-m-d') > questionnaire.dateFin|date('Y-m-d') %}
+            		<span class="text-danger"><b>Date de fin : {{ questionnaire.dateFin | date('d/m/Y') }}</b></span></br>
+                {% else %}
+                	Date de fin : {{ questionnaire.dateFin | date('d/m/Y') }}
+                {% endif %}
+            	
             	<b>Description :</b> {{ questionnaire.description }}</br>
             	<b>Nombre de jours avant relance :</b> {{ questionnaire.jourRelance }}</br>
             	<b>Actif :</b> 
