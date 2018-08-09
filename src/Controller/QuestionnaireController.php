@@ -132,6 +132,7 @@ class QuestionnaireController extends AppController
         if ($form->isSubmitted() && $form->isValid()) {
             $questionnaire->setDisabled(0);
             $questionnaire->setDateCreation(new \DateTime());
+            $questionnaire->setPublication(0);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($questionnaire);

@@ -75,6 +75,11 @@ class Questionnaire
      */
     private $evenementQuestionnaires;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $publication;
+
     public function __construct()
     {
         $this->questions = new ArrayCollection();
@@ -260,6 +265,18 @@ class Questionnaire
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getPublication(): ?bool
+    {
+        return $this->publication;
+    }
+
+    public function setPublication(bool $publication): self
+    {
+        $this->publication = $publication;
 
         return $this;
     }

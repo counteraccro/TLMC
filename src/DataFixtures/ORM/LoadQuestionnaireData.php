@@ -24,7 +24,8 @@ class LoadQuestionnaireData extends Fixture
                 'setDateFin' => '2017-12-30 17:00:00',
                 'setJourRelance' => '2',
                 'setDisabled' => '1',
-                'setSlug' => 'soiree-annuelle'
+                'setSlug' => 'soiree-annuelle',
+                'setPublication' => '1'
             ],
             'Questionnaire-2' => [
                 'setTitre' => 'Formulaire d\'inscription',
@@ -33,7 +34,8 @@ class LoadQuestionnaireData extends Fixture
                 'setDateFin' => '2019-01-30 17:00:00',
                 'setJourRelance' => '5',
                 'setDisabled' => '0',
-                'setSlug' => 'formulaire-d-inscription'
+                'setSlug' => 'formulaire-d-inscription',
+                'setPublication' => '0'
             ],
             'Questionnaire-3' => [
                 'setTitre' => 'Enquête sur les bonbons',
@@ -42,7 +44,8 @@ class LoadQuestionnaireData extends Fixture
                 'setDateFin' => '2018-09-03 23:00:00',
                 'setJourRelance' => '5',
                 'setDisabled' => '0',
-                'setSlug' => 'enquete-sur-les-bonbons'
+                'setSlug' => 'enquete-sur-les-bonbons',
+                'setPublication' => '1'
             ]
         ]
     ];

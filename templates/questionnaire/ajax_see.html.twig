@@ -28,9 +28,9 @@
                 {% if "now"|date('Y-m-d') > questionnaire.dateFin|date('Y-m-d') %}
             		<span class="text-danger"><b>Date de fin : {{ questionnaire.dateFin | date('d/m/Y') }}</b></span></br>
                 {% else %}
-                	Date de fin : {{ questionnaire.dateFin | date('d/m/Y') }}
+                	Date de fin : {{ questionnaire.dateFin | date('d/m/Y') }}<br/>
                 {% endif %}
-            	
+            	<b>Publication :</b> {{ questionnaire.publication }}</br>
             	<b>Description :</b> {{ questionnaire.description }}</br>
             	<b>Nombre de jours avant relance :</b> {{ questionnaire.jourRelance }}</br>
             	<b>Actif :</b> 
