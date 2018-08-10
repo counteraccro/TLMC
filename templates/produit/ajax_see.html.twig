@@ -2,7 +2,9 @@
 	<div class="card-header bg-light">
     	<b>Produit :</b> {{ produit.titre }}
        	<div class="float-right"> 
-       		<a href="{{path('produit_ajax_edit', {'id': produit.id }) }}" id="btn-edit-produit" class="btn btn-dark"><span class="oi oi-pencil"></span> Editer le produit</a>
+       		{% if is_granted("ROLE_ADMIN") %}
+       			<a href="{{path('produit_ajax_edit', {'id': produit.id }) }}" id="btn-edit-produit" class="btn btn-dark"><span class="oi oi-pencil"></span> Editer le produit</a>
+       		{% endif %}
        	</div>
     </div>
     <div class="card-body">

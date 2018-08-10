@@ -37,20 +37,22 @@
     
     <hr>
 	
-    <div id="bloc_evenement_specialite">
-    	<div class="row">
-    		<div class="col-md-4 offset-md-4">
-    			<div class="progress" style="height: 25px;">
-    				<div class="progress-bar progress-bar-striped progress-bar-animated"
-    					role="progressbar" aria-valuenow="75" aria-valuemin="0"
-    					aria-valuemax="100" style="width: 50%">Chargement des
-    					spécialités associées à l'événement...</div>
-    			</div>
-    		</div>
-    	</div>
-    </div>
-    
-    <hr>
+	{% if is_granted("ROLE_ADMIN") %}
+        <div id="bloc_evenement_specialite">
+        	<div class="row">
+        		<div class="col-md-4 offset-md-4">
+        			<div class="progress" style="height: 25px;">
+        				<div class="progress-bar progress-bar-striped progress-bar-animated"
+        					role="progressbar" aria-valuenow="75" aria-valuemin="0"
+        					aria-valuemax="100" style="width: 50%">Chargement des
+        					spécialités associées à l'événement...</div>
+        			</div>
+        		</div>
+        	</div>
+        </div>
+        
+        <hr>
+    {% endif %}
     
     <div id="bloc_evenement_historique">
     	<div class="row">
@@ -110,16 +112,18 @@
     	Temoignage.Launch(paramsT);
     	Temoignage.LoadTemoignage();
 
-    	var paramsSE = {
-				url_ajax_see : '{{path('specialite_evenement_ajax_see', {'id': evenement.id, 'type': 'evenement'}) }}',
-				id_content_modal : '#bloc_modal',
-				id_modal : '#modal_evenement_global',
-				id_global : '#bloc_evenement_specialite'
-		};
+    	{% if is_granted("ROLE_ADMIN") %}
+        	var paramsSE = {
+    				url_ajax_see : '{{path('specialite_evenement_ajax_see', {'id': evenement.id, 'type': 'evenement'}) }}',
+    				id_content_modal : '#bloc_modal',
+    				id_modal : '#modal_evenement_global',
+    				id_global : '#bloc_evenement_specialite'
+    		};
         
-    	SpecialiteEvenement.Launch(paramsSE);
-    	SpecialiteEvenement.LoadSpecialiteEvenement();
-
+        	SpecialiteEvenement.Launch(paramsSE);
+        	SpecialiteEvenement.LoadSpecialiteEvenement();
+    	{% endif %}
+    	
     	var paramsH = {
 				url_ajax_see : '{{path('historique_ajax_see', {'id': evenement.id, 'type': 'evenement'}) }}',
 				id_content_modal : '#bloc_modal',
