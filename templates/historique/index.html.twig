@@ -41,7 +41,7 @@
         				<td>{{ historique.specialite.service }}</td>
         	   			<td>{{ historique.patient.prenom }} {{ historique.patient.nom }}</td>
         	   			<td>{{ historique.membre.prenom }} {{ historique.membre.nom }}</td>
-        	   			<td>{{ historique.date |date("m/d/Y H:i") }}</td>
+        	   			<td>{{ historique.date |date("d/m/Y H:i") }}</td>
         	   			<td>
         	   				{{ actionEdit(path('historique_edit', {'id' : historique.id, 'page' : pagination.page})) | raw }}
         	   			</td>

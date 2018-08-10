@@ -19,7 +19,7 @@ class HistoriqueController extends AppController
      * Listing de l'historique
      *
      * @Route("/historique/listing/{page}/{field}/{order}", name="historique_listing", defaults={"page" = 1, "field"= null, "order"= null})
-     * @Security("is_granted('ROLE_ADMIN')")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      *
      * @param Request $request
      * @param SessionInterface $session
@@ -46,6 +46,15 @@ class HistoriqueController extends AppController
             'repository' => 'Historique',
             'repositoryMethode' => 'findAllHistoriques'
         );
+        
+        if (! $this->isAdmin()) {
+            $params['condition'] = array(
+                array(
+                    'key' => 'membre',
+                    'value' => $this->getUser()->getId()
+                )
+            );
+        }
 
         $result = $this->genericSearch($request, $session, $params);
 
@@ -76,7 +85,7 @@ class HistoriqueController extends AppController
      * Bloc historique
      *
      * @Route("/historique/ajax/see/{id}/{type}", name="historique_ajax_see")
-     * @Security("is_granted('ROLE_ADMIN')")
+     * @Security("is_granted('ROLE_ADMIN')or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      *
      * @param int $id
      * @param
