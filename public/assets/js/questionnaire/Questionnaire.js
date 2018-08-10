@@ -39,7 +39,7 @@ Questionnaire.Launch = function(params) {
 			method: method,
 			url: url,
 		})
-		.done(function( html ) {
+		.done(function( html ) {			
 			$(id_done).html(html)
 			$(Questionnaire.id_container_global).hideLoading();
 		});
@@ -51,6 +51,22 @@ Questionnaire.Launch = function(params) {
 	Questionnaire.EventEdit = function(id)
 	{
 		// Event sur le bouton edit d'un questionnaire
+		$(id).click(function() {
+			//on passe l'url et l'id_done
+			
+			$(Questionnaire.id_container_global).showLoading();
+			
+			Questionnaire.Ajax($(this).attr('href'), Questionnaire.id_content_modal);
+			return false;
+		});
+	}
+	
+	/**
+	 * Evenement à la publication
+	 */
+	Questionnaire.EventPublication = function(id)
+	{
+		// Event sur le bouton publier d'un questionnaire
 		$(id).click(function() {
 			//on passe l'url et l'id_done
 			

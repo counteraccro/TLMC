@@ -279,4 +279,18 @@ class QuestionnaireController extends AppController
             'questResultat' => $questResultat 
         ]);
     }
+    
+    /**
+     * Publication questionnaire
+     *
+     * @Route("/questionnaire/ajax/publication/{id}", name="questionnaire_ajax_publication")
+     * @ParamConverter("questionnaire", options={"mapping": {"id": "id"}})
+     * @Security("is_granted('ROLE_ADMIN')")
+     */
+    public function publicationAction(Questionnaire $questionnaire)
+    {
+        return $this->render('questionnaire/ajax_publication.html.twig', [
+            'questionnaire' => $questionnaire
+        ]);
+    }
 }

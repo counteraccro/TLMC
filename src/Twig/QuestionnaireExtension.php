@@ -317,7 +317,7 @@ class QuestionnaireExtension extends AbstractExtension
             }
             
             $btn_disabled = '';
-            if(new \DateTime('now') > $question->getQuestionnaire()->getDateFin())
+            if(new \DateTime('now') > $question->getQuestionnaire()->getDateFin() || $question->getQuestionnaire()->getPublication())
             {
                 $btn_disabled = 'disabled';
             }

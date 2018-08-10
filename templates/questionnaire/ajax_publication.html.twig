@@ -1,0 +1,50 @@
+<div id="ajax_questionnaire_publication">
+
+	<div class="modal-header">
+		<h5 class="modal-title">
+			Publication du questionnaire #
+			{{ questionnaire.id }}
+		</h5>
+		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+	
+	<div class="modal-body">
+				<p>Etes-vous certain(e) de vouloir publier ce questionnaire ?</p>
+		<div class="alert alert-warning">
+			<b><span class="oi oi-warning"></span> Attention</b>
+			<p>La publication de ce questionnaire va imposer certaines règles de gestion qui sont :
+			<ul>
+				<li><b>L'ajout</b> de nouvelles questions ne sera plus possible, sauf si vous le dépubliez.</li>
+				<li><b>L'édition</b> des questions déjà saisie ne sera plus possible, sauf si vous le dépubliez.</li>
+				<li>
+					A partir du moment où 1 réponse est apportée à une question du questionnaire, plus <b>aucune modification ne sera possible</b> même après
+					dépublication.
+				</li>
+			</ul>
+		</div>
+		
+
+
+	</div>
+	
+	<div class="modal-footer">
+		<a href="#" class="btn btn-success" id="publish-yes">Confirmer</a>
+		<a href="#" class="btn btn-primary" id="publish-no">Annuler</a>
+	</div>
+</div>
+
+{% block javascripts %}
+<script type="text/javascript">
+    
+    $('#modal_questionnaire_global').modal({
+    	   'show' : true,
+    	   'backdrop' : 'static'
+    });
+
+    $('#publish-no').click(function() {
+    	$('#modal_questionnaire_global').modal('toggle');
+    })
+    </script>
+{% endblock %}

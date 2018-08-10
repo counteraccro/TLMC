@@ -4,23 +4,15 @@
          	<div class="card-header bg-light">
             	 <b>Titre du questionnaire :</b> {{ questionnaire.titre }}
             	<div class="float-right">
-            		 {% if "now"|date('Y-m-d') > questionnaire.dateFin|date('Y-m-d') %}
-            		 
-            		 	<a href="#" id="btn-add-question" class="btn btn-primary btn-add-question disabled"> <span class="oi oi-plus"></span> Nouvelle question</a>  
-            			<a href="{{path('questionnaire_ajax_edit', {'id': questionnaire.id }) }}" id="btn-edit-questionnaire" class="btn btn-dark"><span class="oi oi-pencil"></span> Editer</a>
-            			<a href="#" id="btn-edit-questionnaire" class="btn btn-success disabled"><span class="oi oi-share"></span> Publier</a>
-            			<a href="{{path('questionnaire_demo', {'slug': questionnaire.slug }) }}" id="btn-demo-questionnaire" class="btn btn-info disabled"><span class="oi oi-monitor"></span> Tester</a>
-            			<a href="#" id="btn-demo-questionnaire" class="btn btn-secondary"><span class="oi oi-fork"></span> Dupliquer</a>
-            		 
-            		 {% else %}
+            		
+            		  {{ addQuestion(questionnaire, path('question_ajax_add', {'id': questionnaire.id })) | raw }}
+            		  {{ edit(questionnaire, path('questionnaire_ajax_edit', {'id': questionnaire.id })) | raw }}
+            		  {{ test(questionnaire, path('questionnaire_demo', {'slug': questionnaire.slug })) | raw }}
+            		                                    		  
+            		  {# ROUTES A MODIFIER QUAND ELLES SERONT CREEES #}
+            		  {{ publish(questionnaire, path('questionnaire_ajax_publication', {'id': questionnaire.id })) | raw }}
+            		  {{ duplicate(questionnaire, path('questionnaire_ajax_edit', {'id': questionnaire.id })) | raw }}
             		  
-            		  	<a href="{{path('question_ajax_add', {'id': questionnaire.id }) }}" id="btn-add-question" class="btn btn-primary btn-add-question"> <span class="oi oi-plus"></span> Nouvelle question</a>  
-            			<a href="{{path('questionnaire_ajax_edit', {'id': questionnaire.id }) }}" id="btn-edit-questionnaire" class="btn btn-dark"><span class="oi oi-pencil"></span> Editer</a>
-            			<a href="#" id="btn-edit-questionnaire" class="btn btn-success"><span class="oi oi-share"></span> Publier</a>
-            			<a href="{{path('questionnaire_demo', {'slug': questionnaire.slug }) }}" id="btn-demo-questionnaire" class="btn btn-info"><span class="oi oi-monitor"></span> Tester</a>
-            			<a href="#" id="btn-demo-questionnaire" class="btn btn-secondary"><span class="oi oi-fork"></span> Dupliquer</a>
-            		  
-            		  {% endif %}
             	</div>
             </div>
           	<div class="card-body">
@@ -50,6 +42,9 @@
 	{% block javascripts %}
     <script type="text/javascript">
 
+    var id_btn_questionnaire_publication = '#ajax_questionnaire_see #btn-publish-questionnaire';
+    Questionnaire.EventPublication(id_btn_questionnaire_publication);
+    
     var id_btn_questionnaire = '#btn-edit-questionnaire';
     Questionnaire.EventEdit(id_btn_questionnaire);
 
@@ -58,6 +53,8 @@
     
     var id_btn_question_add = '#ajax_questionnaire_see .btn-add-question';
     Question.EventEdit(id_btn_question_add)
+    
+   	 $('[data-toggle="tooltip"]').tooltip();
     
     </script>
 {% endblock %}
