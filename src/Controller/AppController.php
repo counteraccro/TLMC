@@ -213,6 +213,10 @@ class AppController extends Controller
             $paramsRepo['condition'] = $params['condition'];
         }
         
+        if(isset($params['jointure'])){
+            $paramsRepo['jointure'] = $params['jointure'];
+        }
+        
         $session->set(self::CURRENT_SEARCH, $paramsSearch);
 
         return $repository->{$params['repositoryMethode']}($params['page'], self::MAX_NB_RESULT, $paramsRepo);

@@ -52,6 +52,21 @@ class FamilleAdresseController extends AppController
                     'value' => 0
                 )
             );
+            
+            if ($this->getMembre()->getSpecialite()) {
+                $params['jointure'] = array(
+                    array('oldrepository' => 'FamilleAdresse', 'newrepository' => 'familles'),
+                    array('oldrepository' => 'familles', 'newrepository' => 'patient'),
+                    array('oldrepository' => 'patient', 'newrepository' => 'specialite')
+                );
+                $params['condition'][] = array(
+                    'jointure' => true,
+                    'key' => 'specialite.id',
+                    'value' => $this->getMembre()
+                    ->getSpecialite()
+                    ->getId()
+                );
+            }
         }
 
         $result = $this->genericSearch($request, $session, $params);

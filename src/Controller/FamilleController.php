@@ -56,6 +56,21 @@ class FamilleController extends AppController
                     'value' => 0
                 )
             );
+
+            if ($this->getMembre()->getSpecialite()) {
+                $params['jointure'] = array(
+                    array('oldrepository' => 'Famille', 'newrepository' => 'patient'
+                    ),
+                    array('oldrepository' => 'patient', 'newrepository' => 'specialite')
+                );
+                $params['condition'][] = array(
+                    'jointure' => true,
+                    'key' => 'specialite.id',
+                    'value' => $this->getMembre()
+                        ->getSpecialite()
+                        ->getId()
+                );
+            }
         }
 
         $result = $this->genericSearch($request, $session, $params);
@@ -96,13 +111,13 @@ class FamilleController extends AppController
     public function ajaxSeeAction(Patient $patient)
     {
         $familles = $this->getElementsLiesActifs($patient, 'getFamilles');
-        
+
         return $this->render('famille/ajax_see.html.twig', array(
             'patient' => $patient,
             'familles' => $familles
         ));
     }
-    
+
     /**
      * Affichage de la fiche d'une famille
      *

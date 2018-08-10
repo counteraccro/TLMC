@@ -64,16 +64,17 @@ class Famille
      */
     private $disabled;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\FamilleAdresse", cascade={"persist"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $famille_adresse;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Participant", mappedBy="famille")
      */
     private $participants;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\FamilleAdresse", inversedBy="familles", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $famille_adresse;
 
     public function __construct()
     {
@@ -174,18 +175,6 @@ class Famille
         return $this;
     }
 
-    public function getFamilleAdresse(): ?FamilleAdresse
-    {
-        return $this->famille_adresse;
-    }
-
-    public function setFamilleAdresse(?FamilleAdresse $famille_adresse): self
-    {
-        $this->famille_adresse = $famille_adresse;
-
-        return $this;
-    }
-
     /**
      * @return Collection|Participant[]
      */
@@ -225,6 +214,18 @@ class Famille
     public function setDisabled(bool $disabled): self
     {
         $this->disabled = $disabled;
+
+        return $this;
+    }
+
+    public function getFamilleAdresse(): ?FamilleAdresse
+    {
+        return $this->famille_adresse;
+    }
+
+    public function setFamilleAdresse(?FamilleAdresse $famille_adresse): self
+    {
+        $this->famille_adresse = $famille_adresse;
 
         return $this;
     }

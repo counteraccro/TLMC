@@ -115,11 +115,22 @@ class PatientRepository extends ServiceEntityRepository
             }
         }
         
-        if(isset($params['condition'])){
-            foreach ($params['condition'] as $condition){
-                $query->andWhere($params['repository'] . '.' . $condition['key'] . ' = '.$condition['value']);
+        if (isset($params['jointure'])) {
+            foreach ($params['jointure'] as $jointure) {
+                $query->join($jointure['oldrepository'] . '.' . $jointure['newrepository'], $jointure['newrepository']);
             }
         }
+        
+        if(isset($params['condition'])){
+            foreach ($params['condition'] as $condition){
+                if (isset($condition['jointure']) && $condition['jointure']) {
+                    $query->andWhere($condition['key'] . ' = ' . $condition['value']);
+                } else {
+                    $query->andWhere($params['repository'] . '.' . $condition['key'] . ' = ' . $condition['value']);
+                }
+            }
+        }
+        
         return $query;
     }
 
