@@ -13,6 +13,16 @@ class EtablissementController extends AppController
 {
 
     /**
+     * Statut de la convention s'il y en a une
+     * @var array
+     */
+    const STATUT_CONVENTION = array(
+        0 => 'Pas de convention',
+        1 => 'En cours',
+        2 => 'Ok'
+    );
+    
+    /**
      * Listing des établissements
      *
      * @Route("/etablissement/listing/{page}/{field}/{order}", name="etablissement_listing", defaults={"page" = 1, "field"= null, "order"= null})

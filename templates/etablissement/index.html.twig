@@ -38,7 +38,7 @@
         		<td>{{ inputFilter(path('etablissement_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Etablissement-type', current_search, 'Type') | raw }}</td>
         		<td>{{ inputFilter(path('etablissement_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Etablissement-code_logistique', current_search, 'Code logistique') | raw }}</td>
         		<td>{{ inputFilter(path('etablissement_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Etablissement-nb_lit', current_search, 'Nombre de lits') | raw }}</td>
-        		<td>{{ inputFilter(path('etablissement_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Etablissement-statut_convention', current_search, 'Statut de la convention') | raw }}</td>
+        		<td>{{ inputFilter(path('etablissement_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Etablissement-statut_convention', current_search, '', constant('App\\Controller\\EtablissementController::STATUT_CONVENTION')) | raw }}</td>
         		<td>{{ inputFilter(path('etablissement_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Etablissement-date_collaboration', current_search, 'Date collaboration') | raw }}</td>
         		<td>{{ inputFilter(path('etablissement_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Etablissement-numero_voie', current_search, 'N° voie') | raw }}</td>
         		<td>{{ inputFilter(path('etablissement_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Etablissement-voie', current_search, 'Voie') | raw }}</td>
@@ -55,7 +55,7 @@
         			<td>{{ etablissement.type }}</td>
         			<td>{{ etablissement.codeLogistique }}</td>
         			<td>{{ etablissement.nbLit }}</td>
-        			<td>{{ etablissement.statutConvention }}</td>
+        			<td>{{ etablissement.statutConvention | statutConvention}}</td>
         			<td>{{ etablissement.dateCollaboration | date('d/m/Y') }}</td>
         			<td>{{ etablissement.numeroVoie }}</td>
         			<td>{{ etablissement.voie }} </td>
