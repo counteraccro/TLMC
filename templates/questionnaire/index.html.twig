@@ -23,7 +23,8 @@
         		<th>{{ headerFilter(path('questionnaire_listing', {'page' : pagination.page, 'field' : 'jour_relance'} ), 'Nb jours avant relance', current_order, current_field) | raw }}</th>
         		<th>{{ headerFilter(path('questionnaire_listing', {'page' : pagination.page, 'field' : 'date_creation'} ), 'Date de création', current_order, current_field) | raw }}</th>
         		<th>{{ headerFilter(path('questionnaire_listing', {'page' : pagination.page, 'field' : 'date_fin'} ), 'Date de fin', current_order, current_field) | raw }}</th>
-        		 		<th>{{ headerFilter(path('questionnaire_listing', {'page' : pagination.page, 'field' : 'nb_questions'} ), 'Nb questions', current_order, current_field) | raw }}</th>
+        		<th>{{ headerFilter(path('questionnaire_listing', {'page' : pagination.page, 'field' : 'publication'} ), 'Publication', current_order, current_field) | raw }}</th>
+        		<th>{{ headerFilter(path('questionnaire_listing', {'page' : pagination.page, 'field' : 'nb_questions'} ), 'Nb questions', current_order, current_field) | raw }}</th>
         		<th></th>
         	</tr>
         	<tr>
@@ -32,27 +33,35 @@
         		<td>{{ inputFilter(path('questionnaire_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Questionnaire-jour_relance', current_search, 'Jour de relance') | raw }}</td>
         		<td>{{ inputFilter(path('questionnaire_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Questionnaire-date_creation', current_search, 'Date de création') | raw }}</td>
         		<td>{{ inputFilter(path('questionnaire_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Questionnaire-date_fin', current_search, 'Date de fin') | raw }}</td>
+        		 <td>{{ inputFilter(path('questionnaire_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Questionnaire-publication', current_search, 'Publication') | raw }}</td>
         		<td></td>
         		<td></td>
         	</tr>
         	
 	        {% for questionnaire in questionnaires %}
-        	<tr>	        
-		            <td>{{ questionnaire.id }}</td>
-		            <td>{{ questionnaire.titre }}</td> 
-            		<td>{{ questionnaire.jourRelance }}</td>
-            	   	<td>{{ questionnaire.dateCreation |date("d/m/Y H:i") }}</td>
-            	   	<td>{{ questionnaire.dateFin |date("d/m/Y H:i") }}</td>
-            	   	<td>{{ questionnaire.questions | length }}</td>	
+        	<tr>
+		        <td>{{ questionnaire.id }}</td>
+	            <td>{{ questionnaire.titre }}</td> 
+        		<td>{{ questionnaire.jourRelance }}</td>
+        	   	<td>{{ questionnaire.dateCreation |date("d/m/Y H:i") }}</td>
+        	   	<td>{{ questionnaire.dateFin |date("d/m/Y H:i") }}</td>
+        	   	<td>      
+        			{% if questionnaire.publication == 1 %}
+        	        <span class="badge badge-success">Oui</span>
+        	        {% else %}	
+        	        <span class="badge badge-light">Non</span>
+        	        {% endif %}
+        	    </td>
+        	   	<td>{{ questionnaire.questions | length }}</td>	
    
-            	   	<td>
-        			    {{ actionSee(path('questionnaire_see', {'id' : questionnaire.id, 'page' : pagination.page})) | raw }}
-        			    
-        			    {% if is_granted("ROLE_ADMIN") %}
-        			        {{ actionEdit(path('questionnaire_edit', {'id' : questionnaire.id, 'page' : pagination.page})) | raw }}
-        			        {{ actionDelete(questionnaire.disabled, path('questionnaire_delete', {'id' : questionnaire.id, 'page' : pagination.page})) | raw }}
-        			    {% endif %}
-        			</td>
+        	   	<td>
+    			    {{ actionSee(path('questionnaire_see', {'id' : questionnaire.id, 'page' : pagination.page})) | raw }}
+    			    
+    			    {% if is_granted("ROLE_ADMIN") %}
+    			        {{ actionEdit(path('questionnaire_edit', {'id' : questionnaire.id, 'page' : pagination.page})) | raw }}
+    			        {{ actionDelete(questionnaire.disabled, path('questionnaire_delete', {'id' : questionnaire.id, 'page' : pagination.page})) | raw }}
+    			    {% endif %}
+    			</td>
           	</tr>         
             {% endfor %}
         </table>

@@ -58,7 +58,7 @@ class QuestionnaireActionExtension extends AbstractExtension
         if (! empty($question)) {
             if ($question->getReponses()->count() > 0 && $questionnaire->getPublication()) {
 
-                $bloc_begin = '<span tabindex="0" data-toggle="tooltip" title="Edition vérouillée car publié et possède déjà au moins 1 réponse">';
+                $bloc_begin = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Edition vérouillée car publié et possède déjà au moins 1 réponse">';
                 $disabled = 'disabled';
                 $bloc_end = '</span>';
             }
@@ -79,9 +79,9 @@ class QuestionnaireActionExtension extends AbstractExtension
         if (! empty($question)) {
             if ($question->getReponses()->count() > 0 && $questionnaire->getPublication()) {
 
-                $bloc_begin = '<span tabindex="0" data-toggle="tooltip" title="Dépublication déconseillée car publié et possède déjà au moins 1 réponse">';
+                $bloc_begin = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Dépublication déconseillée car publié et possède déjà au moins 1 réponse">';
                 $bloc_end = '</span>';
-                return $bloc_begin . '<a href="' . $url . '" id="btn-publish-questionnaire" class="btn btn-success"><span class="oi oi-action-undo"></span> Dépublier</a>' . $bloc_end;
+                return $bloc_begin . '<a href="' . $url . '" id="btn-publish-questionnaire" class="btn btn-success" data-publish="1"><span class="oi oi-action-undo"></span> Dépublier</a>' . $bloc_end;
             } else {
 
                 $is_ok = false;
@@ -98,16 +98,16 @@ class QuestionnaireActionExtension extends AbstractExtension
 
                 // Cas publication possible
                 if ($questionnaire->getPublication()) {
-                    return '<a href="' . $url . '" id="btn-publish-questionnaire" class="btn btn-success ' . $disabled . '"><span class="oi oi-action-undo"></span> Dépublier</a>';
+                    return '<a href="' . $url . '" id="btn-publish-questionnaire" class="btn btn-success ' . $disabled . '" data-publish="1"><span class="oi oi-action-undo"></span> Dépublier</a>';
                 } // Cas dépublication possible
                 else {
-                    return '<a href="' . $url . '" id="btn-publish-questionnaire" class="btn btn-success ' . $disabled . '"><span class="oi oi-share"></span> Publier</a>';
+                    return '<a href="' . $url . '" id="btn-publish-questionnaire" class="btn btn-success ' . $disabled . '" data-publish="0"><span class="oi oi-share"></span> Publier</a>';
                 }
             }
         } else {
 
             if ($disabled != 'disabled') {
-                $bloc_begin = '<span tabindex="0" data-toggle="tooltip" title="Le questionnaire doit avoir au moins 1 question pour être publié">';
+                $bloc_begin = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Le questionnaire doit avoir au moins 1 question pour être publié">';
                 $bloc_end = '</span>';
             }
             return $bloc_begin . '<a href="' . $url . '" id="btn-publish-questionnaire" class="btn btn-success disabled"><span class="oi oi-share"></span> Publier</a>' . $bloc_end;
@@ -128,7 +128,7 @@ class QuestionnaireActionExtension extends AbstractExtension
             }
         }
         if ($is_ok === false) {
-            $bloc_begin = '<span tabindex="0" data-toggle="tooltip" title="Pour tester le questionnaire, celui ci doit posséder au moins 1 question">';
+            $bloc_begin = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Pour tester le questionnaire, celui ci doit posséder au moins 1 question">';
             $disabled = 'disabled';
             $bloc_end = '</span>';
         }

@@ -28,13 +28,15 @@ Question.Launch = function(params) {
 	 */
 	Question.Ajax = function(url, id_done, method = 'GET')
 	{		
+		$(Questionnaire.id_global).showLoading();
+		
 		$.ajax({
 			method: method,
 			url: url,
 		})
-		.done(function( html ) {
+		.done(function( html ) {			
 			$(id_done).html(html)
-			$(Questionnaire.id_container_global).hideLoading();
+			$(Questionnaire.id_global).hideLoading();
 		});
 	}
 	
@@ -46,7 +48,7 @@ Question.Launch = function(params) {
 		// Event sur le bouton edit d'une question
 		$(id).click(function() {
 			//on passe l'url et l'id_done		
-			$(Questionnaire.id_container_global).showLoading();
+			//$(Questionnaire.id_container_global).showLoading();
 			Question.Ajax($(this).attr('href'), Question.id_content_modal);
 			return false;
 		});

@@ -21,14 +21,14 @@ class QuestionType extends AbstractType
         $builder->add('type', ChoiceType::class, array(
             'choices' => array_flip(AppController::QUESTION_TYPE),
             'label' => 'Type de question',
-            'required' => false,
+            'required' => true,
             'attr' => array(
                 'class' => 'preview'
             )
         ))
             ->add('libelle', TextareaType::class, array(
             'label' => 'Libellé du champ',
-            'required' => false,
+            'required' => true,
             'attr' => array(
                 'class' => 'preview'
             )

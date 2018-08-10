@@ -34,14 +34,16 @@ Questionnaire.Launch = function(params) {
 	 * Méthode Ajax qui va charger l'element présent dans l'URL
 	 */
 	Questionnaire.Ajax = function(url, id_done, method = 'GET')
-	{		
+	{
+		$(Questionnaire.id_global).showLoading();
+		
 		$.ajax({
 			method: method,
 			url: url,
 		})
 		.done(function( html ) {			
 			$(id_done).html(html)
-			$(Questionnaire.id_container_global).hideLoading();
+			$(Questionnaire.id_global).hideLoading();
 		});
 	}
 
@@ -53,9 +55,7 @@ Questionnaire.Launch = function(params) {
 		// Event sur le bouton edit d'un questionnaire
 		$(id).click(function() {
 			//on passe l'url et l'id_done
-			
-			$(Questionnaire.id_container_global).showLoading();
-			
+						
 			Questionnaire.Ajax($(this).attr('href'), Questionnaire.id_content_modal);
 			return false;
 		});
@@ -68,12 +68,62 @@ Questionnaire.Launch = function(params) {
 	{
 		// Event sur le bouton publier d'un questionnaire
 		$(id).click(function() {
-			//on passe l'url et l'id_done
 			
-			$(Questionnaire.id_container_global).showLoading();
+			$('[data-toggle="tooltip"]').tooltip('hide');
 			
-			Questionnaire.Ajax($(this).attr('href'), Questionnaire.id_content_modal);
+			if($(this).data('publish') == 0)
+			{
+				$(Questionnaire.id_container_global).showLoading();
+			}
+			
+			$.ajax({
+				method: 'GET',
+				url: $(this).attr('href'),
+			})
+			.done(function( reponse ) 
+			{
+				if(reponse.statut === true)
+				{
+					//$(Questionnaire.id_container_global).hideLoading();
+					Questionnaire.Ajax(Questionnaire.url_ajax_see, Questionnaire.id_global);
+				}
+				else
+				{
+					$(Questionnaire.id_content_modal).html(reponse)
+					$(Questionnaire.id_container_global).hideLoading();
+				}
+			});
+			
 			return false;
+		});
+	}
+	
+	Questionnaire.EventConfirmationPublication = function(url, id)
+	{
+		$(id).click(function() 
+		{
+			$('#ajax_questionnaire_publication').showLoading();
+			$(id).prop('disabled', true).html('loading...');
+			event.preventDefault();
+
+			$.ajax({
+				method: 'GET',
+				url: url,
+			})
+			.done(function( reponse ) {
+	
+				$('#ajax_questionnaire_publication').hideLoading();
+				
+				if(reponse.statut === true)
+				{
+					$(Questionnaire.id_modal).modal('hide');
+					Questionnaire.Ajax(Questionnaire.url_ajax_see, Questionnaire.id_global);
+				}
+				else
+				{
+					$(ajax_questionnaire_publication).html(reponse);
+				}
+			});
 		});
 	}
 	

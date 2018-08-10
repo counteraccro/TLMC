@@ -268,7 +268,6 @@ class QuestionnaireController extends AppController
      */
     public function demoAction(Request $request, Questionnaire $questionnaire, QuestionnaireManager $questionnaireManager)
     {
-        
         $questResultat = array();
         if ($request->isMethod('POST')) {
             $questResultat = $questionnaireManager->manage($questionnaire);
@@ -276,21 +275,91 @@ class QuestionnaireController extends AppController
 
         return $this->render('questionnaire/demo.html.twig', [
             'questionnaire' => $questionnaire,
-            'questResultat' => $questResultat 
+            'questResultat' => $questResultat
         ]);
     }
-    
+
     /**
      * Publication questionnaire
      *
      * @Route("/questionnaire/ajax/publication/{id}", name="questionnaire_ajax_publication")
+     * @Route("/questionnaire/ajax/publication/validation/{id}/{val}", name="questionnaire_ajax_publication_validation")
      * @ParamConverter("questionnaire", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function publicationAction(Questionnaire $questionnaire)
+    public function publicationAction(Questionnaire $questionnaire, $val = '')
     {
-        return $this->render('questionnaire/ajax_publication.html.twig', [
-            'questionnaire' => $questionnaire
-        ]);
+
+        // Cas le questionnaire n'est pas publié et on souhaite le publier
+        if ($questionnaire->getPublication() == 0) {
+            // Cas confirmation depuis la popin
+            if ($val == 1) {
+                
+                // Vérification si le questionnaire possède au moins 1 question
+                if($questionnaire->getQuestions()->count() > 0)
+                {
+                    // Vérification si le questionnaire possère au moins une question non disabled
+                    $is_ok = false;
+                    foreach ($questionnaire->getQuestions() as $question) {
+                        if (!$question->getDisabled()) {
+                            $is_ok = true;
+                        }
+                    }
+                    
+                    // Tout est OK
+                    if($is_ok)
+                    {
+                        
+                        $questionnaire->setPublication(1);
+                        $entityManager = $this->getDoctrine()->getManager();
+                        $entityManager->persist($questionnaire);
+                        $entityManager->flush();
+                        
+                        return $this->json(array(
+                            'statut' => true
+                        ));
+                    }
+                    // Erreur Aucune question visible
+                    else
+                    {
+                        return $this->render('questionnaire/ajax_publication.html.twig', [
+                            'questionnaire' => $questionnaire,
+                            'erreur' => 'Au moins une question dans le questionnaire doit être active'
+                        ]);
+                    }
+                }
+                // Erreur aucune question présente dans le questionnaire
+                else
+                {
+                    return $this->render('questionnaire/ajax_publication.html.twig', [
+                        'questionnaire' => $questionnaire,
+                        'erreur' => 'Au moins une question dans le questionnaire doit être présente'
+                    ]);
+                }
+                
+            } // Cas attente de confirmation
+            else {
+
+                return $this->render('questionnaire/ajax_publication.html.twig', [
+                    'questionnaire' => $questionnaire,
+                    'erreur' => ''
+                ]);
+            }
+        } else {
+            
+            $questionnaire->setPublication(0);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($questionnaire);
+            $entityManager->flush();
+            
+            return $this->json(array(
+                'statut' => true
+            ));
+            
+            /*return $this->render('questionnaire/ajax_publication.html.twig', [
+                'questionnaire' => $questionnaire,
+                'erreur' => ''
+            ]);*/
+        }
     }
 }

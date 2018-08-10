@@ -11,7 +11,13 @@
 	</div>
 	
 	<div class="modal-body">
-				<p>Etes-vous certain(e) de vouloir publier ce questionnaire ?</p>
+		{% if not erreur == '' %}
+			<div class="alert alert-danger">
+				<b>Une erreur est intervenue dans le traitement</b>
+				<p>{{ erreur }}</p>
+			</div>
+		{% endif %}
+		<p>Etes-vous certain(e) de vouloir publier ce questionnaire ?</p>
 		<div class="alert alert-warning">
 			<b><span class="oi oi-warning"></span> Attention</b>
 			<p>La publication de ce questionnaire va imposer certaines règles de gestion qui sont :
@@ -24,14 +30,13 @@
 				</li>
 			</ul>
 		</div>
-		
-
-
 	</div>
 	
 	<div class="modal-footer">
-		<a href="#" class="btn btn-success" id="publish-yes">Confirmer</a>
-		<a href="#" class="btn btn-primary" id="publish-no">Annuler</a>
+		{% if erreur == '' %}
+			<a href="#" class="btn btn-success" id="publish-yes">Confirmer</a>
+		{% endif %}
+		<a href="#" class="btn btn-secondary" id="publish-no">Annuler</a>
 	</div>
 </div>
 
@@ -46,5 +51,9 @@
     $('#publish-no').click(function() {
     	$('#modal_questionnaire_global').modal('toggle');
     })
+    
+    var url = '{{path('questionnaire_ajax_publication_validation', {'id': questionnaire.id, 'val' : 1 })}}';
+    Questionnaire.EventConfirmationPublication(url, '#publish-yes');
+    
     </script>
 {% endblock %}
