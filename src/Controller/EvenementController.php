@@ -174,7 +174,7 @@ class EvenementController extends AppController
         $query->orderBy('etablissement.nom, specialite.service', 'ASC');
         
         
-        $form = $this->createForm(EvenementType::class, $evenement, array('query_specialite' => $query));
+        $form = $this->createForm(EvenementType::class, $evenement, array('query_specialite' => $query, 'add' => true));
         
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

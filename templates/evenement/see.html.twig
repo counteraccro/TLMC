@@ -111,7 +111,7 @@
     	Temoignage.LoadTemoignage();
 
     	var paramsSE = {
-				url_ajax_see : '{{path('specialite_evenement_ajax_see', {'id': evenement.id}) }}',
+				url_ajax_see : '{{path('specialite_evenement_ajax_see', {'id': evenement.id, 'type': 'evenement'}) }}',
 				id_content_modal : '#bloc_modal',
 				id_modal : '#modal_evenement_global',
 				id_global : '#bloc_evenement_specialite'

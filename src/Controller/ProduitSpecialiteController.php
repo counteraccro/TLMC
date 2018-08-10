@@ -8,6 +8,7 @@ use App\Entity\Produit;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\ProduitSpecialite;
 use App\Form\ProduitSpecialiteType;
+use App\Entity\Specialite;
 
 class ProduitSpecialiteController extends AppController
 {
@@ -26,39 +27,72 @@ class ProduitSpecialiteController extends AppController
     /**
      * Bloc produit - spécialité dans la vue d'un produit
      *
-     * @Route("/produit_specialite/ajax/see/{id}", name="produit_specialite_ajax_see")
-     * @ParamConverter("produit", options={"mapping": {"id": "id"}})
+     * @Route("/produit_specialite/ajax/see/{id}/{type}", name="produit_specialite_ajax_see")
      * @Security("is_granted('ROLE_ADMIN')")
      *
-     * @param Produit $produit
+     * @param int $id
+     * @param string $type
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function ajaxSeeAction(Produit $produit)
+    public function ajaxSeeActionint (int $id, string $type)
     {
+        switch($type){
+            case 'produit':
+                $repository = $this->getDoctrine()->getRepository(Produit::class);
+                break;
+            case 'specialite':
+                $repository = $this->getDoctrine()->getRepository(Specialite::class);
+                break;
+        }
+        
+        $objets = $repository->findById($id);
+        $objet = $objets[0];
+        
         return $this->render('produit_specialite/ajax_see.html.twig', array(
-            'produit' => $produit
+            'objet' => $objet,
+            'type' => $type
         ));
     }
 
     /**
      * Ajout d'un lien produit - spécialité
      *
-     * @Route("/produit_specialite/ajax/add/{id}", name="produit_specialite_ajax_add")
-     * @ParamConverter("produit", options={"mapping": {"id": "id"}})
+     * @Route("/produit_specialite/ajax/add/{id}/{type}", name="produit_specialite_ajax_add")
      * @Security("is_granted('ROLE_ADMIN')")
      *
      * @param Request $request
+     * @param int $id
+     * @param string $type
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function addAction(Request $request, Produit $produit)
+    public function addAction(Request $request, int $id, string $type)
     {
         $produitSpecialite = new ProduitSpecialite();
-
-        $produitSpecialite->setProduit($produit);
+        
+        switch($type){
+            case 'produit':
+                $repository = $this->getDoctrine()->getRepository(Produit::class);
+                $methode = 'setProduit';
+                $disabled_produit = true;
+                $disabled_specialite = false;
+                break;
+            case 'specialite':
+                $repository = $this->getDoctrine()->getRepository(Specialite::class);
+                $methode = 'setSpecialite';
+                $disabled_produit = false;
+                $disabled_specialite = true;
+                break;
+        }
+        
+        $objets = $repository->findById($id);
+        $objet = $objets[0];
+        
+        $produitSpecialite->{$methode}($objet);
 
         $form = $this->createForm(ProduitSpecialiteType::class, $produitSpecialite, array(
             'label_submit' => 'Ajouter',
-            'disabled_produit' => true
+            'disabled_produit' => $disabled_produit,
+            'disabled_specialite' => $disabled_specialite
         ));
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -75,22 +109,24 @@ class ProduitSpecialiteController extends AppController
 
         return $this->render('produit_specialite/ajax_add.html.twig', array(
             'form' => $form->createView(),
-            'produit' => $produit
+            'objet' => $objet,
+            'type' => $type
         ));
     }
 
     /**
      * Edition d'un lien produit - spécialité
      *
-     * @Route("/produit_specialite/ajax/edit/{id}", name="produit_specialite_ajax_edit")
+     * @Route("/produit_specialite/ajax/edit/{id}/{type}", name="produit_specialite_ajax_edit")
      * @ParamConverter("produitSpecialite", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
      *
      * @param Request $request
      * @param ProduitSpecialite $produitSpecialite
+     * @param string $type
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function editAction(Request $request, ProduitSpecialite $produitSpecialite)
+    public function editAction(Request $request, ProduitSpecialite $produitSpecialite, string $type)
     {
         $form = $this->createForm(ProduitSpecialiteType::class, $produitSpecialite, array(
             'label_submit' => 'Modifier',
@@ -113,7 +149,8 @@ class ProduitSpecialiteController extends AppController
 
         return $this->render('produit_specialite/ajax_edit.html.twig', array(
             'form' => $form->createView(),
-            'produitSpecialite' => $produitSpecialite
+            'produitSpecialite' => $produitSpecialite,
+            'type' => $type
         ));
     }
 }

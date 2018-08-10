@@ -8,55 +8,59 @@
 
 {% include 'elements/arborescence.html.twig' %}
 
-<table  class="table table-sm">
-	<tr>
-		<th scope="col"> Etablissement </th>
-		<td> {{ specialite.etablissement.nom }} </td>
-	</tr>
-	<tr>
-		<th scope="col"> Service </th>
-		<td> {{ specialite.service }} </td>
-	</tr>
-	<tr>
-		<th scope="col"> Code Logistique </th>
-		<td> {{ specialite.codeLogistique }} </td>
-	</tr>
-	<tr>
-		<th scope="col"> Service pour les adultes </th>
-		<td> {{ specialite.adulte | bool }} </td>
-	</tr>
-	<tr>
-		<th scope="col"> Service pour les enfants </th>
-		<td> {{ specialite.pediatrie | bool }} </td>
-	</tr>
-	<tr>
-		<th scope="col"> Actif </th>
-		<td> {{ specialite.disabled | actif }} </td>
-	</tr>
-</table>
-<hr>
+    <table  class="table table-sm">
+    	<tr>
+    		<th scope="col"> Etablissement </th>
+    		<td> {{ specialite.etablissement.nom }} </td>
+    	</tr>
+    	<tr>
+    		<th scope="col"> Service </th>
+    		<td> {{ specialite.service }} </td>
+    	</tr>
+    	<tr>
+    		<th scope="col"> Code Logistique </th>
+    		<td> {{ specialite.codeLogistique }} </td>
+    	</tr>
+    	<tr>
+    		<th scope="col"> Service pour les adultes </th>
+    		<td> {{ specialite.adulte | bool }} </td>
+    	</tr>
+    	<tr>
+    		<th scope="col"> Service pour les enfants </th>
+    		<td> {{ specialite.pediatrie | bool }} </td>
+    	</tr>
+    	<tr>
+    		<th scope="col"> Actif </th>
+    		<td> {{ specialite.disabled | actif }} </td>
+    	</tr>
+    </table>
+    <hr>
 
-<div id="bloc_specialite_evenement" class="card">
-    	<div class="card-header">
-    		Spécialités
+	<div id="bloc_specialite_produit">
+    	<div class="row">
+    		<div class="col-md-4 offset-md-4">
+    			<div class="progress" style="height: 25px;">
+    				<div class="progress-bar progress-bar-striped progress-bar-animated"
+    					role="progressbar" aria-valuenow="75" aria-valuemin="0"
+    					aria-valuemax="100" style="width: 50%">Chargement des
+    					produits de la spécialité...</div>
+    			</div>
+    		</div>
     	</div>
-    	<div class="card-body">
-    		<table class="table table-sm table-striped">
-           		<tr>
-               		<th> Evenement </th>
-               		<th> Date </th>
-               		<th> Statut </th>
-               		<th></th>
-               	</tr>
-               	{% for specialiteEvenement in specialite.specialiteEvenements %}
-               	<tr>
-               		<td> {{ specialiteEvenement.evenement.nom }} </td>
-               		<td> {{ specialiteEvenement.date | date('d/m/Y H:i')}} </td>
-               		<td> {{ specialiteEvenement.statut }} </td>
-               		<td></td>
-               		</tr>
-               	{% endfor %}
-        	</table>
+    </div>
+    
+    <hr>
+
+	<div id="bloc_specialite_evenement">
+    	<div class="row">
+    		<div class="col-md-4 offset-md-4">
+    			<div class="progress" style="height: 25px;">
+    				<div class="progress-bar progress-bar-striped progress-bar-animated"
+    					role="progressbar" aria-valuenow="75" aria-valuemin="0"
+    					aria-valuemax="100" style="width: 50%">Chargement des
+    					événements de la spécialité...</div>
+    			</div>
+    		</div>
     	</div>
     </div>
     
@@ -77,8 +81,6 @@
     
     <div>Membre</div>
     <div>Patients</div>
-    <div>Evenement</div>
-    <div>Historique</div>
     
     <!-- Modal -->
     <div class="modal fade" id="modal_specialite_global" tabindex="-1" role="dialog">
@@ -90,6 +92,8 @@
 {% endblock %}
 
 {% block script %}
+	<script src="{{ asset('assets/js/produit_specialite/ProduitSpecialite.js') }}?{{ date().timestamp }}"></script>
+	<script src="{{ asset('assets/js/specialite_evenement/SpecialiteEvenement.js') }}?{{ date().timestamp }}"></script>
 	<script src="{{ asset('assets/js/historique/Historique.js') }}?{{ date().timestamp }}"></script>
 {% endblock %}
 
@@ -98,6 +102,26 @@
     
     $(document).ready(function() {
 
+    	var paramsSE = {
+				url_ajax_see : '{{path('specialite_evenement_ajax_see', {'id': specialite.id, 'type': 'specialite'}) }}',
+				id_content_modal : '#bloc_modal',
+				id_modal : '#modal_specialite_global',
+				id_global : '#bloc_specialite_evenement',
+		};
+        
+    	SpecialiteEvenement.Launch(paramsSE);
+    	SpecialiteEvenement.LoadSpecialiteEvenement();
+
+    	var paramsPS = {
+				url_ajax_see : '{{path('produit_specialite_ajax_see', {'id': specialite.id, 'type': 'specialite'}) }}',
+				id_content_modal : '#bloc_modal',
+				id_modal : '#modal_specialite_global',
+				id_global : '#bloc_specialite_produit',
+		};
+        
+    	ProduitSpecialite.Launch(paramsPS);
+    	ProduitSpecialite.LoadProduitSpecialite();
+    	
     	var paramsH = {
 				url_ajax_see : '{{path('historique_ajax_see', {'id': specialite.id, 'type': 'specialite'}) }}',
 				id_content_modal : '#bloc_modal',

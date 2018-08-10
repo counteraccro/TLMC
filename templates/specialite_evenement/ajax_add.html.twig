@@ -2,7 +2,12 @@
 	{{ form_start(form) }}
 	<div class="modal-header">
 		<h5 class="modal-title">
-			Ajout d'un lien avec l'événement #{{ evenement.id }} - {{ evenement.nom }}
+			Ajout d'un lien avec 
+			{% if type == 'evenement' %}
+				l'événement #{{ objet.id }} - {{ objet.nom }}
+			{% elseif type == 'specialite' %}
+				la spécialité #{{ objet.id }} - {{ objet.service }}
+			 {% endif %}
 		</h5>
 		<button type="button" class="close" data-dismiss="modal"
 			aria-label="Close">
@@ -28,12 +33,12 @@
 {% block javascripts %}
 	<script type="text/javascript">
     
-    	$('#modal_evenement_global').modal({
+    	$('#modal_{{ type }}_global').modal({
     		   'show' : true,
     		   'backdrop' : 'static'
     	});
     	
-		var url = '{{path('specialite_evenement_ajax_add', {'id': evenement.id }) }}';
+		var url = '{{path('specialite_evenement_ajax_add', {'id': objet.id, 'type': type }) }}';
 		SpecialiteEvenement.EventAddSubmit(url);
 		
 	</script>

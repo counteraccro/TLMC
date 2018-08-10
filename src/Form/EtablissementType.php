@@ -9,6 +9,8 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use App\Controller\EtablissementController;
 
 class EtablissementType extends AbstractType
 {
@@ -27,8 +29,9 @@ class EtablissementType extends AbstractType
             ->add('nb_lit', IntegerType::class, array(
             'label' => 'Nombre de lit'
         ))
-            ->add('statut_convention', IntegerType::class, array(
-            'label' => 'Statut de la convention'
+            ->add('statut_convention', ChoiceType::class, array(
+            'label' => 'Statut de la convention',
+            'choices' => array_flip($options['statut_convention'])
         ))
             ->add('date_collaboration', DateType::class, array(
             'label' => 'Date de début de collaboration',
@@ -62,7 +65,8 @@ class EtablissementType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Etablissement::class,
-            'label_submit' => 'Valider'
+            'label_submit' => 'Valider',
+            'statut_convention' => EtablissementController::STATUT_CONVENTION
         ]);
     }
 }

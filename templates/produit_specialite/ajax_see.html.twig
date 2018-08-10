@@ -1,36 +1,54 @@
 <div id="bloc_produit_specialite" class="card">
 	<div class="card-header">
-    	Spécialités
-    	<a href="{{ path('produit_specialite_ajax_add', {'id' : produit.id}) }}" id="btn-add-produit-specialite" class="float-right"><span class="oi oi-link-intact"></span> Nouveau lien avec une spécialité</a>
-    </div>
+    	{% if type == 'produit' %}
+        	Spécialités
+        	<a href="{{ path('produit_specialite_ajax_add', {'id' : objet.id, 'type': type}) }}" id="btn-add-produit-specialite" class="float-right"><span class="oi oi-link-intact"></span> Nouveau lien avec une spécialité</a>
+       	{% elseif type == 'specialite' %}
+       		Produits
+        	<a href="{{ path('produit_specialite_ajax_add', {'id' : objet.id, 'type': type}) }}" id="btn-add-produit-specialite" class="float-right"><span class="oi oi-link-intact"></span> Nouveau lien avec un produit</a>
+       	{% endif %}
+   	</div>
     <div class="card-body">
     	<table class="table table-sm table-striped">
      		<tr>
-       			{% if is_granted('ROLE_ADMIN') %}
+                {% if type == 'produit'  %}
+                    {% if is_granted('ROLE_ADMIN') %}
     	   			<th> Etablissement </th>
+    	   			{% endif %}
+    	   			<th> Spécialité </th>
+    	   		{% elseif type == 'specialite' %}
+    	   			<th> Produit </th>
            		{% endif %}
-           		<th> Spécialité </th>
            		<th> Quantité </th>
            		<th> Date </th>
            		<th></th>
            	</tr>
-           	{% for produitSpecialite in produit.produitSpecialites %}
+           	{% for produitSpecialite in objet.produitSpecialites %}
                	<tr>
-            	    {% if is_granted('ROLE_ADMIN') %}
-               			<td> {{ produitSpecialite.specialite.etablissement.nom }} </td>
+               		{% if type == 'produit'  %}
+                	    {% if is_granted('ROLE_ADMIN') %}
+                   			<td> {{ produitSpecialite.specialite.etablissement.nom }} </td>
+                   		{% endif %}
+                   		<td> {{ produitSpecialite.specialite.service }} </td>
+                   	{% elseif type == 'specialite' %}
+        	   			<th> {{ produitSpecialite.produit.titre }} </th>
                		{% endif %}
-               		<td> {{ produitSpecialite.specialite.service }} </td>
                		<td> {{ produitSpecialite.quantite }} </td>
                		<td> {{ produitSpecialite.date | date('d/m/Y H:i')}} </td>
               		<td>
-              			<a href="{{ path('produit_specialite_ajax_edit', {'id' : produitSpecialite.id}) }}" id="btn-edit-produit-specialite-{{ produitSpecialite.id }}"  title="Editer la fiche"><span class="oi oi-pencil"></span></a>
+              			<a href="{{ path('produit_specialite_ajax_edit', {'id' : produitSpecialite.id, 'type': type}) }}" id="btn-edit-produit-specialite-{{ produitSpecialite.id }}"  title="Editer la fiche"><span class="oi oi-pencil"></span></a>
                 	</td>
             	</tr>
           	{% endfor %}
         </table>
         
-        {% if produit.produitSpecialites is empty %}
-           	<p class="text-info text-center">Il  n'y a aucune spécialité associée au produit.</p>
+        {% if objet.produitSpecialites is empty %}
+           	<p class="text-info text-center">Il  n'y a 
+           	{% if type == 'produit' %}
+           		aucune spécialité associée au produit.</p>
+           	{% elseif type == 'specialite' %}
+           		aucun produit associé à cette spécialité.</p>
+           	{% endif %}
            	
         {% endif %}
         
@@ -42,7 +60,7 @@
             ProduitSpecialite.EventAdd(id_btn_add);
 
 			//on associe une action pour chaque bouton edit ou delete
-            {% for produitSpecialite in produit.produitSpecialites %}
+            {% for produitSpecialite in objet.produitSpecialites %}
             	var id_btn_edit_{{ produitSpecialite.id }} = '#btn-edit-produit-specialite-' + {{ produitSpecialite.id }};
             	ProduitSpecialite.EventEdit(id_btn_edit_{{ produitSpecialite.id }});
     		    

@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Nouvel historique {% endblock %}
+
+{% block body %}
+
+    <h1>Ajout d'une nouvel historique</h1>
+    
+    {% include 'elements/arborescence.html.twig' %}
+    
+    <div>
+        {{ form_start(form) }}
+        
+        {{ form_row(form.evenement) }}
+	    {{ form_row(form.specialite) }}
+		{{ form_row(form.patient) }}
+		{{ form_row(form.date) }}
+        
+        {{ form_rest(form) }}
+        {{ form_errors(form) }}
+        {{ form_end(form) }}
+    </div>
+	  
+{% endblock %}
