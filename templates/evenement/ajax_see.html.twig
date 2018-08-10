@@ -2,7 +2,9 @@
          <div class="card-header bg-light">
            	 <b>Evénement :</b> {{ evenement.nom }}
            	<div class="float-right"> 
-           		<a href="{{path('evenement_ajax_edit', {'id': evenement.id }) }}" id="btn-edit-evenement" class="btn btn-dark"><span class="oi oi-pencil"></span> Editer l'événement</a>
+           	    {% if is_granted("ROLE_ADMIN") %}
+           			<a href="{{path('evenement_ajax_edit', {'id': evenement.id }) }}" id="btn-edit-evenement" class="btn btn-dark"><span class="oi oi-pencil"></span> Editer l'événement</a>
+           		{% endif %}
            	</div>
          </div>
          <div class="card-body">

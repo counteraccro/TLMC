@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -40,6 +42,16 @@ class FamilleAdresse
      * @ORM\Column(type="boolean")
      */
     private $disabled;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Famille", mappedBy="famille_adresse")
+     */
+    private $familles;
+
+    public function __construct()
+    {
+        $this->familles = new ArrayCollection();
+    }
 
     public function getId()
     {
@@ -102,6 +114,37 @@ class FamilleAdresse
     public function setDisabled(bool $disabled): self
     {
         $this->disabled = $disabled;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Famille[]
+     */
+    public function getFamilles(): Collection
+    {
+        return $this->familles;
+    }
+
+    public function addFamille(Famille $famille): self
+    {
+        if (!$this->familles->contains($famille)) {
+            $this->familles[] = $famille;
+            $famille->setFamilleAdresse($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFamille(Famille $famille): self
+    {
+        if ($this->familles->contains($famille)) {
+            $this->familles->removeElement($famille);
+            // set the owning side to null (unless already changed)
+            if ($famille->getFamilleAdresse() === $this) {
+                $famille->setFamilleAdresse(null);
+            }
+        }
 
         return $this;
     }

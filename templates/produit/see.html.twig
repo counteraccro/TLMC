@@ -35,35 +35,38 @@
     		</div>
     	</div>
     </div>
-    <hr>
-
-	<div id="bloc_produit_etablissement">
-    	<div class="row">
-    		<div class="col-md-4 offset-md-4">
-    			<div class="progress" style="height: 25px;">
-    				<div class="progress-bar progress-bar-striped progress-bar-animated"
-    					role="progressbar" aria-valuenow="75" aria-valuemin="0"
-    					aria-valuemax="100" style="width: 50%">Chargement des
-    					établissements associés au produit...</div>
-    			</div>
-    		</div>
-    	</div>
-    </div>
     
-    <hr>
+    {% if is_granted("ROLE_ADMIN") %}
+    	<hr>
 
-	<div id="bloc_produit_specialite">
-    	<div class="row">
-    		<div class="col-md-4 offset-md-4">
-    			<div class="progress" style="height: 25px;">
-    				<div class="progress-bar progress-bar-striped progress-bar-animated"
-    					role="progressbar" aria-valuenow="75" aria-valuemin="0"
-    					aria-valuemax="100" style="width: 50%">Chargement des
-    					spécialités associées au produit...</div>
-    			</div>
-    		</div>
-    	</div>
-    </div>
+    	<div id="bloc_produit_etablissement">
+        	<div class="row">
+        		<div class="col-md-4 offset-md-4">
+        			<div class="progress" style="height: 25px;">
+        				<div class="progress-bar progress-bar-striped progress-bar-animated"
+        					role="progressbar" aria-valuenow="75" aria-valuemin="0"
+        					aria-valuemax="100" style="width: 50%">Chargement des
+        					établissements associés au produit...</div>
+        			</div>
+        		</div>
+        	</div>
+        </div>
+        
+        <hr>
+    
+    	<div id="bloc_produit_specialite">
+        	<div class="row">
+        		<div class="col-md-4 offset-md-4">
+        			<div class="progress" style="height: 25px;">
+        				<div class="progress-bar progress-bar-striped progress-bar-animated"
+        					role="progressbar" aria-valuenow="75" aria-valuemin="0"
+        					aria-valuemax="100" style="width: 50%">Chargement des
+        					spécialités associées au produit...</div>
+        			</div>
+        		</div>
+        	</div>
+        </div>
+    {% endif %}
     
     <!-- Modal -->
     <div class="modal fade" id="modal_produit_global" tabindex="-1" role="dialog">
@@ -111,25 +114,27 @@
     	Temoignage.Launch(paramsT);
     	Temoignage.LoadTemoignage();
 
-    	var paramsPE = {
-				url_ajax_see : '{{path('produit_etablissement_ajax_see', {'id': produit.id, 'type': 'produit'}) }}',
-				id_content_modal : '#bloc_modal',
-				id_modal : '#modal_produit_global',
-				id_global : '#bloc_produit_etablissement',
-		};
-        
-    	ProduitEtablissement.Launch(paramsPE);
-    	ProduitEtablissement.LoadProduitEtablissement();
-
-    	var paramsPS = {
-				url_ajax_see : '{{path('produit_specialite_ajax_see', {'id': produit.id, 'type': 'produit'}) }}',
-				id_content_modal : '#bloc_modal',
-				id_modal : '#modal_produit_global',
-				id_global : '#bloc_produit_specialite',
-		};
-        
-    	ProduitSpecialite.Launch(paramsPS);
-    	ProduitSpecialite.LoadProduitSpecialite();
+    	{% if is_granted("ROLE_ADMIN") %}
+        	var paramsPE = {
+    				url_ajax_see : '{{path('produit_etablissement_ajax_see', {'id': produit.id, 'type': 'produit'}) }}',
+    				id_content_modal : '#bloc_modal',
+    				id_modal : '#modal_produit_global',
+    				id_global : '#bloc_produit_etablissement',
+    		};
+            
+        	ProduitEtablissement.Launch(paramsPE);
+        	ProduitEtablissement.LoadProduitEtablissement();
+    
+        	var paramsPS = {
+    				url_ajax_see : '{{path('produit_specialite_ajax_see', {'id': produit.id, 'type': 'produit'}) }}',
+    				id_content_modal : '#bloc_modal',
+    				id_modal : '#modal_produit_global',
+    				id_global : '#bloc_produit_specialite',
+    		};
+            
+        	ProduitSpecialite.Launch(paramsPS);
+        	ProduitSpecialite.LoadProduitSpecialite();
+    	{% endif %}
     });
     
     </script>

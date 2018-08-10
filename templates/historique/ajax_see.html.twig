@@ -2,7 +2,9 @@
     <div class="card">
         <div class="card-header">
         	Historique
-        	<a href="{{ path('historique_ajax_add', {'id' : objet.id, 'type':type}) }}" id="btn-add-historique" class="float-right"><span class="oi oi-book"></span> Nouvel historique</a>
+        	{% if is_granted("ROLE_ADMIN") or is_granted("ROLE_BENEFICIAIRE_DIRECT") or is_granted("ROLE_BENEFICIAIRE") %}
+        		<a href="{{ path('historique_ajax_add', {'id' : objet.id, 'type':type}) }}" id="btn-add-historique" class="float-right"><span class="oi oi-book"></span> Nouvel historique</a>
+        	{% endif %}
         </div>
         
         <div class="card-body">
@@ -21,7 +23,9 @@
                     	<th> Patient </th>
                     {% endif %}
                     <th> Date </th>
-                    <th></th>
+                    {% if is_granted("ROLE_ADMIN") or is_granted("ROLE_BENEFICIAIRE_DIRECT") or is_granted("ROLE_BENEFICIAIRE") %}
+                    	<th></th>
+                    {% endif %}
                 </tr>
                 
                 {% for historique in objet.historiques %}
@@ -39,9 +43,11 @@
                         	<td>{{ historique.patient.prenom }} {{ historique.patient.nom }}</td>
                         {% endif %}
                         <td>{{ historique.date | date('d/m/Y H:i') }}</td>
-                        <td>
-                        	<a href="{{ path('historique_ajax_edit', {'id' : historique.id, 'objet_id': objet.id, 'type':type}) }}" id="btn-edit-historique-{{ historique.id }}"  title="Editer la fiche"><span class="oi oi-pencil"></span></a>
-                        </td>
+                        {% if is_granted("ROLE_ADMIN") or is_granted("ROLE_BENEFICIAIRE_DIRECT") or is_granted("ROLE_BENEFICIAIRE") %}
+                            <td>
+                            	<a href="{{ path('historique_ajax_edit', {'id' : historique.id, 'objet_id': objet.id, 'type':type}) }}" id="btn-edit-historique-{{ historique.id }}"  title="Editer la fiche"><span class="oi oi-pencil"></span></a>
+                            </td>
+                        {% endif %}
                     </tr>
                 
                 {% endfor %}

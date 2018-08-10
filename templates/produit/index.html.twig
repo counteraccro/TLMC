@@ -11,8 +11,10 @@
     <div class="card">
     	<div class="card-header">
             {{ pagination.nb_elements }} produit{% if pagination.nb_elements > 1 %}s{% endif %} - Page {{ pagination.page }} / {{ pagination.pages_count }}
-        	<a href="{{ path('produit_add', {'page' : pagination.page}) }}" class="float-right"> Nouveau produit</a>
-      		{{ labelFilter(path('utils_delete-search', {'page' : pagination.page} ), current_search) | raw }}
+            {% if is_granted("ROLE_ADMIN") %}
+        		<a href="{{ path('produit_add', {'page' : pagination.page}) }}" class="float-right"> Nouveau produit</a>
+      		{% endif %}
+            {{ labelFilter(path('utils_delete-search', {'page' : pagination.page} ), current_search) | raw }}
       	</div>
       	
       	<div class="card-body">

@@ -85,7 +85,7 @@ class HistoriqueController extends AppController
      * Bloc historique
      *
      * @Route("/historique/ajax/see/{id}/{type}", name="historique_ajax_see")
-     * @Security("is_granted('ROLE_ADMIN')or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      *
      * @param int $id
      * @param
