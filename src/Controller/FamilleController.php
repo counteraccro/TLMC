@@ -59,9 +59,14 @@ class FamilleController extends AppController
 
             if ($this->getMembre()->getSpecialite()) {
                 $params['jointure'] = array(
-                    array('oldrepository' => 'Famille', 'newrepository' => 'patient'
+                    array(
+                        'oldrepository' => 'Famille',
+                        'newrepository' => 'patient'
                     ),
-                    array('oldrepository' => 'patient', 'newrepository' => 'specialite')
+                    array(
+                        'oldrepository' => 'patient',
+                        'newrepository' => 'specialite'
+                    )
                 );
                 $params['condition'][] = array(
                     'jointure' => true,
@@ -101,20 +106,64 @@ class FamilleController extends AppController
     /**
      * Bloc famille d'un patient
      *
-     * @Route("/famille/ajax/see/{id}", name="famille_ajax_see")
+     * @Route("/famille/ajax/see/{id}/{page}/{field}/{order}", name="famille_ajax_see")
      * @ParamConverter("patient", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      *
      * @param Patient $patient
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function ajaxSeeAction(Patient $patient)
+    public function ajaxSeeAction(Patient $patient, Request $request, SessionInterface $session, int $page = 1, $field = null, $order = null)
     {
         $familles = $this->getElementsLiesActifs($patient, 'getFamilles');
+        /*if (is_null($field)) {
+            $field = 'id';
+        }
 
+        if (is_null($order)) {
+            $order = 'DESC';
+        }
+
+        $params = array(
+            'field' => $field,
+            'order' => $order,
+            'page' => $page,
+            'repositoryClass' => Famille::class,
+            'repository' => 'Famille',
+            'repositoryMethode' => 'findAllFamilles'
+        );
+
+        $params['condition'] = array(
+            array(
+                'key' => 'patient',
+                'value' => $patient->getId()
+            )
+        );
+        
+        if (! $this->isAdmin()) {
+            $params['condition'][] = array(
+                'key' => 'disabled',
+                'value' => 0
+            );
+        }
+
+        $result = $this->genericSearch($request, $session, $params);
+
+        $pagination = array(
+            'page' => $page,
+            'route' => 'famille_ajax_see',
+            'pages_count' => ceil($result['nb'] / self::MAX_NB_RESULT),
+            'nb_elements' => $result['nb'],
+            'route_params' => array('id' => $patient->getId())
+        );
+        
+        $this->setDatasFilter($session, $field, $order);
+        */
         return $this->render('famille/ajax_see.html.twig', array(
             'patient' => $patient,
             'familles' => $familles
+            //'familles' => $result['paginator'],
+            //'pagination' => $pagination
         ));
     }
 

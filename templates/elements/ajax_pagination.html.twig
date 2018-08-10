@@ -1,0 +1,50 @@
+<nav>
+    <ul class="pagination justify-content-center">
+   	    {% if pagination.pages_count > 0 %}
+            {% if pagination.page>1 %}
+                <li class="page-item"><a id="page-{{ 1 }}" class="page-link" href="{{ path(pagination.route, pagination.route_params|merge({'page': 1})) }}"><span class="oi oi-media-skip-backward"></span></a></li>
+                <li class="page-item"><a id="page-{{ pagination.page-1 }}" class="page-link" href="{{ path(pagination.route, pagination.route_params|merge({'page': pagination.page-1})) }}"> <span class="oi oi-caret-left"></span> </a></li>
+            {% endif %}
+            {#display p numbers only from p-4 to p+4 but don't go <1 or >pages_count#}
+            {% for p in range(max(pagination.page-4, 1), 
+                min(pagination.page+4, pagination.pages_count)) %}
+                <li class="page-item {% if p == pagination.page %} active{% endif %}"><a id="page-{{ p }}" class="page-link"  href="{{ path(pagination.route, pagination.route_params|merge({'page': p})) }}">{{ p }}</a></li>
+            {% endfor %}
+            {% if pagination.page<pagination.pages_count %}
+            	<li class="page-item"><a id="page-{{ pagination.page+1 }}" class="page-link" href="{{ path(pagination.route, pagination.route_params|merge({'page': pagination.page+1})) }}"><span class="oi oi-caret-right"></span></a></li>
+               	<li class="page-item"><a id="page-{{ pagination.pages_count }}" class="page-link" href="{{ path(pagination.route, pagination.route_params|merge({'page': pagination.pages_count})) }}"><span class="oi oi-media-skip-forward"></span></a></li>
+            {% endif %}
+        {% endif %}
+    </ul>
+</nav>
+
+{% block javascripts %}
+	<script type="text/javascript">
+
+	{% if pagination.pages_count > 0 %}
+        {% if pagination.page>1 %}
+        	var id_btn_change_1 = '#page-1';
+    		Pagination.EventChangePage(id_btn_change_1);
+    		var id_btn_change_{{ pagination.page-1 }} = '#page-' + {{ pagination.page-1 }};
+    		Pagination.EventChangePage(id_btn_change_{{ pagination.page-1 }});
+        {% endif %}
+		
+        {% for p in range(max(pagination.page-4, 1), min(pagination.page+4, pagination.pages_count)) %}
+            var id_btn_change_{{ p }} = '#page-' + {{ p }};
+    		Pagination.EventChangePage(id_btn_change_{{ p }});
+        {% endfor %}
+        
+        {% if pagination.page<pagination.pages_count %}
+        	
+        	var id_btn_change_{{ pagination.page+1 }} = '#page-' + {{ pagination.page+1 }};
+    		Pagination.EventChangePage(id_btn_change_{{ pagination.page+1 }});
+    		
+    		var id_btn_change_{{ pagination.pages_count }} = '#page-' + {{ pagination.pages_count }};
+    		Pagination.EventChangePage(id_btn_change_{{ pagination.pages_count }});
+    		
+        {% endif %}
+    {% endif %}
+		
+    </script>
+{% endblock %}
+
