@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Edition d'un historique {% endblock %}
+
+{% block body %}
+
+    <h1>Modification de l'historique #{{ historique.id }}</h1>
+    
+    {% include 'elements/arborescence.html.twig' %}
+    
+    <div>
+        {{ form_start(form) }}
+        
+        {{ form_row(form.evenement) }}
+	    {{ form_row(form.specialite) }}
+		{{ form_row(form.patient) }}
+		{{ form_row(form.date) }}
+        
+        {{ form_rest(form) }}
+        {{ form_errors(form) }}
+        {{ form_end(form) }}
+    </div>
+	  
+{% endblock %}
