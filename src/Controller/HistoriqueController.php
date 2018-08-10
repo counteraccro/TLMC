@@ -124,7 +124,7 @@ class HistoriqueController extends AppController
     /**
      * Ajout d'une nouvel historique
      *
-     * @Route("/historique//add/{id}/{page}", name="historique_add")
+     * @Route("/historique/add/{id}/{page}", name="historique_add")
      * @Route("/historique/ajax/add/{id}/{type}", name="historique_ajax_add")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      *
