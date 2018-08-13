@@ -21,13 +21,26 @@
         {{ form_start(form) }}
     
     	{% if type == 'membre' %}
-    		{{ form_row(form.evenement) }}
-    	    {{ form_row(form.produit) }}
+    		<div class="form-group">
+        		<label for="">Elément associé</label>
+        		<select id="temoignage_type" class="form-control">
+        			<option value="0">Evénement</option>
+        			<option value="1">Produit</option>
+        		</select>
+        	</div>
+        	<div id="temoignage_row_evenement">
+        		{{ form_row(form.evenement) }}
+        	</div>
+        	<div id="temoignage_row_produit">
+        		{{ form_row(form.produit) }}
+        	</div>
     	{% elseif type == 'evenement' %}
     		{{ form_row(form.evenement) }}
     	{% elseif type == 'produit' %}
     	    {{ form_row(form.produit) }}
     	{% endif %}
+    	
+    	
     	
         {{ form_row(form.titre) }}
     	{{ form_row(form.corps) }}
@@ -53,6 +66,19 @@
     		   'backdrop' : 'static'
     	});
     	
+    	{% if type == 'membre' %}
+    		$('#temoignage_row_produit').hide();
+    		
+            $('#temoignage_type').change(function(){
+                if($(this).val() == 1){
+                	$('#temoignage_row_produit').show();
+                	$('#temoignage_row_evenement').hide();
+                } else {
+    				$('#temoignage_row_evenement').show();
+    				$('#temoignage_row_produit').hide();
+                }
+            });
+    	{% endif %}
 		var url = '{{path('temoignage_ajax_add', {'id': objet.id, 'type': type }) }}';
 		Temoignage.EventAddSubmit(url);
 	</script>

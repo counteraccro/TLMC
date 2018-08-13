@@ -17,8 +17,20 @@
 	{{ form_row(form.age) }}
 	{{ form_row(form.lien_parente) }}
 	{{ form_row(form.ville) }}
-	{{ form_row(form.evenement) }}
-	{{ form_row(form.produit) }}
+	
+	<div class="form-group">
+		<label for="">Elément associé</label>
+		<select id="temoignage_type" class="form-control">
+			<option value="0">Evénement</option>
+			<option value="1">Produit</option>
+		</select>
+	</div>
+	<div id="temoignage_row_evenement">
+		{{ form_row(form.evenement) }}
+	</div>
+	<div id="temoignage_row_produit">
+		{{ form_row(form.produit) }}
+	</div>
 	
     {{ form_rest(form) }}
     {{ form_errors(form) }}
@@ -26,4 +38,20 @@
     
 </div>
 	  
+{% endblock %}
+
+{% block javascripts %}
+	<script type="text/javascript">	
+		$('#temoignage_row_produit').hide();
+		
+        $('#temoignage_type').change(function(){
+            if($(this).val() == 1){
+            	$('#temoignage_row_produit').show();
+            	$('#temoignage_row_evenement').hide();
+            } else {
+				$('#temoignage_row_evenement').show();
+				$('#temoignage_row_produit').hide();
+            }
+        });
+	</script>
 {% endblock %}

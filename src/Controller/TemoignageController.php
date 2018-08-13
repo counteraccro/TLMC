@@ -284,7 +284,7 @@ class TemoignageController extends AppController
     {
         $arrayFilters = $this->getDatasFilter($session);
 
-        $opt_form = array('label_submit' => 'Ajouter');
+        $opt_form = array('label_submit' => 'Modifier');
         
         switch($type){
             case 'evenement':

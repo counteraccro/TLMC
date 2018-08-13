@@ -50,7 +50,7 @@ class ProduitType extends AbstractType
 
         if ($options['add_etablissement']) {
             $builder->add('produitEtablissements', CollectionType::class, array(
-                'label' => 'Lien avec les établissements',
+                'label' => "Etablissements dans lesquels le produit est envoyé",
                 'label_attr' => array(
                     'id' => 'label_collection_type'
                 ),
@@ -68,7 +68,7 @@ class ProduitType extends AbstractType
 
         if ($options['add_specialite']) {
             $builder->add('produitSpecialites', CollectionType::class, array(
-                'label' => 'Lien avec des spécialités',
+                'label' => "Spécialités dans lesquelles le produit est envoyé",
                 'label_attr' => array(
                     'id' => 'label_collection_type'
                 ),

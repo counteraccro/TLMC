@@ -37,7 +37,7 @@
                     		<td>{% if temoignage.evenement != null %} {{ temoignage.evenement.nom }} {% endif %}</td>
                     		<td>{% if temoignage.produit != null %} {{ temoignage.produit.titre }} {% endif %}</td>
                     	{% endif %}
-                    	{% if not is_granted("ROLE_BENEVOLE") %}
+                    	{% if is_granted("ROLE_BENEVOLE") or is_granted("ROLE_BENEFICIAIRE_DIRECT") or is_granted("ROLE_BENEFICIAIRE") %}
                     		<td>
                 		        <a href="{{ path('temoignage_ajax_edit', {'id' : temoignage.id, 'type': type}) }}" id="btn-edit-temoignage-{{ temoignage.id }}"  title="Editer la fiche"><span class="oi oi-pencil"></span></a>
                     		    {% if is_granted("ROLE_ADMIN") %}

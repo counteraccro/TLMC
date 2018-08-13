@@ -162,7 +162,8 @@ class ProduitController extends AppController
         $produit->setDateEnvoi(new \DateTime());
 
         $form = $this->createForm(ProduitType::class, $produit, array(
-            'add_specialite' => true
+            'add_etablissement' => true,
+            'add_specialite' => false
         ));
 
         $form->handleRequest($request);
@@ -203,8 +204,8 @@ class ProduitController extends AppController
         return $this->render('produit/add.html.twig', array(
             'page' => $page,
             'form' => $form->createView(),
-            'add_specialite' => true,
-            'add_etablissement' => false,
+            'add_specialite' => false,
+            'add_etablissement' => true,
             'paths' => array(
                 'home' => $this->indexUrlProject(),
                 'urls' => array(

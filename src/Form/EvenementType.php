@@ -72,7 +72,7 @@ class EvenementType extends AbstractType
 
         if ($options['add']) {
             $builder->add('specialite_evenements', CollectionType::class, array(
-                'label' => 'Spécialités',
+                'label' => "Spécialités dans lesquelles l'événement est proposé",
                 'label_attr' => array(
                     'id' => 'label_collection_type'
                 ),
