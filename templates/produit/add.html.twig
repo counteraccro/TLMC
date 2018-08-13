@@ -11,6 +11,8 @@
 <div>
     {{ form_start(form) }}
     
+    {{ form_errors(form) }}
+    
     {{ form_row(form.titre) }}
 	{{ form_row(form.type) }}
 	{{ form_row(form.genre) }}
@@ -33,7 +35,6 @@
   	{% endif %}
     
     {{ form_rest(form) }}
-    {{ form_errors(form) }}
     {{ form_end(form) }}
     
 </div>
@@ -54,7 +55,7 @@
     		var params = {
     				id_container : 'div#produit_produitEtablissements',
     				id_btn_add : '#add_etablissement',
-    				id_label_fieldset : '#label_collection_type',
+    				id_label_fieldset : '#label_collection_types',
     				btn_delete : '<a href="#" class="btn btn-danger btn-sm">Supprimer</a>',
     		};
             
@@ -65,7 +66,7 @@
     		var params = {
     				id_container : 'div#produit_produitSpecialites',
     				id_btn_add : '#add_specialite',
-    				id_label_fieldset : '#label_collection_type',
+    				id_label_fieldset : '#label_collection_types',
     				btn_delete : '<a href="#" class="btn btn-danger btn-sm">Supprimer</a>',
     		};
             

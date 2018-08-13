@@ -16,8 +16,12 @@
     	{% elseif type == 'produit' %}
     	    {{ form_row(form.produit) }}
     	{% else %}
-    	    {{ form_row(form.evenement) }}
-    	    {{ form_row(form.produit) }}
+    	    <div id="temoignage_row_evenement">
+        		{{ form_row(form.evenement) }}
+        	</div>
+    	    <div id="temoignage_row_produit">
+        		{{ form_row(form.produit) }}
+        	</div>
     	{% endif %}
 		
         {{ form_row(form.titre) }}
@@ -43,7 +47,13 @@
         		   'show' : true,
         		   'backdrop' : 'static'
         	});
-        	
+
+			if($('#temoignage_evenement').val()){
+	        	$('#temoignage_row_produit').hide();
+	        } else {
+				$('#temoignage_row_evenement').hide();
+	        }
+
     		var url = '{{path('temoignage_ajax_edit', {'id': temoignage.id, 'type': type }) }}';
     		Temoignage.EventEditSubmit(url);
 	

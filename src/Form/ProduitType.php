@@ -44,12 +44,13 @@ class ProduitType extends AbstractType
             ->add('date_envoi', DateTimeType::class, array(
             'label' => "Date d'envoi",
             'widget' => 'choice',
+            'date_format' => 'dd MM yyyy',
             'years' => range(date('Y'), date('Y') + 2)
         ));
 
         if ($options['add_etablissement']) {
             $builder->add('produitEtablissements', CollectionType::class, array(
-                'label' => 'Etablissements',
+                'label' => "Etablissements dans lesquels le produit est envoyé",
                 'label_attr' => array(
                     'id' => 'label_collection_type'
                 ),
@@ -67,7 +68,7 @@ class ProduitType extends AbstractType
 
         if ($options['add_specialite']) {
             $builder->add('produitSpecialites', CollectionType::class, array(
-                'label' => 'Spécialités',
+                'label' => "Spécialités dans lesquelles le produit est envoyé",
                 'label_attr' => array(
                     'id' => 'label_collection_type'
                 ),

@@ -24,15 +24,17 @@ class EvenementType extends AbstractType
             ->add('date_debut', DateTimeType::class, array(
             'label' => "Date de début",
             'widget' => 'choice',
-            'years' => range(date('Y') - 1, date('Y') + 10)
+            'years' => range(date('Y') - 1, date('Y') + 10),
+            'date_format' => 'dd MM yyyy'
         ))
             ->add('date_fin', DateTimeType::class, array(
             'label' => "Date de fin ",
             'widget' => 'choice',
+            'date_format' => 'dd MM yyyy',
             'years' => range(date('Y') - 1, date('Y') + 10)
         ))
             ->add('nombre_max', IntegerType::class, array(
-            'label' => 'Nombre maximun de participant'
+            'label' => 'Nombre maximum de participant'
         ))
             ->add('description', TextareaType::class, array(
             'required' => false
@@ -64,12 +66,13 @@ class EvenementType extends AbstractType
             ->add('date_fin_inscription', DateTimeType::class, array(
             'label' => "Date de fin d'inscription",
             'widget' => 'choice',
+            'date_format' => 'dd MM yyyy',
             'years' => range(date('Y'), date('Y') + 2)
         ));
 
         if ($options['add']) {
             $builder->add('specialite_evenements', CollectionType::class, array(
-                'label' => 'Spécialités',
+                'label' => "Spécialités dans lesquelles l'événement est proposé",
                 'label_attr' => array(
                     'id' => 'label_collection_type'
                 ),

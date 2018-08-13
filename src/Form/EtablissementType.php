@@ -36,6 +36,7 @@ class EtablissementType extends AbstractType
             ->add('date_collaboration', DateType::class, array(
             'label' => 'Date de début de collaboration',
             'widget' => 'choice',
+            'format' => 'dd MM yyyy',
             'years' => range(date('Y') - 20, date('Y'))
         ))
             ->add('numero_voie', IntegerType::class, array(

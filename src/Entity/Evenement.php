@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EvenementRepository")
@@ -26,12 +27,17 @@ class Evenement
     /**
      * @ORM\Column(type="datetime")
      */
-    private $date_debut;
+    public $date_debut;
 
     /**
      * @ORM\Column(type="datetime")
+     * 
+     * @Assert\Expression(
+     *     "this.date_debut < this.date_fin",
+     *     message="La date de fin doit être supérieure à la date de fin"
+     * )
      */
-    private $date_fin;
+    public $date_fin;
 
     /**
      * @ORM\Column(type="integer")
@@ -95,8 +101,12 @@ class Evenement
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\Expression(
+     *     "this.date_fin_inscription < this.date_debut",
+     *     message="La date de fin d'inscription doit être inférieure à la date de début"
+     * )
      */
-    private $date_fin_inscription;
+    public $date_fin_inscription;
     
     /**
      * @ORM\Column(type="smallint")

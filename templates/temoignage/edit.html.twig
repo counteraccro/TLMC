@@ -17,8 +17,13 @@
 	{{ form_row(form.age) }}
 	{{ form_row(form.lien_parente) }}
 	{{ form_row(form.ville) }}
-	{{ form_row(form.evenement) }}
-	{{ form_row(form.produit) }}
+	
+	<div id="temoignage_row_evenement">
+		{{ form_row(form.evenement) }}
+	</div>
+	<div id="temoignage_row_produit">
+		{{ form_row(form.produit) }}
+	</div>
 	
     {{ form_rest(form) }}
     {{ form_errors(form) }}
@@ -26,4 +31,17 @@
     
 </div>
 	  
+{% endblock %}
+
+{% block javascripts %}
+	<script type="text/javascript">	
+		
+        if($('#temoignage_evenement').val()){
+        	$('#temoignage_row_produit').hide();
+           	$('#temoignage_evenement').attr('disabled', true);
+        } else {
+			$('#temoignage_row_evenement').hide();
+			$('#temoignage_produit').attr('disabled', true);
+        }
+	</script>
 {% endblock %}
