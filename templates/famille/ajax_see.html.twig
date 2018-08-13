@@ -1,7 +1,7 @@
 <div id="ajax_patient_famille_see">
     <div class="card">
         <div class="card-header">
-        	{#{ pagination.nb_elements }} famille{% if pagination.nb_elements > 1 %}s{% endif %} - Page {{ pagination.page }} / {{ pagination.pages_count }#}
+        	{{ pagination.nb_elements }} famille{% if pagination.nb_elements > 1 %}s{% endif %} - Page {{ pagination.page }} / {{ pagination.pages_count }}
         	<a href="{{ path('famille_ajax_add', {'id' : patient.id}) }}" id="btn-add-famille" class="float-right"><span class="oi oi-person"></span> Nouvelle famille</a>
         </div>
         
@@ -26,13 +26,13 @@
                 		<td>
                 		    {{ famille.familleAdresse.numeroVoie }}, {{ famille.familleAdresse.voie }}<br />
                 		    {{ famille.familleAdresse.codePostal }} {{ famille.familleAdresse.ville }}
-                		    <a href="{{ path('famille_adresse_ajax_edit', {'id' : famille.familleAdresse.id}) }}" id="btn-edit-famille-adresse-{{ famille.familleAdresse.id }}"  title="Editer la fiche"><span class="oi oi-pencil"></span></a>
+                		    <a href="{{ path('famille_adresse_ajax_edit', {'id' : famille.familleAdresse.id, 'page': pagination.page}) }}" id="btn-edit-famille-adresse-{{ famille.familleAdresse.id }}"  title="Editer la fiche"><span class="oi oi-pencil"></span></a>
                 		</td>
                 		<td>{{ famille.pmr | bool }}</td>
                 		<td>
-            		        <a href="{{ path('famille_ajax_edit', {'id' : famille.id}) }}" id="btn-edit-famille-{{ famille.id }}"  title="Editer la fiche"><span class="oi oi-pencil"></span></a>
+            		        <a href="{{ path('famille_ajax_edit', {'id' : famille.id, 'page': pagination.page}) }}" id="btn-edit-famille-{{ famille.id }}"  title="Editer la fiche"><span class="oi oi-pencil"></span></a>
                 		    {% if is_granted("ROLE_ADMIN") %}
-                		        {{ actionDelete(famille.disabled, path('famille_delete', {'id' : famille.id}), famille.id) | raw }}
+                		        {{ actionDelete(famille.disabled, path('famille_delete', {'id' : famille.id, 'page': pagination.page}), famille.id) | raw }}
                 		    {% endif %}
                 		</td>
                 	</tr>
@@ -47,12 +47,13 @@
         </div>
         
         <div class="card-footer">
-      		{#% include 'elements/ajax_pagination.html.twig' %#}
+      		{% include 'elements/ajax_pagination.html.twig' %}
       	</div>
     </div>
     
     {% block javascripts %}
         <script type="text/javascript">
+        
             var id_btn_add = '#btn-add-famille';
             Famille.EventAdd(id_btn_add);
 			

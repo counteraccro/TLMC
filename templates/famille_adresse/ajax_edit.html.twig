@@ -33,7 +33,7 @@
     		   'backdrop' : 'static'
     	});
     	
-		var url = '{{path('famille_adresse_ajax_edit', {'id': adresse.id }) }}';
+		var url = '{{path('famille_adresse_ajax_edit', {'id': adresse.id, 'page': page }) }}';
 		
 		Famille.EventEditAdresseSubmit(url);
 	

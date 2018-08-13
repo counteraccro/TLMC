@@ -115,8 +115,9 @@ class FamilleController extends AppController
      */
     public function ajaxSeeAction(Patient $patient, Request $request, SessionInterface $session, int $page = 1, $field = null, $order = null)
     {
-        $familles = $this->getElementsLiesActifs($patient, 'getFamilles');
-        /*if (is_null($field)) {
+        //$familles = $this->getElementsLiesActifs($patient, 'getFamilles');
+        
+        if (is_null($field)) {
             $field = 'id';
         }
 
@@ -158,12 +159,12 @@ class FamilleController extends AppController
         );
         
         $this->setDatasFilter($session, $field, $order);
-        */
+        
         return $this->render('famille/ajax_see.html.twig', array(
             'patient' => $patient,
-            'familles' => $familles
-            //'familles' => $result['paginator'],
-            //'pagination' => $pagination
+            //'familles' => $familles,
+            'familles' => $result['paginator'],
+            'pagination' => $pagination
         ));
     }
 
@@ -324,7 +325,7 @@ class FamilleController extends AppController
      * Edition d'une famille
      *
      * @Route("/famille/edit/{id}/{page}", name="famille_edit")
-     * @Route("/famille/ajax/edit/{id}", name="famille_ajax_edit")
+     * @Route("/famille/ajax/edit/{id}/{page}", name="famille_ajax_edit")
      * @ParamConverter("famille", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      *
@@ -353,7 +354,8 @@ class FamilleController extends AppController
 
             if ($request->isXmlHttpRequest()) {
                 return $this->json(array(
-                    'statut' => true
+                    'statut' => true,
+                    'page' => $page
                 ));
             }
             return $this->redirect($this->generateUrl('famille_listing', array(
@@ -368,7 +370,8 @@ class FamilleController extends AppController
 
             return $this->render('famille/ajax_edit.html.twig', array(
                 'form' => $form->createView(),
-                'famille' => $famille
+                'famille' => $famille,
+                'page' => $page
             ));
         }
 
@@ -420,7 +423,8 @@ class FamilleController extends AppController
 
         if ($request->isXmlHttpRequest()) {
             return $this->json(array(
-                'statut' => true
+                'statut' => true,
+                'page' => $page
             ));
         }
 

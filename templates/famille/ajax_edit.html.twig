@@ -40,7 +40,7 @@
     		   'backdrop' : 'static'
     	});
     	
-		var url = '{{path('famille_ajax_edit', {'id': famille.id }) }}';
+		var url = '{{path('famille_ajax_edit', {'id': famille.id, 'page': page }) }}';
 		
 		Famille.EventEditSubmit(url);
 	
