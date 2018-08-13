@@ -40,6 +40,7 @@ Preview.Launch = function(params) {
 			Preview.ConstructHtml($(this));
 		});
 		Preview.Render();
+		Preview.AddMarqueurObligatoire($(Preview.id_global + ' #question_obligatoire'));
 	}
 
 	/**
@@ -108,7 +109,29 @@ Preview.Launch = function(params) {
 					}
 				});
 			}
-		})
+		});
+		
+		
+		$(Preview.id_global + ' #question_obligatoire').change(function() {
+			Preview.AddMarqueurObligatoire($(this));
+		});
+		
+		
+	}
+	
+	/**
+	 * Ajoute une * ou non si la question est obligatoire
+	 */
+	Preview.AddMarqueurObligatoire = function(_this)
+	{
+		if(_this.is(':checked'))
+		{
+			$('#label-etoile').html('*');
+		}
+		else
+	    {
+			$('#label-etoile').html('');
+	    }
 	}
 
 	/**
@@ -164,7 +187,7 @@ Preview.Launch = function(params) {
 			Preview.SelectType(form_element);
 			break;
 		case 'question_libelle' : 
-			Preview.label = '<label for="input-render-preview">' + val + '</label>';
+			Preview.label = '<label for="input-render-preview">' + val + ' <span id="label-etoile" class="text-danger"></label>';
 			break;
 		case 'question_libelle_bottom' :
 			Preview.label_bottom = '';

@@ -45,6 +45,13 @@ class QuestionnaireActionExtension extends AbstractExtension
             $disabled = 'disabled';
         }
 
+        $question = $questionnaire->getQuestions()->first();
+        if (! empty($question)) {
+            if ($question->getReponses()->count()) {
+                $disabled = 'disabled';
+            }
+        }
+
         return '<a href="' . $url . '" id="btn-add-question" class="btn btn-primary btn-add-question ' . $disabled . '"> <span class="oi oi-plus"></span> Nouvelle question</a>';
     }
 
@@ -53,12 +60,12 @@ class QuestionnaireActionExtension extends AbstractExtension
         $disabled = '';
         $bloc_begin = $bloc_end = '';
 
-        // Cas ou le questionnaire est publié et qu'au moins 1 réponse à été faite sur 1 question
+        // Cas ou le questionnaire est publié ou qu'au moins 1 réponse à été faite sur 1 question
         $question = $questionnaire->getQuestions()->first();
         if (! empty($question)) {
-            if ($question->getReponses()->count() > 0 && $questionnaire->getPublication()) {
+            if ($question->getReponses()->count() > 0 || $questionnaire->getPublication()) {
 
-                $bloc_begin = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Edition vérouillée car publié et possède déjà au moins 1 réponse">';
+                $bloc_begin = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Edition vérouillée car publié et/ou possède déjà au moins 1 réponse">';
                 $disabled = 'disabled';
                 $bloc_end = '</span>';
             }

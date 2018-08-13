@@ -48,23 +48,21 @@ class QuestionnaireExtension extends AbstractExtension
         $this->checkTabParams($params);
 
         $html = '';
-        
-        if($questionnaire->getQuestions()->isEmpty())
-        {
+
+        if ($questionnaire->getQuestions()->isEmpty()) {
             return '<div class="text-center text-info">Aucune question n\'est associée à ce questionnaire</div>';
         }
-        
+
         $html .= $this->infoBloc();
         $html .= $this->beginForm();
 
         /* @var Question $question */
         foreach ($questionnaire->getQuestions() as $question) {
-            
-            if($question->getDisabled() && $this->params['statut'] != self::EDIT)
-            {
+
+            if ($question->getDisabled() && $this->params['statut'] != self::EDIT) {
                 continue;
             }
-            
+
             switch ($question->getType()) {
                 case 'ChoiceType':
                     $html .= $this->ChoiceType($question);
@@ -85,7 +83,7 @@ class QuestionnaireExtension extends AbstractExtension
                     $html .= '<div class="alert alert-danger">Le type ' . $question->getType() . ' n\'existe pas</div>';
                     break;
             }
-            
+
             $html = $this->isObligatoire($question, $html);
         }
 
@@ -247,13 +245,12 @@ class QuestionnaireExtension extends AbstractExtension
                 if ($val->value == $reponse->getValeur()) {
                     $checked = ' checked';
                 }
-            } 
-            else if ($val->value == $question->getValeurDefaut()) {
+            } else if ($val->value == $question->getValeurDefaut()) {
                 $checked = ' checked';
             }
 
             $html .= '<input class="form-check-input" type="radio" value="' . $val->value . '"' . $checked . ' id="q-' . $question->getId() . '-' . $i . '" name="questionnaire[question][q-' . $question->getId() . ']">';
-            $html .= '<label class="form-check-label" for="q-' . $question->getId() . '-' . $i . '">' . $val->value . '</label><br>';
+            $html .= '<label class="form-check-label" for="q-' . $question->getId() . '-' . $i . '">' . $val->libelle . '</label><br>';
             $i ++;
         }
 
@@ -309,20 +306,17 @@ class QuestionnaireExtension extends AbstractExtension
         if ($this->params['statut'] == self::EDIT) {
 
             $edit_url = str_replace('/0', '/' . $question->getId(), $this->params['edit_url']);
-            
+
             $disabled = '';
-            if($question->getDisabled())
-            {
+            if ($question->getDisabled()) {
                 $disabled = '<i class="text-secondary"><span class="oi oi-info"></span> Cette question est désactivée</i> &nbsp;&nbsp;&nbsp;';
             }
-            
+
             $btn_disabled = '';
-            if(new \DateTime('now') > $question->getQuestionnaire()->getDateFin() || $question->getQuestionnaire()->getPublication())
-            {
+            if ((new \DateTime('now') > $question->getQuestionnaire()->getDateFin() || $question->getQuestionnaire()->getPublication()) || $this->checkQuestionHaveOneReponse($question)) {
                 $btn_disabled = 'disabled';
             }
-            
-            
+
             $edit = '<div class="float-right">
                 ' . $disabled . '
                 <a href="' . $edit_url . '" id="btn-edit-question" class="btn btn-primary btn-edit-question ' . $btn_disabled . '"><span class="oi oi-pencil"></span> Edition</a>
@@ -332,7 +326,7 @@ class QuestionnaireExtension extends AbstractExtension
         if (! empty($question->getLibelleTop())) {
             $html .= '<div class="card-header">' . $txt_id . ' - ' . $question->getLibelleTop() . $edit . '</div>';
         } else if ($this->params['statut'] == self::EDIT) {
-            $html .= '<div class="card-header">' . $txt_id .  $edit . '</div>';
+            $html .= '<div class="card-header">' . $txt_id . $edit . '</div>';
         } else if ($this->params['statut'] == self::DEMO) {
             $html .= '<div class="card-header">' . $txt_id . '</div>';
         }
@@ -374,20 +368,17 @@ class QuestionnaireExtension extends AbstractExtension
 
         return $html;
     }
-    
+
     /**
-     * 
+     *
      * @param Question $question
      * @param string $html
      */
     private function isObligatoire(Question $question, $html)
-    {        
-        if($question->getObligatoire() === true)
-        {
+    {
+        if ($question->getObligatoire() === true) {
             return str_replace('%o%', ' <span class="text-danger">*</span>', $html);
-        }
-        else
-        {
+        } else {
             return str_replace('%o%', '', $html);
         }
     }
@@ -412,6 +403,22 @@ class QuestionnaireExtension extends AbstractExtension
 
                 throw new Exception('Le paramètre ' . $key . ' n\'existe pas, paramètres attendus : ' . $str);
             }
+        }
+    }
+
+    /**
+     * Vérifie si la question comporte au moins 1 réponse
+     * @param Question $question
+     * @return boolean
+     */
+    private function checkQuestionHaveOneReponse(Question $question)
+    {
+        if ($question->getReponses()->count() > 0) {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 }
