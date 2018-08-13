@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controller;
 
 use Symfony\Component\Routing\Annotation\Route;
@@ -9,9 +8,11 @@ use App\Entity\Produit;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Form\ProduitType;
+use Symfony\Component\Form\FormError;
 
 class ProduitController extends AppController
 {
+
     /**
      * Tableau de types
      *
@@ -19,9 +20,9 @@ class ProduitController extends AppController
      */
     const TYPE = array(
         1 => 'Cadeau',
-        2 => 'Matériel',
+        2 => 'Matériel'
     );
-    
+
     /**
      * Tableau de genre
      *
@@ -32,7 +33,7 @@ class ProduitController extends AppController
         1 => 'Fille',
         2 => 'Garçon'
     );
-    
+
     /**
      * Listing des produits
      *
@@ -73,7 +74,7 @@ class ProduitController extends AppController
                 )
             );
         }
-        
+
         $result = $this->genericSearch($request, $session, $params);
 
         $pagination = array(
@@ -98,7 +99,7 @@ class ProduitController extends AppController
             )
         ));
     }
-    
+
     /**
      * Fiche d'un produit
      *
@@ -106,7 +107,7 @@ class ProduitController extends AppController
      * @Route("/produit/ajax/see/{id}/{page}", name="produit_ajax_see")
      * @ParamConverter("produit", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE')")
-     * 
+     *
      * @param Request $request
      * @param SessionInterface $session
      * @param Produit $produit
@@ -116,15 +117,15 @@ class ProduitController extends AppController
     public function seeAction(Request $request, SessionInterface $session, Produit $produit, int $page = 1)
     {
         $arrayFilters = $this->getDatasFilter($session);
-        
+
         // Si appel Ajax, on renvoi sur la page ajax
         if ($request->isXmlHttpRequest()) {
-            
+
             return $this->render('produit/ajax_see.html.twig', array(
-                'produit' => $produit,
+                'produit' => $produit
             ));
         }
-        
+
         return $this->render('produit/see.html.twig', array(
             'page' => $page,
             'produit' => $produit,
@@ -141,7 +142,7 @@ class ProduitController extends AppController
             )
         ));
     }
-    
+
     /**
      * Ajout d'un nouvel produit
      *
@@ -156,33 +157,49 @@ class ProduitController extends AppController
     public function addAction(SessionInterface $session, Request $request, int $page)
     {
         $arrayFilters = $this->getDatasFilter($session);
-        
+
         $produit = new Produit();
-        
-        $form = $this->createForm(ProduitType::class, $produit, array('add_specialite' => true));
-        
+        $produit->setDateEnvoi(new \DateTime());
+
+        $form = $this->createForm(ProduitType::class, $produit, array(
+            'add_specialite' => true
+        ));
+
         $form->handleRequest($request);
+
+        // vérification que la quantité de produit est supérieur à la somme des quantités de produit dans les différentes spécialités
+        if ($form->isSubmitted()) {
+            $quantite = 0;
+            foreach ($produit->getProduitSpecialites() as $produitSpecialite) {
+                $quantite += $produitSpecialite->getQuantite();
+            }
+            if ($quantite > $produit->getQuantite()) {
+                $error = new FormError('La somme des quantités des produits envoyés dans les différentes spécialités');
+                $form->addError($error);
+            }
+        }
+
         if ($form->isSubmitted() && $form->isValid()) {
-            
+
             $em = $this->getDoctrine()->getManager();
-            
-            foreach ($produit->getProduitEtablissements() as $produitEtablissement){
+
+            foreach ($produit->getProduitEtablissements() as $produitEtablissement) {
                 $produitEtablissement->setProduit($produit);
             }
-            
-            foreach ($produit->getProduitSpecialites() as $produitSpecialite){
+
+            foreach ($produit->getProduitSpecialites() as $produitSpecialite) {
                 $produitSpecialite->setProduit($produit);
             }
-            
+
             $produit->setDateCreation(new \DateTime());
             $produit->setDisabled(0);
-            
+
             $em->persist($produit);
             $em->flush();
-            
+
             return $this->redirect($this->generateUrl('produit_listing'));
         }
-        
+
         return $this->render('produit/add.html.twig', array(
             'page' => $page,
             'form' => $form->createView(),
@@ -201,7 +218,7 @@ class ProduitController extends AppController
             )
         ));
     }
-    
+
     /**
      * Edition d'un produit
      *
@@ -219,39 +236,39 @@ class ProduitController extends AppController
     public function editAction(SessionInterface $session, Request $request, Produit $produit, int $page = 1)
     {
         $arrayFilters = $this->getDatasFilter($session);
-        
+
         $form = $this->createForm(ProduitType::class, $produit);
-        
+
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            
+
             $em = $this->getDoctrine()->getManager();
-            
+
             $em->persist($produit);
             $em->flush();
-            
+
             if ($request->isXmlHttpRequest()) {
                 return $this->json(array(
                     'statut' => true
                 ));
             }
-            
+
             return $this->redirect($this->generateUrl('produit_listing', array(
                 'page' => $page,
                 'field' => $arrayFilters['field'],
                 'order' => $arrayFilters['order']
             )));
         }
-        
+
         // Si appel Ajax, on renvoi sur la page ajax
         if ($request->isXmlHttpRequest()) {
-            
+
             return $this->render('produit/ajax_edit.html.twig', [
                 'produit' => $produit,
                 'form' => $form->createView()
             ]);
         }
-        
+
         return $this->render('produit/edit.html.twig', array(
             'page' => $page,
             'form' => $form->createView(),
@@ -269,7 +286,7 @@ class ProduitController extends AppController
             )
         ));
     }
-    
+
     /**
      * Désactivation d'un produit
      *
@@ -285,19 +302,19 @@ class ProduitController extends AppController
     public function deleteAction(SessionInterface $session, Produit $produit, int $page)
     {
         $arrayFilters = $this->getDatasFilter($session);
-        
+
         if ($produit->getDisabled() == 1) {
             $produit->setDisabled(0);
         } else {
             $produit->setDisabled(1);
         }
-        
+
         $entityManager = $this->getDoctrine()->getManager();
-        
+
         $entityManager->persist($produit);
-        
+
         $entityManager->flush();
-        
+
         return $this->redirectToRoute('produit_listing', array(
             'page' => $page,
             'field' => $arrayFilters['field'],

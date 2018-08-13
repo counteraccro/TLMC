@@ -32,7 +32,7 @@ class EvenementType extends AbstractType
             'years' => range(date('Y') - 1, date('Y') + 10)
         ))
             ->add('nombre_max', IntegerType::class, array(
-            'label' => 'Nombre maximun de participant'
+            'label' => 'Nombre maximum de participant'
         ))
             ->add('description', TextareaType::class, array(
             'required' => false

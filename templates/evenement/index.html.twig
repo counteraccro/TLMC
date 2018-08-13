@@ -54,8 +54,8 @@
         				{% if evenement.image != null %}<img src="{{ evenement.image }}" height="50" width="50"/> {% endif %}
         			    {{ evenement.nom }}
         			</td>
-        			<td>{{ evenement.dateDebut |date("m/d/Y H:i") }}</td>
-        			<td>{{ evenement.dateFin|date("m/d/Y H:i") }}</td>
+        			<td>{{ evenement.dateDebut |date("d/m/Y H:i") }}</td>
+        			<td>{{ evenement.dateFin|date("d/m/Y H:i") }}</td>
         			<td>{{ evenement.nombreMax }}</td>
         			<td>{{ evenement.description }}</td>
         			<td>{{ evenement.informationComplementaire }}</td>
