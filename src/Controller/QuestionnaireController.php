@@ -97,7 +97,7 @@ class QuestionnaireController extends AppController
     }
 
     /**
-     * Fiche d'un questionnaire
+     * Fiche d'un questionnaire Ajax
      *
      * @Route("/questionnaire/ajax/see/{id}/", name="questionnaire_ajax_see")
      * @ParamConverter("questionnaire", options={"mapping": {"id": "id"}})

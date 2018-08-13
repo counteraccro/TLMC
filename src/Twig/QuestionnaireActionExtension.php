@@ -3,11 +3,16 @@ namespace App\Twig;
 
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
+use Twig_Extension;
 use App\Entity\Questionnaire;
 
 class QuestionnaireActionExtension extends AbstractExtension
 {
-
+    /**
+     * Indique la fonction twig à utiliser en fonction de l'id du bouton
+     * {@inheritDoc}
+     * @see Twig_Extension::getFunctions()
+     */
     public function getFunctions(): array
     {
         return [
@@ -34,6 +39,12 @@ class QuestionnaireActionExtension extends AbstractExtension
         ];
     }
 
+    /**
+     * Bouton Ajouter une nouvelle question
+     * @param Questionnaire $questionnaire
+     * @param string $url
+     * @return string
+     */
     public function addQuestionBtn(Questionnaire $questionnaire, $url)
     {
         $disabled = '';
@@ -55,6 +66,12 @@ class QuestionnaireActionExtension extends AbstractExtension
         return '<a href="' . $url . '" id="btn-add-question" class="btn btn-primary btn-add-question ' . $disabled . '"> <span class="oi oi-plus"></span> Nouvelle question</a>';
     }
 
+    /**
+     * Bouton Editer du questionnaire
+     * @param Questionnaire $questionnaire
+     * @param string $url
+     * @return string
+     */
     public function editBtn(Questionnaire $questionnaire, $url)
     {
         $disabled = '';
@@ -73,6 +90,12 @@ class QuestionnaireActionExtension extends AbstractExtension
         return $bloc_begin . '<a href="' . $url . '" id="btn-edit-questionnaire" class="btn btn-dark ' . $disabled . '"><span class="oi oi-pencil"></span> Editer</a>' . $bloc_end;
     }
 
+    /**
+     * Bouton Publier du questionnaire
+     * @param Questionnaire $questionnaire
+     * @param string $url
+     * @return string
+     */
     public function publishBtn(Questionnaire $questionnaire, $url)
     {
         $disabled = '';
@@ -121,6 +144,12 @@ class QuestionnaireActionExtension extends AbstractExtension
         }
     }
 
+    /**
+     * Bouton Tester (demo) du Questionnaire
+     * @param Questionnaire $questionnaire
+     * @param string $url
+     * @return string
+     */
     public function testBtn(Questionnaire $questionnaire, $url)
     {
         $disabled = '';
@@ -143,6 +172,12 @@ class QuestionnaireActionExtension extends AbstractExtension
         return $bloc_begin . '<a href="' . $url . '" id="btn-demo-questionnaire" class="btn btn-info ' . $disabled . '"><span class="oi oi-monitor"></span> Tester</a>' . $bloc_end;
     }
 
+    /**
+     * Bouton Dupliquer du Questionnaire
+     * @param Questionnaire $questionnaire
+     * @param string $url
+     * @return string
+     */
     public function duplicateBtn(Questionnaire $questionnaire, $url)
     {
         return '<a href="' . $url . '" id="btn-duplicate-questionnaire" class="btn btn-secondary"><span class="oi oi-fork"></span> Dupliquer</a>';

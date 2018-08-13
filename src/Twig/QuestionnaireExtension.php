@@ -45,7 +45,6 @@ class QuestionnaireExtension extends AbstractExtension
 
     /**
      * Fonction permettant d'identifier le type de question envoyée et de retourner un format en conséquence
-     *
      * @param Questionnaire $questionnaire
      * @return string
      */
@@ -100,7 +99,6 @@ class QuestionnaireExtension extends AbstractExtension
 
     /**
      * Fonction prévue dans le cas où la question comprend une liste déroulante
-     *
      * @param Question $question
      */
     private function ChoiceType(Question $question)
@@ -135,7 +133,6 @@ class QuestionnaireExtension extends AbstractExtension
 
     /**
      * Fonction prévue dans le cas où la question comprend un champ texte
-     *
      * @param Question $question
      */
     private function TextType(Question $question)
@@ -159,7 +156,6 @@ class QuestionnaireExtension extends AbstractExtension
 
     /**
      * Fonction prévue dans le cas où la question comprend une zone de texte
-     *
      * @param Question $question
      */
     private function TextAreaType(Question $question)
@@ -185,7 +181,6 @@ class QuestionnaireExtension extends AbstractExtension
 
     /**
      * Fonction prévue dans le cas où la question comprend une liste de réponses en format cases à cocher
-     *
      * @param Question $question
      */
     private function CheckboxType(Question $question)
@@ -229,7 +224,6 @@ class QuestionnaireExtension extends AbstractExtension
 
     /**
      * Fonction prévue dans le cas où la question comprend une liste de réponses au format radio (choix unique)
-     *
      * @param Question $question
      */
     private function RadioType(Question $question)
@@ -269,7 +263,6 @@ class QuestionnaireExtension extends AbstractExtension
 
     /**
      * Début HTML du questionnaire
-     *
      * @return string
      */
     private function beginForm()
@@ -281,7 +274,6 @@ class QuestionnaireExtension extends AbstractExtension
 
     /**
      * Fin HTML du questionnaire
-     *
      * @return string
      */
     private function endForm()
@@ -296,7 +288,6 @@ class QuestionnaireExtension extends AbstractExtension
 
     /**
      * Création du début du bloc pour chaque question
-     *
      * @param Question $question
      */
     private function beginBloc(Question $question)
@@ -344,7 +335,6 @@ class QuestionnaireExtension extends AbstractExtension
 
     /**
      * Création de la fin du bloc pour chaque question
-     *
      * @param Question $question
      */
     private function endBloc(Question $question)
@@ -371,7 +361,6 @@ class QuestionnaireExtension extends AbstractExtension
 
     /**
      * Bloc permettant d'insérer un message d'information à l'utilisateur
-     *
      * @return string
      */
     private function infoBloc()
@@ -383,7 +372,7 @@ class QuestionnaireExtension extends AbstractExtension
     }
 
     /**
-     *
+     *Permet d'ajouter le marqueur étoile signifiant que la réponse à cette question est requise
      * @param Question $question
      * @param string $html
      */
@@ -398,7 +387,6 @@ class QuestionnaireExtension extends AbstractExtension
 
     /**
      * Vérifie si les paramètres sont corrects
-     *
      * @param array $params
      * @throws Exception
      */
@@ -421,7 +409,6 @@ class QuestionnaireExtension extends AbstractExtension
 
     /**
      * Vérifie si la question comporte au moins 1 réponse
-     *
      * @param Question $question
      * @return boolean
      */
@@ -435,8 +422,7 @@ class QuestionnaireExtension extends AbstractExtension
     }
 
     /**
-     * Vérifie si le champs est en erreur ou non
-     *
+     * Vérifie si le champ est en erreur ou non
      * @param Question $question
      * @return string ou '';
      */
@@ -453,7 +439,8 @@ class QuestionnaireExtension extends AbstractExtension
     }
 
     /**
-     *
+     *Permet de visualiser des réponses saisies au questionnaire de démo (mode debug)
+     *Prévoit l'affichage des erreurs (obligatoire, non-respect des règles fixées)
      * @param array $result
      * @return string
      */
@@ -461,7 +448,7 @@ class QuestionnaireExtension extends AbstractExtension
     {
         if (empty($result)) {
             $html = '<div class="alert alert-primary" role="alert">
-                        Il faut soumettre le formulaire de démo pour voir les données qui serons enregistrées
+                        Il faut soumettre le formulaire de démo pour voir les données qui seront enregistrées
                     </div>';
             return '<div class="card "><div class="card-body">' . $html . '</div></div>';
         }

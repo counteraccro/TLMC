@@ -55,7 +55,7 @@ class QuestionnaireManager extends AppService
     }
 
     /**
-     *
+     * Fonction qui appelle les fonctions questionnaire (initialisation, création réponse, validation...)
      * @param Questionnaire $questionnaire
      */
     public function manage(Questionnaire $questionnaire, $statut = AppController::PROD)
@@ -69,6 +69,8 @@ class QuestionnaireManager extends AppService
     }
 
     /**
+     * Fonction permettant d'initialiser pour le Questionnaire les questions et les réponses
+     * On fait entrer dans notre tableau d'objets les données
      */
     private function initialize()
     {
@@ -87,6 +89,8 @@ class QuestionnaireManager extends AppService
     }
 
     /**
+     * Contrôle la validité des réponses saisies en fonctions des règles prévues par le créateur de Questionnaire
+     * Renvoie des messages d'erreurs si besoin (caractère obligatoire de la question par exemple)
      */
     private function validate()
     {
@@ -107,7 +111,7 @@ class QuestionnaireManager extends AppService
                 }
             }
 
-            //
+            // Si le Type de question est un champ ou une zone de texte
             if (in_array($question->getType(), array(
                 AppController::TEXTAREATYPE,
                 AppController::TEXTYPE
@@ -120,7 +124,7 @@ class QuestionnaireManager extends AppService
                 }
             }
 
-            //
+            //Si le type de question correspond à une liste déroulante
             if (in_array($question->getType(), array(
                 AppController::CHOICETYPE
             ))) {
@@ -136,8 +140,10 @@ class QuestionnaireManager extends AppService
     }
 
     /**
+     * Récupération des données renvoyées dans la réponse, pour chaque question renseignée
+     * Les élements de réponse sont intégrés à notre objet Réponse
      */
-    private function createReponse()
+   private function createReponse()
     {
         /* @var Question $question */
         foreach ($this->questionnaire->getQuestions() as $question) {

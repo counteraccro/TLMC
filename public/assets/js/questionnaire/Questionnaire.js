@@ -98,6 +98,10 @@ Questionnaire.Launch = function(params) {
 		});
 	}
 	
+	/**
+	 * Evenement à la confirmation de la publication du questionnaire
+	 * loader + fermeture modal + changement du bouton en "dépublier"
+	 */
 	Questionnaire.EventConfirmationPublication = function(url, id)
 	{
 		$(id).click(function() 
