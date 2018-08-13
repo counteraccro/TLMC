@@ -179,7 +179,7 @@ class FamilleAdresseController extends AppController
      * Edition d'une adresse pour un membre d'une famille
      *
      * @Route("/famille_adresse/edit/{id}/{page}", name="famille_adresse_edit")
-     * @Route("/famille_adresse/ajax/edit/{id}", name="famille_adresse_ajax_edit")
+     * @Route("/famille_adresse/ajax/edit/{id}/{page}", name="famille_adresse_ajax_edit")
      * @ParamConverter("famille_adresse", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      *
@@ -204,7 +204,8 @@ class FamilleAdresseController extends AppController
 
             if ($request->isXmlHttpRequest()) {
                 return $this->json(array(
-                    'statut' => true
+                    'statut' => true,
+                    'page' => $page
                 ));
             }
 
@@ -220,7 +221,8 @@ class FamilleAdresseController extends AppController
 
             return $this->render('famille_adresse/ajax_edit.html.twig', array(
                 'form' => $form->createView(),
-                'adresse' => $adresse
+                'adresse' => $adresse,
+                'page' => $page
             ));
         }
 

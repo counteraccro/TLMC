@@ -188,7 +188,8 @@ Famille.Launch = function(params) {
 				{
 					//on cache la modale si le formulaire est valide
 					$(Famille.id_modal).modal('hide');
-					Famille.Ajax(Famille.url_ajax_see, Famille.id_global);
+					console.log(reponse.page);
+					Famille.Ajax(Famille.url_ajax_see + '/' + reponse.page, Famille.id_global);
 				}
 				else
 				{
@@ -226,7 +227,7 @@ Famille.Launch = function(params) {
 				{
 					//on cache la modale si le formulaire est valide
 					$(Famille.id_modal).modal('hide');
-					Famille.Ajax(Famille.url_ajax_see, Famille.id_global);
+					Famille.Ajax(Famille.url_ajax_see + '/' + reponse.page, Famille.id_global);
 				}
 				else
 				{
@@ -254,7 +255,7 @@ Famille.Launch = function(params) {
 
 				if(reponse.statut === true)
 				{
-					Famille.Ajax(Famille.url_ajax_see, Famille.id_global);
+					Famille.Ajax(Famille.url_ajax_see + '/' + reponse.page, Famille.id_global);
 				}
 			});
 		});

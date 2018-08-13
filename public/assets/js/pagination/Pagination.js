@@ -5,10 +5,8 @@ Pagination.Launch = function(params) {
 
 	//url de la fiche de l'élément
 	Pagination.url_ajax_see = params.url_ajax_see;
-	//cible la div de la pagination
+	//cible la div des familles du patient
 	Pagination.id_global = params.id_global;
-
-	Pagination.id_container_global = '#container-global';
 
 	/**
 	 * Méthode Ajax qui va charger l'element présent dans l'URL
@@ -27,23 +25,12 @@ Pagination.Launch = function(params) {
 	/**
 	 * chargement de la nouvelle page au click
 	 */
-	Pagination.EventChangePage = function(id, url)
+	Pagination.EventChangePage = function(id)
 	{
 		$(id).click(function(){
 			event.preventDefault();
-
-			//envoi d'une requête POST en AJAX
-			$.ajax({
-				method: 'POST',
-				url: $(this).attr('href')
-			})
-			.done(function( reponse ) {
-
-				if(reponse.statut === true)
-				{
-					Pagination.Ajax(Pagination.url_ajax_see, Pagination.id_global);
-				}
-			});
+			
+			Pagination.Ajax($(this).attr('href'), Pagination.id_global);
 		});
 	}
 }
