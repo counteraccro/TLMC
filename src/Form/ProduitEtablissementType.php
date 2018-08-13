@@ -24,7 +24,7 @@ class ProduitEtablissementType extends AbstractType
                 'disabled' => $options['disabled_etablissement']
             ));
         }
-        
+
         if ($options['avec_produit']) {
             $builder->add('produit', EntityType::class, array(
                 'class' => Produit::class,
@@ -38,7 +38,8 @@ class ProduitEtablissementType extends AbstractType
             'label' => "Date",
             'widget' => 'choice',
             'date_format' => 'dd MM yyyy',
-            'years' => range(date('Y') - 1, date('Y') + 2)
+            'years' => range(date('Y') - 1, date('Y') + 2),
+            'data' => $options['date_valeur']
         ));
 
         if ($options['avec_bouton']) {
@@ -56,6 +57,7 @@ class ProduitEtablissementType extends AbstractType
         $resolver->setDefaults([
             'data_class' => ProduitEtablissement::class,
             'label_submit' => 'Valider',
+            'date_valeur' => new \DateTime(),
             'avec_bouton' => true,
             'avec_etablissement' => true,
             'avec_produit' => true,

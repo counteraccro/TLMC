@@ -31,7 +31,6 @@ FormAddCollection.Launch = function(params) {
 			FormAddCollection.container.children('div').each(function() {
 				FormAddCollection.addDeleteLink($(this));
 			});
-
 		}
 	}
 

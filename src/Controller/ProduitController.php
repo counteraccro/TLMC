@@ -118,6 +118,21 @@ class ProduitController extends AppController
     {
         $arrayFilters = $this->getDatasFilter($session);
 
+        /*
+         * (SELECT P.`titre`, E.`id`, E.`nom`, '', PE.`quantite`, PE.`date` 
+         * FROM `produit` P 
+         * LEFT JOIN `produit_etablissement` PE ON PE.`produit_id` = P.`id` 
+         * LEFT JOIN `etablissement` E ON PE.`etablissement_id` = E.`id` 
+         * WHERE P.`id` = 89 ORDER BY E.`id`) 
+         * UNION 
+         * (SELECT P.`titre`, E.`id`, E.`nom`, S.`service`, PS.`quantite`, PS.`date` 
+         * FROM `produit` P 
+         * LEFT JOIN `produit_specialite` PS ON PS.`produit_id` = P.`id` 
+         * LEFT JOIN `specialite` S ON PS.`specialite_id` = S.`id` 
+         * LEFT JOIN `etablissement` E ON S.`etablissement_id` = E.`id` 
+         * WHERE P.`id` = 89 ORDER BY E.`id`)
+         */
+
         // Si appel Ajax, on renvoi sur la page ajax
         if ($request->isXmlHttpRequest()) {
 
@@ -163,7 +178,7 @@ class ProduitController extends AppController
 
         $form = $this->createForm(ProduitType::class, $produit, array(
             'add_etablissement' => true,
-            'add_specialite' => false
+            'add_specialite' => true
         ));
 
         $form->handleRequest($request);
@@ -204,7 +219,7 @@ class ProduitController extends AppController
         return $this->render('produit/add.html.twig', array(
             'page' => $page,
             'form' => $form->createView(),
-            'add_specialite' => false,
+            'add_specialite' => true,
             'add_etablissement' => true,
             'paths' => array(
                 'home' => $this->indexUrlProject(),

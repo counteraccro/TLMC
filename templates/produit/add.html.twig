@@ -22,17 +22,26 @@
 	{{ form_row(form.quantite) }}
 	{{ form_row(form.date_envoi) }}
     
-    {% if add_etablissement == true %}
-        <div class="shadow-sm p-3 mb-5 bg-white rounded border">
+    <div class="form-group">
+		<label for="">Elément associé</label>
+		<select id="produit_typelink" class="form-control">
+			<option value="0"></option>
+			<option value="1">Etablissement</option>
+			<option value="2">Spécialité</option>
+		</select>
+	</div>
+    
+    {#% if add_etablissement == true %#}
+        <div id="produit_row_etablissement" class="shadow-sm p-3 mb-5 bg-white rounded border">
             {{ form_row(form.produitEtablissements) }}
           	<a href="#" id="add_etablissement" class="btn btn-primary btn-sm">Ajouter un établissement</a>
       	</div>
-    {% elseif add_specialite == true %}
-      	<div class="shadow-sm p-3 mb-5 bg-white rounded border">
+    {#% elseif add_specialite == true %#}
+      	<div id="produit_row_specialite" class="shadow-sm p-3 mb-5 bg-white rounded border">
             {{ form_row(form.produitSpecialites) }}
           	<a href="#" id="add_specialite" class="btn btn-primary btn-sm">Ajouter une spécialité </a>
       	</div>
-  	{% endif %}
+  	{#% endif %#}
     
     {{ form_rest(form) }}
     {{ form_end(form) }}
@@ -48,33 +57,47 @@
 {% block javascripts %}
 
     <script type="text/javascript">
-    
+
     $(document).ready(function() {
 
-		{% if add_etablissement == true %}
-    		var params = {
-    				id_container : 'div#produit_produitEtablissements',
-    				id_btn_add : '#add_etablissement',
-    				id_label_fieldset : '#label_collection_types',
-    				btn_delete : '<a href="#" class="btn btn-danger btn-sm">Supprimer</a>',
-    		};
-            
-        	FormAddCollection.Launch(params);
-    		FormAddCollection.Event();
-    		
-    	{% elseif add_specialite == true %}
-    		var params = {
-    				id_container : 'div#produit_produitSpecialites',
-    				id_btn_add : '#add_specialite',
-    				id_label_fieldset : '#label_collection_types',
-    				btn_delete : '<a href="#" class="btn btn-danger btn-sm">Supprimer</a>',
-    		};
-            
-        	FormAddCollection.Launch(params);
-    		FormAddCollection.Event();
-    		
-		{% endif %}
+    	$('#produit_row_etablissement').hide();
+		$('#produit_row_specialite').hide();
+    	
+        $('#produit_typelink').change(function(){
+            if($(this).val() == 2){
+            	$('#produit_row_specialite').show();
+            	$('#produit_row_etablissement').hide();
+    
+            	var params = {
+        				id_container : 'div#produit_produitSpecialites',
+        				id_btn_add : '#add_specialite',
+        				id_label_fieldset : '#label_collection_types',
+        				btn_delete : '<a href="#" class="btn btn-danger btn-sm">Supprimer</a>',
+        		};
+                
+            	FormAddCollection.Launch(params);
+        		FormAddCollection.Event();
+        		
+            } else if($(this).val() == 1) {
+    			$('#produit_row_etablissement').show();
+    			$('#produit_row_specialite').hide();
+    
+    			var params = {
+        				id_container : 'div#produit_produitEtablissements',
+        				id_btn_add : '#add_etablissement',
+        				id_label_fieldset : '#label_collection_types',
+        				btn_delete : '<a href="#" class="btn btn-danger btn-sm">Supprimer</a>',
+        		};
+                
+            	FormAddCollection.Launch(params);
+        		FormAddCollection.Event();
+            } else {
+            	$('#produit_row_etablissement').hide();
+    			$('#produit_row_specialite').hide();
+            }
+        });
     });
+    
     </script> 
 
 {% endblock %}

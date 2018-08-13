@@ -43,7 +43,8 @@ class ProduitSpecialiteType extends AbstractType
             'label' => "Date",
             'widget' => 'choice',
             'date_format' => 'dd MM yyyy',
-            'years' => range(date('Y') - 1, date('Y') + 2)
+            'years' => range(date('Y') - 1, date('Y') + 2),
+            'data' => $options['date_valeur']
         ));
 
         if ($options['avec_bouton']) {
@@ -61,6 +62,7 @@ class ProduitSpecialiteType extends AbstractType
         $resolver->setDefaults([
             'data_class' => ProduitSpecialite::class,
             'label_submit' => 'Valider',
+            'date_valeur' => new \DateTime(),
             'avec_bouton' => true,
             'avec_specialite' => true,
             'avec_produit' => true,
