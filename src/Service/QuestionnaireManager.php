@@ -7,6 +7,7 @@ use Doctrine\Common\Persistence\ManagerRegistry as Doctrine;
 use App\Entity\Questionnaire;
 use App\Entity\Reponse;
 use App\Entity\Question;
+use App\Controller\AppController;
 
 class QuestionnaireManager extends AppService
 {
@@ -57,54 +58,91 @@ class QuestionnaireManager extends AppService
      *
      * @param Questionnaire $questionnaire
      */
-    public function manage(Questionnaire $questionnaire)
+    public function manage(Questionnaire $questionnaire, $statut = AppController::PROD)
     {
         $this->questionnaire = $questionnaire;
         $this->initialize();
         $this->createReponse();
-        
+        $this->validate();
+
         return $this->return;
     }
 
     /**
-     * 
      */
     private function initialize()
     {
         foreach ($this->questionnaire->getQuestions() as $question) {
             $array = [
                 'question' => $question,
-                'reponse' => '',
-                'erreur' => ''
+                'reponse' => new Reponse(),
+                'erreur' => (object) array(
+                    'is' => false,
+                    'libelle' => ''
+                )
             ];
             $this->return[$question->getid()] = (object) $array;
         }
     }
-    
+
     /**
-     * 
      */
     private function validate()
     {
-        
+        foreach ($this->return as $key => $object) {
+            /* @var Question $question */
+            $question = $object->question;
+
+            /* @var Reponse $reponse */
+            $reponse = $object->reponse;
+
+            if ($question->getObligatoire()) {
+                if (empty($reponse->getValeur())) {
+
+                    $this->return[$key]->erreur->is = true;
+                    $this->return[$key]->erreur->libelle = 'Cette question est obligatoire';
+                    continue;
+                }
+            }
+
+            
+            if (in_array($question->getType(), array(
+                AppController::TEXTAREATYPE,
+                AppController::TEXTYPE
+            ))) {
+                if (AppController::PREG_MATCH_DATE == $question->getRegles()) {
+                    if (! preg_match('/' . $question->getRegles() . '/', $reponse->getValeur())) {
+                        $this->return[$key]->erreur->is = true;
+                        $this->return[$key]->erreur->libelle = $question->getMessageErreur();
+                        continue;
+                    }
+                } else {
+                    if (preg_match('/' . $question->getRegles() . '/', $reponse->getValeur())) {
+                        $this->return[$key]->erreur->is = true;
+                        $this->return[$key]->erreur->libelle = $question->getMessageErreur();
+                        continue;
+                    }
+                }
+            }
+        }
     }
 
     /**
-     * 
      */
     private function createReponse()
     {
         /* @var Question $question */
         foreach ($this->questionnaire->getQuestions() as $question) {
-            
-            if($question->getDisabled())
-            {
+
+            if ($question->getDisabled()) {
                 continue;
             }
-            
+
             foreach ($this->request->request->all()['questionnaire']['question'] as $keyR => $valR) {
                 $tmp = explode('-', $keyR);
+
                 if ($tmp[1] == $question->getId()) {
+
                     if (! is_array($valR)) {
                         $strValeur = $valR;
                     } else {
@@ -115,10 +153,10 @@ class QuestionnaireManager extends AppService
                         $strValeur = substr($strValeur, 0, - 1);
                     }
 
-                    $reponse = new Reponse();
+                    $reponse = $this->return[$question->getid()]->reponse;
                     $reponse->setValeur($strValeur);
-                    //$reponse->setQuestion($question);
-                    
+                    $reponse->setQuestion($question);
+
                     $this->return[$question->getid()]->reponse = $reponse;
                 }
             }

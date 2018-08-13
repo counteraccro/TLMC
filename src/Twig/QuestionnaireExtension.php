@@ -9,6 +9,7 @@ use Twig\TwigFunction;
 use App\Entity\Questionnaire;
 use App\Entity\Question;
 use Symfony\Component\Config\Definition\Exception\Exception;
+use App\Controller\AppController;
 
 class QuestionnaireExtension extends AbstractExtension
 {
@@ -24,11 +25,9 @@ class QuestionnaireExtension extends AbstractExtension
     }
 
     // permet de déterminer s'il s'agit d'un statut prod ou de démo
-    const DEMO = 'demo';
-
-    const PROD = 'prod';
-
-    const EDIT = 'edit';
+    const DEMO = AppController::DEMO;
+    const PROD = AppController::PROD;
+    const EDIT = AppController::EDIT;
 
     private $params = [
         'submit_url' => '',
@@ -103,7 +102,7 @@ class QuestionnaireExtension extends AbstractExtension
         $html = $this->beginBloc($question);
 
         $html .= '<label for="q-' . $question->getId() . '">' . $question->getLibelle() . '%o%</label>
-                    <select class="form-control" id="q-' . $question->getId() . '" name="questionnaire[question][q-' . $question->getId() . ']">';
+                    <select class="form-control ' . $this->isValidateError($question) . '" id="q-' . $question->getId() . '" name="questionnaire[question][q-' . $question->getId() . ']">';
 
         $data_value = json_decode($question->getListeValeur());
         foreach ($data_value as $val) {
@@ -144,7 +143,7 @@ class QuestionnaireExtension extends AbstractExtension
         }
 
         $html .= '<label for="q-' . $question->getId() . '">' . $question->getLibelle() . '%o%</label>
-                    <input type="text" class="form-control" ' . $strReponse . ' placeholder="' . $question->getValeurDefaut() . '" id="q-' . $question->getId() . '" name="questionnaire[question][q-' . $question->getId() . ']" />';
+                    <input type="text" class="form-control ' . $this->isValidateError($question) . '" ' . $strReponse . ' placeholder="' . $question->getValeurDefaut() . '" id="q-' . $question->getId() . '" name="questionnaire[question][q-' . $question->getId() . ']" />';
 
         $html .= $this->endBloc($question);
 
@@ -168,7 +167,7 @@ class QuestionnaireExtension extends AbstractExtension
         }
 
         $html .= '<label for="q-' . $question->getId() . '">' . $question->getLibelle() . '%o%</label>
-                    <textarea  class="form-control" placeholder="' . $question->getValeurDefaut() . '" id="q-' . $question->getId() . '" name="questionnaire[question][q-' . $question->getId() . ']">';
+                    <textarea  class="form-control ' . $this->isValidateError($question) . '" placeholder="' . $question->getValeurDefaut() . '" id="q-' . $question->getId() . '" name="questionnaire[question][q-' . $question->getId() . ']">';
         $html .= $strReponse;
         $html .= '</textarea>';
 
@@ -197,6 +196,7 @@ class QuestionnaireExtension extends AbstractExtension
             $checked = '';
             if (isset($this->params['resultat'][$question->getId()])) {
                 $reponse = $this->params['resultat'][$question->getId()]->reponse;
+                
                 $tmp = explode('|', $reponse->getValeur());
 
                 foreach ($tmp as $tmpVal) {
@@ -208,7 +208,7 @@ class QuestionnaireExtension extends AbstractExtension
                 $checked = ' checked';
             }
 
-            $html .= '<input class="form-check-input" type="checkbox" value="' . $val->value . '"' . $checked . ' id="q-' . $question->getId() . '-' . $i . '" name="questionnaire[question][q-' . $question->getId() . '][' . $i . ']">';
+            $html .= '<input class="form-check-input ' . $this->isValidateError($question) . '" type="checkbox" value="' . $val->value . '"' . $checked . ' id="q-' . $question->getId() . '-' . $i . '" name="questionnaire[question][q-' . $question->getId() . '][' . $i . ']">';
             $html .= '<label class="form-check-label" for="q-' . $question->getId() . '-' . $i . '">' . $val->libelle . '</label><br>';
             $i ++;
         }
@@ -249,7 +249,7 @@ class QuestionnaireExtension extends AbstractExtension
                 $checked = ' checked';
             }
 
-            $html .= '<input class="form-check-input" type="radio" value="' . $val->value . '"' . $checked . ' id="q-' . $question->getId() . '-' . $i . '" name="questionnaire[question][q-' . $question->getId() . ']">';
+            $html .= '<input class="form-check-input ' . $this->isValidateError($question) . '" type="radio" value="' . $val->value . '"' . $checked . ' id="q-' . $question->getId() . '-' . $i . '" name="questionnaire[question][q-' . $question->getId() . ']">';
             $html .= '<label class="form-check-label" for="q-' . $question->getId() . '-' . $i . '">' . $val->libelle . '</label><br>';
             $i ++;
         }
@@ -343,6 +343,18 @@ class QuestionnaireExtension extends AbstractExtension
     private function endBloc(Question $question)
     {
         $html = '';
+        
+        if(isset($this->params['resultat'][$question->getId()]))
+        {
+            if($this->params['resultat'][$question->getId()]->erreur->is)
+            {
+                $html .= '<div class="invalid-feedback">
+                    ' . $this->params['resultat'][$question->getId()]->erreur->libelle . ' 
+                </div>';
+                $html .= "<script>$('#bloc-" . $question->getId() . " .invalid-feedback').show();</script>";
+            }
+        }
+        
         if (! empty($question->getLibelleBottom())) {
             $html .= '<small id="help-q-' . $question->getId() . '" class="form-text text-muted">' . $question->getLibelleBottom() . '</small>';
         }
@@ -420,5 +432,24 @@ class QuestionnaireExtension extends AbstractExtension
         {
             return false;
         }
+    }
+    
+    /**
+     * Vérifie si le champs est en erreur ou non
+     * @param Question $question
+     * @return string ou '';
+     */
+    private function isValidateError(Question $question)
+    {
+        $erreur = '';
+        if(isset($this->params['resultat'][$question->getId()]))
+        {
+            if($this->params['resultat'][$question->getId()]->erreur->is)
+            {
+                $erreur = 'is-invalid';
+            }
+        }
+        
+        return $erreur;
     }
 }

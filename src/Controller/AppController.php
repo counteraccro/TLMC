@@ -44,14 +44,21 @@ class AppController extends Controller
         12 => 'Marraine'
     );
 
+    const CHOICETYPE = 'ChoiceType';
+    const TEXTYPE = 'TextType';
+    const TEXTAREATYPE = 'TextareaType';
+    const CHECKBOXTYPE = 'CheckboxType';
+    const RADIOTYPE = 'RadioType';
+    
     const QUESTION_TYPE = array(
-        'ChoiceType' => 'Liste déroulante',
-        'TextType' => 'Champ texte',
-        'TextareaType' => 'Zone de texte',
-        'CheckboxType' => 'Case à cocher',
-        //'FileType' => 'Fichier joint',
-        'RadioType' => 'Choix unique'
+        self::CHOICETYPE => 'Liste déroulante',
+        self::TEXTYPE => 'Champ texte',
+        self::TEXTAREATYPE => 'Zone de texte',
+        self::CHECKBOXTYPE => 'Case à cocher',
+        self::RADIOTYPE => 'Choix unique'
     );
+    
+    const PREG_MATCH_DATE = '(^(((0[1-9]|1[0-9]|2[0-8])[\/](0[1-9]|1[012]))|((29|30|31)[\/](0[13578]|1[02]))|((29|30)[\/](0[4,6,9]|11)))[\/](19|[2-9][0-9])\d\d$)|(^29[\/]02[\/](19|[2-9][0-9])(00|04|08|12|16|20|24|28|32|36|40|44|48|52|56|60|64|68|72|76|80|84|88|92|96)$)';
     
     const QUESTION_REGLES_REGEX = array(
         '.' => 'Tout accepter',
@@ -60,8 +67,16 @@ class AppController extends Controller
         '[a-z]' => 'Lettres minuscules uniquement',
         '[A-Z]' => 'Lettres majuscules uniquement',
         '[[:alnum:]]' => 'Lettres (min. & maj.) et chiffres',
-        '(^(((0[1-9]|1[0-9]|2[0-8])[\/](0[1-9]|1[012]))|((29|30|31)[\/](0[13578]|1[02]))|((29|30)[\/](0[4,6,9]|11)))[\/](19|[2-9][0-9])\d\d$)|(^29[\/]02[\/](19|[2-9][0-9])(00|04|08|12|16|20|24|28|32|36|40|44|48|52|56|60|64|68|72|76|80|84|88|92|96)$)' => 'Format date (dd/mm/yyyy)'
+        self::PREG_MATCH_DATE => 'Format date (dd/mm/yyyy)'
     );
+    
+    /**
+     * Statut manager questionnaire
+     * @var string
+     */
+    const PROD = "prod";
+    const DEMO = "demo";
+    const EDIT = "edit";
     
     const DROITS = array(
         'ROLE_ADMIN' => 'Administratreur',

@@ -270,7 +270,7 @@ class QuestionnaireController extends AppController
     {
         $questResultat = array();
         if ($request->isMethod('POST')) {
-            $questResultat = $questionnaireManager->manage($questionnaire);
+            $questResultat = $questionnaireManager->manage($questionnaire, self::DEMO);
         }
 
         return $this->render('questionnaire/demo.html.twig', [

@@ -28,7 +28,7 @@ class LoadQuestionData extends Fixture implements DependentFixtureInterface
                 'setListeValeur' => '{"0":{"value":"0","libelle":"Choix transport"},"1":{"value":"2","libelle":"Bus"},"2":{"value":"3","libelle":"Trains"},"3":{"value":"4","libelle":"Vélo"},"4":{"value":"5","libelle":"A pied"},"5":{"value":"6","libelle":"Voiture"}}',
                 'setDisabled' => '0',
                 'setObligatoire' => 'true',
-                'setRegles' => 'regles json',
+                'setRegles' => '.',
                 'setMessageErreur' => 'Veuillez choisir un mode de transport',
                 'setOrdre' => '1'
             ],
@@ -43,7 +43,7 @@ class LoadQuestionData extends Fixture implements DependentFixtureInterface
                 'setListeValeur' => '',
                 'setDisabled' => '0',
                 'setObligatoire' => 'true',
-                'setRegles' => 'regles json',
+                'setRegles' => '.',
                 'setMessageErreur' => 'Merci de nous donner votre opinion concernant la question posée ci-dessus',
                 'setOrdre' => '2'
             ],
@@ -57,7 +57,7 @@ class LoadQuestionData extends Fixture implements DependentFixtureInterface
                 'setListeValeur' => '{"0":{"value":"0","libelle":"Sarah"},"1":{"value":"1","libelle":"Samuel"},"2":{"value":"2","libelle":"Marcel"},"3":{"value":"3","libelle":"Lara"},"4":{"value":"4","libelle":"Enzo"},"5":{"value":"5","libelle":"Oxana"}}',
                 'setDisabled' => '0',
                 'setObligatoire' => 'true',
-                'setRegles' => 'regles json',
+                'setRegles' => '.',
                 'setMessageErreur' => 'Merci d\'indiquer le prénom de l\'accompagnateur que vous préférez',
                 'setOrdre' => '1'
             ],
@@ -71,7 +71,7 @@ class LoadQuestionData extends Fixture implements DependentFixtureInterface
                 'setListeValeur' => '{"0":{"value":"0","libelle":"Bananes"},"1":{"value":"1","libelle":"Crocodiles"},"2":{"value":"2","libelle":"Oursons guimauve"},"3":{"value":"3","libelle":"Fraise Tagada"},"4":{"value":"4","libelle":"Kréma"},"5":{"value":"5","libelle":"Réglisse"}}',
                 'setDisabled' => '0',
                 'setObligatoire' => 'true',
-                'setRegles' => '[a-zA-Z]',
+                'setRegles' => '.',
                 'setMessageErreur' => 'Merci d\'indiquer le bonbon que vous préférez',
                 'setOrdre' => '5'
             ],
@@ -113,7 +113,7 @@ class LoadQuestionData extends Fixture implements DependentFixtureInterface
                 'setListeValeur' => '{"0":{"value":"0","libelle":"Bananes"},"1":{"value":"1","libelle":"Crocodiles"},"2":{"value":"2","libelle":"Oursons guimauve"},"3":{"value":"3","libelle":"Fraise Tagada"},"4":{"value":"4","libelle":"Kréma"},"5":{"value":"5","libelle":"Réglisse"}}',
                 'setDisabled' => '0',
                 'setObligatoire' => 'true',
-                'setRegles' => '[a-zA-Z]',
+                'setRegles' => '.',
                 'setMessageErreur' => 'Merci d\'indiquer les bonbons que vous avez déjà goûtés',
                 'setOrdre' => '4'
             ],
@@ -123,11 +123,11 @@ class LoadQuestionData extends Fixture implements DependentFixtureInterface
                 'setLibelleTop' => '',
                 'setLibelleBottom' => 'Ceci nous permettra d\'améliorer notre qualité de service à l\'avenir',
                 'setType' => 'RadioType',
-                'setValeurDefaut' => '2',
+                'setValeurDefaut' => '',
                 'setListeValeur' => '{"0":{"value":"0","libelle":"0"},"1":{"value":"1","libelle":"1"},"2":{"value":"2","libelle":"2"},"3":{"value":"3","libelle":"3"},"4":{"value":"4","libelle":"4"},"5":{"value":"5","libelle":"5"}}',
                 'setDisabled' => '0',
                 'setObligatoire' => 'true',
-                'setRegles' => 'd',
+                'setRegles' => '.',
                 'setMessageErreur' => 'Merci d\'indiquer votre fréquence de consommation de bonbons',
                 'setOrdre' => '1'
             ]

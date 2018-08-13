@@ -273,6 +273,8 @@ Preview.Launch = function(params) {
 			Preview.GestionDefaultData();
 			Preview.subRepeatEvent();
 			
+			$(Preview.id_global + ' #question_regles').parent().hide();
+			
 			if(Preview.type == 'CheckboxType' || Preview.type == 'RadioType')
 			{
 				$(Preview.id_global + ' ' + Preview.id_contener_input_def_value).html('');
@@ -286,6 +288,7 @@ Preview.Launch = function(params) {
 
 			$(Preview.id_global + ' ' + Preview.id_contener_input_def_value).html('');
 			$(Preview.id_global + ' #question_valeur_defaut').parent().show();
+			$(Preview.id_global + ' #question_regles').parent().show();
 		}
 	}
 
