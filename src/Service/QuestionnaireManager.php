@@ -78,7 +78,8 @@ class QuestionnaireManager extends AppService
                 'reponse' => new Reponse(),
                 'erreur' => (object) array(
                     'is' => false,
-                    'libelle' => ''
+                    'libelle' => '',
+                    'regle' => ''
                 )
             ];
             $this->return[$question->getid()] = (object) $array;
@@ -97,31 +98,38 @@ class QuestionnaireManager extends AppService
             $reponse = $object->reponse;
 
             if ($question->getObligatoire()) {
-                if (empty($reponse->getValeur())) {
+                if ($reponse->getValeur() == "") {
 
                     $this->return[$key]->erreur->is = true;
                     $this->return[$key]->erreur->libelle = 'Cette question est obligatoire';
+                    $this->return[$key]->erreur->regle = 'Question obligatoire';
                     continue;
                 }
             }
 
-            
+            //
             if (in_array($question->getType(), array(
                 AppController::TEXTAREATYPE,
                 AppController::TEXTYPE
             ))) {
-                if (AppController::PREG_MATCH_DATE == $question->getRegles()) {
-                    if (! preg_match('/' . $question->getRegles() . '/', $reponse->getValeur())) {
-                        $this->return[$key]->erreur->is = true;
-                        $this->return[$key]->erreur->libelle = $question->getMessageErreur();
-                        continue;
-                    }
-                } else {
-                    if (preg_match('/' . $question->getRegles() . '/', $reponse->getValeur())) {
-                        $this->return[$key]->erreur->is = true;
-                        $this->return[$key]->erreur->libelle = $question->getMessageErreur();
-                        continue;
-                    }
+                if (! preg_match('/' . $question->getRegles() . '/', $reponse->getValeur())) {
+                    $this->return[$key]->erreur->is = true;
+                    $this->return[$key]->erreur->libelle = $question->getMessageErreur();
+                    $this->return[$key]->erreur->regle = 'Regle de validation : ' . AppController::QUESTION_REGLES_REGEX[$question->getRegles()];
+                    continue;
+                }
+            }
+
+            //
+            if (in_array($question->getType(), array(
+                AppController::CHOICETYPE
+            ))) {
+                
+                if ($question->getValeurDefaut() == $reponse->getValeur()) {
+                    $this->return[$key]->erreur->is = true;
+                    $this->return[$key]->erreur->libelle = $question->getMessageErreur();
+                    $this->return[$key]->erreur->regle = 'Valeur par défaut = valeur saisie';
+                    continue;
                 }
             }
         }
@@ -140,7 +148,6 @@ class QuestionnaireManager extends AppService
 
             foreach ($this->request->request->all()['questionnaire']['question'] as $keyR => $valR) {
                 $tmp = explode('-', $keyR);
-
                 if ($tmp[1] == $question->getId()) {
 
                     if (! is_array($valR)) {
@@ -156,7 +163,7 @@ class QuestionnaireManager extends AppService
                     $reponse = $this->return[$question->getid()]->reponse;
                     $reponse->setValeur($strValeur);
                     $reponse->setQuestion($question);
-
+                   
                     $this->return[$question->getid()]->reponse = $reponse;
                 }
             }

@@ -10,6 +10,7 @@ use App\Entity\Questionnaire;
 use App\Entity\Question;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use App\Controller\AppController;
+use App\Entity\Reponse;
 
 class QuestionnaireExtension extends AbstractExtension
 {
@@ -20,13 +21,19 @@ class QuestionnaireExtension extends AbstractExtension
             new TwigFunction('questionnaire', array(
                 $this,
                 'questionnaire'
+            )),
+            new TwigFunction('displayDataToSave', array(
+                $this,
+                'displayDataToSave'
             ))
         );
     }
 
     // permet de déterminer s'il s'agit d'un statut prod ou de démo
     const DEMO = AppController::DEMO;
+
     const PROD = AppController::PROD;
+
     const EDIT = AppController::EDIT;
 
     private $params = [
@@ -196,7 +203,7 @@ class QuestionnaireExtension extends AbstractExtension
             $checked = '';
             if (isset($this->params['resultat'][$question->getId()])) {
                 $reponse = $this->params['resultat'][$question->getId()]->reponse;
-                
+
                 $tmp = explode('|', $reponse->getValeur());
 
                 foreach ($tmp as $tmpVal) {
@@ -343,18 +350,16 @@ class QuestionnaireExtension extends AbstractExtension
     private function endBloc(Question $question)
     {
         $html = '';
-        
-        if(isset($this->params['resultat'][$question->getId()]))
-        {
-            if($this->params['resultat'][$question->getId()]->erreur->is)
-            {
+
+        if (isset($this->params['resultat'][$question->getId()])) {
+            if ($this->params['resultat'][$question->getId()]->erreur->is) {
                 $html .= '<div class="invalid-feedback">
                     ' . $this->params['resultat'][$question->getId()]->erreur->libelle . ' 
                 </div>';
                 $html .= "<script>$('#bloc-" . $question->getId() . " .invalid-feedback').show();</script>";
             }
         }
-        
+
         if (! empty($question->getLibelleBottom())) {
             $html .= '<small id="help-q-' . $question->getId() . '" class="form-text text-muted">' . $question->getLibelleBottom() . '</small>';
         }
@@ -372,10 +377,6 @@ class QuestionnaireExtension extends AbstractExtension
     private function infoBloc()
     {
         $html = '';
-
-        if ($this->params['statut'] == self::DEMO) {
-            $html .= '<div class="alert alert-info">Vous êtes actuellement en démo, aucune donnée saisie ne sera prise en compte.</div>';
-        }
         $html .= '<small class="text-danger"><i>Les champs marqués d\'une * sont obligatoires</i></small>';
 
         return $html;
@@ -420,6 +421,7 @@ class QuestionnaireExtension extends AbstractExtension
 
     /**
      * Vérifie si la question comporte au moins 1 réponse
+     *
      * @param Question $question
      * @return boolean
      */
@@ -427,29 +429,104 @@ class QuestionnaireExtension extends AbstractExtension
     {
         if ($question->getReponses()->count() > 0) {
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
-    
+
     /**
      * Vérifie si le champs est en erreur ou non
+     *
      * @param Question $question
      * @return string ou '';
      */
     private function isValidateError(Question $question)
     {
         $erreur = '';
-        if(isset($this->params['resultat'][$question->getId()]))
-        {
-            if($this->params['resultat'][$question->getId()]->erreur->is)
-            {
+        if (isset($this->params['resultat'][$question->getId()])) {
+            if ($this->params['resultat'][$question->getId()]->erreur->is) {
                 $erreur = 'is-invalid';
             }
         }
-        
+
         return $erreur;
+    }
+
+    /**
+     *
+     * @param array $result
+     * @return string
+     */
+    public function displayDataToSave(array $result)
+    {
+        if (empty($result)) {
+            $html = '<div class="alert alert-primary" role="alert">
+                        Il faut soumettre le formulaire de démo pour voir les données qui serons enregistrées
+                    </div>';
+            return '<div class="card "><div class="card-body">' . $html . '</div></div>';
+        }
+
+        $html = '';
+        $is_error = false;
+
+        foreach ($result as $key => $object) {
+            /* @var Question $question */
+            $question = $object->question;
+
+            /* @var Reponse $reponse */
+            $reponse = $object->reponse;
+            $erreur = $object->erreur;
+
+            $repStr = '<b>Aucune</b>';
+            if ($reponse->getValeur() != "") {
+
+                $data_value = json_decode($question->getListeValeur());
+                $tmp = explode('|', $reponse->getValeur());
+
+                if (in_array($question->getType(), array(
+                    AppController::CHECKBOXTYPE,
+                    AppController::CHOICETYPE,
+                    AppController::RADIOTYPE
+                ))) {
+
+                    $repStr = '';
+                    foreach ($data_value as $val) {
+
+                        foreach ($tmp as $tmpVal) {
+                            if ($tmpVal == $val->value) {
+                                $repStr .= "<b>[" . $val->value . "] " . $val->libelle . '</b>, ';
+                            }
+                        }
+                    }
+                    $repStr = substr($repStr, 0, - 2);
+                } else {
+                    $repStr = '<b>' . $reponse->getValeur() . '</b>';
+                }
+            }
+
+            $errStr = '';
+            $icon = '<span class="text-success"><span class="oi oi-check"></span></span>';
+            if ($erreur->is) {
+                $errStr .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="oi oi-warning"></span> <span class="text-danger"><b>' . $erreur->regle . '</b> : ' . $erreur->libelle . '</span>';
+                $icon = '<span class="text-danger"><span class="oi oi-x"></span></span>';
+                $is_error = true;
+            }
+            
+            $html .= '<div>';
+            $html .= $icon . ' Question <b>#' . $question->getId() . '</b> ' . $question->getLibelle() . '<br />';
+
+            $html .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="oi oi-arrow-right"></span> Le ' . $reponse->getDate()->format('d-m-Y à H:i:s') . ' - Reponse : ' . $repStr . '<br />' . $errStr;
+
+            $html .= '</div><br />';
+        }
+
+        if ($is_error) {
+            $border = 'border border-danger';
+        } else {
+            $border = 'border border-success';
+        }
+
+        $html = '<div class="card "><div class="card-body ' . $border . '">' . $html . '</div></div>';
+        return $html;
     }
 }

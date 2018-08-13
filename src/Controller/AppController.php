@@ -58,16 +58,14 @@ class AppController extends Controller
         self::RADIOTYPE => 'Choix unique'
     );
     
-    const PREG_MATCH_DATE = '(^(((0[1-9]|1[0-9]|2[0-8])[\/](0[1-9]|1[012]))|((29|30|31)[\/](0[13578]|1[02]))|((29|30)[\/](0[4,6,9]|11)))[\/](19|[2-9][0-9])\d\d$)|(^29[\/]02[\/](19|[2-9][0-9])(00|04|08|12|16|20|24|28|32|36|40|44|48|52|56|60|64|68|72|76|80|84|88|92|96)$)';
-    
     const QUESTION_REGLES_REGEX = array(
         '.' => 'Tout accepter',
-        'd' => 'Chiffres uniquement',
-        '[a-zA-Z]' => 'Lettres uniquement',
-        '[a-z]' => 'Lettres minuscules uniquement',
-        '[A-Z]' => 'Lettres majuscules uniquement',
-        '[[:alnum:]]' => 'Lettres (min. & maj.) et chiffres',
-        self::PREG_MATCH_DATE => 'Format date (dd/mm/yyyy)'
+        '^[\d]*$' => 'Chiffres uniquement',
+        "^[a-zA-Z\sáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ.;,!?']*$" => 'Lettres uniquement',
+        "^[a-z\sáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ.;,!?']*$" => 'Lettres minuscules uniquement',
+        "^[A-Z\sáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ.;,!?']*$" => 'Lettres majuscules uniquement',
+        "^[a-zA-Z0-9\sáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ.;,!?']*$" => 'Lettres (min. & maj.) et chiffres',
+        '(^(((0[1-9]|1[0-9]|2[0-8])[\/](0[1-9]|1[012]))|((29|30|31)[\/](0[13578]|1[02]))|((29|30)[\/](0[4,6,9]|11)))[\/](19|[2-9][0-9])\d\d$)|(^29[\/]02[\/](19|[2-9][0-9])(00|04|08|12|16|20|24|28|32|36|40|44|48|52|56|60|64|68|72|76|80|84|88|92|96)$)' => 'Format date (dd/mm/yyyy)'
     );
     
     /**

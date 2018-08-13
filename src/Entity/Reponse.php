@@ -42,6 +42,11 @@ class Reponse
      * @ORM\JoinColumn(nullable=false)
      */
     private $membre;
+    
+    public function __construct()
+    {
+        $this->date = new \DateTime();
+    }
 
     public function getId()
     {

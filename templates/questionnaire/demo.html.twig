@@ -4,19 +4,27 @@
 
 {% block body %}
 
-<h1>Test de questionnaire #{{ questionnaire.id }}</h1>
-<a class="btn btn-secondary mb-2" href="{{ path('questionnaire_see', {'id':questionnaire.id}) }}">Retour</a>
+<br />
+<a class="btn btn-sm btn-secondary" href="{{ path('questionnaire_see', {'id':questionnaire.id}) }}"><span class="oi oi-arrow-thick-left"></span> Retour</a>
 
 <div class="row">
-	<div class="col-8">
-    {{ questionnaire(questionnaire, {
-    	'submit_url' : path('questionnaire_demo', {'slug': questionnaire.slug }),
-    	'statut' : 'demo',
-		'resultat' : questResultat
-    }) | raw }}
+	<div class="col-7">
+    	<fieldset>
+    		<legend>Démo du questionnaire #{{ questionnaire.id }}</legend>
+    	
+            {{ questionnaire(questionnaire, {
+            	'submit_url' : path('questionnaire_demo', {'slug': questionnaire.slug }),
+            	'statut' : 'demo',
+        		'resultat' : questResultat
+            }) | raw }}
+        </fieldset>
     </div>
-    <div class="col-4">
-    
+    <div class="col-5">
+    	<fieldset>
+    		<legend>Résultats Attendus</legend>
+    		<br />
+            {{ displayDataToSave(questResultat) | raw }}
+    	</fieldset>
     	
     </div>
 </div>
