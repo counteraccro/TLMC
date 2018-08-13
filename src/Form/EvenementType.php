@@ -24,11 +24,13 @@ class EvenementType extends AbstractType
             ->add('date_debut', DateTimeType::class, array(
             'label' => "Date de début",
             'widget' => 'choice',
-            'years' => range(date('Y') - 1, date('Y') + 10)
+            'years' => range(date('Y') - 1, date('Y') + 10),
+            'date_format' => 'dd MM yyyy'
         ))
             ->add('date_fin', DateTimeType::class, array(
             'label' => "Date de fin ",
             'widget' => 'choice',
+            'date_format' => 'dd MM yyyy',
             'years' => range(date('Y') - 1, date('Y') + 10)
         ))
             ->add('nombre_max', IntegerType::class, array(
@@ -64,6 +66,7 @@ class EvenementType extends AbstractType
             ->add('date_fin_inscription', DateTimeType::class, array(
             'label' => "Date de fin d'inscription",
             'widget' => 'choice',
+            'date_format' => 'dd MM yyyy',
             'years' => range(date('Y'), date('Y') + 2)
         ));
 

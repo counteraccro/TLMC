@@ -37,13 +37,14 @@ class PatientType extends AbstractType
             'label' => 'Prénom'
         ))
             ->add('date_naissance', BirthdayType::class, array(
-            'label' => 'Date de naissance'
+            'label' => 'Date de naissance',
+            'format' => 'dd MM yyyy'
         ))
             ->add('PMR', CheckboxType::class, array(
             'required' => false,
             'label' => 'Personne à mobilité réduite'
         ))
-        ->add('specialite', EntityType::class, $opt_spe);
+            ->add('specialite', EntityType::class, $opt_spe);
 
         if ($options['add']) {
             $builder->add('familles', CollectionType::class, array(

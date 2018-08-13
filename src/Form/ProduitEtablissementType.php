@@ -37,6 +37,7 @@ class ProduitEtablissementType extends AbstractType
         ))->add('date', DateTimeType::class, array(
             'label' => "Date",
             'widget' => 'choice',
+            'date_format' => 'dd MM yyyy',
             'years' => range(date('Y') - 1, date('Y') + 2)
         ));
 
