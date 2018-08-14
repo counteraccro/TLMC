@@ -47,25 +47,27 @@ class FamilleAdresseController extends AppController
 
         if (! $this->isAdmin()) {
             $params['condition'] = array(
-                array(
-                    'key' => 'disabled',
-                    'value' => 0
-                )
+                $params['repository'] . '.disabled = 0'
             );
-            
+
             if ($this->getMembre()->getSpecialite()) {
                 $params['jointure'] = array(
-                    array('oldrepository' => 'FamilleAdresse', 'newrepository' => 'familles'),
-                    array('oldrepository' => 'familles', 'newrepository' => 'patient'),
-                    array('oldrepository' => 'patient', 'newrepository' => 'specialite')
+                    array(
+                        'oldrepository' => 'FamilleAdresse',
+                        'newrepository' => 'familles'
+                    ),
+                    array(
+                        'oldrepository' => 'familles',
+                        'newrepository' => 'patient'
+                    ),
+                    array(
+                        'oldrepository' => 'patient',
+                        'newrepository' => 'specialite'
+                    )
                 );
-                $params['condition'][] = array(
-                    'jointure' => true,
-                    'key' => 'specialite.id',
-                    'value' => $this->getMembre()
+                $params['condition'][] = 'specialite.id = ' . $this->getMembre()
                     ->getSpecialite()
-                    ->getId()
-                );
+                    ->getId();
             }
         }
 

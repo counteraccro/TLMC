@@ -18,19 +18,23 @@
 	{{ form_row(form.lien_parente) }}
 	{{ form_row(form.ville) }}
 	
-	<div class="form-group">
-		<label for="">Elément associé</label>
-		<select id="temoignage_type" class="form-control">
-			<option value="0">Evénement</option>
-			<option value="1">Produit</option>
-		</select>
-	</div>
-	<div id="temoignage_row_evenement">
-		{{ form_row(form.evenement) }}
-	</div>
+	{% if type != 'produit' and type != 'evenement' %}
+    	<div class="form-group">
+    		<label for="">Elément associé</label>
+    		<select id="temoignage_type" class="form-control">
+    			<option value="0">Evénement</option>
+    			<option value="1">Produit</option>
+    		</select>
+    	</div>
+    {% endif %}
+    
+    <div id="temoignage_row_evenement">
+    	{{ form_row(form.evenement) }}
+    </div>
+	
 	<div id="temoignage_row_produit">
-		{{ form_row(form.produit) }}
-	</div>
+    	{{ form_row(form.produit) }}
+    </div>
 	
     {{ form_rest(form) }}
     {{ form_errors(form) }}
@@ -42,16 +46,27 @@
 
 {% block javascripts %}
 	<script type="text/javascript">	
-		$('#temoignage_row_produit').hide();
+
+		{% if type != 'evenement' and type != 'produit' %}
+    		$('#temoignage_row_produit').hide();
+    		
+            $('#temoignage_type').change(function(){
+                if($(this).val() == 1){
+                	$('#temoignage_row_produit').show();
+                	$('#temoignage_row_evenement').hide();
+                } else {
+    				$('#temoignage_row_evenement').show();
+    				$('#temoignage_row_produit').hide();
+                }
+            });
+        {% endif %}
+
+        {% if type == 'evenement' %}
+        	$('#temoignage_row_produit').hide();
+	    {% endif %}
 		
-        $('#temoignage_type').change(function(){
-            if($(this).val() == 1){
-            	$('#temoignage_row_produit').show();
-            	$('#temoignage_row_evenement').hide();
-            } else {
-				$('#temoignage_row_evenement').show();
-				$('#temoignage_row_produit').hide();
-            }
-        });
+	    {% if type == 'produit' %}
+	    	$('#temoignage_row_evenement').hide();
+	    {% endif %}
 	</script>
 {% endblock %}

@@ -11,9 +11,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 class TemoignageType extends AbstractType
 {
@@ -25,7 +25,7 @@ class TemoignageType extends AbstractType
             ->add('prenom_temoin', TextType::class, array(
             'label' => 'Prénom du témoin'
         ))
-            ->add('age', NumberType::class)
+            ->add('age', IntegerType::class)
             ->add('lien_parente', ChoiceType::class, array(
             'label' => 'Lien de parenté avec le patient',
             'choices' => array_flip($options['famille_parente'])

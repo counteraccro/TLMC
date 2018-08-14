@@ -123,11 +123,7 @@ class PatientRepository extends ServiceEntityRepository
         
         if(isset($params['condition'])){
             foreach ($params['condition'] as $condition){
-                if (isset($condition['jointure']) && $condition['jointure']) {
-                    $query->andWhere($condition['key'] . ' = ' . $condition['value']);
-                } else {
-                    $query->andWhere($params['repository'] . '.' . $condition['key'] . ' = ' . $condition['value']);
-                }
+                $query->andWhere($condition);
             }
         }
         

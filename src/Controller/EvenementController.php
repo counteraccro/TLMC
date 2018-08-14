@@ -41,7 +41,7 @@ class EvenementController extends AppController
      * Listing des événements
      *
      * @Route("/evenement/listing/{page}/{field}/{order}", name="evenement_listing", defaults={"page" = 1, "field"= null, "order"= null})
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE')")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT') or is_granted('ROLE_BENEVOLE')")
      *
      * @param Request $request
      * @param SessionInterface $session
@@ -71,11 +71,23 @@ class EvenementController extends AppController
 
         if (! $this->isAdmin()) {
             $params['condition'] = array(
-                array(
-                    'key' => 'disabled',
-                    'value' => 0
-                )
+                $params['repository'] . '.disabled = 0'
+                
             );
+            
+            if ($this->getMembre()->getSpecialite()) {
+                $params['jointure'] = array(
+                    array(
+                        'oldrepository' => 'Evenement',
+                        'newrepository' => 'specialiteEvenements'
+                    ),
+                    array(
+                        'oldrepository' => 'specialiteEvenements',
+                        'newrepository' => 'specialite'
+                    )
+                );
+                $params['condition'][] = 'specialite.id = ' . $this->getMembre()->getSpecialite()->getId();
+            }
         }
         
         $result = $this->genericSearch($request, $session, $params);
@@ -109,7 +121,7 @@ class EvenementController extends AppController
      * @Route("/evenement/see/{id}/{page}", name="evenement_see")
      * @Route("/evenement/ajax/see/{id}", name="evenement_ajax_see")
      * @ParamConverter("evenement", options={"mapping": {"id": "id"}})
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE')")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT') or is_granted('ROLE_BENEVOLE')")
      * 
      * @param Request $request
      * @param SessionInterface $session

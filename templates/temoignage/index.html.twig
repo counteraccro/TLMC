@@ -10,7 +10,7 @@
 <div class="card">
 	<div class="card-header">
     	{{ pagination.nb_elements }} témoignage{% if pagination.nb_elements > 1 %}s{% endif %} - Page {{ pagination.page }} / {{ pagination.pages_count }}
-  		<a href="{{ path('temoignage_add', {'page' : pagination.page}) }}" class="float-right"><span class="oi oi-comment-square"></span> Nouveau témoignage</a>
+  		<a href="{{ path('temoignage_add', {'page' : pagination.page, 'type': type}) }}" class="float-right"><span class="oi oi-comment-square"></span> Nouveau témoignage</a>
   		{{ labelFilter(path('utils_delete-search', {'page' : pagination.page} ), current_search) | raw }}
   	</div>
   	<div class="card-body">
@@ -24,8 +24,12 @@
         		<th>{{ headerFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : 'age'} ), 'Age', current_order, current_field) | raw }}</th>
         		<th>{{ headerFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : 'ville'} ), 'Ville', current_order, current_field) | raw }}</th>
         		<th>{{ headerFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : 'date_creation'} ), 'Date de création', current_order, current_field) | raw }}</th>
-        		<th>Evénement</th>
-        		<th>Produit</th>
+        		{% if type != 'produit' %}
+        			<th>Evénement</th>
+        		{% endif %}
+        		{% if type != 'evenement' %}
+        			<th>Produit</th>
+        		{% endif %}
         		<th>Membre</th>
         		<th></th>
         	</tr>
@@ -39,8 +43,12 @@
         		<td>{{ inputFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Temoignage-ville', current_search, 'Identifiant') | raw }}</td>
         		<td>{{ inputFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Temoignage-date_creation', current_search, 'Titre') | raw }}</td>
         		<td>{{ inputFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Temoignage-evenement-nom', current_search, 'Evénement') | raw }}</td>
-        		<td>{{ inputFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Temoignage-produit-titre', current_search, 'Produit') | raw }}</td>
-        		<td>{{ inputFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Temoignage-membre-nom', current_search, 'Nom du membre') | raw }}</td>
+        		{% if type != 'produit' %}
+        			<td>{{ inputFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Temoignage-produit-titre', current_search, 'Produit') | raw }}</td>
+                {% endif %}
+        		{% if type != 'evenement' %}
+        			<td>{{ inputFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Temoignage-membre-nom', current_search, 'Nom du membre') | raw }}</td>
+        		{% endif %}
         		<td></td>
         	</tr>
         	
@@ -54,14 +62,18 @@
         			<td>{{ temoignage.age }} ans</td>
         			<td>{{ temoignage.ville }}</td>
         			<td>{{ temoignage.dateCreation |date("d/m/Y H:i") }}</td>
-        			<td>{% if temoignage.evenement != null %} {{ temoignage.evenement.nom }} {% endif %}</td>
-                	<td>{% if temoignage.produit != null %} {{ temoignage.produit.titre }} {% endif %}</td>
+        			{% if type != 'produit' %}
+        				<td>{% if temoignage.evenement != null %} {{ temoignage.evenement.nom }} {% endif %}</td>
+                    {% endif %}
+        		    {% if type != 'evenement' %}
+                		<td>{% if temoignage.produit != null %} {{ temoignage.produit.titre }} {% endif %}</td>
+                	{% endif %}
         			<td>{{ temoignage.membre.prenom }} {{ temoignage.membre.nom }}</td>
         			<td>
-        			    {{ actionSee(path('temoignage_see', {'id' : temoignage.id, 'page' : pagination.page})) | raw }}
-        				{{ actionEdit(path('temoignage_edit', {'id' : temoignage.id, 'page' : pagination.page})) | raw }}
+        			    {{ actionSee(path('temoignage_see', {'id' : temoignage.id, 'page' : pagination.page, 'type': type})) | raw }}
+        				{{ actionEdit(path('temoignage_edit', {'id' : temoignage.id, 'page' : pagination.page, 'type': type})) | raw }}
         				{% if is_granted("ROLE_ADMIN") %}
-            				{{ actionDelete(temoignage.disabled, path('temoignage_delete', {'id' : temoignage.id, 'page' : pagination.page})) | raw }}
+            				{{ actionDelete(temoignage.disabled, path('temoignage_delete', {'id' : temoignage.id, 'page' : pagination.page, 'type': type})) | raw }}
             			{% endif %}
         			</td>
         		</tr>

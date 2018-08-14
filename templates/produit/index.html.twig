@@ -12,7 +12,7 @@
     	<div class="card-header">
             {{ pagination.nb_elements }} produit{% if pagination.nb_elements > 1 %}s{% endif %} - Page {{ pagination.page }} / {{ pagination.pages_count }}
             {% if is_granted("ROLE_ADMIN") %}
-        		<a href="{{ path('produit_add', {'page' : pagination.page}) }}" class="float-right"> Nouveau produit</a>
+        		<a href="{{ path('produit_add', {'page' : pagination.page}) }}" class="float-right"><span class="oi oi-basket"></span> Nouveau produit</a>
       		{% endif %}
             {{ labelFilter(path('utils_delete-search', {'page' : pagination.page} ), current_search) | raw }}
       	</div>

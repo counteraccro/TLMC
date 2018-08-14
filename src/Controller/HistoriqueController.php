@@ -49,10 +49,7 @@ class HistoriqueController extends AppController
         
         if (! $this->isAdmin()) {
             $params['condition'] = array(
-                array(
-                    'key' => 'membre',
-                    'value' => $this->getUser()->getId()
-                )
+                $params['repository'] . 'membre = '. $this->getUser()->getId()
             );
         }
 
