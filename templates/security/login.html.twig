@@ -4,22 +4,30 @@
 
 {% block body %}
 
-{% if error %}
-    <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div><br/>
-{% endif %}
-
-<div class="card mx-auto mt-4 shadow-lg" style="width: 20rem;">
-	<img class="card-img-top" src="../../img/logo-association-tlmc.png" alt="Logo association TLMC">
+<div class="card mx-auto mt-4 shadow" style="width: 18rem;">
+	<div class="text-center">
+		<img class="card-img-top mt-3" src="../../img/logo-association-tlmc.png" alt="Logo association TLMC" style="width:75%">
+	</div>
   		<div class="card-body">
     		<h5 class="card-title">Se connecter</h5>
+    		{% if error %}
+    			<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
   			<form action="{{ path('security_login') }}" method="post">
-    			<label for="username">Username:</label><br/>
-    			<input type="text" id="username" name="_username" value="{{ last_username }}" /><br/>
-      			<label for="password">Password:</label><br/>
-    			<input type="password" id="password" name="_password" />
-    			<p class="card-text"><a href="#">Mot de passe oublié</a> // to do*</p>
-    			<button class="btn btn-primary" type="submit">Valider</button>
-    		</form><br/>
+  				<div class="form-group">
+                    <label for="username">Identifiant</label>
+                    <input type="text" class="form-control" id="username" value="{{ last_username }}" placeholder="Votre identifiant" name="_username">
+                  </div>
+    			<div class="form-group">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" class="form-control" id="password" placeholder="Mot de passe" name="_password">
+                    <small id="emailHelp" class="form-text text-muted"><a href="#" class="card-link">Mot de passe oublié</a></small>
+                </div>
+                
+               	<div class="text-center">
+    				<button class="btn btn-primary" type="submit">Me connecter</button>
+    			</div>
+    		</form>
 		</div>
 </div>
 {% endblock %}
