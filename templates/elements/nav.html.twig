@@ -1,40 +1,64 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-	<a class="navbar-brand" href="#">TLMC Project</a>
+<nav class="navbar navbar-expand-xl navbar-dark bg-dark" id="bar-nav">
+	<a class="navbar-brand" href="{{ path('index') }}"><img src="{{ asset('img/logo-association-tlmc-small.png') }}" alt="Logo association TLMC"></a>
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     	<span class="navbar-toggler-icon"></span>
   	</button>
 
   	<div class="collapse navbar-collapse" id="navbarSupportedContent">
     	<ul class="navbar-nav mr-auto">
-      		<li class="nav-item active">
+      		<!-- <li class="nav-item active">
         		<a class="nav-link" href="/">Accueil<span class="sr-only">(current)</span></a>
-      		</li>
-
-      		<li class="nav-item dropdown">
+      		</li>-->
+			
+			<li class="nav-item dropdown">
         		<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          			Pages OK
+          			<span class="oi oi-person"></span> Espace patients
         		</a>
         		<div class="dropdown-menu" aria-labelledby="navbarDropdown">
         		
-          			<a class="dropdown-item" href="{{ path('patient_listing') }}">Patient</a>
-          			<a class="dropdown-item" href="{{ path('membre_listing') }}">Membre</a>
-          			<a class="dropdown-item" href="{{ path('questionnaire_listing') }}">Questionnaire</a>
+          			<a class="dropdown-item" href="{{ path('patient_listing') }}"><span class="oi oi-person"></span> Patient</a>
           			<div class="dropdown-divider"></div>
-          			<a class="dropdown-item" href="{{ path('famille_listing') }}">Famille</a>
-          			<a class="dropdown-item" href="{{ path('famille_adresse_listing') }}">Famille Adresse</a>
-          			<div class="dropdown-divider"></div>
-          			<a class="dropdown-item" href="{{ path('etablissement_listing') }}">Etablissement</a>
-          			<a class="dropdown-item" href="{{ path('specialite_listing') }}">Spécialité</a>
-          			<div class="dropdown-divider"></div>
-              		<a class="dropdown-item" href="{{ path('evenement_listing') }}">Evénement</a>
-              		<a class="dropdown-item" href="{{ path('produit_listing') }}">Produit</a>
-          			<div class="dropdown-divider"></div>
-          			<a class="dropdown-item" href="{{ path('temoignage_listing') }}">Témoignage</a>
-          			<!-- <a class="dropdown-item" href="{#{ path('historique_listing') }#}">Historique</a> -->
+          			<a class="dropdown-item" href="{{ path('famille_listing') }}"><span class="oi oi-people"></span> Famille</a>
+          			<a class="dropdown-item" href="{{ path('famille_adresse_listing') }}"><span class="oi oi-home"></span> Famille Adresse</a>
           		</div>
       		</li>
-      		<li class="nav-item" >
-        		<a class="nav-link disabled" href="#">Disabled</a>
+      		
+      		<li class="nav-item">
+        		<a class="nav-link" href="{{ path('membre_listing') }}"><span class="oi oi-person"></span> Espace membres</a>
+      		</li>
+      		
+      		<li class="nav-item">
+        		<a class="nav-link" href="{{ path('questionnaire_listing') }}"><span class="oi oi-question-mark"></span> Nos questionnaires</a>
+      		</li>
+      		
+      		<li class="nav-item dropdown">
+        		<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          			<span class="oi oi-calendar"></span> Nos évènements
+        		</a>
+        		<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          			<a class="dropdown-item" href="{{ path('evenement_listing') }}"><span class="oi oi-calendar"></span> Evénements</a>
+          			<a class="dropdown-item" href="{{ path('temoignage_listing') }}"><span class="oi oi-comment-square"></span> Témoignages</a>
+          		</div>
+      		</li>
+      		
+      		<li class="nav-item dropdown">
+        		<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          			<span class="oi oi-basket"></span> Nos produits
+        		</a>
+        		<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          			<a class="dropdown-item" href="{{ path('produit_listing') }}"><span class="oi oi-basket"></span> Produits</a>
+          			<a class="dropdown-item" href="{{ path('temoignage_listing') }}"><span class="oi oi-comment-square"></span> Témoignages</a>
+          		</div>
+      		</li>
+      		
+      		<li class="nav-item dropdown">
+        		<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          			<span class="oi oi-medical-cross"></span> Nos établissements
+        		</a>
+        		<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          			<a class="dropdown-item" href="{{ path('etablissement_listing') }}"><span class="oi oi-medical-cross"></span> Etablissements</a>
+          			<a class="dropdown-item" href="{{ path('specialite_listing') }}"><span class="oi oi-medical-cross"></span> Spécialités</a>
+          		</div>
       		</li>
     	</ul>
     	<span class="navbar-text">

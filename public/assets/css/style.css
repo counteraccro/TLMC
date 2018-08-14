@@ -1,0 +1,13 @@
+h1 {
+	margin: 0px -10px 10px -10px;
+	background-color: #d5488b;
+	padding: 5px 5px 5px 15px;
+	color: #FFFFFF;
+	/*font-family: Helvetica Neue LT;*/
+	font-size: 35px;
+	text-transform: uppercase;
+}
+
+footer {
+	font-size: 14px;
+}

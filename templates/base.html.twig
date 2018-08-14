@@ -3,9 +3,11 @@
     <head>
         <meta charset="UTF-8">
         <link rel="stylesheet" href="{{ asset('assets/css/bootstrap/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/bootstrap/stickyFooter.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/css/iconic/css/open-iconic-bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/css/showLoading.css') }}">
-
+		
         {% block stylesheets %}{% endblock %}
         <script type="text/javascript" src="{{ asset('assets/js/jquery/jquery-3.3.1.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('assets/js/bootstrap/bootstrap.min.js') }}"></script>
@@ -15,14 +17,41 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
     </head>
     <body>
-    	<div class="container-fluid" id="container-global">
+    	<div class="container-full" id="container-global">
     		
     		{% include 'elements/nav.html.twig' %}
-    	
-            {% block body %}	{% endblock %}
+    		<div style="padding:0px 10px 0px 10px">
+                {% block body %}	{% endblock %}
+            </div>
             {% block javascripts %}{% endblock %}
         </div>
-        <div class="footer">
-        </div>
+       	<footer class="footer">
+      		<div class="container">
+        		<div class="row mt-2">
+        			<div class="col-4">
+        				<a href="{{ path('index') }}"><img src="{{ asset('img/logo-association-tlmc.png') }}" alt="Logo association TLMC"></a>
+        			</div>
+        			<div class="col-4">
+        				<h6>Contacts</h6>
+        					<p>
+        						<strong><span class="oi oi-phone"></span> Téléphone : </strong> 05 65 45 41 12<br/>
+								<strong><span class="oi oi-envelope-closed"></span> Contact : </strong><a href="http://toutlemondecontrelecancer.com/contact/">Ecrivez-nous via le formulaire</a><br/>
+								<strong><span class="oi oi-home"></span> Siège Social : </strong><a target="_blank" href="https://www.google.fr/maps/place/28+Rue+du+Sénéchal,+12200+Villefranche-de-Rouergue">28 rue du Sénéchal, 12200 Villefranche de Rouergue</a><br/>
+								<strong><span class="oi oi-home"></span> Bureau de Paris : </strong> <a target="_blank" href="https://www.google.fr/maps/place/44+Rue+Pasquier,+75008+Paris">44 rue Pasquier, 75008 Paris</a><br/>
+								<small class="form-text text-muted">Les locaux de l’association sont gracieusement mis à disposition par nos partenaires.</small>
+							</p>
+        			</div>
+        			<div class="col-4">
+        				<h6>Réseaux sociaux</h6>
+        					L'association "Tout le monde contre le cancer" réalise depuis 10 ans plus de 1 000 actions chaque année dans 140 hôpitaux et maisons de parents pour adoucir la vie des familles touchées par la maladie.<br/>
+        					Rejoignez l'association sur :<br/>
+        					<a target="_blank" href="https://www.facebook.com/toutlemondecontrelecancer"><span class="oi oi-thumb-up"></span> Facebook |</a>
+        					<a target="_blank" href="https://twitter.com/tlmcofficiel"><span class="oi oi-bullhorn"></span> Twitter |</a>
+        					<a target="_blank" href="https://www.youtube.com/user/assoTLMC"><span class="oi oi-video"></span> YouTube |</a>
+        					<a target="_blank" href="https://www.instagram.com/tlmcofficiel"><span class="oi oi-camera-slr"></span> Instagram</a>
+        			</div>
+        		</div>
+    		</div>
+    </footer>
     </body>
 </html>
