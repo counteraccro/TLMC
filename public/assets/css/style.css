@@ -1,13 +1,136 @@
+/********************************************
+*
+* DEFINITION DES FONTS
+*
+********************************************/
+@font-face {
+	font-family: 'Helvetica-35-Thin';
+	src: url('../font/Helvetica-Neue-LT-Com-35-Thin.ttf');
+}
+
+@font-face {
+	font-family: 'Helvetica-47-Light';
+	src: url('../font/Helvetica-Neue-LT-Com-47-Light-Condensed.ttf');
+}
+
+@font-face {
+	font-family: 'Helvetica-77-Bold';
+	src: url('../font/Helvetica-Neue-LT-Com-77-Bold-Condensed.ttf');
+}
+
+/********************************************
+*
+* GLOBAL
+*
+********************************************/
+body {
+	font-family: 'Helvetica-47-Light';
+}
+
 h1 {
 	margin: 0px -10px 10px -10px;
 	background-color: #d5488b;
 	padding: 5px 5px 5px 15px;
 	color: #FFFFFF;
-	/*font-family: Helvetica Neue LT;*/
+	font-family: Helvetica-35-Thin;
 	font-size: 35px;
 	text-transform: uppercase;
 }
 
+b, strong {
+	font-family: 'Helvetica-77-Bold';
+}
+
+a {
+	color: #d5488b;
+}
+
+a:hover {
+	color: #d5488b;
+}
+
+/********************************************
+*
+* SURCHARGE BOUTON BOOSTRAP
+*
+********************************************/
+
+/** Debut primary **/
+.btn-primary {
+  color: #fff;
+  background-color: #d5488b;
+  border-color: #B13075;
+}
+
+.btn-primary:hover {
+  color: #fff;
+  background-color: #B13075;
+  border-color: #786D59;
+}
+
+.btn-primary:focus, .btn-primary.focus {
+  box-shadow: 0 0 0 0.2rem rgba(177, 48, 117, 0.5); 
+}
+
+.btn-primary.disabled, .btn-primary:disabled {
+  color: #fff;
+  background-color: #D78FB3;
+  border-color: #D78FB3;
+}
+
+.btn-primary:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active,
+.show > .btn-primary.dropdown-toggle {
+  color: #fff;
+  background-color: #B13075;
+  border-color: #786D59;
+}
+
+.btn-primary:not(:disabled):not(.disabled):active:focus, .btn-primary:not(:disabled):not(.disabled).active:focus,
+.show > .btn-primary.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(177, 48, 117, 0.5);
+}
+/** fin primary **/
+
+.page-link {
+	color: #d5488b;
+}
+
+.page-link:hover {
+	color: #B13075;
+}
+
+.page-item.active .page-link {
+	background-color: #d5488b;
+	border-color: #B13075;
+}
+
+.btn-outline-primary {
+	color: #d5488b;
+	border-color: #B13075;
+}
+
+.btn-outline-primary:hover {
+	background-color: #B13075;
+	border-color: #786D59;
+}
+
+/********************************************
+*
+* FOOTER
+*
+********************************************/
 footer {
-	font-size: 14px;
+	font-size: 12px;
+}
+
+footer a {
+	color: #d6d6d6;
+}
+
+footer img {
+	width: 42%;
+}
+
+footer h6, footer p {
+	color: rgba(255, 255, 255, .5);
 }

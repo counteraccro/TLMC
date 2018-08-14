@@ -4,10 +4,11 @@
 
 {% block body %}
 
-<br />
+<h1>Démo</h1>
+
 <a class="btn btn-sm btn-secondary" href="{{ path('questionnaire_see', {'id':questionnaire.id}) }}"><span class="oi oi-arrow-thick-left"></span> Retour</a>
 
-<div class="row">
+<div class="row" style="margin-right:0px;">
 	<div class="col-7">
     	<fieldset>
     		<legend>Démo du questionnaire #{{ questionnaire.id }}</legend>
@@ -25,7 +26,6 @@
     		<br />
             {{ displayDataToSave(questResultat) | raw }}
     	</fieldset>
-    	
-    </div>
+    </div>  
 </div>
 {% endblock %}

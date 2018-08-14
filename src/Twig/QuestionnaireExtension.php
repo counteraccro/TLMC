@@ -92,7 +92,7 @@ class QuestionnaireExtension extends AbstractExtension
             $html = $this->isObligatoire($question, $html);
         }
 
-        $html .= $this->endForm();
+        $html .= $this->endForm($questionnaire);
 
         return $html;
     }
@@ -276,11 +276,18 @@ class QuestionnaireExtension extends AbstractExtension
      * Fin HTML du questionnaire
      * @return string
      */
-    private function endForm()
+    private function endForm(Questionnaire $questionnaire)
     {
         $html = "";
         if ($this->params['statut'] != self::EDIT) {
-            $html .= '<br /><button type="submit" name="validation" class="btn btn-primary mb-2">Valider</button>';
+            $html .= '<br /><button type="submit" name="validation" class="btn btn-primary mb-2" id="btn-valide-' . $questionnaire->getId() . '">Valider</button>';
+            
+            $html .= "<script>
+                $('#btn-valide-" . $questionnaire->getId() . "').click(function() {
+                    $(this).addClass('disabled').html('Loading...');
+                });
+            </script>";
+            
         }
         $html .= "</form>";
         return $html;
