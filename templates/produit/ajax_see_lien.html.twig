@@ -1,0 +1,71 @@
+<div id="bloc_produit_liens" class="card">
+   	<div class="card-header">
+   		Liens avec les établissements
+   		{% if is_granted("ROLE_ADMIN") %}
+       		<a href="{{ path('produit_etablissement_ajax_add', {'id' : produit.id, 'type': 'produit'}) }}" id="btn-add-produit-etablissement" class="float-right"><span class="oi oi-link-intact"></span> Nouveau lien avec un établissement</a>
+   			<br>
+       		<a href="{{ path('produit_specialite_ajax_add', {'id' : produit.id, 'type': 'produit'}) }}" id="btn-add-produit-specialite" class="float-right"><span class="oi oi-link-intact"></span> Nouveau lien avec une spécialité</a>
+       		{% endif %}
+    </div>
+    <div class="card-body">
+    	<table class="table table-sm table-striped">
+    	   	<tr>
+       			<th>Etablissement</th>
+       			<th>Spécialité</th>
+       			<th>Quantité</th>
+       			<th>Date</th>
+       			<th></th>
+       		</tr>
+       	    {% for connexion in connexions %}
+                {% for lien in connexion %}	
+               		<tr>
+           		        {% if lien.specialite %}
+           					<td>{% if loop.index0 == 0 %}{{ lien.etablissement }}{% endif %}</td>
+           					<td>{{ lien.specialite }}</td>
+           		        {% else %}
+           					<td>{{ lien.etablissement }}</td>
+           					<td></td>
+           		        {% endif %}
+           				<td>{{ lien.quantite }}</td>
+           				<td>{{ lien.date | date('d/m/Y H:i') }}</td>
+           				<td>
+           				    {% if is_granted("ROLE_ADMIN") %}
+                   				{% if lien.specialite %}
+                            		<a href="{{ path('produit_specialite_ajax_edit', {'id' : lien.id, 'type':'produit'}) }}" id="btn-edit-produit-specialite-{{ lien.id }}" title="Editer la fiche">
+                            	{% else %}
+                            		<a href="{{ path('produit_etablissement_ajax_edit', {'id' : lien.id, 'type':'produit'}) }}" id="btn-edit-produit-etablissement-{{ lien.id }}" title="Editer la fiche">
+                            	{% endif %}
+                            	<span class="oi oi-pencil"></span></a>
+                        	{% endif %}
+                    	</td>
+           			</tr>
+       		    {% endfor %}
+       	    {% endfor %}
+       	</table>
+	</div>
+</div>
+
+{% block javascripts %}
+	<script type="text/javascript">
+    
+    $(document).ready(function() {
+	    {% if is_granted("ROLE_ADMIN") %}
+	    	ProduitSpecialite.EventAdd('#btn-add-produit-specialite');
+        	ProduitEtablissement.EventAdd('#btn-add-produit-etablissement');
+	    	
+        	{% for connexion in connexions %}
+        	    {% for lien in connexion %}
+        	        {% if lien.specialite %}
+        	        	
+        				ProduitSpecialite.EventEdit('#btn-edit-produit-specialite-' + {{ lien.id }});
+            		{% else %}
+            			
+        				ProduitEtablissement.EventEdit('#btn-edit-produit-etablissement-' + {{ lien.id }});
+            		{% endif %}
+		    	{% endfor %}
+            {% endfor %}
+    	{% endif %}
+	});
+    
+    </script>
+{% endblock %}

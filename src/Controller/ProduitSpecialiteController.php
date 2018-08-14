@@ -12,7 +12,6 @@ use App\Entity\Specialite;
 
 class ProduitSpecialiteController extends AppController
 {
-
     /**
      *
      * @Route("/produit/specialite", name="produit_specialite")
@@ -34,7 +33,7 @@ class ProduitSpecialiteController extends AppController
      * @param string $type
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function ajaxSeeActionint (int $id, string $type)
+    public function ajaxSeeAction (int $id, string $type)
     {
         switch($type){
             case 'produit':
@@ -130,6 +129,7 @@ class ProduitSpecialiteController extends AppController
     {
         $form = $this->createForm(ProduitSpecialiteType::class, $produitSpecialite, array(
             'label_submit' => 'Modifier',
+            'date_valeur' => $produitSpecialite->getDate(),
             'disabled_produit' => true,
             'disabled_specialite' => true
         ));

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Repository;
 
 use App\Entity\Produit;
@@ -10,18 +9,20 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\ORM\QueryBuilder;
 
 /**
+ *
  * @method Produit|null find($id, $lockMode = null, $lockVersion = null)
  * @method Produit|null findOneBy(array $criteria, array $orderBy = null)
- * @method Produit[]    findAll()
- * @method Produit[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Produit[] findAll()
+ * @method Produit[] findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class ProduitRepository extends ServiceEntityRepository
 {
+
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Produit::class);
     }
-    
+
     /**
      * Retourne une liste de produit paginé en fonction de l'ordre et de la recherche courante
      *
@@ -43,43 +44,43 @@ class ProduitRepository extends ServiceEntityRepository
         if (! is_numeric($page)) {
             throw new \InvalidArgumentException('$page doit être un integer (' . gettype($page) . ' : ' . $page . ')');
         }
-        
+
         if (! is_numeric($max)) {
             throw new \InvalidArgumentException('$max doit être un integer (' . gettype($max) . ' : ' . $max . ')');
         }
-        
+
         if (! isset($params['field']) && ! isset($params['order'])) {
             throw new \InvalidArgumentException('order et field ne sont pas présents comme clés dans $params');
         }
-        
+
         $firstResult = ($page - 1) * $max;
-        
+
         // pagination
         $query = $this->createQueryBuilder($params['repository'])->setFirstResult($firstResult);
-        
+
         // Génération des paramètres SQL
         $query = $this->generateParamsSql($query, $params);
-        
+
         $query->orderBy($params['repository'] . '.' . $params['field'], $params['order'])->setMaxResults($max);
         $paginator = new Paginator($query);
-        
+
         // Nombre total de produit
         $query = $this->createQueryBuilder($params['repository'])->select('COUNT(' . $params['repository'] . '.id)');
-        
+
         // Génération des paramètres SQL
         $query = $this->generateParamsSql($query, $params);
         $result = $query->getQuery()->getSingleScalarResult();
-        
+
         if (($paginator->count() <= $firstResult) && $page != 1) {
             throw new NotFoundHttpException('Page not found');
         }
-        
+
         return array(
             'paginator' => $paginator,
             'nb' => $result
         );
     }
-    
+
     /**
      * Génération de la requête
      *
@@ -98,7 +99,7 @@ class ProduitRepository extends ServiceEntityRepository
         $index = 1;
         if (isset($params['search'])) {
             foreach ($params['search'] as $searchKey => $valueKey) {
-                
+
                 $explode_key = explode('-', $searchKey);
                 if (count($explode_key) == 3) {
                     // traitement des liaisons avec une autre table
@@ -112,15 +113,15 @@ class ProduitRepository extends ServiceEntityRepository
                 $index ++;
             }
         }
-        
+
         if (isset($params['jointure'])) {
             foreach ($params['jointure'] as $jointure) {
                 $query->join($jointure['oldrepository'] . '.' . $jointure['newrepository'], $jointure['newrepository']);
             }
         }
-        
-        if(isset($params['condition'])){
-            foreach ($params['condition'] as $condition){
+
+        if (isset($params['condition'])) {
+            foreach ($params['condition'] as $condition) {
                 if (isset($condition['jointure']) && $condition['jointure']) {
                     $query->andWhere($condition['key'] . ' = ' . $condition['value']);
                 } else {
@@ -128,36 +129,86 @@ class ProduitRepository extends ServiceEntityRepository
                 }
             }
         }
-        
+
         return $query;
     }
 
-//    /**
-//     * @return Produit[] Returns an array of Produit objects
-//     */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
+   /**
+    * Requête permettant de récupérer les différentes liaisons d'un produit avec une spécialité et un établissement
+    * 
+    * @param int $id_produit
+    * @return array $connexions
     */
+    public function findEtablissementAndSpecialite(int $id_produit)
+    {
+        $lien_etablissement = $this->createQueryBuilder('p')
+            ->select("E.id as EtablissementId, PE.id, E.nom as etablissement, '' as specialite, PE.quantite, PE.date")
+            ->leftjoin('App:ProduitEtablissement', 'PE', 'WITH', 'PE.produit = p.id')
+            ->leftjoin('App:Etablissement', 'E', 'WITH', 'PE.etablissement = E.id')
+            ->andWhere('p.id = :idProduit')
+            ->setParameter('idProduit', $id_produit)
+            ->orderBy('E.id')
+            ->getQuery()
+            ->getResult();
+
+        $lien_specialite = $this->createQueryBuilder('p')
+            ->select("E.id as EtablissementId, PS.id, E.nom as etablissement, S.service as specialite, PS.quantite, PS.date")
+            ->leftjoin('App:ProduitSpecialite', 'PS', 'WITH', 'PS.produit = p.id')
+            ->leftjoin('App:Specialite', 'S', 'WITH', 'PS.specialite = S.id')
+            ->leftjoin('App:Etablissement', 'E', 'WITH', 'S.etablissement = E.id')
+            ->andWhere('p.id = :idProduit')
+            ->setParameter('idProduit', $id_produit)
+            ->orderBy('E.id')
+            ->getQuery()
+            ->getResult();
+
+        if (count($lien_etablissement) == 1 && is_null($lien_etablissement[0]['EtablissementId'])) {
+            $lien_etablissement = array();
+        }
+        if (count($lien_specialite) == 1 && is_null($lien_specialite[0]['EtablissementId'])) {
+            $lien_specialite = array();
+        }
+        
+        $liens = array_merge($lien_etablissement, $lien_specialite);
+        $connexions = array();
+
+        foreach ($liens as $lien) {
+            if (isset($connexions[$lien['EtablissementId']])) {
+                $connexions[$lien['EtablissementId']][] = $lien;
+            } else {
+                $connexions[$lien['EtablissementId']][0] = $lien;
+            }
+        }
+
+        return $connexions;
+    }
+
+    // /**
+    // * @return Produit[] Returns an array of Produit objects
+    // */
+    /*
+     * public function findByExampleField($value)
+     * {
+     * return $this->createQueryBuilder('p')
+     * ->andWhere('p.exampleField = :val')
+     * ->setParameter('val', $value)
+     * ->orderBy('p.id', 'ASC')
+     * ->setMaxResults(10)
+     * ->getQuery()
+     * ->getResult()
+     * ;
+     * }
+     */
 
     /*
-    public function findOneBySomeField($value): ?Produit
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
+     * public function findOneBySomeField($value): ?Produit
+     * {
+     * return $this->createQueryBuilder('p')
+     * ->andWhere('p.exampleField = :val')
+     * ->setParameter('val', $value)
+     * ->getQuery()
+     * ->getOneOrNullResult()
+     * ;
+     * }
+     */
 }

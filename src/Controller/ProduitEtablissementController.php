@@ -131,6 +131,7 @@ class ProduitEtablissementController extends AppController
     {
         $form = $this->createForm(ProduitEtablissementType::class, $produitEtablissement, array(
             'label_submit' => 'Modifier',
+            'date_valeur' => $produitEtablissement->getDate(),
             'disabled_produit' => true,
             'disabled_etablissement' => true
         ));

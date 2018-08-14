@@ -117,22 +117,7 @@ class ProduitController extends AppController
     public function seeAction(Request $request, SessionInterface $session, Produit $produit, int $page = 1)
     {
         $arrayFilters = $this->getDatasFilter($session);
-
-        /*
-         * (SELECT P.`titre`, E.`id`, E.`nom`, '', PE.`quantite`, PE.`date` 
-         * FROM `produit` P 
-         * LEFT JOIN `produit_etablissement` PE ON PE.`produit_id` = P.`id` 
-         * LEFT JOIN `etablissement` E ON PE.`etablissement_id` = E.`id` 
-         * WHERE P.`id` = 89 ORDER BY E.`id`) 
-         * UNION 
-         * (SELECT P.`titre`, E.`id`, E.`nom`, S.`service`, PS.`quantite`, PS.`date` 
-         * FROM `produit` P 
-         * LEFT JOIN `produit_specialite` PS ON PS.`produit_id` = P.`id` 
-         * LEFT JOIN `specialite` S ON PS.`specialite_id` = S.`id` 
-         * LEFT JOIN `etablissement` E ON S.`etablissement_id` = E.`id` 
-         * WHERE P.`id` = 89 ORDER BY E.`id`)
-         */
-
+        
         // Si appel Ajax, on renvoi sur la page ajax
         if ($request->isXmlHttpRequest()) {
 
@@ -336,5 +321,32 @@ class ProduitController extends AppController
             'field' => $arrayFilters['field'],
             'order' => $arrayFilters['order']
         ));
+    }
+    /**
+     * Edition d'un produit
+     *
+     * @Route("/produit/lien/ajax/see/{id}", name="produit_lien_ajax_see")
+     * @ParamConverter("produit", options={"mapping": {"id": "id"}})
+     * @Security("is_granted('ROLE_ADMIN')")
+     * 
+     * @param Request $request
+     * @param Produit $produit
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    
+    public function seeLienAction(Request $request, Produit $produit)
+    {
+        $repository = $this->getDoctrine()->getRepository(Produit::class);
+        $connexions = $repository->findEtablissementAndSpecialite($produit->getId());
+        //$this->pre($connexions);die();
+        
+        // Si appel Ajax, on renvoi sur la page ajax
+        if ($request->isXmlHttpRequest()) {
+            
+            return $this->render('produit/ajax_see_lien.html.twig', array(
+                'produit' => $produit,
+                'connexions' => $connexions
+            ));
+        }
     }
 }

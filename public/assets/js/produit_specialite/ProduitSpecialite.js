@@ -15,6 +15,14 @@ ProduitSpecialite.Launch = function(params) {
 	ProduitSpecialite.id_container_global = '#container-global';
 
 	/**
+	 * fonction prévue pour le chargement des liens du produit, paramètres url et id
+	 */
+	ProduitSpecialite.LoadProduitLiens = function()
+	{
+		ProduitSpecialite.Ajax(ProduitSpecialite.url_ajax_see, ProduitSpecialite.id_global);
+	}
+	
+	/**
 	 * fonction prévue pour le chargement des spécialités associées à l'événement, paramètres url et id
 	 */
 	ProduitSpecialite.LoadProduitSpecialite = function()
