@@ -71,10 +71,8 @@ class EvenementController extends AppController
 
         if (! $this->isAdmin()) {
             $params['condition'] = array(
-                array(
-                    'key' => 'disabled',
-                    'value' => 0
-                )
+                $params['repository'] . '.disabled = 0'
+                
             );
         }
         

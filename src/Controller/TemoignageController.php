@@ -18,17 +18,18 @@ class TemoignageController extends AppController
     /**
      * Listing des témoiganges
      *
-     * @Route("/temoignage/listing/{page}/{field}/{order}", name="temoignage_listing", defaults={"page" = 1, "field"= null, "order"= null})
+     * @Route("/temoignage/listing/{type}/{page}/{field}/{order}", name="temoignage_listing", defaults={"page" = 1, "type"="tous", "field"= null, "order"= null})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      *
      * @param Request $request
      * @param SessionInterface $session
+     * @param string $type
      * @param int $page
      * @param string $field
      * @param string $order
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function index(Request $request, SessionInterface $session, int $page = 1, $field = null, $order = null)
+    public function index(Request $request, SessionInterface $session, string $type = 'tous', int $page = 1, $field = null, $order = null)
     {
         if (is_null($field)) {
             $field = 'id';
@@ -50,15 +51,15 @@ class TemoignageController extends AppController
         if (! $this->isAdmin()) {
             $membre = $this->getMembre();
             $params['condition'] = array(
-                array(
-                    'key' => 'membre',
-                    'value' => $membre->getId()
-                ),
-                array(
-                    'key' => 'disabled',
-                    'value' => 0
-                )
+                $params['repository'] . '.membre = ' . $membre->getId(),
+                $params['repository'] . '.disabled = 0'
             );
+        } else {
+            $params['condition'] = array();
+        }
+
+        if ($type == 'evenement' || $type == 'produit') {
+            $params['condition'][] = 'Temoignage.' . $type . ' IS NOT NULL';
         }
 
         $result = $this->genericSearch($request, $session, $params);
@@ -74,7 +75,7 @@ class TemoignageController extends AppController
         $this->setDatasFilter($session, $field, $order);
 
         return $this->render('temoignage/index.html.twig', array(
-            'controller_name' => 'TemoignageController',
+            'type' => $type,
             'temoignages' => $result['paginator'],
             'pagination' => $pagination,
             'current_order' => $order,
@@ -90,37 +91,40 @@ class TemoignageController extends AppController
     /**
      * Fiche d'un témoignage
      *
-     * @Route("/temoignage/see/{id}/{page}", name="temoignage_see")
+     * @Route("/temoignage/see/{id}/{type}/{page}", name="temoignage_see")
      * @Route("/temoignage/see/{id}", name="temoignage_ajax_see")
      * @ParamConverter("temoignage", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
-     * 
+     *
      * @param Request $request
      * @param SessionInterface $session
      * @param Temoignage $temoignage
      * @param int $page
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function seeAction(Request $request, SessionInterface $session, Temoignage $temoignage, int $page = 1)
+    public function seeAction(Request $request, SessionInterface $session, Temoignage $temoignage, int $page = 1, string $type = 'tous')
     {
         $arrayFilters = $this->getDatasFilter($session);
 
         // Si appel Ajax, on renvoi sur la page ajax
         if ($request->isXmlHttpRequest()) {
-            
+
             return $this->render('temoignage/ajax_see.html.twig', array(
-                'temoignage' => $temoignage,
+                'temoignage' => $temoignage
             ));
         }
-        
+
         return $this->render('temoignage/see.html.twig', array(
             'page' => $page,
+            'type' => $type,
             'temoignage' => $temoignage,
             'paths' => array(
                 'home' => $this->indexUrlProject(),
                 'urls' => array(
                     $this->generateUrl('temoignage_listing', array(
                         'page' => $page,
+                        'type' => $type,
                         'field' => $arrayFilters['field'],
                         'order' => $arrayFilters['order']
                     )) => "Gestion de témoignages"
@@ -129,7 +133,7 @@ class TemoignageController extends AppController
             )
         ));
     }
-    
+
     /**
      * Bloc témoignage d'un membre / d'un événement / d'un produit
      *
@@ -142,8 +146,7 @@ class TemoignageController extends AppController
      */
     public function ajaxSeeAction(int $id, string $type)
     {
-        
-        switch($type){
+        switch ($type) {
             case 'membre':
                 $repository = $this->getDoctrine()->getRepository(Membre::class);
                 break;
@@ -154,12 +157,12 @@ class TemoignageController extends AppController
                 $repository = $this->getDoctrine()->getRepository(Produit::class);
                 break;
         }
-        
+
         $objets = $repository->findById($id);
         $objet = $objets[0];
-        
+
         $temoignages = $this->getElementsLiesActifs($objet, 'getTemoignages');
-        
+
         return $this->render('temoignage/ajax_see_list.html.twig', array(
             'objet' => $objet,
             'type' => $type,
@@ -170,7 +173,7 @@ class TemoignageController extends AppController
     /**
      * Ajout d'une nouveau témoignage
      *
-     * @Route("/temoignage/add/{page}", name="temoignage_add")
+     * @Route("/temoignage/add/{page}/{type}", name="temoignage_add")
      * @Route("/temoignage/ajax/add/{id}/{type}", name="temoignage_ajax_add")
      * @ParamConverter("membre", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
@@ -182,39 +185,40 @@ class TemoignageController extends AppController
      * @param string $type
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function addAction(SessionInterface $session, Request $request, int $page = 1, int $id = 0, string $type = null)
+    public function addAction(SessionInterface $session, Request $request, int $page = 1, int $id = 0, string $type = 'tous')
     {
         $arrayFilters = $this->getDatasFilter($session);
-        $opt_form = array('label_submit' => 'Ajouter');
-        
+        $opt_form = array(
+            'label_submit' => 'Ajouter'
+        );
+
         $temoignage = new Temoignage();
-        
+
         if ($request->isXmlHttpRequest()) {
-            switch($type){
+            switch ($type) {
                 case 'evenement':
                     $repository = $this->getDoctrine()->getRepository(Evenement::class);
                     $objets = $repository->findById($id);
                     $objet = $objets[0];
-                    
+
                     $opt_form['disabled_event'] = true;
                     $opt_form['avec_prod'] = false;
-                    
+
                     $temoignage->setEvenement($objet);
                     break;
                 case 'produit':
                     $repository = $this->getDoctrine()->getRepository(Produit::class);
                     $objets = $repository->findById($id);
                     $objet = $objets[0];
-                    
+
                     $opt_form['disabled_prod'] = true;
                     $opt_form['avec_event'] = false;
-                    
+
                     $temoignage->setProduit($objet);
                     break;
             }
-            
         }
-        
+
         $form = $this->createForm(TemoignageType::class, $temoignage, $opt_form);
 
         $form->handleRequest($request);
@@ -233,7 +237,9 @@ class TemoignageController extends AppController
                     'statut' => true
                 ));
             } else {
-                return $this->redirect($this->generateUrl('temoignage_listing'));
+                return $this->redirect($this->generateUrl('temoignage_listing', array(
+                    'type' => $type
+                )));
             }
         }
 
@@ -249,12 +255,14 @@ class TemoignageController extends AppController
 
         return $this->render('temoignage/add.html.twig', array(
             'page' => $page,
+            'type' => $type,
             'form' => $form->createView(),
             'paths' => array(
                 'home' => $this->indexUrlProject(),
                 'urls' => array(
                     $this->generateUrl('temoignage_listing', array(
                         'page' => $page,
+                        'type' => $type,
                         'field' => $arrayFilters['field'],
                         'order' => $arrayFilters['order']
                     )) => 'Gestion des témoignages'
@@ -267,7 +275,7 @@ class TemoignageController extends AppController
     /**
      * Edition d'un témoignage
      *
-     * @Route("/temoignage/edit/{id}/{page}", name="temoignage_edit")
+     * @Route("/temoignage/edit/{id}/{page}/{type}", name="temoignage_edit")
      * @Route("/temoignage/ajax/edit/{id}/{type}", name="temoignage_ajax_edit")
      * @ParamConverter("temoignage", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
@@ -280,28 +288,39 @@ class TemoignageController extends AppController
      * @param string $type
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function editAction(SessionInterface $session, Request $request, Temoignage $temoignage, int $page = 1, string $type = null)
+    public function editAction(SessionInterface $session, Request $request, Temoignage $temoignage, int $page = 1, string $type = 'tous')
     {
         $arrayFilters = $this->getDatasFilter($session);
 
-        $opt_form = array('label_submit' => 'Modifier');
-        
-        switch($type){
-            case 'evenement':
-                $opt_form['disabled_event'] = true;
-                $opt_form['avec_prod'] = false;
-                break;
-            case 'produit':
-                $opt_form['disabled_prod'] = true;
-                $opt_form['avec_event'] = false;
-                break;
-            case 'temoignage':
-            case 'membre':
-                $opt_form['disabled_event'] = true;
-                $opt_form['disabled_prod'] = true;
-                break;
+        $opt_form = array(
+            'label_submit' => 'Modifier'
+        );
+
+        if ($request->isXmlHttpRequest()) {
+            switch ($type) {
+                case 'evenement':
+                    $opt_form['disabled_event'] = true;
+                    $opt_form['avec_prod'] = false;
+                    break;
+                case 'produit':
+                    $opt_form['disabled_prod'] = true;
+                    $opt_form['avec_event'] = false;
+                    break;
+                case 'temoignage':
+                case 'membre':
+                    $opt_form['disabled_event'] = true;
+                    $opt_form['disabled_prod'] = true;
+                    break;
+            }
+        } else {
+            // récyupération du produit ou de l'événement associé
+            if ($type == 'produit') {
+                $produit = $temoignage->getProduit();
+            } elseif ($type == 'evenement') {
+                $evenement = $temoignage->getEvenement();
+            }
         }
-        
+
         $form = $this->createForm(TemoignageType::class, $temoignage, $opt_form);
 
         $form->handleRequest($request);
@@ -309,6 +328,14 @@ class TemoignageController extends AppController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $em = $this->getDoctrine()->getManager();
+
+            if (! $request->isXmlHttpRequest()) {
+                if ($type == 'produit') {
+                    $temoignage->setProduit($produit);
+                } elseif ($type == 'evenement') {
+                    $temoignage->setEvenement($evenement);
+                }
+            }
 
             $em->persist($temoignage);
             $em->flush();
@@ -321,6 +348,7 @@ class TemoignageController extends AppController
 
             return $this->redirect($this->generateUrl('temoignage_listing', array(
                 'page' => $page,
+                'type' => $type,
                 'field' => $arrayFilters['field'],
                 'order' => $arrayFilters['order']
             )));
@@ -337,6 +365,7 @@ class TemoignageController extends AppController
 
         return $this->render('temoignage/edit.html.twig', array(
             'page' => $page,
+            'type' => $type,
             'form' => $form->createView(),
             'temoignage' => $temoignage,
             'paths' => array(
@@ -344,6 +373,7 @@ class TemoignageController extends AppController
                 'urls' => array(
                     $this->generateUrl('temoignage_listing', array(
                         'page' => $page,
+                        'type' => $type,
                         'field' => $arrayFilters['field'],
                         'order' => $arrayFilters['order']
                     )) => 'Gestion des témoignages'
@@ -356,7 +386,7 @@ class TemoignageController extends AppController
     /**
      * Désactivation d'un témoignage
      *
-     * @Route("/temoignage/delete/{id}/{page}", name="temoignage_delete")
+     * @Route("/temoignage/delete/{id}/{page}/{type}", name="temoignage_delete")
      * @ParamConverter("temoignage", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
      *
@@ -365,7 +395,7 @@ class TemoignageController extends AppController
      * @param int $page
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function deleteAction(Request $request, SessionInterface $session, Temoignage $temoignage, $page = 1)
+    public function deleteAction(Request $request, SessionInterface $session, Temoignage $temoignage, int $page = 1, string $type = 'tous')
     {
         $arrayFilters = $this->getDatasFilter($session);
 
@@ -389,6 +419,7 @@ class TemoignageController extends AppController
 
         return $this->redirectToRoute('temoignage_listing', array(
             'page' => $page,
+            'type' => $type,
             'field' => $arrayFilters['field'],
             'order' => $arrayFilters['order']
         ));

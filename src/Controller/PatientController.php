@@ -50,17 +50,11 @@ class PatientController extends AppController
         if (! $this->isAdmin()) {
             $membre = $this->getMembre();
             $params['condition'] = array(
-                array(
-                    'key' => 'disabled',
-                    'value' => 0
-                )
+                $params['repository'] . '.disabled = 0'
             );
 
             if (! is_null($membre->getSpecialite())) {
-                $params['condition'][] = array(
-                    'key' => 'specialite',
-                    'value' => $membre->getSpecialite()->getId()
-                );
+                $params['condition'][] = $params['repository'] . '.specialite = ' . $membre->getSpecialite()->getId();
             }
         }
 
