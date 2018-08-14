@@ -59,6 +59,7 @@ encoding//templates/piece_jointe/index.html.twig=UTF-8
 encoding//templates/produit/add.html.twig=UTF-8
 encoding//templates/produit/ajax_edit.html.twig=UTF-8
 encoding//templates/produit/ajax_see.html.twig=UTF-8
+encoding//templates/produit/ajax_see_lien.html.twig=UTF-8
 encoding//templates/produit/edit.html.twig=UTF-8
 encoding//templates/produit/index.html.twig=UTF-8
 encoding//templates/produit/see.html.twig=UTF-8

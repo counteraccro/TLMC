@@ -14,6 +14,15 @@ ProduitEtablissement.Launch = function(params) {
 
 	ProduitEtablissement.id_container_global = '#container-global';
 
+	
+	/**
+	 * fonction prévue pour le chargement des liens du produit, paramètres url et id
+	 */
+	ProduitEtablissement.LoadProduitLiens = function()
+	{
+		ProduitEtablissement.Ajax(ProduitEtablissement.url_ajax_see, ProduitEtablissement.id_global);
+	}
+	
 	/**
 	 * fonction prévue pour le chargement des établissements associées au produit, paramètres url et id
 	 */
