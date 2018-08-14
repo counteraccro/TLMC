@@ -38,7 +38,7 @@ class ProduitController extends AppController
      * Listing des produits
      *
      * @Route("/produit/listing/{page}/{field}/{order}", name="produit_listing", defaults={"page" = 1, "field"= null, "order"= null})
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE')")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')  or is_granted('ROLE_BENEVOLE')")
      *
      * @param Request $request
      * @param SessionInterface $session
@@ -70,6 +70,33 @@ class ProduitController extends AppController
             $params['condition'] = array(
                 $params['repository'] . '.disabled = 0'
             );
+            
+            if ($this->getMembre()->getSpecialite()) {
+                $params['jointure'] = array(
+                    array(
+                        'oldrepository' => 'Produit',
+                        'newrepository' => 'produitSpecialites'
+                    ),
+                    array(
+                        'oldrepository' => 'produitSpecialites',
+                        'newrepository' => 'specialite'
+                    )
+                );
+                $params['condition'][] = 'specialite.id = ' . $this->getMembre()->getSpecialite()->getId();
+            } else {
+                $params['jointure'] = array(
+                    array(
+                        'oldrepository' => 'Produit',
+                        'newrepository' => 'produitEtablissements'
+                    ),
+                    array(
+                        'oldrepository' => 'produitEtablissements',
+                        'newrepository' => 'etablissement'
+                    )
+                );
+                $params['condition'][] = 'etablissement.id = ' . $this->getMembre()->getEtablissement()->getId();
+            }
+            
         }
 
         $result = $this->genericSearch($request, $session, $params);
@@ -103,7 +130,7 @@ class ProduitController extends AppController
      * @Route("/produit/see/{id}/{page}", name="produit_see")
      * @Route("/produit/ajax/see/{id}/{page}", name="produit_ajax_see")
      * @ParamConverter("produit", options={"mapping": {"id": "id"}})
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE')")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT') or is_granted('ROLE_BENEVOLE')")
      *
      * @param Request $request
      * @param SessionInterface $session
