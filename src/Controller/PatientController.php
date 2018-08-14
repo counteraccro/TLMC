@@ -158,18 +158,22 @@ class PatientController extends AppController
         }
         $query->orderBy('etablissement.nom, specialite.service', 'ASC');
 
-        if (! is_null($membre->getSpecialite())) {
-            $patient->setSpecialite($membre->getSpecialite());
+        if (! $this->isAdmin()) {
+            if (! is_null($membre->getSpecialite())) {
+                $patient->setSpecialite($membre->getSpecialite());
 
-            $form = $this->createForm(PatientType::class, $patient, array(
-                'disabled_specialite' => true,
-                'query_specialite' => $query
-            ));
+                $form = $this->createForm(PatientType::class, $patient, array(
+                    'disabled_specialite' => true,
+                    'query_specialite' => $query
+                ));
+            } else {
+
+                $form = $this->createForm(PatientType::class, $patient, array(
+                    'query_specialite' => $query
+                ));
+            }
         } else {
-
-            $form = $this->createForm(PatientType::class, $patient, array(
-                'query_specialite' => $query
-            ));
+            $form = $this->createForm(PatientType::class, $patient);
         }
 
         $form->handleRequest($request);
