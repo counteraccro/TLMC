@@ -91,6 +91,96 @@ a:hover {
 }
 /** fin primary **/
 
+/********************************************
+*
+* SURCHARGE BADGE PRIMARY BOOSTRAP
+*
+********************************************/
+
+/** Debut badge-primary **/
+.badge-primary {
+  color: #fff;
+  background-color: #d5488b;
+  border-color: #B13075;
+}
+
+.badge-primary[href]:hover {
+  color: #fff;
+  background-color: #B13075;
+  border-color: #786D59;
+}
+
+.badge-primary[href]:focus, .badge-primary.focus {
+  box-shadow: 0 0 0 0.2rem rgba(177, 48, 117, 0.5); 
+}
+
+.badge-primary.disabled, .badge-primary:disabled {
+  color: #fff;
+  background-color: #D78FB3;
+  border-color: #D78FB3;
+}
+
+.badge-primary:not(:disabled):not(.disabled):active, .badge-primary:not(:disabled):not(.disabled).active,
+.show > .badge-primary.dropdown-toggle {
+  color: #fff;
+  background-color: #B13075;
+  border-color: #786D59;
+}
+
+.badge-primary:not(:disabled):not(.disabled):active:focus, .badge-primary:not(:disabled):not(.disabled).active:focus,
+.show > .badge-primary.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(177, 48, 117, 0.5);
+}
+/** fin badge-primary **/
+
+/********************************************
+*
+* SURCHARGE NAV-LINK BOOSTRAP
+*
+********************************************/
+
+/** Debut nav-link **/
+.nav-link:hover {
+  color: #fff;
+  background-color: #B13075;
+  border-color: #786D59;
+}
+
+.nav-link:focus, .nav-link.focus {
+  box-shadow: 0 0 0 0.2rem rgba(177, 48, 117, 0.5); 
+}
+
+.nav-link.disabled, .nav-link:disabled {
+  color: #fff;
+  background-color: #D78FB3;
+  border-color: #D78FB3;
+}
+
+.nav-link:not(:disabled):not(.disabled):active, .nav-link:not(:disabled):not(.disabled).active,
+.show > .nav-link.dropdown-toggle {
+  color: #fff;
+  background-color: #B13075;
+  border-color: #786D59;
+}
+
+.nav-link:not(:disabled):not(.disabled):active:focus, .nav-link:not(:disabled):not(.disabled).active:focus,
+.show > .nav-link.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(177, 48, 117, 0.5);
+}
+/** fin nav-link **/
+
+/********************************************
+*
+* SURCHARGE TEXT-INFO BOOSTRAP
+*
+********************************************/
+
+/** Debut text-info **/
+.text-info {
+  color: #d5488b!important;
+}
+/** fin text-info **/
+
 .page-link {
 	color: #d5488b;
 }
