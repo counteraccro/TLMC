@@ -11,6 +11,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use App\Repository\SpecialiteRepository;
 
 class ProduitSpecialiteType extends AbstractType
 {
@@ -22,6 +23,11 @@ class ProduitSpecialiteType extends AbstractType
             'class' => Specialite::class,
             'choice_label' => 'service',
             'disabled' => $options['disabled_specialite'],
+            'query_builder' => function (SpecialiteRepository $sr) {
+                return $sr->createQueryBuilder('s')
+                    ->innerJoin('App:Etablissement', 'e', 'WITH', 's.etablissement = e.id')
+                    ->orderBy('e.nom, s.service', 'ASC');
+            },
             'group_by' => function (Specialite $specialite) {
                 return $specialite->getEtablissement()->getNom();
             }

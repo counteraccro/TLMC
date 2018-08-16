@@ -60,7 +60,6 @@ class ProduitType extends AbstractType
                     'avec_produit' => false,
                     'avec_bouton' => false
                 ),
-
                 'allow_add' => true,
                 'auto_initialize' => true
             ));
