@@ -42,6 +42,7 @@ ProduitSpecialite.Launch = function(params) {
 		.done(function( html ) {
 			$(id_done).html(html)
 			$(ProduitSpecialite.id_container_global).hideLoading();
+			$(ProduitSpecialite.id_global).hideLoading();
 		});
 	}
 

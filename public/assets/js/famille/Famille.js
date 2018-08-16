@@ -47,7 +47,6 @@ Famille.Launch = function(params) {
 			//on passe l'url et l'id_done
 
 			$(Famille.id_container_global).showLoading();
-
 			Famille.Ajax($(this).attr('href'), Famille.id_content_modal);
 			return false;
 		});
@@ -155,7 +154,6 @@ Famille.Launch = function(params) {
 			//on passe l'url et l'id_done
 
 			$(Famille.id_container_global).showLoading();
-
 			Famille.Ajax($(this).attr('href'), Famille.id_content_modal);
 			return false;
 		});
@@ -188,7 +186,6 @@ Famille.Launch = function(params) {
 				{
 					//on cache la modale si le formulaire est valide
 					$(Famille.id_modal).modal('hide');
-					console.log(reponse.page);
 					Famille.Ajax(Famille.url_ajax_see + '/' + reponse.page, Famille.id_global);
 				}
 				else

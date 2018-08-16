@@ -33,6 +33,7 @@ Historique.Launch = function(params){
 		.done(function( html ) {
 			$(id_done).html(html)
 			$(Historique.id_container_global).hideLoading();
+			$(Historique.id_global).hideLoading();
 		});
 	}
 	

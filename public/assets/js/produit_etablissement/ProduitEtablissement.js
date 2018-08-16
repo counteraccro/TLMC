@@ -43,6 +43,7 @@ ProduitEtablissement.Launch = function(params) {
 		.done(function( html ) {
 			$(id_done).html(html)
 			$(ProduitEtablissement.id_container_global).hideLoading();
+			$(ProduitEtablissement.id_global).hideLoading();
 		});
 	}
 
