@@ -150,7 +150,7 @@ class PatientController extends AppController
             $query->andWhere("etablissement.id = " . $membre->getEtablissement()
                 ->getId());
         }
-        $query->orderBy('etablissement.nom, specialite.service', 'ASC');
+        $query->orderBy('etablissement.nom', 'ASC');
 
         if (! $this->isAdmin()) {
             if (! is_null($membre->getSpecialite())) {
@@ -227,7 +227,8 @@ class PatientController extends AppController
 
         if ($this->isAdmin()) {
             $repositoryE = $this->getDoctrine()->getRepository(Etablissement::class);
-            $etablissements = $repositoryE->findHopital();
+            $etablissements = $repositoryE->findEtablissementAvecSpecialite();
+
             $form = $this->createForm(PatientType::class, $patient, array(
                 'add' => false
             ));

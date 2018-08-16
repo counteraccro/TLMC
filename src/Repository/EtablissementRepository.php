@@ -119,26 +119,28 @@ class EtablissementRepository extends ServiceEntityRepository
                 $query->join($jointure['oldrepository'] . '.' . $jointure['newrepository'], $jointure['newrepository']);
             }
         }
-        
-        if(isset($params['condition'])){
-            foreach ($params['condition'] as $condition){
+
+        if (isset($params['condition'])) {
+            foreach ($params['condition'] as $condition) {
                 $query->andWhere($condition);
             }
         }
-        
+
         return $query;
     }
 
     /**
-     * Récupère les établissements qui sont des hôpitaux
+     * Récupère les établissements qui ont au moins une spécialité
+     *
      * @return Etablissement[] Returns an array of Etablissement objects
      */
-    public function findHopital()
+    public function findEtablissementAvecSpecialite()
     {
         return $this->createQueryBuilder('e')
-            ->andWhere('e.type like :hopital')
-            ->setParameter('hopital', '%hopital%')
+            ->select('e')
+            ->innerJoin('App:Specialite', 's', 'WITH', 's.etablissement = e.id')
             ->orderBy('e.nom', 'ASC')
+            ->groupBy('e.id')
             ->getQuery()
             ->getResult();
     }
