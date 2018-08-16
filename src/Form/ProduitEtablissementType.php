@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Entity\Etablissement;
 use App\Entity\Produit;
+use App\Repository\EtablissementRepository;
 
 class ProduitEtablissementType extends AbstractType
 {
@@ -21,6 +22,12 @@ class ProduitEtablissementType extends AbstractType
             $builder->add('etablissement', EntityType::class, array(
                 'class' => Etablissement::class,
                 'choice_label' => 'nom',
+                'query_builder' => function (EtablissementRepository $er) {
+                    return $er->createQueryBuilder('e')
+                        ->leftJoin('App:Specialite', 's', 'WITH', 's.etablissement = e.id')
+                        ->andWhere('s.id IS NULL')
+                        ->orderBy('e.nom', 'ASC');
+                },
                 'disabled' => $options['disabled_etablissement']
             ));
         }

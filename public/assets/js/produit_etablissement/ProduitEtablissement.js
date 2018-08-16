@@ -155,3 +155,71 @@ ProduitEtablissement.Launch = function(params) {
 		});
 	}
 }
+
+ProduitEtablissement.LaunchAddCollection = function(params) {
+	
+	//id du conteneur
+	ProduitEtablissement.container = $(params.id_container);
+	//id du bouton d'ajout
+	ProduitEtablissement.id_btn_add = params.id_btn_add;
+	//id du bouton de suppression
+	ProduitEtablissement.btn_delete = '<a href="#" class="btn btn-danger btn-sm">Supprimer</a>';
+
+	// On définit un compteur unique pour nommer les champs qu'on va ajouter dynamiquement
+	ProduitEtablissement.index = ProduitEtablissement.container.find(':input').length;
+
+	ProduitEtablissement.Event = function() {
+		
+		// Ajout d'un élément au clic
+		$(ProduitEtablissement.id_btn_add).click(function(e) {
+			ProduitEtablissement.AddElement();
+
+			e.preventDefault(); // évite qu'un # apparaisse dans l'URL
+			return false;
+		});
+
+		if (ProduitEtablissement.index == 0) {
+			ProduitEtablissement.AddElement();
+		} else {
+			// S'il existe déjà des éléments, on ajoute un lien de suppression pour chacun d'entre eux
+			ProduitEtablissement.container.children('div').each(function() {
+				ProduitEtablissement.addDeleteLink($(this));
+			});
+		}
+	}
+
+	//ajout d'un élément dans le conteneur
+	ProduitEtablissement.AddElement = function() {
+		
+		var template = ProduitEtablissement.container.attr('data-prototype').replace(/__name__/g, ProduitEtablissement.index);
+
+		// On crée un objet jquery qui contient ce template
+		var prototype = $(template);
+
+		// On ajoute au prototype un lien pour pouvoir supprimer l'élément
+		ProduitEtablissement.AddDeleteLink(prototype);
+
+		// On ajoute le prototype modifié à la fin de la balise <div>
+		ProduitEtablissement.container.append(prototype);
+
+		// Enfin, on incrémente le compteur pour que le prochain ajout se fasse avec un autre numéro
+		ProduitEtablissement.index++;
+	}
+	
+	//création d'un lien de suppression d'un élément appartenant au conteneur
+	ProduitEtablissement.AddDeleteLink = function(prototype) {
+		// Création du lien
+		var deleteLink = $(ProduitEtablissement.btn_delete);
+
+		// Ajout du lien
+		prototype.append(deleteLink);
+
+		// Ajout du listener sur le clic du lien pour effectivement supprimer l'élément
+		deleteLink.click(function(e) {
+
+			prototype.remove();
+			e.preventDefault();
+			return false;
+		});
+	}
+}
