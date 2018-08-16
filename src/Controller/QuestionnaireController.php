@@ -278,6 +278,27 @@ class QuestionnaireController extends AppController
             'questResultat' => $questResultat
         ]);
     }
+    
+    /**
+     * Prod questionnaire (rendu final pour participants qui vont poster les réponses)
+     *
+     * @Route("/questionnaire/{slug}", name="questionnaire")
+     * @ParamConverter("questionnaire", options={"mapping": {"slug": "slug"}})
+     */
+    public function questionnaireAction(Request $request, Questionnaire $questionnaire, QuestionnaireManager $questionnaireManager)
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        
+        $questResultat = array();
+        if ($request->isMethod('POST')) {
+            $questResultat = $questionnaireManager->manage($questionnaire, self::PROD);
+        }
+        
+        return $this->render('questionnaire/questionnaire.html.twig', [
+            'questionnaire' => $questionnaire,
+            'questResultat' => $questResultat
+        ]);
+    }
 
     /**
      * Publication questionnaire
@@ -311,6 +332,7 @@ class QuestionnaireController extends AppController
                     {
                         
                         $questionnaire->setPublication(1);
+                        // Ici date publication
                         $entityManager = $this->getDoctrine()->getManager();
                         $entityManager->persist($questionnaire);
                         $entityManager->flush();

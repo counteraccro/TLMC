@@ -1,0 +1,22 @@
+{% extends 'base_questionnaire.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+
+<h1>Questionnaire</h1>
+
+<div class="row" style="margin-right:0px;">
+	<div class="col-12">
+    	<fieldset>
+    		<legend>{{ questionnaire.titre }}</legend>
+    	
+            {{ questionnaire(questionnaire, {
+            	'submit_url' : path('questionnaire', {'slug': questionnaire.slug }),
+            	'statut' : 'prod',
+        		'resultat' : questResultat
+            }) | raw }}
+        </fieldset>
+    </div> 
+</div>
+{% endblock %}

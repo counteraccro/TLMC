@@ -13,7 +13,7 @@
     		{% if error %}
     			<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
             {% endif %}
-  			<form action="{{ path('security_login') }}" method="post">
+  			<form action="{{ path('security_login') }}" method="post" id="login-form">
   				<div class="form-group">
                     <label for="username">Identifiant</label>
                     <input type="text" class="form-control" id="username" value="{{ last_username }}" placeholder="Votre identifiant" name="_username">
@@ -24,10 +24,33 @@
                     <small id="emailHelp" class="form-text text-muted"><a href="#" class="card-link">Mot de passe oublié</a></small>
                 </div>
                 
+                {% if  app.environment == 'dev' %}
+                <div class="alert alert-light">
+                		<b>Ce connecter en tant que</b><br />
+                		<a href="#" class="link-debug-auto-login" data-pseudo="admin" data-password="admin">Admin</a> |
+                		<a href="#" class="link-debug-auto-login" data-pseudo="benevole" data-password="benevole">Bénevole</a> |
+                		<a href="#" class="link-debug-auto-login" data-pseudo="beneficiaire" data-password="beneficiaire">Bénéficiaire</a> |
+                		<a href="#" class="link-debug-auto-login" data-pseudo="beneficiaire_direct" data-password="beneficiaire_direct">Bénéficiaire direct</a>
+                </div>
+                {% endif %}
+                
                	<div class="text-center">
     				<button class="btn btn-primary" type="submit">Me connecter</button>
     			</div>
     		</form>
 		</div>
 </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        {% if  app.environment == 'dev' %}
+        $('.link-debug-auto-login').click(function() {
+            $('#username').val($(this).data('pseudo'));
+            $('#password').val($(this).data('password'));
+            $('#login-form').submit();
+        })
+         {% endif %}
+    
+    </script>
 {% endblock %}

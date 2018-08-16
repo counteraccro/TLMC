@@ -10,12 +10,11 @@
     <body>
     	<div class="container-full" id="container-global">
     		
-    		{% include 'elements/nav.html.twig' %}
     		<div style="padding:0px 10px 0px 10px">
                 {% block body %}	{% endblock %}
             </div>
             {% block javascripts %}{% endblock %}
         </div>
-           {% include 'elements/footer.html.twig' %}
-    </body>
+         {% include 'elements/footer.html.twig' %}
+       </body>
 </html>
