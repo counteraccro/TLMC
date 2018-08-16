@@ -55,7 +55,7 @@ a:hover {
 *
 ********************************************/
 
-/** Debut primary **/
+/** Debut btn-primary **/
 .btn-primary {
   color: #fff;
   background-color: #d5488b;
@@ -89,11 +89,161 @@ a:hover {
 .show > .btn-primary.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.2rem rgba(177, 48, 117, 0.5);
 }
-/** fin primary **/
+/** fin btn-primary **/
+
+/** Debut btn-dark **/
+.btn-dark {
+  color: #fff;
+  background-color: #4a4a4a;
+  border-color: #000000;
+}
+
+.btn-dark:hover {
+  color: #fff;
+  background-color: #000000;
+  border-color: #000000;
+}
+
+.btn-dark:focus, .btn-dark.focus {
+  box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.5); 
+}
+
+.btn-dark.disabled, .btn-dark:disabled {
+  color: #fff;
+  background-color: #727272;
+  border-color: #727272;
+}
+
+.btn-dark:not(:disabled):not(.disabled):active, .btn-dark:not(:disabled):not(.disabled).active,
+.show > .btn-dark.dropdown-toggle {
+  color: #fff;
+  background-color: #000000;
+  border-color: #000000;
+}
+
+.btn-dark:not(:disabled):not(.disabled):active:focus, .btn-dark:not(:disabled):not(.disabled).active:focus,
+.show > .btn-dark.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.5); 
+}
+/** fin btn-dark **/
+
+/** Debut btn-info **/
+.btn-info {
+  color: #fff;
+  background-color: #578FAD;
+  border-color: #116982;
+}
+
+.btn-info:hover {
+  color: #fff;
+  background-color: #116982;
+  border-color: #116982;
+}
+
+.btn-info:focus, .btn-info.focus {
+  box-shadow: 0 0 0 0.2rem rgba(87,143,173, 0.5); 
+}
+
+.btn-info.disabled, .btn-info:disabled {
+  color: #fff;
+  background-color: #B0C8D6;
+  border-color: #578FAD;
+}
+
+.btn-info:not(:disabled):not(.disabled):active, .btn-info:not(:disabled):not(.disabled).active,
+.show > .btn-info.dropdown-toggle {
+  color: #fff;
+  background-color: #116982;
+  border-color: #578FAD;
+}
+
+.btn-info:not(:disabled):not(.disabled):active:focus, .btn-info:not(:disabled):not(.disabled).active:focus,
+.show > .btn-info.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(87,143,173, 0.5); 
+}
+/** fin btn-info **/
+
+/** Debut btn-success **/
+.btn-success {
+  color: #fff;
+  background-color: #70b04d;
+  border-color: #128942;
+}
+
+.btn-success:hover {
+  color: #fff;
+  background-color: #128942;
+  border-color: #128942;
+}
+
+.btn-success:focus, .btn-success.focus {
+  box-shadow: 0 0 0 0.2rem rgba(101, 188, 70, 0.5); 
+}
+
+.btn-success.disabled, .btn-success:disabled {
+  color: #fff;
+  background-color: #85BD67;
+  border-color: #85BD67;
+}
+
+.btn-success:not(:disabled):not(.disabled):active, .btn-success:not(:disabled):not(.disabled).active,
+.show > .btn-success.dropdown-toggle {
+  color: #fff;
+  background-color: #128942;
+  border-color: #128942;
+}
+
+.btn-success:not(:disabled):not(.disabled):active:focus, .btn-success:not(:disabled):not(.disabled).active:focus,
+.show > .btn-success.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(101, 188, 70, 0.5); 
+}
+/** fin btn-success **/
+
+/** Debut btn-secondary **/
+.btn-secondary {
+  color: #fff;
+  background-color: #ACADB1;
+  border-color: #88898e;
+}
+
+.btn-secondary:hover {
+  color: #fff;
+  background-color: #88898e;
+  border-color: #88898e;
+}
+
+.btn-secondary:focus, .btn-secondary.focus {
+  box-shadow: 0 0 0 0.2rem rgba(172, 173, 177, 0.5); 
+}
+
+.btn-secondary.disabled, .btn-secondary:disabled {
+  color: #fff;
+  background-color: #cdcdcf;
+  border-color: #cdcdcf;
+}
+
+.btn-secondary:not(:disabled):not(.disabled):active, .btn-secondary:not(:disabled):not(.disabled).active,
+.show > .btn-secondary.dropdown-toggle {
+  color: #fff;
+  background-color: #88898e;
+  border-color: #88898e;
+}
+
+.btn-secondary:not(:disabled):not(.disabled):active:focus, .btn-secondary:not(:disabled):not(.disabled).active:focus,
+.show > .btn-secondary.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(172, 173, 177, 0.5); 
+}
+/** fin btn-secondary **/
 
 /********************************************
 *
-* SURCHARGE BADGE PRIMARY BOOSTRAP
+* FIN SURCHARGE BOUTON BOOSTRAP
+*
+********************************************/
+
+/********************************************
+*
+* SURCHARGE BADGE BOOSTRAP
 *
 ********************************************/
 
@@ -110,7 +260,7 @@ a:hover {
   border-color: #786D59;
 }
 
-.badge-primary[href]:focus, .badge-primary.focus {
+.badge-primary[href]:focus, .badge-primary[href].focus, .badge-primary:focus, .badge-primary.focus  {
   box-shadow: 0 0 0 0.2rem rgba(177, 48, 117, 0.5); 
 }
 
@@ -119,19 +269,39 @@ a:hover {
   background-color: #D78FB3;
   border-color: #D78FB3;
 }
-
-.badge-primary:not(:disabled):not(.disabled):active, .badge-primary:not(:disabled):not(.disabled).active,
-.show > .badge-primary.dropdown-toggle {
-  color: #fff;
-  background-color: #B13075;
-  border-color: #786D59;
-}
-
-.badge-primary:not(:disabled):not(.disabled):active:focus, .badge-primary:not(:disabled):not(.disabled).active:focus,
-.show > .badge-primary.dropdown-toggle:focus {
-  box-shadow: 0 0 0 0.2rem rgba(177, 48, 117, 0.5);
-}
 /** fin badge-primary **/
+
+/** Debut badge-light **/
+.badge-light {
+  color: #fff;
+  background-color: #ACADB1;
+}
+
+.badge-light[href]:hover, .badge-light[href]:focus {
+  color: #fff;
+  text-decoration: none;
+  background-color: #929499;
+}
+/** fin badge-light **/
+
+/** Debut badge-success **/
+.badge-success {
+  color: #fff;
+  background-color: #85BD67;
+}
+
+.badge-success[href]:hover, .badge-success[href]:focus {
+  color: #fff;
+  text-decoration: none;
+  background-color: #128942;
+}
+/** fin badge-success **/
+
+/********************************************
+*
+* FIN SURCHARGE BADGE BOOSTRAP
+*
+********************************************/
 
 /********************************************
 *
@@ -156,17 +326,6 @@ a:hover {
   border-color: #D78FB3;
 }
 
-.nav-link:not(:disabled):not(.disabled):active, .nav-link:not(:disabled):not(.disabled).active,
-.show > .nav-link.dropdown-toggle {
-  color: #fff;
-  background-color: #B13075;
-  border-color: #786D59;
-}
-
-.nav-link:not(:disabled):not(.disabled):active:focus, .nav-link:not(:disabled):not(.disabled).active:focus,
-.show > .nav-link.dropdown-toggle:focus {
-  box-shadow: 0 0 0 0.2rem rgba(177, 48, 117, 0.5);
-}
 /** fin nav-link **/
 
 /********************************************
@@ -181,6 +340,18 @@ a:hover {
 }
 /** fin text-info **/
 
+/********************************************
+*
+* FIN SURCHARGE TEXT-INFO BOOSTRAP
+*
+********************************************/
+
+/********************************************
+*
+* SURCHARGE PAGE-*
+*
+********************************************/
+
 .page-link {
 	color: #d5488b;
 }
@@ -194,6 +365,18 @@ a:hover {
 	border-color: #B13075;
 }
 
+/********************************************
+*
+* FIN SURCHARGE PAGE-*
+*
+********************************************/
+
+/********************************************
+*
+* SURCHARGE BTN-OUTLINE-*
+*
+********************************************/
+
 .btn-outline-primary {
 	color: #d5488b;
 	border-color: #B13075;
@@ -203,6 +386,12 @@ a:hover {
 	background-color: #B13075;
 	border-color: #786D59;
 }
+
+/********************************************
+*
+* FIN SURCHARGE BTN-OUTLINE-*
+*
+********************************************/
 
 /********************************************
 *
