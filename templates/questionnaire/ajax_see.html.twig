@@ -4,7 +4,7 @@
          	<div class="card-header bg-light">
             	 <b>Titre du questionnaire :</b> {{ questionnaire.titre }}
             	<div class="float-right">
-            		
+            		  {% if is_granted("ROLE_ADMIN") %}
             		  {{ addQuestion(questionnaire, path('question_ajax_add', {'id': questionnaire.id })) | raw }}
             		  {{ edit(questionnaire, path('questionnaire_ajax_edit', {'id': questionnaire.id })) | raw }}
             		  {{ test(questionnaire, path('questionnaire_demo', {'slug': questionnaire.slug })) | raw }}
@@ -12,7 +12,7 @@
             		  {# ROUTES A MODIFIER QUAND ELLES SERONT CREEES #}
             		  {{ publish(questionnaire, path('questionnaire_ajax_publication', {'id': questionnaire.id })) | raw }}
             		  {{ duplicate(questionnaire, path('questionnaire_ajax_edit', {'id': questionnaire.id })) | raw }}
-            		  
+            		  {% endif %}
             	</div>
             </div>
           	<div class="card-body">
@@ -26,10 +26,15 @@
             	<b>Description :</b> {{ questionnaire.description }}</br>
             	<b>Nombre de jours avant relance :</b> {{ questionnaire.jourRelance }}</br>
             	<b>Actif :</b> 
-            	{% if questionnaire.disabled == 0 %} Oui 
-            	{% else %} Non
+            	{% if questionnaire.disabled == 0 %} 
+            		Oui 
+            	{% else %} 
+            		Non
             	{% endif %}
             	</br>
+            	{% if questionnaire.publication %}
+            		URL de publication : <a href="{{ path('questionnaire_prod', {'slug' : questionnaire.slug}) }}">http://{{ app.request.server.get("SERVER_NAME") }}{{ path('questionnaire_prod', {'slug' : questionnaire.slug}) }}</a>
+           		{% endif %}
           	</div>
         </div>
 	<hr>
@@ -37,6 +42,7 @@
 	{{ questionnaire(questionnaire, {
 	'statut' : 'edit',
 	'edit_url' : path('question_ajax_edit', {'id': 0 }),
+	'current_user' : app.user
     }) | raw }}
 
 	{% block javascripts %}

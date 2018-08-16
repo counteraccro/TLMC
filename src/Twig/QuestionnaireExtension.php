@@ -37,6 +37,7 @@ class QuestionnaireExtension extends AbstractExtension
     const EDIT = AppController::EDIT;
 
     private $params = [
+        'current_user' => '',
         'submit_url' => '',
         'edit_url' => '',
         'statut' => self::PROD,
@@ -322,10 +323,13 @@ class QuestionnaireExtension extends AbstractExtension
                 $btn_disabled = 'disabled';
             }
 
-            $edit = '<div class="float-right">
-                ' . $disabled . '
-                <a href="' . $edit_url . '" id="btn-edit-question" class="btn btn-primary btn-edit-question ' . $btn_disabled . '"><span class="oi oi-pencil"></span> Edition</a>
-            </div>';
+            if ($this->params['current_user']->getRoles()[0] == 'ROLE_ADMIN')
+            {
+                $edit = '<div class="float-right">
+                    ' . $disabled . '
+                    <a href="' . $edit_url . '" id="btn-edit-question" class="btn btn-primary btn-edit-question ' . $btn_disabled . '"><span class="oi oi-pencil"></span> Edition</a>
+                </div>';
+            }
         }
 
         if (! empty($question->getLibelleTop())) {

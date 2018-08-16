@@ -8,6 +8,10 @@
 
 <a class="btn btn-sm btn-secondary" href="{{ path('questionnaire_see', {'id':questionnaire.id}) }}"><span class="oi oi-arrow-thick-left"></span> Retour</a>
 
+<div class="alert alert-light">
+	{{ questionnaire.description }}
+</div>
+
 <div class="row" style="margin-right:0px;">
 	<div class="col-7">
     	<fieldset>
@@ -16,7 +20,8 @@
             {{ questionnaire(questionnaire, {
             	'submit_url' : path('questionnaire_demo', {'slug': questionnaire.slug }),
             	'statut' : 'demo',
-        		'resultat' : questResultat
+        		'resultat' : questResultat,
+        		'current_user' : app.user
             }) | raw }}
         </fieldset>
     </div>

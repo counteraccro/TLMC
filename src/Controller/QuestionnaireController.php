@@ -244,6 +244,7 @@ class QuestionnaireController extends AppController
             $questionnaire->setDisabled(0);
         } else {
             $questionnaire->setDisabled(1);
+            //$questionnaire->setPublication(0);
         }
 
         $entityManager = $this->getDoctrine()->getManager();
@@ -282,12 +283,15 @@ class QuestionnaireController extends AppController
     /**
      * Prod questionnaire (rendu final pour participants qui vont poster les réponses)
      *
-     * @Route("/questionnaire/{slug}", name="questionnaire")
+     * @Route("/questionnaire/{slug}", name="questionnaire_prod")
      * @ParamConverter("questionnaire", options={"mapping": {"slug": "slug"}})
      */
     public function questionnaireAction(Request $request, Questionnaire $questionnaire, QuestionnaireManager $questionnaireManager)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        
+        $membre = $this->getMembre();
+        $questionnaireManager->allowAccess($questionnaire, $membre);
         
         $questResultat = array();
         if ($request->isMethod('POST')) {
@@ -295,8 +299,9 @@ class QuestionnaireController extends AppController
         }
         
         return $this->render('questionnaire/questionnaire.html.twig', [
-            'questionnaire' => $questionnaire,
-            'questResultat' => $questResultat
+            'questionnaire' => $questionnaireManager->formatDescription($questionnaire, $membre),
+            'questResultat' => $questResultat,
+            'membre' => $membre
         ]);
     }
 
@@ -332,7 +337,7 @@ class QuestionnaireController extends AppController
                     {
                         
                         $questionnaire->setPublication(1);
-                        // Ici date publication
+                        $questionnaire->setDatePublication(new \DateTime());
                         $entityManager = $this->getDoctrine()->getManager();
                         $entityManager->persist($questionnaire);
                         $entityManager->flush();

@@ -19,17 +19,18 @@ class LoadQuestionnaireData extends Fixture
         'Questionnaire' => [
             'Questionnaire-1' => [
                 'setTitre' => 'Soirée annuelle',
-                'setDescription' => 'Ce questionnaire est une évaluation de satisfaction.',
-                'setDateCreation' => '2017-12-25 17:00:00',
-                'setDateFin' => '2017-12-30 17:00:00',
+                'setDescription' => 'Bonjour @prenom @nom, merci de prendre quelques minutes pour répondre à ce questionnaire qui est une évaluation de satisfaction.',
+                'setDateCreation' => '2018-12-25 17:00:00',
+                'setDateFin' => '2018-12-30 17:00:00',
                 'setJourRelance' => '2',
                 'setDisabled' => '1',
                 'setSlug' => 'soiree-annuelle',
-                'setPublication' => '1'
+                'setPublication' => '1',
+                'setDatePublication' => '2018-12-26 17:00:00'
             ],
             'Questionnaire-2' => [
                 'setTitre' => 'Formulaire d\'inscription',
-                'setDescription' => 'Ce questionnaire permet d\'inscrire un nouveau participant.',
+                'setDescription' => 'Bonjour @prenom @nom, ce questionnaire permet d\'inscrire un nouveau participant.',
                 'setDateCreation' => '2018-08-01 17:00:00',
                 'setDateFin' => '2019-01-30 17:00:00',
                 'setJourRelance' => '5',
@@ -39,13 +40,14 @@ class LoadQuestionnaireData extends Fixture
             ],
             'Questionnaire-3' => [
                 'setTitre' => 'Enquête sur les bonbons',
-                'setDescription' => 'Ce questionnaire va nous permettre de mieux connaître vos goûts.',
+                'setDescription' => 'Bonjour @prenom @nom, ce questionnaire va nous permettre de mieux connaître vos goûts. Merci d\'y répondre de façon honnête !',
                 'setDateCreation' => '2018-08-02 19:00:00',
                 'setDateFin' => '2018-09-03 23:00:00',
                 'setJourRelance' => '5',
                 'setDisabled' => '0',
                 'setSlug' => 'enquete-sur-les-bonbons',
-                'setPublication' => '1'
+                'setPublication' => '1',
+                'setDatePublication' => '2018-09-01 17:00:00'
             ]
         ]
     ];
@@ -66,7 +68,7 @@ class LoadQuestionnaireData extends Fixture
 
             foreach ($object as $key => $val) {
                 
-                if($key == 'setDateCreation' || $key == 'setDateFin')
+                if($key == 'setDateCreation' || $key == 'setDateFin' || $key == 'setDatePublication')
                 {
                     $val = new \DateTime($val);
                 }

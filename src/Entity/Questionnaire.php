@@ -60,6 +60,11 @@ class Questionnaire
     private $slug;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $date_publication;
+    
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Question", mappedBy="questionnaire")
      * @ORM\OrderBy({"ordre" = "ASC"})
      */
@@ -277,6 +282,18 @@ class Questionnaire
     public function setPublication(bool $publication): self
     {
         $this->publication = $publication;
+
+        return $this;
+    }
+
+    public function getDatePublication(): ?\DateTimeInterface
+    {
+        return $this->date_publication;
+    }
+
+    public function setDatePublication(\DateTimeInterface $date_publication): self
+    {
+        $this->date_publication = $date_publication;
 
         return $this;
     }

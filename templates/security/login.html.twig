@@ -26,7 +26,7 @@
                 
                 {% if  app.environment == 'dev' %}
                 <div class="alert alert-light">
-                		<b>Ce connecter en tant que</b><br />
+                		<b>Se connecter en tant que</b><br />
                 		<a href="#" class="link-debug-auto-login" data-pseudo="admin" data-password="admin">Admin</a> |
                 		<a href="#" class="link-debug-auto-login" data-pseudo="benevole" data-password="benevole">Bénevole</a> |
                 		<a href="#" class="link-debug-auto-login" data-pseudo="beneficiaire" data-password="beneficiaire">Bénéficiaire</a> |
@@ -35,7 +35,7 @@
                 {% endif %}
                 
                	<div class="text-center">
-    				<button class="btn btn-primary" type="submit">Me connecter</button>
+    				<button class="btn btn-primary" id="btn-submit-login" type="submit">Me connecter</button>
     			</div>
     		</form>
 		</div>
@@ -48,6 +48,7 @@
         $('.link-debug-auto-login').click(function() {
             $('#username').val($(this).data('pseudo'));
             $('#password').val($(this).data('password'));
+            $('#btn-submit-login').addClass('disabled').html('Connection...');
             $('#login-form').submit();
         })
          {% endif %}

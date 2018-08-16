@@ -4,7 +4,16 @@
 
 {% block body %}
 
-<h1>Questionnaire</h1>
+<div class="float-right mt-3">
+		<i class="text-white">Identifié(e) en tant que {{ membre.prenom }} {{ membre.nom }}</i>
+	</div>
+<h1>
+	Questionnaire
+</h1>
+
+<div class="alert alert-light">
+	{{ questionnaire.description }}
+</div>
 
 <div class="row" style="margin-right:0px;">
 	<div class="col-12">
@@ -12,9 +21,9 @@
     		<legend>{{ questionnaire.titre }}</legend>
     	
             {{ questionnaire(questionnaire, {
-            	'submit_url' : path('questionnaire', {'slug': questionnaire.slug }),
+            	'submit_url' : path('questionnaire_prod', {'slug': questionnaire.slug }),
             	'statut' : 'prod',
-        		'resultat' : questResultat
+        		'resultat' : questResultat,
             }) | raw }}
         </fieldset>
     </div> 

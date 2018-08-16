@@ -17,7 +17,7 @@ class LoadReponseData extends Fixture implements DependentFixtureInterface
     private $container;
 
     private $tabReponses = [
-        'Reponse' => [
+         'Reponse' => [
             'Reponse-1' => [
                 'setQuestion' => 'Question-1',
                 'setMembre' => 'Membre-1',

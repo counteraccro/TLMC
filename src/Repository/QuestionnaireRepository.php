@@ -81,6 +81,31 @@ class QuestionnaireRepository extends ServiceEntityRepository
         );
     }
 
+    /**
+     * Regarde si le membre à déjà répondu ou non au questionnaire en checkant si 
+     * une réponse pour ce membre est présente
+     * @param int $questionnaire_id
+     * @param int $id_membre
+     * @return true si oui, false si non
+     */
+    public function HasAnswered($questionnaire_id, $id_membre)
+    {
+        $return = $this->createQueryBuilder('q')
+            ->select('rep.id')
+            ->join('q.questions', 'qu')
+            ->join('qu.reponses', 'rep')
+            ->andWhere('rep.membre = ' . $id_membre)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getArrayResult();
+       
+       // Si pas de réponses tout est ok
+       if(empty($return))
+       {
+           return false;
+       }
+        return true;
+    }
     // /**
     // * @return Questionnaire[] Returns an array of Questionnaire objects
     // */

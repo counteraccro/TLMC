@@ -15,6 +15,7 @@
 	{{ form_row(form.slug) }}
 	{{ form_row(form.titre) }}
 	{{ form_row(form.description) }}
+	
 	{{ form_row(form.date_fin) }}
 	{{ form_row(form.jour_relance) }}
 	</div>
@@ -38,5 +39,7 @@
 	var url = '{{path('questionnaire_ajax_edit', {'id': questionnaire.id }) }}';
 	Questionnaire.EventEditSubmit(url);
 
+	var info = '<small class="form-text text-muted">Ajouter <b>@nom</b> pour afficher le nom et <b>@prenom</b> pour afficher le prénom du membre</small>';
+	$('#questionnaire_description').parent().append(info);
     </script>
 {% endblock %}

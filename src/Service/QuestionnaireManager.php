@@ -8,6 +8,8 @@ use App\Entity\Questionnaire;
 use App\Entity\Reponse;
 use App\Entity\Question;
 use App\Controller\AppController;
+use App\Entity\Membre;
+use Symfony\Component\Finder\Exception\AccessDeniedException;
 
 class QuestionnaireManager extends AppService
 {
@@ -56,6 +58,7 @@ class QuestionnaireManager extends AppService
 
     /**
      * Fonction qui appelle les fonctions questionnaire (initialisation, création réponse, validation...)
+     *
      * @param Questionnaire $questionnaire
      */
     public function manage(Questionnaire $questionnaire, $statut = AppController::PROD)
@@ -124,11 +127,11 @@ class QuestionnaireManager extends AppService
                 }
             }
 
-            //Si le type de question correspond à une liste déroulante
+            // Si le type de question correspond à une liste déroulante
             if (in_array($question->getType(), array(
                 AppController::CHOICETYPE
             ))) {
-                
+
                 if ($question->getValeurDefaut() == $reponse->getValeur()) {
                     $this->return[$key]->erreur->is = true;
                     $this->return[$key]->erreur->libelle = $question->getMessageErreur();
@@ -143,7 +146,7 @@ class QuestionnaireManager extends AppService
      * Récupération des données renvoyées dans la réponse, pour chaque question renseignée
      * Les élements de réponse sont intégrés à notre objet Réponse
      */
-   private function createReponse()
+    private function createReponse()
     {
         /* @var Question $question */
         foreach ($this->questionnaire->getQuestions() as $question) {
@@ -169,10 +172,54 @@ class QuestionnaireManager extends AppService
                     $reponse = $this->return[$question->getid()]->reponse;
                     $reponse->setValeur($strValeur);
                     $reponse->setQuestion($question);
-                   
+
                     $this->return[$question->getid()]->reponse = $reponse;
                 }
             }
         }
+    }
+
+    /**
+     *
+     * @param Questionnaire $questionnaire
+     * @param Membre $membre
+     */
+    public function allowAccess(Questionnaire $questionnaire, Membre $membre)
+    {
+        if (! $questionnaire->getPublication() || $questionnaire->getDisabled()) {
+            throw new AccessDeniedException("Ce questionnaire n'existe pas.");
+        }
+
+        $today = new \DateTime();
+        if ($today->getTimestamp() > $questionnaire->getDateFin()->getTimestamp()) {
+            throw new AccessDeniedException("La date limite de réponse du questionnaire est dépassée.");
+        }
+
+        $questionnaireRepo = $this->doctrine->getRepository(Questionnaire::class);
+        if ($questionnaireRepo->HasAnswered($questionnaire->getId(), $membre->getId())) {
+            // throw new AccessDeniedException("Vous avez déjà répondu à ce questionnaire.");
+        }
+    }
+
+    /**
+     * 
+     * @param Questionnaire $questionnaire
+     * @param Membre $membre
+     * @return \App\Entity\Questionnaire
+     */
+    public function formatDescription(Questionnaire $questionnaire, Membre $membre)
+    {
+        $masque = array(
+            '@prenom' => $membre->getPrenom(),
+            '@nom' => $membre->getNom()
+        );
+        
+        $description = $questionnaire->getDescription();
+        $description = str_replace("@prenom", $masque['@prenom'], $description);
+        $description = str_replace("@nom", $masque['@nom'], $description);
+        
+        $questionnaire->setDescription($description);
+        
+        return $questionnaire;
     }
 }

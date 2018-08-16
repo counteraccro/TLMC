@@ -30,6 +30,8 @@ Nouveau questionnaire
 {{ form_rest(form) }}
 {{ form_end(form) }}
 
+{% endblock %}
+
 {% block stylesheets %}
 	<style>
     	#slug_text {
@@ -45,8 +47,10 @@ Nouveau questionnaire
 
 {% block javascripts %}
 <script type="text/javascript">
-	
-    
+
+	var info = '<small class="form-text text-muted">Ajouter <b>@nom</b> pour afficher le nom et <b>@prenom</b> pour afficher le prénom du membre</small>';
+	$('#questionnaire_description').parent().append(info);
+
     $(document).ready(function() {
 
 		var params = {
@@ -65,6 +69,4 @@ Nouveau questionnaire
     });
 		
     </script>
-{% endblock %}
-
 {% endblock %}
