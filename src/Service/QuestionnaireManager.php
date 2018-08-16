@@ -180,7 +180,8 @@ class QuestionnaireManager extends AppService
     }
 
     /**
-     *
+     * Autorisation d'accès à un questionnaire donné
+     * ex : si questionnaire déjà répondu, l'utilisateur n'y a plus accès
      * @param Questionnaire $questionnaire
      * @param Membre $membre
      */
@@ -197,12 +198,13 @@ class QuestionnaireManager extends AppService
 
         $questionnaireRepo = $this->doctrine->getRepository(Questionnaire::class);
         if ($questionnaireRepo->HasAnswered($questionnaire->getId(), $membre->getId())) {
-            // throw new AccessDeniedException("Vous avez déjà répondu à ce questionnaire.");
+            throw new AccessDeniedException("Vous avez déjà répondu à ce questionnaire.");
         }
     }
 
     /**
-     * 
+     * Possibilité de personnaliser la description d'un questionnaire 
+     * @nom et @prenom mis en place pour changement automatique par ceux de l'utilisateur connecté
      * @param Questionnaire $questionnaire
      * @param Membre $membre
      * @return \App\Entity\Questionnaire
