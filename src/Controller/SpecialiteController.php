@@ -311,7 +311,7 @@ class SpecialiteController extends AppController
     {
         $specialites = $this->getElementsLiesActifs($etablissement, 'getSpecialites');
 
-        return $this->render('specialite/ajax_see.html.twig', array(
+        return $this->render('specialite/ajax_see_liste.html.twig', array(
             'etablissement' => $etablissement,
             'specialites' => $specialites
         ));
