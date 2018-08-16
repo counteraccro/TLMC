@@ -26,6 +26,7 @@ Temoignage.Launch = function(params) {
 		.done(function( html ) {
 			$(id_done).html(html);
 			$(Temoignage.id_container_global).hideLoading();
+			$(Temoignage.id_global).hideLoading();
 		});
 	}
 	

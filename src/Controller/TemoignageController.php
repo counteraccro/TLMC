@@ -54,6 +54,43 @@ class TemoignageController extends AppController
                 $params['repository'] . '.membre = ' . $membre->getId(),
                 $params['repository'] . '.disabled = 0'
             );
+
+            // récupération des témoignages liés à un événement ou un produit associé à la spécialité
+            if ($membre->getSpecialite()) {
+                $params['jointure'] = array(
+                    array(
+                        'oldrepository' => 'Temoignage',
+                        'newrepository' => $type
+                    ),
+                    array(
+                        'oldrepository' => $type,
+                        'newrepository' => ($type == 'produit' ? 'produitSpecialites' : 'specialiteEvenements')
+                    ),
+                    array(
+                        'oldrepository' => ($type == 'produit' ? 'produitSpecialites' : 'specialiteEvenements'),
+                        'newrepository' => 'specialite'
+                    )
+                );
+                $params['condition'][] = 'specialite.id = ' . $membre->getSpecialite()->getId();
+            } elseif ($type == 'produit') {
+                $params['jointure'] = array(
+                    array(
+                        'oldrepository' => 'Temoignage',
+                        'newrepository' => 'produit'
+                    ),
+                    array(
+                        'oldrepository' => 'Produit',
+                        'newrepository' => 'produitEtablissements'
+                    ),
+                    array(
+                        'oldrepository' => 'produitEtablissements',
+                        'newrepository' => 'etablissement'
+                    )
+                );
+                $params['condition'][] = 'etablissement.id = ' . $this->getMembre()
+                    ->getEtablissement()
+                    ->getId();
+            }
         } else {
             $params['condition'] = array();
         }
@@ -218,7 +255,7 @@ class TemoignageController extends AppController
                     break;
             }
         }
-
+        
         $form = $this->createForm(TemoignageType::class, $temoignage, $opt_form);
 
         $form->handleRequest($request);

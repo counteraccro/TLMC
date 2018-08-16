@@ -137,7 +137,7 @@ class EtablissementRepository extends ServiceEntityRepository
     public function findEtablissementAvecSpecialite()
     {
         return $this->createQueryBuilder('e')
-            ->select('e')
+            ->select('e.id, e.nom')
             ->innerJoin('App:Specialite', 's', 'WITH', 's.etablissement = e.id')
             ->orderBy('e.nom', 'ASC')
             ->groupBy('e.id')

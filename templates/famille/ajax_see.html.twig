@@ -37,7 +37,8 @@
                 		    {% endif %}
                 		    <a href="{{ path('famille_ajax_edit', {'id' : famille.id}) }}" id="btn-edit-famille-{{ famille.id }}"  title="Editer la fiche"><span class="oi oi-pencil"></span></a>
                 		    {% if is_granted("ROLE_ADMIN") %}
-                		        {{ actionDelete(famille.disabled, path('famille_delete', {'id' : famille.id, 'page': pagination.page}), famille.id) | raw }}
+                		        {#{ actionDelete(famille.disabled, path('famille_delete', {'id' : famille.id, 'page': pagination.page}), famille.id) | raw }#}
+                		        {{ actionDelete(famille.disabled, path('famille_delete', {'id' : famille.id}), famille.id) | raw }}
                 		    {% endif %}
                 		</td>
                 	</tr>
