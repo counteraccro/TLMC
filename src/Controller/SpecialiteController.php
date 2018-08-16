@@ -76,18 +76,27 @@ class SpecialiteController extends AppController
      * Fiche d'une spécialité
      *
      * @Route("/specialite/see/{id}/{page}", name="specialite_see")
+     * @Route("/specialite/ajax/see/{id}", name="specialite_ajax_see")
      * @ParamConverter("specialite", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
-     *
+     * 
+     * @param Request $request
      * @param SessionInterface $session
      * @param Specialite $specialite
      * @param int $page
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function seeAction(SessionInterface $session, Specialite $specialite, int $page)
+    public function seeAction(Request $request, SessionInterface $session, Specialite $specialite, int $page = 1)
     {
         $arrayFilters = $this->getDatasFilter($session);
-
+        
+        if ($request->isXmlHttpRequest()) {
+            
+            return $this->render('specialite/ajax_see.html.twig', array(
+                'specialite' => $specialite
+            ));
+        }
+        
         return $this->render('specialite/see.html.twig', array(
             'page' => $page,
             'specialite' => $specialite,
@@ -189,7 +198,7 @@ class SpecialiteController extends AppController
      * Edition d'une spécialité
      *
      * @Route("/specialite/edit/{id}/{page}", name="specialite_edit")
-     * @Route("/specialite/ajax/edit/{id}", name="specialite_ajax_edit")
+     * @Route("/specialite/ajax/edit/{id}/{type}", name="specialite_ajax_edit")
      * @ParamConverter("specialite", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
      *
@@ -199,7 +208,7 @@ class SpecialiteController extends AppController
      * @param int $page
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function editAction(SessionInterface $session, Request $request, Specialite $specialite, int $page = 1)
+    public function editAction(SessionInterface $session, Request $request, Specialite $specialite, int $page = 1, string $type = null)
     {
         $arrayFilters = $this->getDatasFilter($session);
 
@@ -234,7 +243,8 @@ class SpecialiteController extends AppController
 
             return $this->render('specialite/ajax_edit.html.twig', array(
                 'form' => $form->createView(),
-                'specialite' => $specialite
+                'specialite' => $specialite,
+                'type' => $type
             ));
         }
 
@@ -300,7 +310,7 @@ class SpecialiteController extends AppController
     /**
      * Bloc spécialité dans la vue d'un établissement
      *
-     * @Route("/specialite/ajax/see/{id}", name="specialite_ajax_see")
+     * @Route("/specialite/etablissement/ajax/see/{id}", name="specialite_etablissement_ajax_see")
      * @ParamConverter("etablissement", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
      *

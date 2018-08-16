@@ -86,6 +86,7 @@ encoding//templates/specialite/add.html.twig=UTF-8
 encoding//templates/specialite/ajax_add.html.twig=UTF-8
 encoding//templates/specialite/ajax_dropdown.html.twig=UTF-8
 encoding//templates/specialite/ajax_edit.html.twig=UTF-8
+encoding//templates/specialite/ajax_see.html.twig=UTF-8
 encoding//templates/specialite/ajax_see_liste.html.twig=UTF-8
 encoding//templates/specialite/edit.html.twig=UTF-8
 encoding//templates/specialite/index.html.twig=UTF-8

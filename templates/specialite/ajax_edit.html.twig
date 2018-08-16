@@ -29,10 +29,10 @@
 	{% block javascripts %}
 	<script type="text/javascript">
     
-    	$('#modal_etablissement_global').modal({
-    		   'show' : true,
-    		   'backdrop' : 'static'
-    	});
+    	$('#modal_{{ type }}_global').modal({
+ 		   'show' : true,
+ 		   'backdrop' : 'static'
+ 		});
     	
 		var url = '{{path('specialite_ajax_edit', {'id': specialite.id }) }}';
 		

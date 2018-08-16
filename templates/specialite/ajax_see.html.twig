@@ -1,0 +1,47 @@
+<div class="card shadow-sm">
+	<div class="card-header bg-light">
+    	<b>Spécialité :</b> {{ specialite.service }}
+       	<div class="float-right"> 
+       		{% if is_granted("ROLE_ADMIN") %}
+       			<a href="{{path('specialite_ajax_edit', {'id': specialite.id, 'type': 'specialite' }) }}" id="btn-edit-specialite" class="btn btn-dark"><span class="oi oi-pencil"></span> Editer la spécialité</a>
+       		{% endif %}
+       	</div>
+    </div>
+    <div class="card-body">
+    	<table  class="table table-sm">
+        	<tr>
+        		<th scope="col"> Etablissement </th>
+        		<td> {{ specialite.etablissement.nom }} </td>
+        		<th scope="col"> Actif </th>
+        		<td> {{ specialite.disabled | actif }} </td>
+        	</tr>
+        	<tr>
+        		<th scope="col"> Code Logistique </th>
+        		<td> {{ specialite.codeLogistique }} </td>
+        		<td></td>
+        		<td></td>
+        	</tr>
+        	<tr>
+        		<th scope="col"> Service pour les adultes </th>
+        		<td> {{ specialite.adulte | bool }} </td>
+        		<th scope="col"> Service pour les enfants </th>
+        		<td> {{ specialite.pediatrie | bool }} </td>
+        	</tr>
+        </table>
+    </div>
+</div>
+    
+<hr>
+ 
+{% block javascripts %}
+
+    <script type="text/javascript">
+
+    $(document).ready(function() {
+        var id_btn_specialite = '#btn-edit-specialite';
+        Specialite.EventEdit(id_btn_specialite);
+    });
+    
+    </script> 
+
+{% endblock %}

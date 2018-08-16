@@ -132,7 +132,6 @@ Specialite.Launch = function(params) {
 			//on passe l'url et l'id_done
 
 			$(Specialite.id_container_global).showLoading();
-
 			Specialite.Ajax($(this).attr('href'), Specialite.id_content_modal);
 			return false;
 		});
