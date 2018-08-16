@@ -11,7 +11,7 @@
     
     <div class="card">
     	<div class="card-header">
-            {{ pagination.nb_elements }} événement{% if pagination.nb_elements > 1 %}s{% endif %} - Page {{ pagination.page }} / {{ pagination.pages_count }}
+            {{ pagination.nb_elements }} événement{% if pagination.nb_elements > 1 %}s{% endif %} {% if pagination.pages_count > 0 %} - Page {{ pagination.page }} / {{ pagination.pages_count }} {% endif %}
             {% if is_granted("ROLE_ADMIN") %}
         		<a href="{{ path('evenement_add', {'page' : pagination.page}) }}" class="float-right"><span class="oi oi-calendar"></span> Nouvel événement</a>
         	{% endif %}

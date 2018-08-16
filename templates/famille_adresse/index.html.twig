@@ -10,7 +10,7 @@
 
 <div class="card">
 	<div class="card-header">
-    	{{ pagination.nb_elements }} adresse{% if pagination.nb_elements > 1 %}s{% endif %} - Page {{ pagination.page }} / {{ pagination.pages_count }}
+    	{{ pagination.nb_elements }} adresse{% if pagination.nb_elements > 1 %}s{% endif %} {% if pagination.pages_count > 0 %} - Page {{ pagination.page }} / {{ pagination.pages_count }} {% endif %}
     	<!-- L'adresse de la famille est créée en même temps que la famille -->
     	<!-- <a href="{#{ path('famille_adresse_add', {'page' : pagination.page}) }#}" class="float-right"> Nouvelle adresse</a> -->
     	{{ labelFilter(path('utils_delete-search', {'page' : pagination.page} ), current_search) | raw }}
