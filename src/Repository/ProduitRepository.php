@@ -197,6 +197,7 @@ class ProduitRepository extends ServiceEntityRepository
             } else {
                 $return->innerJoin('App:ProduitSpecialite', 'ps', 'WITH', 'ps.produit = p.id')->andWhere('ps.specialite = ' . $id_specialite);
             }
+            $return->andWhere('p.disabled = 0');
         }
         
         $return->orderBy('p.titre', 'ASC')->groupBy('p.id');

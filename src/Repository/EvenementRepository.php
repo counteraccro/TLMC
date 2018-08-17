@@ -142,6 +142,7 @@ class EvenementRepository extends ServiceEntityRepository
         
         if (! $admin) {
             $return->innerJoin('App:SpecialiteEvenement', 'se', 'WITH', 'se.evenement = e.id')->andWhere('se.specialite = ' . $id_specialite);
+            $return->andWhere('e.disabled = 0');
         }
         
         $return->orderBy('e.nom', 'ASC');
