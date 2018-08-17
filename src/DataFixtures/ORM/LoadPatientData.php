@@ -25,7 +25,7 @@ class LoadPatientData extends Fixture implements DependentFixtureInterface
                 'setDateNaissance' => '1991-09-30 11:29:00',
                 'setPMR' => false,
                 'setSpecialite' => 'Specialite-1',
-                'setDisabled' => true
+                'setDisabled' => false
             ],
             'Patient-2' => [
                 'setNom' => 'Lagarde',
@@ -33,14 +33,38 @@ class LoadPatientData extends Fixture implements DependentFixtureInterface
                 'setDateNaissance' => '1993-08-23 17:55:00',
                 'setPMR' => false,
                 'setSpecialite' => 'Specialite-1',
-                'setDisabled' => true
+                'setDisabled' => false
             ],
             'Patient-3' => [
                 'setNom' => 'LeChef',
                 'setPrenom' => 'Aymeric',
                 'setDateNaissance' => '1984-04-12 11:11:11',
                 'setPMR' => true,
+                'setSpecialite' => 'Specialite-1',
+                'setDisabled' => true
+            ],
+            'Patient-4' => [
+                'setNom' => 'Pierre',
+                'setPrenom' => 'Henri',
+                'setDateNaissance' => '1969-11-30 22:22:00',
+                'setPMR' => true,
                 'setSpecialite' => 'Specialite-2',
+                'setDisabled' => false
+            ],
+            'Patient-5' => [
+                'setNom' => 'Joséphine',
+                'setPrenom' => 'Charles-Antoine',
+                'setDateNaissance' => '1989-06-14 15:12:00',
+                'setPMR' => false,
+                'setSpecialite' => 'Specialite-3',
+                'setDisabled' => false
+            ],
+            'Patient-6' => [
+                'setNom' => 'Jean-Jean',
+                'setPrenom' => 'Charles-Henri',
+                'setDateNaissance' => '2001-03-05 03:05:01',
+                'setPMR' => true,
+                'setSpecialite' => 'Specialite-4',
                 'setDisabled' => false
             ]
         ]
