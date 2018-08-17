@@ -120,8 +120,8 @@ class ProduitRepository extends ServiceEntityRepository
             }
         }
 
-        if(isset($params['condition'])){
-            foreach ($params['condition'] as $condition){
+        if (isset($params['condition'])) {
+            foreach ($params['condition'] as $condition) {
                 $query->andWhere($condition);
             }
         }
@@ -129,12 +129,12 @@ class ProduitRepository extends ServiceEntityRepository
         return $query;
     }
 
-   /**
-    * Requête permettant de récupérer les différentes liaisons d'un produit avec une spécialité et un établissement
-    * 
-    * @param int $id_produit
-    * @return array $connexions
-    */
+    /**
+     * Requête permettant de récupérer les différentes liaisons d'un produit avec une spécialité et un établissement
+     *
+     * @param int $id_produit
+     * @return array $connexions
+     */
     public function findEtablissementAndSpecialite(int $id_produit)
     {
         $lien_etablissement = $this->createQueryBuilder('p')
@@ -164,7 +164,7 @@ class ProduitRepository extends ServiceEntityRepository
         if (count($lien_specialite) == 1 && is_null($lien_specialite[0]['EtablissementId'])) {
             $lien_specialite = array();
         }
-        
+
         $liens = array_merge($lien_etablissement, $lien_specialite);
         $connexions = array();
 
@@ -177,6 +177,32 @@ class ProduitRepository extends ServiceEntityRepository
         }
 
         return $connexions;
+    }
+
+    /**
+     * Récupération des produits liés à un établissement ou une spécialité
+     * 
+     * @param bool $admin
+     * @param int $id_etablissement
+     * @param int $id_specialite
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getProduitAvailable(bool $admin, int $id_etablissement, int $id_specialite = null)
+    {
+        $return = $this->createQueryBuilder('p');
+        
+        if (! $admin) {
+            if (is_null($id_specialite)) {
+                $return->innerJoin('App:ProduitEtablissement', 'pe', 'WITH', 'pe.produit = p.id')->andWhere('pe.etablissement = ' . $id_etablissement);
+            } else {
+                $return->innerJoin('App:ProduitSpecialite', 'ps', 'WITH', 'ps.produit = p.id')->andWhere('ps.specialite = ' . $id_specialite);
+            }
+            $return->andWhere('p.disabled = 0');
+        }
+        
+        $return->orderBy('p.titre', 'ASC')->groupBy('p.id');
+        
+        return $return;
     }
 
     // /**

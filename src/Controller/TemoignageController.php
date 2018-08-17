@@ -67,7 +67,7 @@ class TemoignageController extends AppController
                         'newrepository' => ($type == 'produit' ? 'produitSpecialites' : 'specialiteEvenements')
                     )
                 );
-                $params['condition'][] = ($type == 'produit' ? 'produitSpecialites' : 'specialiteEvenements') .'.specialite = ' . $membre->getSpecialite()->getId();
+                $params['condition'][] = ($type == 'produit' ? 'produitSpecialites' : 'specialiteEvenements') . '.specialite = ' . $membre->getSpecialite()->getId();
             } elseif ($type == 'produit') {
                 $params['jointure'] = array(
                     array(
@@ -222,11 +222,16 @@ class TemoignageController extends AppController
         );
 
         $temoignage = new Temoignage();
+        
+        $membre = $this->getMembre();
+        $id_specialite = (is_null($membre->getSpecialite()) ? 0 : $membre->getSpecialite()->getId());
+        $isAdmin = $this->isAdmin();
+        
+        switch ($type) {
+            case 'evenement':
+                $repository = $this->getDoctrine()->getRepository(Evenement::class);
 
-        if ($request->isXmlHttpRequest()) {
-            switch ($type) {
-                case 'evenement':
-                    $repository = $this->getDoctrine()->getRepository(Evenement::class);
+                if ($request->isXmlHttpRequest()) {
                     $objets = $repository->findById($id);
                     $objet = $objets[0];
 
@@ -234,9 +239,15 @@ class TemoignageController extends AppController
                     $opt_form['avec_prod'] = false;
 
                     $temoignage->setEvenement($objet);
-                    break;
-                case 'produit':
-                    $repository = $this->getDoctrine()->getRepository(Produit::class);
+                } else {
+                    $opt_form['query_event'] = $repository->getEvenementAvailable($isAdmin, $id_specialite);
+                    $opt_form['required_event'] = true;
+                }
+                break;
+            case 'produit':
+                $repository = $this->getDoctrine()->getRepository(Produit::class);
+
+                if ($request->isXmlHttpRequest()) {
                     $objets = $repository->findById($id);
                     $objet = $objets[0];
 
@@ -244,18 +255,21 @@ class TemoignageController extends AppController
                     $opt_form['avec_event'] = false;
 
                     $temoignage->setProduit($objet);
-                    break;
-            }
+                } else {
+                    $opt_form['query_prod'] = $repository->getProduitAvailable($isAdmin, $membre->getEtablissement()->getId(), $id_specialite);
+                    $opt_form['required_prod'] = true;
+                }
+                break;
         }
-        
+
         $form = $this->createForm(TemoignageType::class, $temoignage, $opt_form);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
             $em = $this->getDoctrine()->getManager();
-
-            $temoignage->setMembre($this->getMembre());
+            
+            $temoignage->setMembre($membre);
             $temoignage->setDisabled(0);
             $temoignage->setDateCreation(new \DateTime());
             $em->persist($temoignage);
