@@ -10,6 +10,7 @@ use App\Entity\Question;
 use App\Controller\AppController;
 use App\Entity\Membre;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 
 class QuestionnaireManager extends AppService
 {
@@ -34,6 +35,12 @@ class QuestionnaireManager extends AppService
      * @var Questionnaire
      */
     private $questionnaire;
+    
+    /**
+     * Si au moins une erreur true
+     * @var boolean
+     */
+    private $is_error = false;
 
     /**
      * Tableau de retour contenant une liste d'objet contenant
@@ -42,6 +49,7 @@ class QuestionnaireManager extends AppService
      * stdClass->erreur => object stdClass contenant
      * * *stdClass->isValide => true|false
      * * *stdClass->label => texte de l'erreur
+     * stdClass->valideSubmit => true|false information submit // pour la redirection après enregistrement en statut prod
      */
     private $return = array();
 
@@ -56,19 +64,34 @@ class QuestionnaireManager extends AppService
         $this->doctrine = $doctrine;
     }
 
+ 
     /**
      * Fonction qui appelle les fonctions questionnaire (initialisation, création réponse, validation...)
-     *
+     * Le membre est obligatoire pour l'enregistrement en base
      * @param Questionnaire $questionnaire
+     * @param string $statut
+     * @param Membre $membre
+     * @return array
      */
-    public function manage(Questionnaire $questionnaire, $statut = AppController::PROD)
+    public function manage(Questionnaire $questionnaire, $statut = AppController::PROD, Membre $membre = null)
     {
         $this->questionnaire = $questionnaire;
         $this->initialize();
         $this->createReponse();
         $this->validate();
 
-        return $this->return;
+        // En statut PROD et si pas d'erreur on enregistre en base
+        if(!$this->is_error && $statut == AppController::PROD)
+        {
+            if(is_null($membre))
+            {
+                throw new \ErrorException('Le membre est obligatoire pour enregistrer les réponses en base de données');
+            }
+            
+           $this->saveData($membre);
+        }
+        
+        return array('result' => $this->return, 'validateSubmit' => !$this->is_error);
     }
 
     /**
@@ -85,7 +108,7 @@ class QuestionnaireManager extends AppService
                     'is' => false,
                     'libelle' => '',
                     'regle' => ''
-                )
+                ),
             ];
             $this->return[$question->getid()] = (object) $array;
         }
@@ -110,6 +133,7 @@ class QuestionnaireManager extends AppService
                     $this->return[$key]->erreur->is = true;
                     $this->return[$key]->erreur->libelle = 'Cette question est obligatoire';
                     $this->return[$key]->erreur->regle = 'Question obligatoire';
+                    $this->is_error = true;
                     continue;
                 }
             }
@@ -123,6 +147,7 @@ class QuestionnaireManager extends AppService
                     $this->return[$key]->erreur->is = true;
                     $this->return[$key]->erreur->libelle = $question->getMessageErreur();
                     $this->return[$key]->erreur->regle = 'Regle de validation : ' . AppController::QUESTION_REGLES_REGEX[$question->getRegles()];
+                    $this->is_error = true;
                     continue;
                 }
             }
@@ -136,6 +161,7 @@ class QuestionnaireManager extends AppService
                     $this->return[$key]->erreur->is = true;
                     $this->return[$key]->erreur->libelle = $question->getMessageErreur();
                     $this->return[$key]->erreur->regle = 'Valeur par défaut = valeur saisie';
+                    $this->is_error = true;
                     continue;
                 }
             }
@@ -216,12 +242,35 @@ class QuestionnaireManager extends AppService
             '@nom' => $membre->getNom()
         );
         
-        $description = $questionnaire->getDescription();
-        $description = str_replace("@prenom", $masque['@prenom'], $description);
-        $description = str_replace("@nom", $masque['@nom'], $description);
+        $fields = array('Description', 'DescriptionAfterSubmit');
         
-        $questionnaire->setDescription($description);
+        foreach($fields as $field)
+        {
+            $txt = $questionnaire->{'get' . $field}();
+            $txt = str_replace("@prenom", $masque['@prenom'], $txt);
+            $txt = str_replace("@nom", $masque['@nom'], $txt);
+            $questionnaire->{'set' . $field}($txt);
+        }
         
         return $questionnaire;
+    }
+    
+    /**
+     *
+     * Enregistrement des données
+     * @param Membre $membre
+     */
+    private function saveData(Membre $membre)
+    {
+        $em = $this->doctrine->getManager();
+        
+        /* @var Reponse $reponse */
+        foreach($this->return as $value)
+        {
+            $reponse = $value->reponse;
+            $reponse->setMembre($membre);
+            $em->persist($reponse);
+        }
+        $em->flush();
     }
 }

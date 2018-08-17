@@ -269,14 +269,14 @@ class QuestionnaireController extends AppController
      */
     public function demoAction(Request $request, Questionnaire $questionnaire, QuestionnaireManager $questionnaireManager)
     {
-        $questResultat = array();
+        $questResultat = array('result' => array());
         if ($request->isMethod('POST')) {
             $questResultat = $questionnaireManager->manage($questionnaire, self::DEMO);
         }
 
         return $this->render('questionnaire/demo.html.twig', [
             'questionnaire' => $questionnaire,
-            'questResultat' => $questResultat
+            'questResultat' => $questResultat['result']
         ]);
     }
     
@@ -293,14 +293,15 @@ class QuestionnaireController extends AppController
         $membre = $this->getMembre();
         $questionnaireManager->allowAccess($questionnaire, $membre);
         
-        $questResultat = array();
+        $questResultat = array('result' => array(), 'validateSubmit' => true);
         if ($request->isMethod('POST')) {
-            $questResultat = $questionnaireManager->manage($questionnaire, self::PROD);
+            $questResultat = $questionnaireManager->manage($questionnaire, self::PROD, $membre);            
         }
         
         return $this->render('questionnaire/questionnaire.html.twig', [
             'questionnaire' => $questionnaireManager->formatDescription($questionnaire, $membre),
-            'questResultat' => $questResultat,
+            'questResultat' => $questResultat['result'],
+            'validateSubmit' => $questResultat['validateSubmit'],
             'membre' => $membre
         ]);
     }

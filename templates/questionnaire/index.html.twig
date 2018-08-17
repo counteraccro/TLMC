@@ -25,7 +25,7 @@
         		<th>{{ headerFilter(path('questionnaire_listing', {'page' : pagination.page, 'field' : 'date_fin'} ), 'Date de fin', current_order, current_field) | raw }}</th>
         		<th>{{ headerFilter(path('questionnaire_listing', {'page' : pagination.page, 'field' : 'publication'} ), 'Publication', current_order, current_field) | raw }}</th>
         		<th>{{ headerFilter(path('questionnaire_listing', {'page' : pagination.page, 'field' : 'nb_questions'} ), 'Nb questions', current_order, current_field) | raw }}</th>
-        		<th>{{ headerFilter(path('questionnaire_listing', {'page' : pagination.page, 'field' : 'nb_reponses_membres'} ), 'Nb réponses membres', current_order, current_field) | raw }}</th>
+        		<th>Nb participations</th>
         		<th></th>
         	</tr>
         	<tr>
@@ -54,7 +54,8 @@
         	        {% endif %}
         	    </td>
         	   	<td>{{ questionnaire.questions | length }}</td>	
-   				<td>0</td>
+        	   	{# hack champ utilisé pour le calcul du nombre de participants #}
+   				<td>{{ questionnaire.description }}</td>
         	   	<td>
     			    {{ actionSee(path('questionnaire_see', {'id' : questionnaire.id, 'page' : pagination.page})) | raw }}
     			    

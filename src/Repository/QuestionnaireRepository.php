@@ -74,16 +74,65 @@ class QuestionnaireRepository extends ServiceEntityRepository
         if (($paginator->count() <= $firstResult) && $page != 1) {
             throw new NotFoundHttpException('Page not found');
         }
+        
+        /**
+         * Pour connaitre le nombre de participants pour chaque questionnaire
+         * On utilise le champs description de questionnaire pour stocker le calcul et
+         * l'afficher dans la vue
+         */
+        $nbParticipants = $this->getNbParticipantsRepondu($page, $max, $params);
+        foreach($paginator as &$questionnaire)
+        {
+            foreach($nbParticipants as $val)
+            {
+                if($val['id'] == $questionnaire->getId()) {
+                    $questionnaire->setDescription($val['nb_participants']); 
+                }
+                else if(!is_numeric($questionnaire->getDescription()))
+                {
+                    $questionnaire->setDescription(0);
+                }
+            }
+        }
 
         return array(
             'paginator' => $paginator,
             'nb' => $result
         );
     }
+    
+    /**
+     * 
+     * @param int $page
+     * @param int $max
+     * @param array $params
+     * @return array|mixed|\Doctrine\DBAL\Driver\Statement|NULL
+     */
+    public function getNbParticipantsRepondu(int $page = 1, int $max = 10, $params = array())
+    {
+        $firstResult = ($page - 1) * $max;
+        $query = $this->createQueryBuilder($params['repository'])->setFirstResult($firstResult);
+        
+        $query->select($params['repository']. '.id as id, count(distinct m.id) as nb_participants');
+        
+        if (isset($params['search'])) {
+            foreach ($params['search'] as $searchKey => $valueKey) {
+                $query->andWhere(str_replace('-', '.', $searchKey) . " LIKE '%" . $valueKey . "%'");
+            }
+        }
+        
+        $query->join($params['repository'] . '.questions', 'qu');
+        $query->leftJoin('qu.reponses', 'r');
+        $query->leftJoin('r.membre', 'm');
+        $query->addGroupBy($params['repository']. '.id');
+        $query->setMaxResults($max);
+        return $query->getQuery()->getArrayResult();
+    }
 
     /**
-     * Regarde si le membre à déjà répondu ou non au questionnaire en checkant si 
+     * Regarde si le membre à déjà répondu ou non au questionnaire en checkant si
      * une réponse pour ce membre est présente
+     *
      * @param int $questionnaire_id
      * @param int $id_membre
      * @return true si oui, false si non
@@ -95,15 +144,15 @@ class QuestionnaireRepository extends ServiceEntityRepository
             ->join('q.questions', 'qu')
             ->join('qu.reponses', 'rep')
             ->andWhere('rep.membre = ' . $id_membre)
+            ->andWhere('q.id = ' . $questionnaire_id)
             ->setMaxResults(1)
             ->getQuery()
             ->getArrayResult();
-       
-       // Si pas de réponses tout est ok
-       if(empty($return))
-       {
-           return false;
-       }
+
+        // Si pas de réponses tout est ok
+        if (empty($return)) {
+            return false;
+        }
         return true;
     }
     // /**

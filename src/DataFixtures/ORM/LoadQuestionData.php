@@ -85,7 +85,7 @@ class LoadQuestionData extends Fixture implements DependentFixtureInterface
                 'setListeValeur' => '',
                 'setDisabled' => '0',
                 'setObligatoire' => 'true',
-                'setRegles' => "^[a-zA-Z0-9\sáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ.;,!?']*$",
+                'setRegles' => "^[a-zA-Z0-9\sáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ.;,!?\-']*$",
                 'setMessageErreur' => 'Merci d\'indiquer le lieu dans lequel vous mangez le plus souvent des bonbons',
                 'setOrdre' => '2'
             ],
@@ -99,7 +99,7 @@ class LoadQuestionData extends Fixture implements DependentFixtureInterface
                 'setListeValeur' => '',
                 'setDisabled' => '0',
                 'setObligatoire' => 'true',
-                'setRegles' => "^[a-zA-Z\sáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ.;,!?']*$",
+                'setRegles' => "^[a-zA-Z\sáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ.;,!?\-']*$",
                 'setMessageErreur' => 'Merci d\'indiquer votre marque de bonbons préférée en lettre uniquement',
                 'setOrdre' => '3'
             ],

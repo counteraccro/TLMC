@@ -15,7 +15,7 @@
 	{{ form_row(form.slug) }}
 	{{ form_row(form.titre) }}
 	{{ form_row(form.description) }}
-	
+	{{ form_row(form.description_after_submit) }}
 	{{ form_row(form.date_fin) }}
 	{{ form_row(form.jour_relance) }}
 	</div>
@@ -41,5 +41,8 @@
 
 	var info = '<small class="form-text text-muted">Ajouter <b>@nom</b> pour afficher le nom et <b>@prenom</b> pour afficher le prénom du membre</small>';
 	$('#questionnaire_description').parent().append(info);
+
+	var info = '<small class="form-text text-muted">Ce texte apparaitra une fois que la personne à valider le questionnaire <br />Ajouter <b>@nom</b> pour afficher le nom et <b>@prenom</b> pour afficher le prénom du membre</small>';
+	$('#questionnaire_description_after_submit').parent().append(info);
     </script>
 {% endblock %}

@@ -85,6 +85,11 @@ class Questionnaire
      */
     private $publication;
 
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $description_after_submit;
+
     public function __construct()
     {
         $this->questions = new ArrayCollection();
@@ -294,6 +299,18 @@ class Questionnaire
     public function setDatePublication(\DateTimeInterface $date_publication): self
     {
         $this->date_publication = $date_publication;
+
+        return $this;
+    }
+
+    public function getDescriptionAfterSubmit(): ?string
+    {
+        return $this->description_after_submit;
+    }
+
+    public function setDescriptionAfterSubmit(string $description_after_submit): self
+    {
+        $this->description_after_submit = $description_after_submit;
 
         return $this;
     }

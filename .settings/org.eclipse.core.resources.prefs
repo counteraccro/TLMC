@@ -2,6 +2,7 @@
 <<<<<<<=HEAD
 >>>>>>>=a86c1f601f7e4f77fad4d40f03669fe9c6d0b4d6
 eclipse.preferences.version=1
+encoding//public/assets/css/style.css=UTF-8
 encoding//src/Controller/PatientController.php=UTF-8
 encoding//templates/base.html.twig=UTF-8
 encoding//templates/elements/ajax_pagination.html.twig=UTF-8

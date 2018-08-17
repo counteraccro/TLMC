@@ -305,6 +305,103 @@ a:hover {
 
 /********************************************
 *
+* SURCHARGE ALERTS BOOTSTRAP
+*
+********************************************/
+
+/** Debut alert-primary **/
+.alert-primary {
+  color: #004085;
+  background-color: rgba(26,188,239,0.2);
+  border-color: rgba(26,188,239,0.2);
+}
+
+.alert-primary .alert-link {
+  color: #004085;
+}
+/** Fin alert-primary **/
+
+/** Debut alert-secondary **/
+.alert-secondary {
+  color: #383d41;
+  background-color: rgba(172,173,177,0.2);
+  border-color: rgba(172,173,177,0.2);
+}
+
+.alert-secondary .alert-link {
+  color: #383d41;
+}
+/** Fin alert-secondary **/
+
+/** Debut alert-success **/
+.alert-success {
+  color: #155724;
+  background-color:  rgba(133,189,103,0.2);
+  border-color:  rgba(133,189,103,0.2);
+}
+
+.alert-success .alert-link {
+  color: #0b2e13;
+}
+/** Fin alert-success **/
+
+/** Debut alert-info **/
+.alert-info {
+  color: #0c5460;
+  background-color: rgba(87,143,173,0.2);
+  border-color: rgba(87,143,173,0.2);
+}
+
+.alert-info .alert-link {
+  color: #0c5460;
+}
+/** Fin alert-info **/
+
+/** Debut alert-warning **/
+.alert-warning {
+  color: #856404;
+  background-color: rgba(239,211,48,0.2);
+  border-color: rgba(239,211,48,0.2);
+}
+
+.alert-warning .alert-link {
+  color: #856404;
+}
+/** Fin alert-warning **/
+
+/** Debut alert-danger **/
+.alert-danger {
+  color: #721c24;
+  background-color: rgba(153,27,30,0.2);
+  border-color: rgba(153,27,30,0.2);
+}
+
+.alert-danger .alert-link {
+  color: #721c24;
+}
+/** Fin alert-danger **/
+
+/** Debut alert-dark **/
+.alert-dark {
+  color: #1b1e21;
+  background-color: rgba(111,72,88,0.2);
+  border-color: rgba(111,72,88,0.2);
+}
+
+.alert-dark .alert-link {
+  color: #1b1e21;
+}
+/** Fin alert-dark **/
+
+/** Debut alert-light **/
+.alert-light {
+  border-color: rgb(252, 248, 247);
+}
+/** Fin alert-dark **/
+
+
+/********************************************
+*
 * SURCHARGE NAV-LINK BOOTSTRAP
 *
 ********************************************/

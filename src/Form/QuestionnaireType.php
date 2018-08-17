@@ -23,6 +23,8 @@ class QuestionnaireType extends AbstractType
         
         ->add('description', TextareaType::class, array(
             'label' => 'Description du questionnaire'
+        ))->add('description_after_submit', TextareaType::class, array(
+            'label' => 'Texte après la réalisation du questionnaire'
         ));
         /*
          * ->add('date_creation', DateTimeType::class, array(

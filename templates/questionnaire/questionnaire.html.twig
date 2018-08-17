@@ -17,6 +17,19 @@
 
 <div class="row" style="margin-right:0px;">
 	<div class="col-12">
+		{% if validateSubmit %}
+			<div class="card shadow">
+              <div class="card-header">
+                <span class="text-success"><span class="oi oi-check"></span> Vos réponses ont bien été enregistrées avec succès</span>
+              </div>
+            <div class="card-body">
+                
+                <p class="card-text">{{ questionnaire.DescriptionAfterSubmit | nl2br }}</p>
+                <a href="#" class="btn btn-primary">Retour vers ma page membre</a>
+              </div>
+            </div>
+		
+		{% else %}
     	<fieldset>
     		<legend>{{ questionnaire.titre }}</legend>
     	
@@ -26,6 +39,7 @@
         		'resultat' : questResultat,
             }) | raw }}
         </fieldset>
+        {% endif %}
     </div> 
 </div>
 {% endblock %}

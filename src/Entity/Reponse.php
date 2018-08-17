@@ -46,6 +46,7 @@ class Reponse
     public function __construct()
     {
         $this->date = new \DateTime();
+        $this->disabled = 0;
     }
 
     public function getId()
