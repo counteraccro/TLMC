@@ -31,22 +31,37 @@ class TemoignageType extends AbstractType
             'choices' => array_flip($options['famille_parente'])
         ))
             ->add('ville');
+
         if ($options['avec_event']) {
-            $builder->add('evenement', EntityType::class, array(
+            $event_opt = array(
                 'class' => Evenement::class,
                 'disabled' => $options['disabled_event'],
                 'choice_label' => 'nom',
-                'required' => false
-            ));
+                'required' => $options['required_event']
+            );
+            
+            if (! is_null($options['query_event'])) {
+                $event_opt['query_builder'] = $options['query_event'];
+            }
+            
+            $builder->add('evenement', EntityType::class, $event_opt);
         }
+
         if ($options['avec_prod']) {
-            $builder->add('produit', EntityType::class, array(
+            $prod_opt = array(
                 'class' => Produit::class,
                 'disabled' => $options['disabled_prod'],
                 'choice_label' => 'titre',
-                'required' => false
-            ));
+                'required' => $options['required_prod']
+            );
+            
+            if (! is_null($options['query_prod'])) {
+                $prod_opt['query_builder'] = $options['query_prod'];
+            }
+            
+            $builder->add('produit', EntityType::class, $prod_opt);
         }
+
         $builder->add('save', SubmitType::class, array(
             'label' => $options['label_submit'],
             'attr' => array(
@@ -64,7 +79,11 @@ class TemoignageType extends AbstractType
             'disabled_event' => false,
             'disabled_prod' => false,
             'avec_event' => true,
-            'avec_prod' => true
+            'avec_prod' => true,
+            'query_prod' => null,
+            'query_event' => null,
+            'required_prod' =>  false,
+            'required_event' =>  false
         ]);
     }
 }
