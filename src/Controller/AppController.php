@@ -16,6 +16,13 @@ class AppController extends Controller
      * @var integer
      */
     const MAX_NB_RESULT = 20;
+    
+    /**
+     * Nombre maximum d'éléments pour la pagination en ajax
+     *
+     * @var integer
+     */
+    const MAX_NB_RESULT_AJAX = 5;
 
     /**
      * Indentifiant pour la recherche courante
@@ -232,7 +239,9 @@ class AppController extends Controller
         
         $session->set(self::CURRENT_SEARCH, $paramsSearch);
 
-        return $repository->{$params['repositoryMethode']}($params['page'], self::MAX_NB_RESULT, $paramsRepo);
+        $max_nbr_result = (isset($params['ajax']) && $params['ajax'] ? self::MAX_NB_RESULT_AJAX : self::MAX_NB_RESULT);
+        
+        return $repository->{$params['repositoryMethode']}($params['page'], $max_nbr_result, $paramsRepo);
     }
     
     /**
