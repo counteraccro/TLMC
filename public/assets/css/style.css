@@ -516,3 +516,23 @@ footer img {
 footer h6, footer p {
 	color: rgba(255, 255, 255, .5);
 }
+
+/********************************************
+*
+* Page templates/questionnaire/ajax_see.html.twig
+*
+********************************************/
+#ajax_questionnaire_see .card-body hr {
+	margin: 0 0 10px 0;
+	padding: 0px;
+}
+
+#ajax_questionnaire_see #card-info-questionnaire {
+	margin-bottom: 10px;
+}
+
+/********************************************
+*
+* Fin page templates/questionnaire/ajax_see.html.twig
+*
+********************************************/

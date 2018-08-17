@@ -105,8 +105,14 @@ class QuestionnaireController extends AppController
      */
     public function ajaxSeeAction(Questionnaire $questionnaire)
     {
+        $repository = $this->getDoctrine()->getRepository(Questionnaire::class);
+        $nb_participants = $repository->getNbParticipantsReponduByQuestionnaire($questionnaire->getId());
+
         return $this->render('questionnaire/ajax_see.html.twig', [
-            'questionnaire' => $questionnaire
+            'questionnaire' => $questionnaire,
+            'statistiques' => array(
+                'nb_participants' => $nb_participants[0]['nb_participants']
+            )
         ]);
     }
 
@@ -236,7 +242,7 @@ class QuestionnaireController extends AppController
      * @ParamConverter("questionnaire", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function deleteAction(SessionInterface $session, Questionnaire $questionnaire, $page)
+    public function deleteAction(Request $request, SessionInterface $session, Questionnaire $questionnaire, $page)
     {
         $arrayFilters = $this->getDatasFilter($session);
 
@@ -244,20 +250,23 @@ class QuestionnaireController extends AppController
             $questionnaire->setDisabled(0);
         } else {
             $questionnaire->setDisabled(1);
-            //$questionnaire->setPublication(0);
         }
 
         $entityManager = $this->getDoctrine()->getManager();
-
         $entityManager->persist($questionnaire);
-
         $entityManager->flush();
 
-        return $this->redirectToRoute('questionnaire_listing', array(
-            'page' => $page,
-            'field' => $arrayFilters['field'],
-            'order' => $arrayFilters['order']
-        ));
+        if ($request->isXmlHttpRequest()) {
+            return $this->json(array(
+                'statut' => true
+            ));
+        } else {
+            return $this->redirectToRoute('questionnaire_listing', array(
+                'page' => $page,
+                'field' => $arrayFilters['field'],
+                'order' => $arrayFilters['order']
+            ));
+        }
     }
 
     /**
@@ -269,7 +278,9 @@ class QuestionnaireController extends AppController
      */
     public function demoAction(Request $request, Questionnaire $questionnaire, QuestionnaireManager $questionnaireManager)
     {
-        $questResultat = array('result' => array());
+        $questResultat = array(
+            'result' => array()
+        );
         if ($request->isMethod('POST')) {
             $questResultat = $questionnaireManager->manage($questionnaire, self::DEMO);
         }
@@ -279,7 +290,7 @@ class QuestionnaireController extends AppController
             'questResultat' => $questResultat['result']
         ]);
     }
-    
+
     /**
      * Prod questionnaire (rendu final pour participants qui vont poster les réponses)
      *
@@ -289,15 +300,18 @@ class QuestionnaireController extends AppController
     public function questionnaireAction(Request $request, Questionnaire $questionnaire, QuestionnaireManager $questionnaireManager)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        
+
         $membre = $this->getMembre();
         $questionnaireManager->allowAccess($questionnaire, $membre);
-        
-        $questResultat = array('result' => array(), 'validateSubmit' => true);
+
+        $questResultat = array(
+            'result' => array(),
+            'validateSubmit' => false
+        );
         if ($request->isMethod('POST')) {
-            $questResultat = $questionnaireManager->manage($questionnaire, self::PROD, $membre);            
+            $questResultat = $questionnaireManager->manage($questionnaire, self::PROD, $membre);
         }
-        
+
         return $this->render('questionnaire/questionnaire.html.twig', [
             'questionnaire' => $questionnaireManager->formatDescription($questionnaire, $membre),
             'questResultat' => $questResultat['result'],
@@ -321,50 +335,43 @@ class QuestionnaireController extends AppController
         if ($questionnaire->getPublication() == 0) {
             // Cas confirmation depuis la popin
             if ($val == 1) {
-                
+
                 // Vérification si le questionnaire possède au moins 1 question
-                if($questionnaire->getQuestions()->count() > 0)
-                {
+                if ($questionnaire->getQuestions()->count() > 0) {
                     // Vérification si le questionnaire possère au moins une question non disabled
                     $is_ok = false;
                     foreach ($questionnaire->getQuestions() as $question) {
-                        if (!$question->getDisabled()) {
+                        if (! $question->getDisabled()) {
                             $is_ok = true;
                         }
                     }
-                    
+
                     // Tout est OK
-                    if($is_ok)
-                    {
-                        
+                    if ($is_ok) {
+
                         $questionnaire->setPublication(1);
                         $questionnaire->setDatePublication(new \DateTime());
                         $entityManager = $this->getDoctrine()->getManager();
                         $entityManager->persist($questionnaire);
                         $entityManager->flush();
-                        
+
                         return $this->json(array(
                             'statut' => true
                         ));
-                    }
-                    // Erreur Aucune question visible
-                    else
-                    {
+                    } // Erreur Aucune question visible
+                    else {
                         return $this->render('questionnaire/ajax_publication.html.twig', [
                             'questionnaire' => $questionnaire,
                             'erreur' => 'Au moins une question dans le questionnaire doit être active'
                         ]);
                     }
-                }
-                // Erreur aucune question présente dans le questionnaire
-                else
-                {
+                } // Erreur aucune question présente dans le questionnaire
+                else {
                     return $this->render('questionnaire/ajax_publication.html.twig', [
                         'questionnaire' => $questionnaire,
                         'erreur' => 'Au moins une question dans le questionnaire doit être présente'
                     ]);
                 }
-                
             } // Cas attente de confirmation
             else {
 
@@ -374,20 +381,22 @@ class QuestionnaireController extends AppController
                 ]);
             }
         } else {
-            
+
             $questionnaire->setPublication(0);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($questionnaire);
             $entityManager->flush();
-            
+
             return $this->json(array(
                 'statut' => true
             ));
-            
-            /*return $this->render('questionnaire/ajax_publication.html.twig', [
-                'questionnaire' => $questionnaire,
-                'erreur' => ''
-            ]);*/
+
+            /*
+             * return $this->render('questionnaire/ajax_publication.html.twig', [
+             * 'questionnaire' => $questionnaire,
+             * 'erreur' => ''
+             * ]);
+             */
         }
     }
 }

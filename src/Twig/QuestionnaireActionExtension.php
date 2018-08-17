@@ -35,6 +35,10 @@ class QuestionnaireActionExtension extends AbstractExtension
             new TwigFunction('duplicate', [
                 $this,
                 'duplicateBtn'
+            ]),
+            new TwigFunction('disabled', [
+                $this,
+                'disabledBtn'
             ])
         ];
     }
@@ -107,6 +111,14 @@ class QuestionnaireActionExtension extends AbstractExtension
         // Cas ou le questionnaire est publié et qu'au moins 1 réponse à été faite sur 1 question
         $question = $questionnaire->getQuestions()->first();
         if (! empty($question)) {
+            
+            if($questionnaire->getDisabled() && !$questionnaire->getPublication())
+            {
+                $bloc_begin = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Vous devez activer le questionnaire pour le publier">';
+                $bloc_end = '</span>';
+                return $bloc_begin . '<a href="' . $url . '" id="btn-publish-questionnaire" class="btn btn-success disabled" data-publish="1"><span class="oi oi-action-undo"></span> Publier</a>' . $bloc_end;
+            }
+            
             if ($question->getReponses()->count() > 0 && $questionnaire->getPublication()) {
 
                 $bloc_begin = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Dépublication déconseillée car publié et possède déjà au moins 1 réponse">';
@@ -181,5 +193,23 @@ class QuestionnaireActionExtension extends AbstractExtension
     public function duplicateBtn(Questionnaire $questionnaire, $url)
     {
         return '<a href="' . $url . '" id="btn-duplicate-questionnaire" class="btn btn-secondary"><span class="oi oi-fork"></span> Dupliquer</a>';
+    }
+    
+    /**
+     * Bouton desactiver/activer du Questionnaire
+     * @param Questionnaire $questionnaire
+     * @param string $url
+     * @return string
+     */
+    public function disabledBtn(Questionnaire $questionnaire, $url)
+    {
+        if($questionnaire->getDisabled())
+        {
+            return '<a href="' . $url . '" id="btn-disabled-questionnaire" class="btn btn-secondary"><span class="oi oi-check"></span> Activer</a>';
+        }
+        else 
+        {
+            return '<a href="' . $url . '" id="btn-disabled-questionnaire" class="btn btn-secondary"><span class="oi oi-x"></span> Désactiver</a>';
+        }
     }
 }

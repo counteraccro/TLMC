@@ -1,13 +1,20 @@
 <div id="ajax_questionnaire_see">
 
-    	<div class="card shadow-sm">
+    	<div class="card shadow-sm" id="card-info-questionnaire">
          	<div class="card-header bg-light">
-            	 <b>Titre du questionnaire :</b> {{ questionnaire.titre }}
+         		  {% if questionnaire.disabled == 0 %} 
+                    		<span class="text-success"><span class="oi oi-media-record"></span></span>
+                  {% else %} 
+                    		<span class="text-danger"><span class="oi oi-media-record"></span></span>
+                   {% endif %}
+            	  <b> Titre du questionnaire :</b> {{ questionnaire.titre }}
             	<div class="float-right">
             		  {% if is_granted("ROLE_ADMIN") %}
             		  {{ addQuestion(questionnaire, path('question_ajax_add', {'id': questionnaire.id })) | raw }}
             		  {{ edit(questionnaire, path('questionnaire_ajax_edit', {'id': questionnaire.id })) | raw }}
+            		  {{ disabled(questionnaire, path('questionnaire_delete', {'id': questionnaire.id, 'page' : 1 })) | raw }}
             		  {{ test(questionnaire, path('questionnaire_demo', {'slug': questionnaire.slug })) | raw }}
+            		  
             		                                    		  
             		  {# ROUTES A MODIFIER QUAND ELLES SERONT CREEES #}
             		  {{ publish(questionnaire, path('questionnaire_ajax_publication', {'id': questionnaire.id })) | raw }}
@@ -16,28 +23,33 @@
             	</div>
             </div>
           	<div class="card-body">
-            	<b>Date de création :</b> {{ questionnaire.dateCreation | date('d/m/Y') }} - 
-                {% if "now"|date('Y-m-d') > questionnaire.dateFin|date('Y-m-d') %}
-            		<span class="text-danger"><b>Date de fin : {{ questionnaire.dateFin | date('d/m/Y') }}</b></span></br>
-                {% else %}
-                	Date de fin : {{ questionnaire.dateFin | date('d/m/Y') }}<br/>
-                {% endif %}
-            	<b>Publication :</b> {{ questionnaire.publication }}</br>
-            	<b>Description :</b> {{ questionnaire.description }}</br>
-            	<b>Nombre de jours avant relance :</b> {{ questionnaire.jourRelance }}</br>
-            	<b>Actif :</b> 
-            	{% if questionnaire.disabled == 0 %} 
-            		Oui 
-            	{% else %} 
-            		Non
-            	{% endif %}
-            	</br>
-            	{% if questionnaire.publication %}
-            		URL de publication : <a href="{{ path('questionnaire_prod', {'slug' : questionnaire.slug}) }}">http://{{ app.request.server.get("SERVER_NAME") }}{{ path('questionnaire_prod', {'slug' : questionnaire.slug}) }}</a>
-           		{% endif %}
+          		<div class="row">
+          			<div class="col-6">
+          				
+          				<b>Informations</b>
+          				<hr />
+                    	<b>Date de création :</b> {{ questionnaire.dateCreation | date('d/m/Y') }} <br />
+                        {% if "now"|date('Y-m-d') > questionnaire.dateFin|date('Y-m-d') %}
+                    		<span class="text-danger"><b>Date de fin</b> : {{ questionnaire.dateFin | date('d/m/Y') }}</span></br>
+                        {% else %}
+                        	<b>Date limite pour répondre :</b> {{ questionnaire.dateFin | date('d/m/Y') }}<br/>
+                        {% endif %}
+                        <b>Nombre de jours avant relance :</b> {{ questionnaire.jourRelance }}</br>
+                        {% if questionnaire.publication %}
+                    		<b>URL de publication :</b> <a href="{{ path('questionnaire_prod', {'slug' : questionnaire.slug}) }}" target="_blank">http://{{ app.request.server.get("SERVER_NAME") }}{{ path('questionnaire_prod', {'slug' : questionnaire.slug}) }}</a><br />
+                   		{% endif %}
+                    	<b>Description :</b> <br /><i>{{ questionnaire.description }}</i></br>
+                    	<b>Texte après validation du questionnaire :</b><br /> <i>{{ questionnaire.descriptionAfterSubmit }}</i></br>
+               		
+               		</div>
+               		<div class="col-6">
+               			<b>Statistiques</b>
+               			<hr />
+               			<b>Nombre de participants :</b> {{ statistiques.nb_participants }} | <a href="#"> Voir la liste</a>
+               		</div>
+           		</div>
           	</div>
         </div>
-	<hr>
      		
 	{{ questionnaire(questionnaire, {
 	'statut' : 'edit',
@@ -59,6 +71,9 @@
     
     var id_btn_question_add = '#ajax_questionnaire_see .btn-add-question';
     Question.EventEdit(id_btn_question_add)
+    
+    var id_btn_disabled = '#ajax_questionnaire_see #btn-disabled-questionnaire';
+    Questionnaire.EventDisabled(id_btn_disabled)
     
    	 $('[data-toggle="tooltip"]').tooltip();
     

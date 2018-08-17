@@ -9,9 +9,9 @@ Questionnaire.Launch = function(params) {
 	Questionnaire.id_global = params.id_global;
 	//cible la div '#bloc_modal'
 	Questionnaire.id_modal = params.id_modal;
-	
+
 	Questionnaire.id_content_modal = params.id_content_modal;
-	
+
 	Questionnaire.id_container_global = '#container-global';
 
 	/**
@@ -36,7 +36,7 @@ Questionnaire.Launch = function(params) {
 	Questionnaire.Ajax = function(url, id_done, method = 'GET')
 	{
 		$(Questionnaire.id_global).showLoading();
-		
+
 		$.ajax({
 			method: method,
 			url: url,
@@ -55,12 +55,12 @@ Questionnaire.Launch = function(params) {
 		// Event sur le bouton edit d'un questionnaire
 		$(id).click(function() {
 			//on passe l'url et l'id_done
-						
+
 			Questionnaire.Ajax($(this).attr('href'), Questionnaire.id_content_modal);
 			return false;
 		});
 	}
-	
+
 	/**
 	 * Evenement à la publication
 	 */
@@ -68,20 +68,20 @@ Questionnaire.Launch = function(params) {
 	{
 		// Event sur le bouton publier d'un questionnaire
 		$(id).click(function() {
-			
+
 			$('[data-toggle="tooltip"]').tooltip('hide');
-			
+
 			if($(this).data('publish') == 0)
 			{
 				$(Questionnaire.id_container_global).showLoading();
 			}
-			
+
 			$.ajax({
 				method: 'GET',
 				url: $(this).attr('href'),
 			})
 			.done(function( reponse ) 
-			{
+					{
 				if(reponse.statut === true)
 				{
 					//$(Questionnaire.id_container_global).hideLoading();
@@ -92,12 +92,12 @@ Questionnaire.Launch = function(params) {
 					$(Questionnaire.id_content_modal).html(reponse)
 					$(Questionnaire.id_container_global).hideLoading();
 				}
-			});
-			
+					});
+
 			return false;
 		});
 	}
-	
+
 	/**
 	 * Evenement à la confirmation de la publication du questionnaire
 	 * loader + fermeture modal + changement du bouton en "dépublier"
@@ -105,7 +105,7 @@ Questionnaire.Launch = function(params) {
 	Questionnaire.EventConfirmationPublication = function(url, id)
 	{
 		$(id).click(function() 
-		{
+				{
 			$('#ajax_questionnaire_publication').showLoading();
 			$(id).prop('disabled', true).html('loading...');
 			event.preventDefault();
@@ -115,9 +115,9 @@ Questionnaire.Launch = function(params) {
 				url: url,
 			})
 			.done(function( reponse ) {
-	
+
 				$('#ajax_questionnaire_publication').hideLoading();
-				
+
 				if(reponse.statut === true)
 				{
 					$(Questionnaire.id_modal).modal('hide');
@@ -128,9 +128,9 @@ Questionnaire.Launch = function(params) {
 					$(ajax_questionnaire_publication).html(reponse);
 				}
 			});
-		});
+				});
 	}
-	
+
 	/**
 	 *  Event au changement du titre d'un questionnaire
 	 *  Slugification du titre
@@ -141,7 +141,7 @@ Questionnaire.Launch = function(params) {
 			Questionnaire.Slug(id_title, id_slug, id_slug_text)
 		});
 	}
-	
+
 	/**
 	 * Génération du slug (url au format exemple : "questionnaire-de-satisfaction-soiree-evenement")
 	 */
@@ -152,31 +152,31 @@ Questionnaire.Launch = function(params) {
 
 		//Gestion des accents (exporter dans AppController ?)
 		String.prototype.sansAccent = function(){
-		    var accent = [
-		        /[\300-\306]/g, /[\340-\346]/g, // A, a
-		        /[\310-\313]/g, /[\350-\353]/g, // E, e
-		        /[\314-\317]/g, /[\354-\357]/g, // I, i
-		        /[\322-\330]/g, /[\362-\370]/g, // O, o
-		        /[\331-\334]/g, /[\371-\374]/g, // U, u
-		        /[\321]/g, /[\361]/g, // N, n
-		        /[\307]/g, /[\347]/g, // C, c
-		    ];
-		    var noaccent = ['A','a','E','e','I','i','O','o','U','u','N','n','C','c'];
-		     
-		    var str = this;
-		    for(var i = 0; i < accent.length; i++){
-		        str = str.replace(accent[i], noaccent[i]);
-		    }     
-		    return str;
+			var accent = [
+				/[\300-\306]/g, /[\340-\346]/g, // A, a
+				/[\310-\313]/g, /[\350-\353]/g, // E, e
+				/[\314-\317]/g, /[\354-\357]/g, // I, i
+				/[\322-\330]/g, /[\362-\370]/g, // O, o
+				/[\331-\334]/g, /[\371-\374]/g, // U, u
+				/[\321]/g, /[\361]/g, // N, n
+				/[\307]/g, /[\347]/g, // C, c
+				];
+			var noaccent = ['A','a','E','e','I','i','O','o','U','u','N','n','C','c'];
+
+			var str = this;
+			for(var i = 0; i < accent.length; i++){
+				str = str.replace(accent[i], noaccent[i]);
+			}     
+			return str;
 		}
-		
+
 		//Passage en format 'slug' : Gestion des accents, minuscules, espaces, caractères spéciaux 
 		var sluggedText = textToSlug.sansAccent().toLowerCase().replace(/ +/g,'-').replace(/[.'^$"_&@%#;\,!:²><()\[\]\/\{\}\*\+\=]/g, '');
-		
+
 		//Renvoi des élements en slug dans les champs
 		$(id_slug).val(sluggedText);
 		$(id_slug_text).html('<div class="d-inline p-2 bg-dark text-white">URL public du questionnaire : http://[URL-A-MODIFIER]/' + sluggedText + '</div>');
-				
+
 		return false;
 	}
 
@@ -186,11 +186,11 @@ Questionnaire.Launch = function(params) {
 	Questionnaire.EventEditSubmit = function(url)
 	{
 		$("form[name*='questionnaire']").on( "submit", function( event ) {
-			
+
 			$('#ajax_questionnaire_add').showLoading();
-			
+
 			$('#questionnaire_save').prop('disabled', true).html('loading...');
-			
+
 			event.preventDefault();
 
 			$.ajax({
@@ -199,9 +199,9 @@ Questionnaire.Launch = function(params) {
 				data: $(this).serialize()
 			})
 			.done(function( reponse ) {
-	
+
 				$('#ajax_questionnaire_add').hideLoading();
-				
+
 				if(reponse.statut === true)
 				{
 					$(Questionnaire.id_modal).modal('hide');
@@ -210,6 +210,33 @@ Questionnaire.Launch = function(params) {
 				else
 				{
 					$(Questionnaire.id_content_modal).html(reponse);
+				}
+			});
+		});
+	}
+
+	Questionnaire.EventDisabled = function(id)
+	{
+		$(id).click(function(event) 
+		{	
+			$(Questionnaire.id_global).showLoading();	
+			event.preventDefault();
+			
+			$.ajax({
+				method: 'GET',
+				url: $(this).attr('href'),
+			})
+			.done(function( reponse ) {
+
+				$(Questionnaire.id_global).hideLoading();
+
+				if(reponse.statut === true)
+				{
+					Questionnaire.Ajax(Questionnaire.url_ajax_see, Questionnaire.id_global);
+				}
+				else
+				{
+					alert('Une erreur est survenue');
 				}
 			});
 		});

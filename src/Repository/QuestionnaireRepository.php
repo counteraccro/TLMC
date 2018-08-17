@@ -128,6 +128,22 @@ class QuestionnaireRepository extends ServiceEntityRepository
         $query->setMaxResults($max);
         return $query->getQuery()->getArrayResult();
     }
+    
+    /**
+     * 
+     * @param int $id_questionnaire
+     */
+    public function getNbParticipantsReponduByQuestionnaire($id_questionnaire)
+    {
+        $query = $this->createQueryBuilder('q');
+        $query->select('count(distinct m.id) as nb_participants');
+        $query->join('q.questions', 'qu');
+        $query->leftJoin('qu.reponses', 'r');
+        $query->leftJoin('r.membre', 'm');
+        //$query->addGroupBy('q.id');
+        $query->andWhere('q.id = ' . $id_questionnaire);
+        return $query->getQuery()->getArrayResult();
+    }
 
     /**
      * Regarde si le membre à déjà répondu ou non au questionnaire en checkant si

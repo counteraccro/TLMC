@@ -305,7 +305,7 @@ class QuestionnaireExtension extends AbstractExtension
 
         $txt_id = '';
         if ($this->params['statut'] == self::DEMO || $this->params['statut'] == self::EDIT) {
-            $txt_id = "#" . $question->getId();
+            $txt_id = "#" . $question->getId() . '-';
         }
 
         $edit = '';
@@ -333,7 +333,7 @@ class QuestionnaireExtension extends AbstractExtension
         }
 
         if (! empty($question->getLibelleTop())) {
-            $html .= '<div class="card-header">' . $txt_id . ' - ' . $question->getLibelleTop() . $edit . '</div>';
+            $html .= '<div class="card-header">' . $txt_id . ' ' . $question->getLibelleTop() . $edit . '</div>';
         } else if ($this->params['statut'] == self::EDIT) {
             $html .= '<div class="card-header">' . $txt_id . $edit . '</div>';
         } else if ($this->params['statut'] == self::DEMO) {
