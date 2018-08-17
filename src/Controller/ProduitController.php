@@ -76,25 +76,17 @@ class ProduitController extends AppController
                     array(
                         'oldrepository' => 'Produit',
                         'newrepository' => 'produitSpecialites'
-                    ),
-                    array(
-                        'oldrepository' => 'produitSpecialites',
-                        'newrepository' => 'specialite'
                     )
                 );
-                $params['condition'][] = 'specialite.id = ' . $this->getMembre()->getSpecialite()->getId();
+                $params['condition'][] = 'produitSpecialites.specialite = ' . $this->getMembre()->getSpecialite()->getId();
             } else {
                 $params['jointure'] = array(
                     array(
                         'oldrepository' => 'Produit',
                         'newrepository' => 'produitEtablissements'
-                    ),
-                    array(
-                        'oldrepository' => 'produitEtablissements',
-                        'newrepository' => 'etablissement'
                     )
                 );
-                $params['condition'][] = 'etablissement.id = ' . $this->getMembre()->getEtablissement()->getId();
+                $params['condition'][] = 'produitEtablissements.etablissement = ' . $this->getMembre()->getEtablissement()->getId();
             }
             
         }

@@ -65,13 +65,9 @@ class TemoignageController extends AppController
                     array(
                         'oldrepository' => $type,
                         'newrepository' => ($type == 'produit' ? 'produitSpecialites' : 'specialiteEvenements')
-                    ),
-                    array(
-                        'oldrepository' => ($type == 'produit' ? 'produitSpecialites' : 'specialiteEvenements'),
-                        'newrepository' => 'specialite'
                     )
                 );
-                $params['condition'][] = 'specialite.id = ' . $membre->getSpecialite()->getId();
+                $params['condition'][] = ($type == 'produit' ? 'produitSpecialites' : 'specialiteEvenements') .'.specialite = ' . $membre->getSpecialite()->getId();
             } elseif ($type == 'produit') {
                 $params['jointure'] = array(
                     array(
@@ -79,15 +75,11 @@ class TemoignageController extends AppController
                         'newrepository' => 'produit'
                     ),
                     array(
-                        'oldrepository' => 'Produit',
+                        'oldrepository' => 'produit',
                         'newrepository' => 'produitEtablissements'
-                    ),
-                    array(
-                        'oldrepository' => 'produitEtablissements',
-                        'newrepository' => 'etablissement'
                     )
                 );
-                $params['condition'][] = 'etablissement.id = ' . $this->getMembre()
+                $params['condition'][] = 'produitEtablissements.etablissement = ' . $this->getMembre()
                     ->getEtablissement()
                     ->getId();
             }

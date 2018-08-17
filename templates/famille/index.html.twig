@@ -11,7 +11,9 @@
     <div class="card">
     	<div class="card-header">
         	{{ pagination.nb_elements }} famille{% if pagination.nb_elements > 1 %}s{% endif %} {% if pagination.pages_count > 0 %} - Page {{ pagination.page }} / {{ pagination.pages_count }} {% endif %}
-    		<a href="{{ path('famille_add', {'page' : pagination.page}) }}" class="float-right"><span class="oi oi-person"></span> Nouvelle famille</a>
+    		{% if can_add %}
+    			<a href="{{ path('famille_add', {'page' : pagination.page}) }}" class="float-right"><span class="oi oi-person"></span> Nouvelle famille</a>
+    		{% endif %}
         	{{ labelFilter(path('utils_delete-search', {'page' : pagination.page} ), current_search) | raw }}
       	</div>
       	

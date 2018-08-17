@@ -59,13 +59,9 @@
     				$('#temoignage_row_produit').hide();
                 }
             });
-        {% endif %}
-
-        {% if type == 'evenement' %}
+        {% elseif type == 'evenement' %}
         	$('#temoignage_row_produit').hide();
-	    {% endif %}
-		
-	    {% if type == 'produit' %}
+	    {% elseif type == 'produit' %}
 	    	$('#temoignage_row_evenement').hide();
 	    {% endif %}
 	</script>

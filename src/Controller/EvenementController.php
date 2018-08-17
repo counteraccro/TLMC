@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controller;
 
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,6 +12,7 @@ use App\Entity\Specialite;
 
 class EvenementController extends AppController
 {
+
     /**
      * Tableau de types
      *
@@ -22,9 +22,9 @@ class EvenementController extends AppController
         1 => 'Repas',
         2 => 'Sortie',
         3 => 'Spectacle',
-        4 => 'Fête',
+        4 => 'Fête'
     );
-    
+
     /**
      * Tableau de statuts
      *
@@ -36,7 +36,7 @@ class EvenementController extends AppController
         3 => 'Annulé',
         4 => 'Fermé'
     );
-    
+
     /**
      * Listing des événements
      *
@@ -70,26 +70,22 @@ class EvenementController extends AppController
         );
 
         if (! $this->isAdmin()) {
+            $membre = $this->getMembre();
+
+            $id_specialite = (! is_null($membre->getSpecialite()) ? $membre->getSpecialite()->getId() : '0');
             $params['condition'] = array(
-                $params['repository'] . '.disabled = 0'
-                
+                $params['repository'] . '.disabled = 0',
+                'specialiteEvenements.specialite = ' . $id_specialite
             );
-            
-            if ($this->getMembre()->getSpecialite()) {
-                $params['jointure'] = array(
-                    array(
-                        'oldrepository' => 'Evenement',
-                        'newrepository' => 'specialiteEvenements'
-                    ),
-                    array(
-                        'oldrepository' => 'specialiteEvenements',
-                        'newrepository' => 'specialite'
-                    )
-                );
-                $params['condition'][] = 'specialite.id = ' . $this->getMembre()->getSpecialite()->getId();
-            }
+
+            $params['jointure'] = array(
+                array(
+                    'oldrepository' => 'Evenement',
+                    'newrepository' => 'specialiteEvenements'
+                )
+            );
         }
-        
+
         $result = $this->genericSearch($request, $session, $params);
 
         $pagination = array(
@@ -114,7 +110,7 @@ class EvenementController extends AppController
             )
         ));
     }
-    
+
     /**
      * Fiche d'un événement
      *
@@ -122,7 +118,7 @@ class EvenementController extends AppController
      * @Route("/evenement/ajax/see/{id}", name="evenement_ajax_see")
      * @ParamConverter("evenement", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT') or is_granted('ROLE_BENEVOLE')")
-     * 
+     *
      * @param Request $request
      * @param SessionInterface $session
      * @param Evenement $evenement
@@ -132,15 +128,15 @@ class EvenementController extends AppController
     public function seeAction(Request $request, SessionInterface $session, Evenement $evenement, int $page = 1)
     {
         $arrayFilters = $this->getDatasFilter($session);
-        
+
         // Si appel Ajax, on renvoi sur la page ajax
         if ($request->isXmlHttpRequest()) {
-            
+
             return $this->render('evenement/ajax_see.html.twig', array(
-                'evenement' => $evenement,
+                'evenement' => $evenement
             ));
         }
-        
+
         return $this->render('evenement/see.html.twig', array(
             'page' => $page,
             'evenement' => $evenement,
@@ -157,7 +153,7 @@ class EvenementController extends AppController
             )
         ));
     }
-    
+
     /**
      * Ajout d'un nouvel événement
      *
@@ -172,40 +168,42 @@ class EvenementController extends AppController
     public function addAction(SessionInterface $session, Request $request, int $page)
     {
         $arrayFilters = $this->getDatasFilter($session);
-        
+
         $evenement = new Evenement();
-        
+
         // requête pour le champ spécialité
         $membre = $this->getMembre();
         $sr = $this->getDoctrine()->getRepository(Specialite::class);
         $query = $sr->createQueryBuilder('specialite')->innerJoin('specialite.etablissement', 'etablissement');
-        if ($membre->getSpecialite() && !$this->isAdmin()) {
+        if ($membre->getSpecialite() && ! $this->isAdmin()) {
             $query->andWhere("etablissement.id = " . $membre->getEtablissement()
                 ->getId());
         }
         $query->orderBy('etablissement.nom, specialite.service', 'ASC');
-        
-        
-        $form = $this->createForm(EvenementType::class, $evenement, array('query_specialite' => $query, 'add' => true));
+
+        $form = $this->createForm(EvenementType::class, $evenement, array(
+            'query_specialite' => $query,
+            'add' => true
+        ));
         $form->handleRequest($request);
-        
+
         if ($form->isSubmitted() && $form->isValid()) {
-            
+
             $em = $this->getDoctrine()->getManager();
-            
-            foreach ($evenement->getSpecialiteEvenements() as $specialiteEvenement){
+
+            foreach ($evenement->getSpecialiteEvenements() as $specialiteEvenement) {
                 $specialiteEvenement->setEvenement($evenement);
             }
-            
+
             $evenement->setImage('https://images-eu.ssl-images-amazon.com/images/I/81xfN64QjVL.png');
             $evenement->setDisabled(0);
-            
+
             $em->persist($evenement);
             $em->flush();
-            
+
             return $this->redirect($this->generateUrl('evenement_listing'));
         }
-        
+
         return $this->render('evenement/add.html.twig', array(
             'page' => $page,
             'form' => $form->createView(),
@@ -222,7 +220,7 @@ class EvenementController extends AppController
             )
         ));
     }
-    
+
     /**
      * Edition d'un événement
      *
@@ -240,39 +238,39 @@ class EvenementController extends AppController
     public function editAction(SessionInterface $session, Request $request, Evenement $evenement, int $page = 1)
     {
         $arrayFilters = $this->getDatasFilter($session);
-        
+
         $form = $this->createForm(EvenementType::class, $evenement);
-        
+
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            
+
             $em = $this->getDoctrine()->getManager();
-            
+
             $em->persist($evenement);
             $em->flush();
-            
+
             if ($request->isXmlHttpRequest()) {
                 return $this->json(array(
                     'statut' => true
                 ));
             }
-            
+
             return $this->redirect($this->generateUrl('evenement_listing', array(
                 'page' => $page,
                 'field' => $arrayFilters['field'],
                 'order' => $arrayFilters['order']
             )));
         }
-        
+
         // Si appel Ajax, on renvoi sur la page ajax
         if ($request->isXmlHttpRequest()) {
-            
+
             return $this->render('evenement/ajax_edit.html.twig', [
                 'evenement' => $evenement,
                 'form' => $form->createView()
             ]);
         }
-        
+
         return $this->render('evenement/edit.html.twig', array(
             'page' => $page,
             'form' => $form->createView(),
@@ -290,7 +288,7 @@ class EvenementController extends AppController
             )
         ));
     }
-    
+
     /**
      * Désactivation d'un événement
      *
@@ -306,19 +304,19 @@ class EvenementController extends AppController
     public function deleteAction(SessionInterface $session, Evenement $evenement, int $page)
     {
         $arrayFilters = $this->getDatasFilter($session);
-        
+
         if ($evenement->getDisabled() == 1) {
             $evenement->setDisabled(0);
         } else {
             $evenement->setDisabled(1);
         }
-        
+
         $entityManager = $this->getDoctrine()->getManager();
-        
+
         $entityManager->persist($evenement);
-        
+
         $entityManager->flush();
-        
+
         return $this->redirectToRoute('evenement_listing', array(
             'page' => $page,
             'field' => $arrayFilters['field'],

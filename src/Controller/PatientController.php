@@ -37,6 +37,8 @@ class PatientController extends AppController
         if (is_null($order)) {
             $order = 'DESC';
         }
+        
+        $can_add = true;
 
         $params = array(
             'field' => $field,
@@ -49,13 +51,13 @@ class PatientController extends AppController
 
         if (! $this->isAdmin()) {
             $membre = $this->getMembre();
+            $id_specialite = (! is_null($membre->getSpecialite()) ? $membre->getSpecialite()->getId() : '0');
             $params['condition'] = array(
-                $params['repository'] . '.disabled = 0'
+                $params['repository'] . '.disabled = 0',
+                $params['repository'] . '.specialite = ' . $id_specialite
             );
-
-            if (! is_null($membre->getSpecialite())) {
-                $params['condition'][] = $params['repository'] . '.specialite = ' . $membre->getSpecialite()->getId();
-            }
+            
+            $can_add = (! is_null($membre->getSpecialite()) ? true : false);
         }
 
         $result = $this->genericSearch($request, $session, $params);
@@ -72,6 +74,7 @@ class PatientController extends AppController
 
         return $this->render('patient/index.html.twig', array(
             'patients' => $result['paginator'],
+            'can_add' => $can_add,
             'pagination' => $pagination,
             'current_order' => $order,
             'current_field' => $field,

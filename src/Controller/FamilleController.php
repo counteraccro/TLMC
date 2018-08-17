@@ -40,6 +40,8 @@ class FamilleController extends AppController
             $order = 'DESC';
         }
 
+        $can_add = true;
+        
         $params = array(
             'field' => $field,
             'order' => $order,
@@ -50,23 +52,22 @@ class FamilleController extends AppController
         );
 
         if (! $this->isAdmin()) {
+            $membre = $this->getMembre();
+
+            $id_specialite = (! is_null($membre->getSpecialite()) ? $membre->getSpecialite()->getId() : '0');
             $params['condition'] = array(
-                $params['repository'] . '.disabled = 0'
+                $params['repository'] . '.disabled = 0',
+                'patient.specialite = ' . $id_specialite
             );
 
-            if ($this->getMembre()->getSpecialite()) {
-                $params['jointure'] = array(
-                    array(
-                        'oldrepository' => 'Famille',
-                        'newrepository' => 'patient'
-                    ),
-                    array(
-                        'oldrepository' => 'patient',
-                        'newrepository' => 'specialite'
-                    )
-                );
-                $params['condition'][] = 'specialite.id = ' . $this->getMembre()->getSpecialite()->getId();
-            }
+            $params['jointure'] = array(
+                array(
+                    'oldrepository' => 'Famille',
+                    'newrepository' => 'patient'
+                )
+            );
+            
+            $can_add = (! is_null($membre->getSpecialite()) ? true : false);
         }
 
         $result = $this->genericSearch($request, $session, $params);
@@ -83,6 +84,7 @@ class FamilleController extends AppController
 
         return $this->render('famille/index.html.twig', array(
             'familles' => $result['paginator'],
+            'can_add' => $can_add,
             'pagination' => $pagination,
             'current_order' => $order,
             'current_field' => $field,
@@ -106,8 +108,7 @@ class FamilleController extends AppController
      */
     public function ajaxSeeAction(Patient $patient, Request $request, SessionInterface $session, int $page = 1, $field = null, $order = null)
     {
-        //$familles = $this->getElementsLiesActifs($patient, 'getFamilles');
-        
+        // $familles = $this->getElementsLiesActifs($patient, 'getFamilles');
         if (is_null($field)) {
             $field = 'prenom';
         }
@@ -126,8 +127,10 @@ class FamilleController extends AppController
             'ajax' => true
         );
 
-        $params['condition'] = array($params['repository'] . '.patient = ' . $patient->getId());
-        
+        $params['condition'] = array(
+            $params['repository'] . '.patient = ' . $patient->getId()
+        );
+
         if (! $this->isAdmin()) {
             $params['condition'][] = $params['repository'] . 'disabled = 0';
         }
@@ -139,14 +142,16 @@ class FamilleController extends AppController
             'route' => 'famille_ajax_see',
             'pages_count' => ceil($result['nb'] / self::MAX_NB_RESULT_AJAX),
             'nb_elements' => $result['nb'],
-            'route_params' => array('id' => $patient->getId())
+            'route_params' => array(
+                'id' => $patient->getId()
+            )
         );
-        
+
         $this->setDatasFilter($session, $field, $order);
-        
+
         return $this->render('famille/ajax_see.html.twig', array(
             'patient' => $patient,
-            //'familles' => $familles,
+            // 'familles' => $familles,
             'familles' => $result['paginator'],
             'pagination' => $pagination
         ));
