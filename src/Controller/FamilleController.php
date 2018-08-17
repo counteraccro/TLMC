@@ -106,14 +106,14 @@ class FamilleController extends AppController
      */
     public function ajaxSeeAction(Patient $patient, Request $request, SessionInterface $session, int $page = 1, $field = null, $order = null)
     {
-        $familles = $this->getElementsLiesActifs($patient, 'getFamilles');
+        //$familles = $this->getElementsLiesActifs($patient, 'getFamilles');
         
-        /*if (is_null($field)) {
-            $field = 'id';
+        if (is_null($field)) {
+            $field = 'prenom';
         }
 
         if (is_null($order)) {
-            $order = 'DESC';
+            $order = 'ASC';
         }
 
         $params = array(
@@ -122,21 +122,14 @@ class FamilleController extends AppController
             'page' => $page,
             'repositoryClass' => Famille::class,
             'repository' => 'Famille',
-            'repositoryMethode' => 'findAllFamilles'
+            'repositoryMethode' => 'findAllFamilles',
+            'ajax' => true
         );
 
-        $params['condition'] = array(
-            array(
-                'key' => 'patient',
-                'value' => $patient->getId()
-            )
-        );
+        $params['condition'] = array($params['repository'] . '.patient = ' . $patient->getId());
         
         if (! $this->isAdmin()) {
-            $params['condition'][] = array(
-                'key' => 'disabled',
-                'value' => 0
-            );
+            $params['condition'][] = $params['repository'] . 'disabled = 0';
         }
 
         $result = $this->genericSearch($request, $session, $params);
@@ -144,18 +137,18 @@ class FamilleController extends AppController
         $pagination = array(
             'page' => $page,
             'route' => 'famille_ajax_see',
-            'pages_count' => ceil($result['nb'] / self::MAX_NB_RESULT),
+            'pages_count' => ceil($result['nb'] / self::MAX_NB_RESULT_AJAX),
             'nb_elements' => $result['nb'],
             'route_params' => array('id' => $patient->getId())
         );
         
         $this->setDatasFilter($session, $field, $order);
-        */
+        
         return $this->render('famille/ajax_see.html.twig', array(
             'patient' => $patient,
-            'familles' => $familles,
-            //'familles' => $result['paginator'],
-            //'pagination' => $pagination
+            //'familles' => $familles,
+            'familles' => $result['paginator'],
+            'pagination' => $pagination
         ));
     }
 
