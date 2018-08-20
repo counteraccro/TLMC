@@ -28,27 +28,3 @@
 </div>
 	  
 {% endblock %}
-
-{% block script %}
- 	<script src="{{ asset('assets/js/utils/FormAddCollection.js') }}?{{ date().timestamp }}"></script>
-{% endblock %}
-
-{% block javascripts %}
-
-    <script type="text/javascript">
-    
-    $(document).ready(function() {
-
-		var params = {
-				id_container : 'div#produit_produitEtablissements',
-				id_btn_add : '#add_etablissement',
-				id_label_fieldset : '#label_collection_type',
-				btn_delete : '<a href="#" class="btn btn-danger btn-sm">Supprimer</a>',
-		};
-        
-    	FormAddCollection.Launch(params);
-		FormAddCollection.Event();
-    });
-    </script> 
-
-{% endblock %}

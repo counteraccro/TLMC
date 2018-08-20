@@ -42,6 +42,10 @@
        		    {% endfor %}
        	    {% endfor %}
        	</table>
+       	
+       	{% if connexions is empty %}
+        	<p class="text-info text-center">Le produit n'est proposé dans aucun établissement et aucune spécialité.</p>
+        {% endif %}
 	</div>
 </div>
 

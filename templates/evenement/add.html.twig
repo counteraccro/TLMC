@@ -55,7 +55,11 @@
     <script type="text/javascript">
     
     $(document).ready(function() {
-
+    	$('#evenement_image').change(function() {
+    		var file = $(this)[0].files[0].name;
+    		$(this).attr('placeholder', file);
+    	});
+        
 		var params = {
 				id_container : 'div#evenement_specialite_evenements',
 				id_btn_add : '#add_specialite',
@@ -65,7 +69,6 @@
         
     	FormAddCollection.Launch(params);
 		FormAddCollection.Event();
-		
     });
     
     </script> 

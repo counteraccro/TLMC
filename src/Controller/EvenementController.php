@@ -198,7 +198,9 @@ class EvenementController extends AppController
 
             $file = $form['image']->getData();
             $fileName = $this->telechargerImage($file, 'evenement', $evenement->getNom());
-            $evenement->setImage($fileName);
+            if($fileName) {
+                $evenement->setImage($fileName);
+            }
             
             $evenement->setDisabled(0);
 
