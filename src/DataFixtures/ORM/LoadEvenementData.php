@@ -61,7 +61,7 @@ class LoadEvenementData extends Fixture
                 'setInformationComplementaire' => 'Il est possible pour certaine personne à mobilité réduite de faire la balade.',
                 'setNombreMax' => 20,
                 'setType' => 2,
-                'setImage' => 'https://fr.wikipedia.org/wiki/Besan%C3%A7on#/media/File:Besancon_boucle_Doubs.jpg',
+                'setImage' => 'https://upload.wikimedia.org/wikipedia/commons/9/94/Besancon_boucle_Doubs.jpg',
                 'setNomLieu' => 'Besançon',
                 'setNumeroVoie' => 56,
                 'setVoie' => 'Faubourg Rivotte',

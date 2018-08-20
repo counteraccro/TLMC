@@ -1,6 +1,6 @@
 	<div class="card shadow-sm">
          <div class="card-header bg-light">
-           	 <b>Evénement :</b> {{ evenement.nom }}
+         	<b>Evénement :</b> {{ evenement.nom }}
            	<div class="float-right"> 
            	    {% if is_granted("ROLE_ADMIN") %}
            			<a href="{{path('evenement_ajax_edit', {'id': evenement.id }) }}" id="btn-edit-evenement" class="btn btn-dark"><span class="oi oi-pencil"></span> Editer l'événement</a>
@@ -8,7 +8,11 @@
            	</div>
          </div>
          <div class="card-body">
-
+			<div class="row align-items-center">
+			<div class="col-md-3">
+			{% if evenement.image != null %}<img src="{{ evenement.image }}" width="100%"/> {% endif %}
+			</div>
+			<div class="col-md-9">
         	<table  class="table table-sm">
             	<tr>
             		<th scope="col"> Actif </th>
@@ -59,6 +63,9 @@
             		</td>
             	</tr>
             </table>
+            </div>
+            
+            </div>
     	</div>
 	</div>
     

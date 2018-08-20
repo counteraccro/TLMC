@@ -19,7 +19,7 @@ class TemoignageController extends AppController
      * Listing des témoiganges
      *
      * @Route("/temoignage/listing/{type}/{page}/{field}/{order}", name="temoignage_listing", defaults={"page" = 1, "type"="tous", "field"= null, "order"= null})
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT') or is_granted('ROLE_BENEVOLE')")
      *
      * @param Request $request
      * @param SessionInterface $session
@@ -123,7 +123,7 @@ class TemoignageController extends AppController
      * @Route("/temoignage/see/{id}/{type}/{page}", name="temoignage_see")
      * @Route("/temoignage/see/{id}", name="temoignage_ajax_see")
      * @ParamConverter("temoignage", options={"mapping": {"id": "id"}})
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT') or s_granted('ROLE_BENEVOLE')")
      *
      * @param Request $request
      * @param SessionInterface $session
@@ -167,7 +167,7 @@ class TemoignageController extends AppController
      * Bloc témoignage d'un membre / d'un événement / d'un produit
      *
      * @Route("/temoignage/ajax/see/listing/{id}/{type}", name="temoignage_ajax_see_liste")
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE')")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT') or is_granted('ROLE_BENEVOLE')")
      *
      * @param int $id
      * @param string $type
@@ -431,7 +431,7 @@ class TemoignageController extends AppController
      *
      * @Route("/temoignage/delete/{id}/{page}/{type}", name="temoignage_delete")
      * @ParamConverter("temoignage", options={"mapping": {"id": "id"}})
-     * @Security("is_granted('ROLE_ADMIN')")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      *
      * @param SessionInterface $session
      * @param Temoignage $temoignage
