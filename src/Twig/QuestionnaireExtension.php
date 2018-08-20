@@ -114,7 +114,7 @@ class QuestionnaireExtension extends AbstractExtension
         $html = '';
         $html = $this->beginBloc($question);
         
-        if ($this->params['statut'] != self::PROD) {
+        if ($this->params['statut'] == self::EDIT) {
         $html .= $this->generateChartStats($question);
         }
         
@@ -204,7 +204,8 @@ class QuestionnaireExtension extends AbstractExtension
         
         $html = $this->beginBloc($question);
         
-        if ($this->params['statut'] != self::PROD) {
+        //Le graphique ne doit pas s'afficher dans l'URL prod
+        if ($this->params['statut'] == self::EDIT) {
         $html .= $this->generateChartStats($question);
         }
         
@@ -253,7 +254,7 @@ class QuestionnaireExtension extends AbstractExtension
         $html = '';
         $html = $this->beginBloc($question);
         
-        if ($this->params['statut'] != self::PROD) {
+        if ($this->params['statut'] == self::EDIT) {
         $html .= $this->generateChartStats($question);
         }
         
@@ -483,6 +484,8 @@ class QuestionnaireExtension extends AbstractExtension
     
     private function generateChartStats(Question $question)
     {
+        //le graphique ne doit se générer que s'il y à au moins 1 réponse 
+        //checker pourquoi le radiotype du nouveau questionnaire ne renvoie pas de graphique contrairement au checkboxtype
         $html = '';
         
         $html .= '

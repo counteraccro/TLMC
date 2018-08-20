@@ -51,7 +51,19 @@ class LoadQuestionnaireData extends Fixture
                 'setSlug' => 'enquete-sur-les-bonbons',
                 'setPublication' => '1',
                 'setDatePublication' => '2018-09-01 17:00:00'
-            ]
+            ],
+            'Questionnaire-4' => [
+                'setTitre' => 'Votre avis général concernant l\'association',
+                'setDescription' => 'Bonjour @prenom @nom, c\’est avec les remarques et suggestions de chacun que l\'association se construit, se développe, s\’améliore, se pérennise. Merci du temps que vous prendrez pour y répondre !',
+                'setDescriptionAfterSubmit' => 'Merci @prenom @nom, votre contribution est très importante pour l\'association et nous vous en remercions.',
+                'setDateCreation' => '2018-08-19 19:00:00',
+                'setDateFin' => '2018-09-30 23:00:00',
+                'setJourRelance' => '15',
+                'setDisabled' => '0',
+                'setSlug' => 'avis-general-association',
+                'setPublication' => '1',
+                'setDatePublication' => '2018-08-20 19:00:00'
+            ],
         ]
     ];
 

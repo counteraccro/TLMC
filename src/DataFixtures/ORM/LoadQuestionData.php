@@ -130,7 +130,48 @@ class LoadQuestionData extends Fixture implements DependentFixtureInterface
                 'setRegles' => '.',
                 'setMessageErreur' => 'Merci d\'indiquer votre fréquence de consommation de bonbons',
                 'setOrdre' => '1'
-            ]
+            ],
+            'Question-9' => [
+                'setQuestionnaire' => 'Questionnaire-4',
+                'setLibelle' => 'Comment avez-vous eu connaissance de l\'association ?',
+                'setLibelleTop' => 'Nous allons dès maintenant vous poser quelques questions pour recueillir votre avis concernant le fonctionnement de l’association. ',
+                'setLibelleBottom' => 'Pour les plus jeunes, l’aide des parents est la bienvenue pour remplir ce questionnaire',
+                'setType' => 'RadioType',
+                'setValeurDefaut' => '',
+                'setListeValeur' => '{"0":{"value":"0","libelle":"en Mairie"},"1":{"value":"1","libelle":"par le bouche-à-oreille"},"2":{"value":"2","libelle":"par l\'école ou le collège"},"3":{"value":"3","libelle":"flyers"},"4":{"value":"4","libelle":"campagne de sensibilisation"}}',
+                'setDisabled' => '0',
+                'setObligatoire' => 'true',
+                'setRegles' => '.',
+                'setMessageErreur' => 'Merci d\'indiquer le canal principal par lequel vous nous avez connu',
+                'setOrdre' => '1'
+            ],
+            'Question-10' => [
+                'setQuestionnaire' => 'Questionnaire-4',
+                'setLibelle' => 'Vous êtes-vous déjà impliqué dans la vie de l’association en : ',
+                'setLibelleBottom' => 'Ceci nous permettra de mieux identifier la répartition des rôles dans l\'association',
+                'setType' => 'CheckboxType',
+                'setValeurDefaut' => '',
+                'setListeValeur' => '{"0":{"value":"0","libelle":"participant à l’Assemblée Générale"},"1":{"value":"1","libelle":"participant aux réunions du Conseil d’Administration"},"2":{"value":"2","libelle":"participant à un comité de suivi ou un groupe de travail"},"3":{"value":"3","libelle":"en tant que bénévole dans une activité spécifique"},"4":{"value":"4","libelle":"non, car je manque de temps"},"5":{"value":"5","libelle":"non, je ne connaissais pas vraiment les possibilités"}}',
+                'setDisabled' => '0',
+                'setObligatoire' => 'true',
+                'setRegles' => '.',
+                'setMessageErreur' => 'Merci d\'indiquer les fonctions que vous avez déjà occupées',
+                'setOrdre' => '2'
+            ],
+            'Question-11' => [
+                'setQuestionnaire' => 'Questionnaire-4',
+                'setLibelle' => 'S\’il y avait des améliorations à apporter, que proposeriez-vous ? ',
+                'setLibelleTop' => 'Pouvons-nous en faire davantage ? nous améliorer ?',
+                'setLibelleBottom' => 'N\'hésitez pas à nous faire part de toutes vos remarques.',
+                'setType' => 'TextareaType',
+                'setValeurDefaut' => 'Vos suggestions peuvent porter sur l\'organisation, le matériel...',
+                'setListeValeur' => '',
+                'setDisabled' => '0',
+                'setObligatoire' => 'true',
+                'setRegles' => '.',
+                'setMessageErreur' => 'Merci d\'indiquer les améliorations possibles',
+                'setOrdre' => '3'
+            ],         
         ]
     ];
 
