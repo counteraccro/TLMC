@@ -114,8 +114,10 @@ class QuestionnaireExtension extends AbstractExtension
         $html = '';
         $html = $this->beginBloc($question);
         
+        if ($this->params['statut'] != self::PROD) {
         $html .= $this->generateChartStats($question);
-
+        }
+        
         $html .= '<label for="q-' . $question->getId() . '">' . $question->getLibelle() . '%o%</label>
                     <select class="form-control ' . $this->isValidateError($question) . '" id="q-' . $question->getId() . '" name="questionnaire[question][q-' . $question->getId() . ']">';
 
@@ -202,8 +204,10 @@ class QuestionnaireExtension extends AbstractExtension
         
         $html = $this->beginBloc($question);
         
+        if ($this->params['statut'] != self::PROD) {
         $html .= $this->generateChartStats($question);
-
+        }
+        
         $html .= '<label for="q-' . $question->getId() . '">' . $question->getLibelle() . '%o%</label>
           <div class="form-check">';
 
@@ -249,8 +253,10 @@ class QuestionnaireExtension extends AbstractExtension
         $html = '';
         $html = $this->beginBloc($question);
         
+        if ($this->params['statut'] != self::PROD) {
         $html .= $this->generateChartStats($question);
-
+        }
+        
         $html .= '<label for="q-' . $question->getId() . '">' . $question->getLibelle() . '%o%</label>
           <div class="form-check">';
 
