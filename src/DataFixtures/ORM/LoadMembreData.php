@@ -51,7 +51,7 @@ class LoadMembreData extends Fixture implements DependentFixtureInterface
                 'setSignature' => 'à votre disposition, Emilie Ratier',
                 'setDisabled' => 0,
                 'setEtablissement' => 'Etablissement-3',
-                'setSpecialite' => 'Specialite-3',
+                'setSpecialite' => 'Specialite-4',
                 'setSalt' => '1A2B3C4D5E6F7G8901',
                 'setRoles' => array('ROLE_BENEFICIAIRE')
             ],
@@ -68,7 +68,7 @@ class LoadMembreData extends Fixture implements DependentFixtureInterface
                 'setSignature' => 'Cordialement, Directeur Jean-Michel Dupuis',
                 'setDisabled' => 0,
                 'setEtablissement' => 'Etablissement-1',
-                'setSpecialite' => 'Specialite-2',
+                'setSpecialite' => 'Specialite-1',
                 'setSalt' => '1A2B3C4D5E6F7G890A',
                 'setRoles' => array('ROLE_BENEFICIAIRE_DIRECT')
             ],
@@ -85,7 +85,7 @@ class LoadMembreData extends Fixture implements DependentFixtureInterface
                 'setSignature' => 'à votre disposition, Jeanne Maure',
                 'setDisabled' => 0,
                 'setEtablissement' => 'Etablissement-3',
-                'setSpecialite' => 'Specialite-3',
+                'setSpecialite' => 'Specialite-4',
                 'setSalt' => '1A2B3C4D5E6F7G8902',
                 'setRoles' => array('ROLE_BENEVOLE')
             ],
@@ -117,6 +117,7 @@ class LoadMembreData extends Fixture implements DependentFixtureInterface
                 'setAnnuaire' => true,
                 'setSignature' => 'à votre disposition, Andréa Lucas',
                 'setDisabled' => 1,
+                'setEtablissement' => 'Etablissement-1',
                 'setEtablissement' => 'Etablissement-2',
                 'setSalt' => '1A2B3C4D5E6F7G8905',
                 'setRoles' => array('ROLE_BENEVOLE')

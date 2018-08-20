@@ -31,12 +31,13 @@
 	{{ form_row(form.nom_lieu) }}
 	
 	{{ form_row(form.statut) }}
+	{#{ form_row(form.image) }#}
     
     <div class="shadow-sm p-3 mb-5 bg-white rounded border">
         {{ form_row(form.specialite_evenements) }}
       		<a href="#" id="add_specialite" class="btn btn-primary btn-sm">Ajouter une spécialité</a>
   	</div>
-    
+  	
     {{ form_rest(form) }}
     {{ form_errors(form) }}
     {{ form_end(form) }}

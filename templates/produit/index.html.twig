@@ -46,7 +46,10 @@
         		<tr>
         			<td>{{ produit.id }}</td>
         			<td>{{ produit.type | typeProduit}}</td>
-        			<td>{{ produit.titre }}</td>
+        			<td>
+        				{% if produit.image != null %}<img src="{{ produit.image }}" height="50" width="50" /> <br>{% endif %}
+        			    {{ produit.titre }}
+        			</td>
         			<td>{{ produit.texte }}</td>
         			<td>
         				{% for tranche in produit.trancheAge %}

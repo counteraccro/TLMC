@@ -249,16 +249,17 @@ class MembreController extends AppController
     /**
      * Désactivation d'un membre
      *
-     * @Route("/patient/delete/{id}/{page}", name="membre_delete")
+     * @Route("/membre/delete/{id}/{page}", name="membre_delete")
      * @ParamConverter("membre", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
-     *
+     * 
+     * @param Request $request
      * @param SessionInterface $session
      * @param Membre $membre
      * @param int $page
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function deleteAction(SessionInterface $session, Membre $membre, int $page)
+    public function deleteAction(Request $request, SessionInterface $session, Membre $membre, int $page)
     {
         $arrayFilters = $this->getDatasFilter($session);
 
@@ -274,6 +275,13 @@ class MembreController extends AppController
 
         $entityManager->flush();
 
+        if ($request->isXmlHttpRequest()) {
+            return $this->json(array(
+                'statut' => true,
+                'page' => $page
+            ));
+        }
+        
         return $this->redirectToRoute('membre_listing', array(
             'page' => $page,
             'field' => $arrayFilters['field'],

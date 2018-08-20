@@ -19,7 +19,7 @@ class LoadSpecialiteData extends Fixture implements DependentFixtureInterface
                 'setPediatrie' => false,
                 'setService' => 'Oncologie',
                 'setEtablissement' => 'Etablissement-1',
-                'setDisabled' => 10
+                'setDisabled' => 0
             ],
             'Specialite-2' => [
                 'setCodeLogistique' => 'CHI_01',
@@ -34,8 +34,16 @@ class LoadSpecialiteData extends Fixture implements DependentFixtureInterface
                 'setAdulte' => true,
                 'setPediatrie' => true,
                 'setService' => 'Cardiologie',
+                'setEtablissement' => 'Etablissement-1',
+                'setDisabled' => 0
+            ],
+            'Specialite-4' => [
+                'setCodeLogistique' => 'CARD_02',
+                'setAdulte' => false,
+                'setPediatrie' => true,
+                'setService' => 'Cardiologie',
                 'setEtablissement' => 'Etablissement-3',
-                'setDisabled' => 1
+                'setDisabled' => 0
             ]
         ]
     ];

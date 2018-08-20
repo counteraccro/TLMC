@@ -10,8 +10,10 @@
 <div class="card">
 	<div class="card-header">
     	{{ pagination.nb_elements }} témoignage{% if pagination.nb_elements > 1 %}s{% endif %} {% if pagination.pages_count > 0 %} - Page {{ pagination.page }} / {{ pagination.pages_count }} {% endif %}
-  		<a href="{{ path('temoignage_add', {'page' : pagination.page, 'type': type}) }}" class="float-right"><span class="oi oi-comment-square"></span> Nouveau témoignage</a>
-  		{{ labelFilter(path('utils_delete-search', {'page' : pagination.page} ), current_search) | raw }}
+    	{% if is_granted("ROLE_ADMIN") or is_granted("ROLE_BENEFICIAIRE_DIRECT") or is_granted("ROLE_BENEFICIAIRE") %}
+  			<a href="{{ path('temoignage_add', {'page' : pagination.page, 'type': type}) }}" class="float-right"><span class="oi oi-comment-square"></span> Nouveau témoignage</a>
+  		{% endif %}
+    	{{ labelFilter(path('utils_delete-search', {'page' : pagination.page} ), current_search) | raw }}
   	</div>
   	<div class="card-body">
       	<table class="table table-sm table-striped">

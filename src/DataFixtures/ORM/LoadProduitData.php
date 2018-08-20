@@ -27,10 +27,11 @@ class LoadProduitData extends Fixture
                 'setQuantite' => 45,
                 'setDateCreation' => '2017-04-12 12:00:00',
                 'setDateEnvoi' => '2017-04-12 12:00:00',
-                'setDisabled' => 1
+                'setDisabled' => 0,
+                'setImage' => "https://s.s-bol.com/imgbase0/imagebase3/large/FC/7/4/1/8/9200000028828147.jpg"
             ],
             'Produit-2' => [
-                'setType' => 2,
+                'setType' => 1,
                 'setTitre' => 'Paintball',
                 'setTexte' => 'Ca va tacher !',
                 'setTrancheAge' => array(5),
@@ -39,6 +40,51 @@ class LoadProduitData extends Fixture
                 'setDateCreation' => '2018-07-17 19:00:00',
                 'setDateEnvoi' => '2018-08-30 12:00:00',
                 'setDisabled' => 0
+            ],
+            'Produit-3' => [
+                'setType' => 1,
+                'setTitre' => 'Crayon de couleur',
+                'setTexte' => 'Set de 24 crayons de couleur',
+                'setTrancheAge' => array(2, 3, 4),
+                'setGenre' => 0,
+                'setQuantite' => 50,
+                'setDateCreation' => '2018-07-17 19:00:00',
+                'setDateEnvoi' => '2018-08-30 12:00:00',
+                'setDisabled' => 1
+            ],
+            'Produit-4' => [
+                'setType' => 2,
+                'setTitre' => 'Matelas',
+                'setTexte' => 'Matelas avec ressorts',
+                'setTrancheAge' => array(0),
+                'setGenre' => 0,
+                'setQuantite' => 20,
+                'setDateCreation' => '2018-07-17 19:00:00',
+                'setDateEnvoi' => '2018-08-30 12:00:00',
+                'setDisabled' => 0
+            ],
+            'Produit-5' => [
+                'setType' => 2,
+                'setTitre' => 'Defibrillateur',
+                'setTexte' => 'Defibrillateur',
+                'setTrancheAge' => array(0),
+                'setGenre' => 0,
+                'setQuantite' => 15,
+                'setDateCreation' => '2018-07-17 19:00:00',
+                'setDateEnvoi' => '2018-08-30 12:00:00',
+                'setDisabled' => 1
+            ],
+            'Produit-6' => [
+                'setType' => 2,
+                'setTitre' => 'Chaise',
+                'setTexte' => 'Chaise',
+                'setTrancheAge' => array(0),
+                'setGenre' => 0,
+                'setQuantite' => 12,
+                'setDateCreation' => '2016-07-17 09:28:36',
+                'setDateEnvoi' => '2016-07-18 14:00:00',
+                'setDisabled' => 0,
+                'setImage' => 'https://www.cocktail-scandinave.fr/Vbeta2018/wp-content/uploads/2018/02/MXCHA100-zoom.jpg'
             ]
         ]
     ];

@@ -3,6 +3,7 @@
            	 <b>Membre :</b> {{ membre.prenom }} {{ membre.nom }}
            	<div class="float-right"> 
            		<a href="{{path('membre_ajax_edit', {'id': membre.id }) }}" id="btn-edit-membre" class="btn btn-dark"><span class="oi oi-pencil"></span> Editer le membre</a>
+           		{{ desactiverMembre(membre, path('membre_delete', {'id': membre.id, 'page' : 1 })) | raw }}
            	</div>
          </div>
          <div class="card-body">
@@ -56,8 +57,11 @@
     <script type="text/javascript">
 
     $(document).ready(function() {
-        var id_btn_membre = '#btn-edit-membre';
-        Membre.EventEdit(id_btn_membre);
+        var id_btn_edit_membre = '#btn-edit-membre';
+        Membre.EventEdit(id_btn_edit_membre);
+
+        var id_btn_delete_membre = '#btn-disabled-membre';
+        Membre.EventDelete(id_btn_delete_membre);
     });
     
     </script> 

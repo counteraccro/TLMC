@@ -15,16 +15,22 @@ class LoadProduitEtablissementData extends Fixture implements DependentFixtureIn
     private $tabProduitEtablissement = [
         'ProduitEtablissement' => [
             'ProduitEtablissement-1' => [
-                'setEtablissement' => 'Etablissement-1',
-                'setProduit' => 'Produit-1',
-                'setQuantite' => '17',
-                'setDate' => '2018-07-16'
+                'setEtablissement' => 'Etablissement-2',
+                'setProduit' => 'Produit-4',
+                'setQuantite' => 20,
+                'setDate' => '2018-07-17'
             ],
             'ProduitEtablissement-2' => [
                 'setEtablissement' => 'Etablissement-2',
-                'setProduit' => 'Produit-1',
-                'setQuantite' => '30',
-                'setDate' => '2018-07-18'
+                'setProduit' => 'Produit-5',
+                'setQuantite' => 10,
+                'setDate' => '2018-08-30'
+            ],
+            'ProduitEtablissement-3' => [
+                'setEtablissement' => 'Etablissement-2',
+                'setProduit' => 'Produit-6',
+                'setQuantite' => 10,
+                'setDate' => '2016-07-18'
             ]
         ]
     ];

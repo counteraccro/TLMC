@@ -8,47 +8,54 @@
        	</div>
     </div>
     <div class="card-body">
-    	<table  class="table table-sm">
-        	<tr>
-        		<th scope="col"> Type </th>
-        		<td> {{ produit.type | typeProduit }} </td>
-        	</tr>
-        	<tr>
-        		<th scope="col"> Description </th>
-        		<td> 
-        		    {{ produit.texte }} <br />
-        		    {{ produit.texte2 }} 
-        		</td>
-        	</tr>
-        	<tr>
-        		<th scope="col"> Tranche d'âge </th>
-        		<td> 
-        			{% for tranche in produit.trancheAge %}
-        		        {{ tranche | trancheAge}} <br/> 
-        		    {% endfor %}
-        		</td>
-        	</tr>
-        	<tr>
-        		<th scope="col"> Genre </th>
-        		<td> {{ produit.genre | genre}} </td>
-        	</tr>
-        	<tr>
-        		<th scope="col"> Quantité </th>
-        		<td> {{ produit.quantite }} </td>
-        	</tr>
-        	<tr>
-        		<th scope="col">Date d'envoi </th>
-        		<td> {{ produit.dateEnvoi | date('d/m/Y') }} </td>
-        	</tr>
-        	<tr>
-        		<th scope="col">Date de création </th>
-        		<td> {{ produit.dateCreation | date('d/m/Y') }} </td>
-        	</tr>
-        	<tr>
-        		<th scope="col"> Actif </th>
-        		<td> {{ produit.disabled | actif }} </td>
-        	</tr>
-        </table>
+    	<div class="row align-items-center">
+    		<div class="col-md-3">
+    		    {% if produit.image != null %}<img src="{{ produit.image }}" width="75%"/> {% endif %}
+    		</div>
+			<div class="col-md-9">
+            	<table  class="table table-sm">
+                	<tr>
+                		<th scope="col"> Type </th>
+                		<td> {{ produit.type | typeProduit }} </td>
+                	</tr>
+                	<tr>
+                		<th scope="col"> Description </th>
+                		<td> 
+                		    {{ produit.texte }} <br />
+                		    {{ produit.texte2 }} 
+                		</td>
+                	</tr>
+                	<tr>
+                		<th scope="col"> Tranche d'âge </th>
+                		<td> 
+                			{% for tranche in produit.trancheAge %}
+                		        {{ tranche | trancheAge}} <br/> 
+                		    {% endfor %}
+                		</td>
+                	</tr>
+                	<tr>
+                		<th scope="col"> Genre </th>
+                		<td> {{ produit.genre | genre}} </td>
+                	</tr>
+                	<tr>
+                		<th scope="col"> Quantité </th>
+                		<td> {{ produit.quantite }} </td>
+                	</tr>
+                	<tr>
+                		<th scope="col">Date d'envoi </th>
+                		<td> {{ produit.dateEnvoi | date('d/m/Y') }} </td>
+                	</tr>
+                	<tr>
+                		<th scope="col">Date de création </th>
+                		<td> {{ produit.dateCreation | date('d/m/Y') }} </td>
+                	</tr>
+                	<tr>
+                		<th scope="col"> Actif </th>
+                		<td> {{ produit.disabled | actif }} </td>
+                	</tr>
+                </table>
+        	</div>
+    	</div>
     </div>
 </div>
 
