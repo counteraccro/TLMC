@@ -6,6 +6,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Doctrine\ORM\QueryBuilder;
+use App\Entity\Membre;
 
 /**
  *
@@ -23,7 +25,7 @@ class QuestionnaireRepository extends ServiceEntityRepository
     }
 
     /**
-     * Retourne une liste de questionnaires paginée en fonction de l'ordre et de la recherche courante
+     * Retourne une liste de questionnaire paginé en fonction de l'ordre et de la recherche courante
      *
      * @param int $page
      * @param int $max
@@ -32,7 +34,8 @@ class QuestionnaireRepository extends ServiceEntityRepository
      *            [page] => page (pagination)
      *            [search] => tableau contenant les éléments de la recherche
      *            [repository] => repository (objet courant)
-     *            [field] => champ de tri
+     *            [field] => champ de tri,
+     *            [condition] => tableau de conditions pour le listing des éléments
      * @throws \InvalidArgumentException
      * @throws NotFoundHttpException
      * @return \Doctrine\ORM\Tools\Pagination\Paginator[]|mixed[]|\Doctrine\DBAL\Driver\Statement[]|array[]|NULL[]
@@ -56,40 +59,34 @@ class QuestionnaireRepository extends ServiceEntityRepository
         // pagination
         $query = $this->createQueryBuilder($params['repository'])->setFirstResult($firstResult);
 
-        if (isset($params['search'])) {
-            foreach ($params['search'] as $searchKey => $valueKey) {
-                $query->andWhere(str_replace('-', '.', $searchKey) . " LIKE '%" . $valueKey . "%'");
-            }
-        }
+        // Génération des paramètres SQL
+        $query = $this->generateParamsSql($query, $params);
 
         $query->orderBy($params['repository'] . '.' . $params['field'], $params['order'])->setMaxResults($max);
         $paginator = new Paginator($query);
 
-        // Nombre total de patient
-        $result = $this->createQueryBuilder($params['repository'])
-            ->select('COUNT(' . $params['repository'] . '.id)')
-            ->getQuery()
-            ->getSingleScalarResult();
+        // Nombre total de questionnaire
+        $query = $this->createQueryBuilder($params['repository'])->select('COUNT(' . $params['repository'] . '.id)');
+
+        // Génération des paramètres SQL
+        $query = $this->generateParamsSql($query, $params);
+        $result = $query->getQuery()->getSingleScalarResult();
 
         if (($paginator->count() <= $firstResult) && $page != 1) {
             throw new NotFoundHttpException('Page not found');
         }
-        
+
         /**
          * Pour connaitre le nombre de participants pour chaque questionnaire
          * On utilise le champs description de questionnaire pour stocker le calcul et
          * l'afficher dans la vue
          */
         $nbParticipants = $this->getNbParticipantsRepondu($page, $max, $params);
-        foreach($paginator as &$questionnaire)
-        {
-            foreach($nbParticipants as $val)
-            {
-                if($val['id'] == $questionnaire->getId()) {
-                    $questionnaire->setDescription($val['nb_participants']); 
-                }
-                else if(!is_numeric($questionnaire->getDescription()))
-                {
+        foreach ($paginator as &$questionnaire) {
+            foreach ($nbParticipants as $val) {
+                if ($val['id'] == $questionnaire->getId()) {
+                    $questionnaire->setDescription($val['nb_participants']);
+                } else if (! is_numeric($questionnaire->getDescription())) {
                     $questionnaire->setDescription(0);
                 }
             }
@@ -100,9 +97,58 @@ class QuestionnaireRepository extends ServiceEntityRepository
             'nb' => $result
         );
     }
-    
+
     /**
-     * 
+     * Génération de la requête
+     *
+     * @param QueryBuilder $query
+     * @param array $params
+     *            [order] => ordre de tri
+     *            [page] => page (pagination)
+     *            [search] => tableau contenant les éléments de la recherche
+     *            [repository] => repository (objet courant)
+     *            [field] => champ de tri,
+     *            [sans_inactif] => boolean,
+     *            [condition] => tableau de conditions pour le listing des éléments
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    private function generateParamsSql(QueryBuilder $query, array $params)
+    {
+        $index = 1;
+        if (isset($params['search'])) {
+            foreach ($params['search'] as $searchKey => $valueKey) {
+
+                $explode_key = explode('-', $searchKey);
+                if (count($explode_key) == 3) {
+                    // traitement des liaisons avec une autre table
+                    $query = $query->join($explode_key[0] . '.' . $explode_key[1], $explode_key[1]);
+                    $query->andWhere($explode_key[1] . "." . $explode_key[2] . " LIKE :searchTerm$index");
+                    $query->setParameter('searchTerm' . $index, '%' . $valueKey . '%');
+                } else {
+                    $query->andWhere(str_replace('-', '.', $searchKey) . " LIKE :searchTerm$index");
+                    $query->setParameter('searchTerm' . $index, '%' . $valueKey . '%');
+                }
+                $index ++;
+            }
+        }
+
+        if (isset($params['jointure'])) {
+            foreach ($params['jointure'] as $jointure) {
+                $query->join($jointure['oldrepository'] . '.' . $jointure['newrepository'], $jointure['newrepository']);
+            }
+        }
+
+        if (isset($params['condition'])) {
+            foreach ($params['condition'] as $condition) {
+                $query->andWhere($condition);
+            }
+        }
+
+        return $query;
+    }
+
+    /**
+     *
      * @param int $page
      * @param int $max
      * @param array $params
@@ -112,25 +158,25 @@ class QuestionnaireRepository extends ServiceEntityRepository
     {
         $firstResult = ($page - 1) * $max;
         $query = $this->createQueryBuilder($params['repository'])->setFirstResult($firstResult);
-        
-        $query->select($params['repository']. '.id as id, count(distinct m.id) as nb_participants');
-        
+
+        $query->select($params['repository'] . '.id as id, count(distinct m.id) as nb_participants');
+
         if (isset($params['search'])) {
             foreach ($params['search'] as $searchKey => $valueKey) {
                 $query->andWhere(str_replace('-', '.', $searchKey) . " LIKE '%" . $valueKey . "%'");
             }
         }
-        
+
         $query->join($params['repository'] . '.questions', 'qu');
         $query->leftJoin('qu.reponses', 'r');
         $query->leftJoin('r.membre', 'm');
-        $query->addGroupBy($params['repository']. '.id');
+        $query->addGroupBy($params['repository'] . '.id');
         $query->setMaxResults($max);
         return $query->getQuery()->getArrayResult();
     }
-    
+
     /**
-     * 
+     *
      * @param int $id_questionnaire
      */
     public function getNbParticipantsReponduByQuestionnaire($id_questionnaire)
@@ -140,7 +186,7 @@ class QuestionnaireRepository extends ServiceEntityRepository
         $query->join('q.questions', 'qu');
         $query->leftJoin('qu.reponses', 'r');
         $query->leftJoin('r.membre', 'm');
-        //$query->addGroupBy('q.id');
+        // $query->addGroupBy('q.id');
         $query->andWhere('q.id = ' . $id_questionnaire);
         return $query->getQuery()->getArrayResult();
     }
@@ -171,6 +217,8 @@ class QuestionnaireRepository extends ServiceEntityRepository
         }
         return true;
     }
+
+    
     // /**
     // * @return Questionnaire[] Returns an array of Questionnaire objects
     // */

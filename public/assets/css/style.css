@@ -536,3 +536,26 @@ footer h6, footer p {
 * Fin page templates/questionnaire/ajax_see.html.twig
 *
 ********************************************/
+
+/********************************************
+*
+* Page templates/questionnaire/stats.html.twig
+*
+********************************************/
+#stats_questionnaire #listing_membres .card {
+	margin-bottom: 10px;
+}
+
+#stats_questionnaire #listing_membres {
+	margin-bottom: 10px;
+}
+
+#stats_questionnaire #listing_membres .card-body .float-left {
+	width: 33%;
+	padding-bottom: 1.25rem;
+}
+/********************************************
+*
+* Fin page templates/questionnaire/stats.html.twig
+*
+********************************************/

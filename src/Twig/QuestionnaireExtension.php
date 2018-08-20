@@ -11,6 +11,7 @@ use App\Entity\Question;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use App\Controller\AppController;
 use App\Entity\Reponse;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class QuestionnaireExtension extends AbstractExtension
 {
@@ -25,6 +26,10 @@ class QuestionnaireExtension extends AbstractExtension
             new TwigFunction('displayDataToSave', array(
                 $this,
                 'displayDataToSave'
+            )),
+            new TwigFunction('displayMembreWithReponse', array(
+                $this,
+                'displayMembreWithReponse'
             ))
         );
     }
@@ -525,6 +530,95 @@ class QuestionnaireExtension extends AbstractExtension
         }
 
         $html = '<div class="card "><div class="card-body ' . $border . '">' . $html . '</div></div>';
+        return $html;
+    }
+    
+    /**
+     * 
+     * @param Paginator $liste_membres
+     * @param Questionnaire $questionnaire
+     * @return string
+     */
+    public function displayMembreWithReponse(Paginator $liste_membres, Questionnaire $questionnaire)
+    {
+        $html = '<div id="listing_membres">';
+        $i = 0;
+        $aria_expanded = true;
+        $show = 'show';
+        
+        /* @var \App\Entity\Membre $membre */
+        foreach($liste_membres as $membre)
+        {
+            if($i > 0)
+            {
+                $aria_expanded = false;
+                $show = '';
+            }
+            
+            $date_reponse = '';
+            foreach ($questionnaire->getQuestions() as $question) {
+                foreach ($question->getReponses() as $reponse) {
+                    if ($reponse->getMembre()->getId() == $membre->getId()) {
+                        $date_reponse = $reponse->getDate()->format('\L\e d-m-Y à H:i:s');
+                        break;
+                    }
+                }
+            }
+            
+            $html .= '<div class="card">
+                <div class="card-header" id="card-' . $membre->getId() . '">
+                    <a class="btn btn-link" data-toggle="collapse" data-target="#collapse-' . $membre->getId() . '" aria-expanded="' . $aria_expanded . '" aria-controls="collapse-' . $membre->getId() . '">
+                        #' . $membre->getId() . ' ' . $membre->getPrenom() . ' ' . $membre->getNom() . ' (' . $membre->getUsername() . ')
+                    </a>
+                    <div class="float-right">' . $date_reponse . '</div>
+                </div>
+                    
+                <div id="collapse-' . $membre->getId() . '" class="collapse ' . $show . '" aria-labelledby="card-' . $membre->getId() . '" data-parent="#listing_membres">
+                    <div class="card-body">';
+            foreach ($questionnaire->getQuestions() as $question) {
+                foreach ($question->getReponses() as $reponse) {
+                    if ($reponse->getMembre()->getId() == $membre->getId()) {
+
+                        if ($reponse->getValeur() != "") {
+                            
+                            $data_value = json_decode($question->getListeValeur());
+                            $tmp = explode('|', $reponse->getValeur());
+                            
+                            if (in_array($question->getType(), array(
+                                AppController::CHECKBOXTYPE,
+                                AppController::CHOICETYPE,
+                                AppController::RADIOTYPE
+                            ))) {
+                                
+                                $repStr = '';
+                                foreach ($data_value as $val) {
+                                    
+                                    foreach ($tmp as $tmpVal) {
+                                        if ($tmpVal == $val->value) {
+                                            $repStr .= "<b>" . $val->libelle . '</b>, ';
+                                        }
+                                    }
+                                }
+                                $repStr = substr($repStr, 0, - 2);
+                            } else {
+                                $repStr = '<b>' . $reponse->getValeur() . '</b>';
+                            }
+                        }
+
+                        $html .= '<div class="float-left">' . $question->getLibelle() . ' <br />
+                            &nbsp;&nbsp;<span class="oi oi-arrow-thick-right"></span> ' . $repStr . '</div>';
+                    }
+                }
+            }
+            
+                    $html .='</div>
+                </div>
+            </div>';
+            
+            $i++;
+        }
+        
+        $html .= '</div>';
         return $html;
     }
 }

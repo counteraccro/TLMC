@@ -119,14 +119,77 @@ class MembreRepository extends ServiceEntityRepository
                 $query->join($jointure['oldrepository'] . '.' . $jointure['newrepository'], $jointure['newrepository']);
             }
         }
-        
-        if(isset($params['condition'])){
-            foreach ($params['condition'] as $condition){
+
+        if (isset($params['condition'])) {
+            foreach ($params['condition'] as $condition) {
                 $query->andWhere($condition);
             }
         }
-        
+
         return $query;
+    }
+
+   
+    /**
+     * Fonction qui permet de lister les membres et leurs réponses pour un questionnaire donné
+     * @param int $questionnaire_id
+     * @param int $page
+     * @param int $max
+     * @param array $params
+     * @throws \InvalidArgumentException
+     * @throws NotFoundHttpException
+     * @return \Doctrine\ORM\Tools\Pagination\Paginator[]|mixed[]|\Doctrine\DBAL\Driver\Statement[]|array[]|NULL[]
+     */
+    public function GetAllMembresReponsesByQuestionnaire($questionnaire_id, int $page = 1, int $max = 10, $params = array())
+    {
+        /*
+         * SELECT membre.id, membre.username, quest.libelle as titre, rep.id as id_rep, rep.valeur, rep.date as reponse
+         * FROM `membre`
+         * join reponse as rep on (membre.id = rep.membre_id)
+         * join question as quest on (quest.id = rep.question_id)
+         * join questionnaire as q on (q.id = quest.questionnaire_id)
+         * WHERE q.id = 50
+         * order by rep.date ASC
+         */
+        if (! is_numeric($page)) {
+            throw new \InvalidArgumentException('$page doit être un integer (' . gettype($page) . ' : ' . $page . ')');
+        }
+
+        if (! is_numeric($max)) {
+            throw new \InvalidArgumentException('$max doit être un integer (' . gettype($max) . ' : ' . $max . ')');
+        }
+
+        $firstResult = ($page - 1) * $max;
+
+        $query = $this->createQueryBuilder('m')
+            ->setFirstResult($firstResult)
+            ->join('m.reponses', 'rep')
+            ->join('rep.question', 'quest')
+            ->join('quest.questionnaire', 'q')
+            ->andWhere('q.id = ' . $questionnaire_id)
+            ->orderBy('rep.date', 'ASC')
+            ->setMaxResults($max);
+            
+        $paginator = new Paginator($query);
+
+        $query = $this->createQueryBuilder('m')
+            ->select('COUNT(DISTINCT m.id)')
+            ->join('m.reponses', 'rep')
+            ->join('rep.question', 'quest')
+            ->join('quest.questionnaire', 'q')
+            ->andWhere('q.id = ' . $questionnaire_id);
+
+        // Génération des paramètres SQL
+        $result = $query->getQuery()->getSingleScalarResult();
+        
+        if (($paginator->count() <= $firstResult) && $page != 1) {
+            throw new NotFoundHttpException('Page not found');
+        }
+        
+        return array(
+            'paginator' => $paginator,
+            'nb' => $result
+        );
     }
 
     // /**

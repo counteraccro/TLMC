@@ -13,6 +13,8 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Response;
 use App\Entity\Reponse;
 use App\Service\QuestionnaireManager;
+use Symfony\Component\HttpFoundation\Session\Session;
+use App\Entity\Membre;
 
 class QuestionnaireController extends AppController
 {
@@ -390,13 +392,46 @@ class QuestionnaireController extends AppController
             return $this->json(array(
                 'statut' => true
             ));
-
-            /*
-             * return $this->render('questionnaire/ajax_publication.html.twig', [
-             * 'questionnaire' => $questionnaire,
-             * 'erreur' => ''
-             * ]);
-             */
         }
+    }
+
+    /**
+     * Statistiques questionnaire
+     *
+     * @Route("/questionnaire/stats/{id}/{page}", name="questionnaire_stats")
+     * @ParamConverter("questionnaire", options={"mapping": {"id": "id"}})
+     * @Security("is_granted('ROLE_ADMIN')")
+     */
+    public function statsAction(Questionnaire $questionnaire, Session $session, int $page = 1)
+    {
+        $arrayFilters = $this->getDatasFilter($session);
+        
+        $repository = $this->getDoctrine()->getRepository(Membre::class);
+        $result = $repository->GetAllMembresReponsesByQuestionnaire($questionnaire->getId(), $page, self::MAX_NB_RESULT, array());
+
+        $pagination = array(
+            'page' => $page,
+            'route' => 'questionnaire_stats',
+            'pages_count' => ceil($result['nb'] / self::MAX_NB_RESULT),
+            'nb_elements' => $result['nb'],
+            'route_params' => array('id' => $questionnaire->getId())
+        );
+        
+        return $this->render('questionnaire/stats.html.twig', [
+            'questionnaire' => $questionnaire,
+            'liste_membres' => $result['paginator'],
+            'pagination' => $pagination,
+            'paths' => array(
+                'home' => $this->indexUrlProject(),
+                'urls' => array(
+                    $this->generateUrl('questionnaire_listing', array(
+                        'page' => 1,
+                        'field' => $arrayFilters['field'],
+                        'order' => $arrayFilters['order']
+                    )) => 'Gestion de questionnaires'
+                ),
+                'active' => 'Statistiques de #' . $questionnaire->getId() . ' - ' . $questionnaire->getTitre()
+            )
+        ]);
     }
 }

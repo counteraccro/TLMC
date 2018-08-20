@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+Statistiques du questionnaire {{ questionnaire.titre }}
+{% endblock %}
+
+{% block body %}
+
+<h1>
+	Liste des membres ayant répondu au questionnaire
+</h1>
+
+
+{% include 'elements/arborescence.html.twig' %}
+
+
+<div id="stats_questionnaire">
+
+	{{ displayMembreWithReponse(liste_membres, questionnaire) | raw }}
+	
+	{% include 'elements/pagination.html.twig' %}
+	
+</div>
+
+{% endblock %}
