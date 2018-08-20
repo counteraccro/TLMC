@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Membre;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class AppController extends Controller
 {
@@ -298,5 +299,58 @@ class AppController extends Controller
             $elements = array();
         }
         return $elements;
+    }
+    
+    /**
+     * Télécharge une image et retourne le nom de l'image téléchargée
+     * 
+     * @param UploadedFile $file
+     * @param string $type
+     * @param string $nom
+     * @return string
+     */
+    public function telechargerImage(UploadedFile $file, string $type, string $nom)
+    {
+        if($type != 'evenement' && $type != 'produit'){
+            return false;
+        }
+        
+        $extension = $file->getClientOriginalExtension();
+        if($extension != 'jpeg' && $extension != 'jpg' && $extension != 'png'){
+            return false;
+        }
+        
+        $fileName = $this->cleanText($nom) . '_' . date('dmYHis') . '.' . $extension;
+        
+        $directory = ($type == 'produit' ? 'pictures_products_directory' : 'pictures_events_directory');
+        $file->move($this->getParameter($directory), $fileName);
+        
+        return $fileName;
+    }
+    
+    /**
+     * Retrait des accents et des caractères spéciaux
+     * 
+     * @param string $str
+     * @param string $encoding
+     * @return string
+     */
+    public function cleanText(string $str, string $encoding='utf-8')
+    {
+        // transformer les caractères accentués en entités HTML
+        $str = htmlentities($str, ENT_NOQUOTES, $encoding);
+        
+        // remplacer les entités HTML pour avoir juste le premier caractères non accentués
+        $str = preg_replace('#&([A-za-z])(?:acute|grave|cedil|circ|orn|ring|slash|th|tilde|uml);#', '\1', $str);
+        
+        // Remplacer les ligatures tel que : , Æ ...
+        $str = preg_replace('#&([A-za-z]{2})(?:lig);#', '\1', $str);
+        // Supprimer tout le reste
+        $str = preg_replace('#&[^;]+;#', '', $str);
+        
+        $str = preg_replace("/(\\|\^|\.|\$|\||\(|\)|\[|\]|\*|\+|\?|\{|\}|\,|\=)/", '', $str);
+        $str = preg_replace("/\d/", '_', $str);
+        
+        return $str;
     }
 }

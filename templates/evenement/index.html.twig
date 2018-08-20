@@ -51,8 +51,7 @@
         		<tr>
         			<td>{{ evenement.id }}</td>
         			<td>
-        				{#% if evenement.image != null %}<img src="{{ evenement.image }}" height="50" width="50" /> <br>{% endif %#}
-        			    {{ evenement.nom }}
+        				{{ evenement.nom }}
         			</td>
         			<td>{{ evenement.dateDebut |date("d/m/Y H:i") }}</td>
         			<td>{{ evenement.dateFin|date("d/m/Y H:i") }}</td>

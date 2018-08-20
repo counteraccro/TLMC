@@ -10,7 +10,7 @@
          <div class="card-body">
 			<div class="row align-items-center">
     			<div class="col-md-3">
-    			    {% if evenement.image != null %}<img src="{{ evenement.image }}" width="75%"/> {% endif %}
+    			    {% if evenement.image != null %}{{ image('evenement', evenement.image) | raw }}{% endif %}
     			</div>
 				<div class="col-md-9">
                 	<table  class="table table-sm">

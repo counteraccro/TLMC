@@ -178,8 +178,7 @@ class ProduitController extends AppController
         $produit->setDateEnvoi(new \DateTime());
 
         $form = $this->createForm(ProduitType::class, $produit, array(
-            'add_etablissement' => true,
-            'add_specialite' => true
+            'add' => true
         ));
 
         $form->handleRequest($request);
@@ -208,6 +207,12 @@ class ProduitController extends AppController
                 $produitSpecialite->setProduit($produit);
             }
 
+            $file = $form['image']->getData();
+            $fileName = $this->telechargerImage($file, 'produit', $produit->getTitre());
+            if($fileName) {
+                $produit->setImage($fileName);
+            }
+            
             $produit->setDateCreation(new \DateTime());
             $produit->setDisabled(0);
 
@@ -220,8 +225,6 @@ class ProduitController extends AppController
         return $this->render('produit/add.html.twig', array(
             'page' => $page,
             'form' => $form->createView(),
-            'add_specialite' => true,
-            'add_etablissement' => true,
             'paths' => array(
                 'home' => $this->indexUrlProject(),
                 'urls' => array(

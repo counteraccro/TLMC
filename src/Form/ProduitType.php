@@ -47,18 +47,18 @@ class ProduitType extends AbstractType
             'widget' => 'choice',
             'date_format' => 'dd MM yyyy',
             'years' => range(date('Y'), date('Y') + 2)
-        ))
-            /*->add('image', FileType::class, array(
-            'label' => 'Image',
-            'data_class' => null,
-            'required' => false,
-            'attr' => array(
-                'placeholder' => 'Choisir une image'
-            )
-        ))*/;
+        ));
 
-        if ($options['add_etablissement']) {
-            $builder->add('produitEtablissements', CollectionType::class, array(
+        if ($options['add']) {
+            $builder->add('image', FileType::class, array(
+                'label' => 'Image',
+                'data_class' => null,
+                'required' => false,
+                'attr' => array(
+                    'placeholder' => 'Choisir une image'
+                )
+            ))
+                ->add('produitEtablissements', CollectionType::class, array(
                 'label' => "Etablissements dans lesquels le produit est envoyé",
                 'label_attr' => array(
                     'id' => 'label_collection_type'
@@ -71,11 +71,8 @@ class ProduitType extends AbstractType
                 ),
                 'allow_add' => true,
                 'auto_initialize' => true
-            ));
-        }
-
-        if ($options['add_specialite']) {
-            $builder->add('produitSpecialites', CollectionType::class, array(
+            ))
+                ->add('produitSpecialites', CollectionType::class, array(
                 'label' => "Spécialités dans lesquelles le produit est envoyé",
                 'label_attr' => array(
                     'id' => 'label_collection_type'
@@ -96,7 +93,6 @@ class ProduitType extends AbstractType
                 'class' => 'btn btn-primary'
             )
         ));
-        // ->add('image')
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -107,8 +103,7 @@ class ProduitType extends AbstractType
             'genre' => ProduitController::GENRE,
             'type' => ProduitController::TYPE,
             'trancheAge' => AppController::TRANCHE_AGE,
-            'add_specialite' => FALSE,
-            'add_etablissement' => false
+            'add' => false
         ]);
     }
 }

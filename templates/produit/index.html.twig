@@ -47,8 +47,7 @@
         			<td>{{ produit.id }}</td>
         			<td>{{ produit.type | typeProduit}}</td>
         			<td>
-        				{% if produit.image != null %}<img src="{{ produit.image }}" height="50" width="50" /> <br>{% endif %}
-        			    {{ produit.titre }}
+        				{{ produit.titre }}
         			</td>
         			<td>{{ produit.texte }}</td>
         			<td>

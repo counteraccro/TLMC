@@ -15,35 +15,58 @@
 			<div class="col-md-6">
             	{{ form_row(form.nom) }}
             	{{ form_row(form.type) }}
-            	
-            	{{ form_row(form.date_debut) }}
-            	{{ form_row(form.date_fin) }}
-            	
+            </div>
+            <div class="col-md-6">
             	{{ form_row(form.description) }}
-            	
-            	{{ form_row(form.information_complementaire) }}
-    		</div>
+           	</div>
+        </div>
+        
+       	<div class="row">
+            <div class="col-md-6">
+                {{ form_row(form.date_debut) }}
+           	</div>
+            <div class="col-md-6">
+            	{{ form_row(form.date_fin) }}
+            </div>
+        </div>
+        <hr>
+        
+    	<div class="row">
     		<div class="col-md-6">
+    		    {{ form_row(form.statut) }}
+    		    {{ form_row(form.nombre_max) }}
+            	{{ form_row(form.tranche_age) }}
+            </div>
+            <div class="col-md-6">
+            	{{ form_row(form.date_fin_inscription) }}
+            	{{ form_row(form.information_complementaire) }}
+            </div>
+    	</div>
+    	<hr>
+    	<div class="row">
+        	<div class="col-md-6">
             	{{ form_row(form.nom_lieu) }}
-            	{{ form_row(form.numero_voie) }}
-            	{{ form_row(form.voie) }}
-            	{{ form_row(form.ville) }}
-            	{{ form_row(form.code_postal) }}
-            	{{ form_row(form.nom_lieu) }}
-            	
-            	
-    		</div>
+            </div>
+        </div>
+        
+       	<div class="row">
+       		<div class="col-md-6">
+        		{{ form_row(form.numero_voie) }}
+        	</div>
+        	<div class="col-md-6">
+        		{{ form_row(form.voie) }}
+        	</div>
+       	</div>
+       	
+       	<div class="row">
+        	<div class="col-md-6">
+        		{{ form_row(form.code_postal) }}
+        	</div>
+        	<div class="col-md-6">
+        		{{ form_row(form.ville) }}
+        	</div>
     	</div>
     	
-    	<div class="row">
-    		<div class="col-md-12">
-    		{{ form_row(form.nombre_max) }}
-            	{{ form_row(form.tranche_age) }}
-            	{{ form_row(form.date_fin_inscription) }}
-            	{{ form_row(form.statut) }}
-            	{#{ form_row(form.image) }#}
-            	</div>
-    	</div>
     </div>
         
     <div class="modal-footer">

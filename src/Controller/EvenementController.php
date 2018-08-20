@@ -22,7 +22,8 @@ class EvenementController extends AppController
         1 => 'Repas',
         2 => 'Sortie',
         3 => 'Spectacle',
-        4 => 'Fête'
+        4 => 'Fête',
+        5 => 'Animation'
     );
 
     /**
@@ -195,7 +196,10 @@ class EvenementController extends AppController
                 $specialiteEvenement->setEvenement($evenement);
             }
 
-            $evenement->setImage('https://images-eu.ssl-images-amazon.com/images/I/81xfN64QjVL.png');
+            $file = $form['image']->getData();
+            $fileName = $this->telechargerImage($file, 'evenement', $evenement->getNom());
+            $evenement->setImage($fileName);
+            
             $evenement->setDisabled(0);
 
             $em->persist($evenement);

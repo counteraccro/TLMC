@@ -69,18 +69,16 @@ class EvenementType extends AbstractType
             'widget' => 'choice',
             'date_format' => 'dd MM yyyy',
             'years' => range(date('Y'), date('Y') + 2)
-        ))
-            /*->add('image', FileType::class, array(
-            'label' => 'Image',
-            'data_class' => null,
-            'required' => false,
-            'attr' => array(
-                'placeholder' => 'Choisir une image'
-            )
-        ))*/;
-
+        ));
         if ($options['add']) {
-            $builder->add('specialite_evenements', CollectionType::class, array(
+            $builder->add('image', FileType::class, array(
+                'label' => 'Image',
+                'data_class' => null,
+                'required' => false,
+                'attr' => array(
+                    'placeholder' => 'Choisir une image'
+                )
+            ))->add('specialite_evenements', CollectionType::class, array(
                 'label' => "Spécialités auxquelles l'événement est proposé",
                 'label_attr' => array(
                     'id' => 'label_collection_type'
