@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use App\Controller\AppController;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class ProduitType extends AbstractType
 {
@@ -46,7 +47,15 @@ class ProduitType extends AbstractType
             'widget' => 'choice',
             'date_format' => 'dd MM yyyy',
             'years' => range(date('Y'), date('Y') + 2)
-        ));
+        ))
+            /*->add('image', FileType::class, array(
+            'label' => 'Image',
+            'data_class' => null,
+            'required' => false,
+            'attr' => array(
+                'placeholder' => 'Choisir une image'
+            )
+        ))*/;
 
         if ($options['add_etablissement']) {
             $builder->add('produitEtablissements', CollectionType::class, array(

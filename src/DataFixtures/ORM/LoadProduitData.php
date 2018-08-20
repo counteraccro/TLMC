@@ -27,7 +27,8 @@ class LoadProduitData extends Fixture
                 'setQuantite' => 45,
                 'setDateCreation' => '2017-04-12 12:00:00',
                 'setDateEnvoi' => '2017-04-12 12:00:00',
-                'setDisabled' => 0
+                'setDisabled' => 0,
+                'setImage' => "https://s.s-bol.com/imgbase0/imagebase3/large/FC/7/4/1/8/9200000028828147.jpg"
             ],
             'Produit-2' => [
                 'setType' => 1,
@@ -71,18 +72,19 @@ class LoadProduitData extends Fixture
                 'setQuantite' => 15,
                 'setDateCreation' => '2018-07-17 19:00:00',
                 'setDateEnvoi' => '2018-08-30 12:00:00',
-                'setDisabled' => 0
+                'setDisabled' => 1
             ],
             'Produit-6' => [
                 'setType' => 2,
                 'setTitre' => 'Chaise',
-                'setTexte' => 'Defibrillateur',
+                'setTexte' => 'Chaise',
                 'setTrancheAge' => array(0),
                 'setGenre' => 0,
                 'setQuantite' => 12,
                 'setDateCreation' => '2016-07-17 09:28:36',
                 'setDateEnvoi' => '2016-07-18 14:00:00',
-                'setDisabled' => 1
+                'setDisabled' => 0,
+                'setImage' => 'https://www.cocktail-scandinave.fr/Vbeta2018/wp-content/uploads/2018/02/MXCHA100-zoom.jpg'
             ]
         ]
     ];

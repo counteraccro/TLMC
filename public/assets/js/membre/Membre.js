@@ -86,4 +86,27 @@ Membre.Launch = function(params){
 			});
 		});
 	}
+	
+	/**
+	 * désactivation d'un membre au click
+	 */
+	Membre.EventDelete = function(id, url)
+	{
+		$(id).click(function(){
+			event.preventDefault();
+
+			//envoi d'une requête POST en AJAX
+			$.ajax({
+				method: 'POST',
+				url: $(this).attr('href')
+			})
+			.done(function( reponse ) {
+
+				if(reponse.statut === true)
+				{
+					Membre.Ajax(Membre.url_ajax_see, Membre.id_global);
+				}
+			});
+		});
+	}
 }

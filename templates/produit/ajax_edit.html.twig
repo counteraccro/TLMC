@@ -11,20 +11,26 @@
 	</div>
 
 	<div class="modal-body">
-		{{ form_row(form.titre) }}
-    	{{ form_row(form.type) }}
-    	{{ form_row(form.genre) }}
-    	{{ form_row(form.texte) }}
-    	{{ form_row(form.texte_2) }}
-    	{{ form_row(form.tranche_age) }}
-    	{{ form_row(form.quantite) }}
-    	{{ form_row(form.date_envoi) }}
+		<div class="row">
+			<div class="col-md-6">
+        		{{ form_row(form.titre) }}
+            	{{ form_row(form.type) }}
+            	{{ form_row(form.genre) }}
+            	{{ form_row(form.texte) }}
+            	{{ form_row(form.texte_2) }}
+    		</div>
+    		<div class="col-md-6">
+            	{{ form_row(form.tranche_age) }}
+            	{{ form_row(form.quantite) }}
+            	{{ form_row(form.date_envoi) }}
+            	{#{ form_row(form.image) }#}
+            </div>
+    	</div>
     </div>
         
     <div class="modal-footer">
-		{{ form_widget(form.save) }}
+	    {{ form_widget(form.save) }}
 	</div>
-	
 	{{ form_rest(form) }}
     {{ form_errors(form) }}
     {{ form_end(form) }}

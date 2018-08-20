@@ -11,33 +11,45 @@
 	</div>
 
 	<div class="modal-body">
-    
-    	{{ form_row(form.nom) }}
-    	{{ form_row(form.type) }}
+    	<div class="row">
+			<div class="col-md-6">
+            	{{ form_row(form.nom) }}
+            	{{ form_row(form.type) }}
+            	
+            	{{ form_row(form.date_debut) }}
+            	{{ form_row(form.date_fin) }}
+            	
+            	{{ form_row(form.description) }}
+            	
+            	{{ form_row(form.information_complementaire) }}
+    		</div>
+    		<div class="col-md-6">
+            	{{ form_row(form.nom_lieu) }}
+            	{{ form_row(form.numero_voie) }}
+            	{{ form_row(form.voie) }}
+            	{{ form_row(form.ville) }}
+            	{{ form_row(form.code_postal) }}
+            	{{ form_row(form.nom_lieu) }}
+            	
+            	
+    		</div>
+    	</div>
     	
-    	{{ form_row(form.date_debut) }}
-    	{{ form_row(form.date_fin) }}
-    	
-    	{{ form_row(form.description) }}
-    	{{ form_row(form.nombre_max) }}
-    	{{ form_row(form.tranche_age) }}
-    	{{ form_row(form.date_fin_inscription) }}
-    	{{ form_row(form.information_complementaire) }}
-    	
-    	{{ form_row(form.nom_lieu) }}
-    	{{ form_row(form.numero_voie) }}
-    	{{ form_row(form.voie) }}
-    	{{ form_row(form.ville) }}
-    	{{ form_row(form.code_postal) }}
-    	{{ form_row(form.nom_lieu) }}
-    	
-    	{{ form_row(form.statut) }}
-    
+    	<div class="row">
+    		<div class="col-md-12">
+    		{{ form_row(form.nombre_max) }}
+            	{{ form_row(form.tranche_age) }}
+            	{{ form_row(form.date_fin_inscription) }}
+            	{{ form_row(form.statut) }}
+            	{#{ form_row(form.image) }#}
+            	</div>
+    	</div>
     </div>
         
     <div class="modal-footer">
 		{{ form_widget(form.save) }}
 	</div>
+	
 	{{ form_rest(form) }}
     {{ form_errors(form) }}
     {{ form_end(form) }}
