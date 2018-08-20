@@ -129,9 +129,9 @@ class MembreRepository extends ServiceEntityRepository
         return $query;
     }
 
-   
     /**
      * Fonction qui permet de lister les membres et leurs réponses pour un questionnaire donné
+     *
      * @param int $questionnaire_id
      * @param int $page
      * @param int $max
@@ -140,7 +140,7 @@ class MembreRepository extends ServiceEntityRepository
      * @throws NotFoundHttpException
      * @return \Doctrine\ORM\Tools\Pagination\Paginator[]|mixed[]|\Doctrine\DBAL\Driver\Statement[]|array[]|NULL[]
      */
-    public function GetAllMembresReponsesByQuestionnaire($questionnaire_id, int $page = 1, int $max = 10, $params = array())
+    public function GetAllMembresReponsesByQuestionnaire($questionnaire_id, int $page = 1, int $max = 10, $search = '')
     {
         /*
          * SELECT membre.id, membre.username, quest.libelle as titre, rep.id as id_rep, rep.valeur, rep.date as reponse
@@ -169,7 +169,12 @@ class MembreRepository extends ServiceEntityRepository
             ->andWhere('q.id = ' . $questionnaire_id)
             ->orderBy('rep.date', 'ASC')
             ->setMaxResults($max);
-            
+
+        if (! empty($search)) {
+            $query->andWhere('(m.nom LIKE :search OR m.prenom LIKE :search OR m.username LIKE :search)');
+            $query->setParameter('search', '%' . $search . '%');
+        }
+
         $paginator = new Paginator($query);
 
         $query = $this->createQueryBuilder('m')
@@ -179,13 +184,18 @@ class MembreRepository extends ServiceEntityRepository
             ->join('quest.questionnaire', 'q')
             ->andWhere('q.id = ' . $questionnaire_id);
 
+        if (! empty($search)) {
+            $query->andWhere('(m.nom LIKE :search OR m.prenom LIKE :search OR m.username LIKE :search)');
+            $query->setParameter('search', '%' . $search . '%');
+        }
+
         // Génération des paramètres SQL
         $result = $query->getQuery()->getSingleScalarResult();
-        
+
         if (($paginator->count() <= $firstResult) && $page != 1) {
             throw new NotFoundHttpException('Page not found');
         }
-        
+
         return array(
             'paginator' => $paginator,
             'nb' => $result

@@ -101,11 +101,11 @@ class QuestionnaireController extends AppController
     /**
      * Fiche d'un questionnaire Ajax
      *
-     * @Route("/questionnaire/ajax/see/{id}/", name="questionnaire_ajax_see")
+     * @Route("/questionnaire/ajax/see/{id}/{page}", name="questionnaire_ajax_see")
      * @ParamConverter("questionnaire", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      */
-    public function ajaxSeeAction(Questionnaire $questionnaire)
+    public function ajaxSeeAction(Questionnaire $questionnaire, $page = 1)
     {
         $repository = $this->getDoctrine()->getRepository(Questionnaire::class);
         $nb_participants = $repository->getNbParticipantsReponduByQuestionnaire($questionnaire->getId());
@@ -114,7 +114,8 @@ class QuestionnaireController extends AppController
             'questionnaire' => $questionnaire,
             'statistiques' => array(
                 'nb_participants' => $nb_participants[0]['nb_participants']
-            )
+            ),
+            'page' => $page
         ]);
     }
 
@@ -398,19 +399,27 @@ class QuestionnaireController extends AppController
     /**
      * Statistiques questionnaire
      *
-     * @Route("/questionnaire/stats/{id}/{page}", name="questionnaire_stats")
+     * @Route("/questionnaire/stats/{id}/{page}/{page_search}", name="questionnaire_stats")
      * @ParamConverter("questionnaire", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function statsAction(Questionnaire $questionnaire, Session $session, int $page = 1)
+    public function statsAction(Request $request, Questionnaire $questionnaire, Session $session, int $page = 1, $page_search = 1)
     {
         $arrayFilters = $this->getDatasFilter($session);
         
+        
+        $post = $request->request->all();
+        $search = '';
+        if(isset($post['search_membre_stats']))
+        {
+            $search = $post['search_membre_stats'];
+        }
+        
         $repository = $this->getDoctrine()->getRepository(Membre::class);
-        $result = $repository->GetAllMembresReponsesByQuestionnaire($questionnaire->getId(), $page, self::MAX_NB_RESULT, array());
+        $result = $repository->GetAllMembresReponsesByQuestionnaire($questionnaire->getId(), $page_search, self::MAX_NB_RESULT, $search);
 
         $pagination = array(
-            'page' => $page,
+            'page' => $page_search,
             'route' => 'questionnaire_stats',
             'pages_count' => ceil($result['nb'] / self::MAX_NB_RESULT),
             'nb_elements' => $result['nb'],
@@ -421,14 +430,19 @@ class QuestionnaireController extends AppController
             'questionnaire' => $questionnaire,
             'liste_membres' => $result['paginator'],
             'pagination' => $pagination,
+            'search' => $search,
             'paths' => array(
                 'home' => $this->indexUrlProject(),
                 'urls' => array(
                     $this->generateUrl('questionnaire_listing', array(
-                        'page' => 1,
+                        'page' => $page,
                         'field' => $arrayFilters['field'],
                         'order' => $arrayFilters['order']
-                    )) => 'Gestion de questionnaires'
+                    )) => 'Gestion de questionnaires',
+                    $this->generateUrl('questionnaire_see', array(
+                        'id' => $questionnaire->getId(),
+                        'page' => $page
+                    )) => 'Fiche du questionnaire'
                 ),
                 'active' => 'Statistiques de #' . $questionnaire->getId() . ' - ' . $questionnaire->getTitre()
             )

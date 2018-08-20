@@ -45,7 +45,11 @@
                		<div class="col-6">
                			<b>Statistiques</b>
                			<hr />
-               			<b>Nombre de participants :</b> {{ statistiques.nb_participants }} | <a href="{{ path('questionnaire_stats', {'id' : questionnaire.id}) }}"> Voir la liste</a>
+               			{% if statistiques.nb_participants == 0 %}
+               				<i>Il faut qu'au moins 1 participant ait répondu au questionnaire pour avoir accès aux statistiques</i>
+               			{% else %}
+               				<b>Nombre de participants :</b> {{ statistiques.nb_participants }} | <a href="{{ path('questionnaire_stats', {'id' : questionnaire.id, 'page' : page}) }}"> Voir la liste</a>
+               			{% endif %}
                		</div>
            		</div>
           	</div>

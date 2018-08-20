@@ -51,6 +51,7 @@ class QuestionnaireExtension extends AbstractExtension
 
     /**
      * Fonction permettant d'identifier le type de question envoyée et de retourner un format en conséquence
+     *
      * @param Questionnaire $questionnaire
      * @return string
      */
@@ -105,12 +106,15 @@ class QuestionnaireExtension extends AbstractExtension
 
     /**
      * Fonction prévue dans le cas où la question comprend une liste déroulante
+     *
      * @param Question $question
      */
     private function ChoiceType(Question $question)
     {
         $html = '';
         $html = $this->beginBloc($question);
+        
+        $html .= $this->generateChartStats($question);
 
         $html .= '<label for="q-' . $question->getId() . '">' . $question->getLibelle() . '%o%</label>
                     <select class="form-control ' . $this->isValidateError($question) . '" id="q-' . $question->getId() . '" name="questionnaire[question][q-' . $question->getId() . ']">';
@@ -139,6 +143,7 @@ class QuestionnaireExtension extends AbstractExtension
 
     /**
      * Fonction prévue dans le cas où la question comprend un champ texte
+     *
      * @param Question $question
      */
     private function TextType(Question $question)
@@ -162,6 +167,7 @@ class QuestionnaireExtension extends AbstractExtension
 
     /**
      * Fonction prévue dans le cas où la question comprend une zone de texte
+     *
      * @param Question $question
      */
     private function TextAreaType(Question $question)
@@ -187,12 +193,16 @@ class QuestionnaireExtension extends AbstractExtension
 
     /**
      * Fonction prévue dans le cas où la question comprend une liste de réponses en format cases à cocher
+     *
      * @param Question $question
      */
     private function CheckboxType(Question $question)
     {
         $html = '';
+        
         $html = $this->beginBloc($question);
+        
+        $html .= $this->generateChartStats($question);
 
         $html .= '<label for="q-' . $question->getId() . '">' . $question->getLibelle() . '%o%</label>
           <div class="form-check">';
@@ -220,6 +230,7 @@ class QuestionnaireExtension extends AbstractExtension
             $html .= '<label class="form-check-label" for="q-' . $question->getId() . '-' . $i . '">' . $val->libelle . '</label><br>';
             $i ++;
         }
+        
 
         $html .= '</div>';
 
@@ -230,12 +241,15 @@ class QuestionnaireExtension extends AbstractExtension
 
     /**
      * Fonction prévue dans le cas où la question comprend une liste de réponses au format radio (choix unique)
+     *
      * @param Question $question
      */
     private function RadioType(Question $question)
     {
         $html = '';
         $html = $this->beginBloc($question);
+        
+        $html .= $this->generateChartStats($question);
 
         $html .= '<label for="q-' . $question->getId() . '">' . $question->getLibelle() . '%o%</label>
           <div class="form-check">';
@@ -269,6 +283,7 @@ class QuestionnaireExtension extends AbstractExtension
 
     /**
      * Début HTML du questionnaire
+     *
      * @return string
      */
     private function beginForm()
@@ -280,6 +295,7 @@ class QuestionnaireExtension extends AbstractExtension
 
     /**
      * Fin HTML du questionnaire
+     *
      * @return string
      */
     private function endForm(Questionnaire $questionnaire)
@@ -287,13 +303,12 @@ class QuestionnaireExtension extends AbstractExtension
         $html = "";
         if ($this->params['statut'] != self::EDIT) {
             $html .= '<br /><button type="submit" name="validation" class="btn btn-primary mb-2" id="btn-valide-' . $questionnaire->getId() . '">Valider</button>';
-            
+
             $html .= "<script>
                 $('#btn-valide-" . $questionnaire->getId() . "').click(function() {
                     $(this).addClass('disabled').html('Loading...');
                 });
             </script>";
-            
         }
         $html .= "</form>";
         return $html;
@@ -301,6 +316,7 @@ class QuestionnaireExtension extends AbstractExtension
 
     /**
      * Création du début du bloc pour chaque question
+     *
      * @param Question $question
      */
     private function beginBloc(Question $question)
@@ -328,8 +344,7 @@ class QuestionnaireExtension extends AbstractExtension
                 $btn_disabled = 'disabled';
             }
 
-            if ($this->params['current_user']->getRoles()[0] == 'ROLE_ADMIN')
-            {
+            if ($this->params['current_user']->getRoles()[0] == 'ROLE_ADMIN') {
                 $edit = '<div class="float-right">
                     ' . $disabled . '
                     <a href="' . $edit_url . '" id="btn-edit-question" class="btn btn-primary btn-edit-question ' . $btn_disabled . '"><span class="oi oi-pencil"></span> Edition</a>
@@ -351,6 +366,7 @@ class QuestionnaireExtension extends AbstractExtension
 
     /**
      * Création de la fin du bloc pour chaque question
+     *
      * @param Question $question
      */
     private function endBloc(Question $question)
@@ -377,6 +393,7 @@ class QuestionnaireExtension extends AbstractExtension
 
     /**
      * Bloc permettant d'insérer un message d'information à l'utilisateur
+     *
      * @return string
      */
     private function infoBloc()
@@ -388,7 +405,8 @@ class QuestionnaireExtension extends AbstractExtension
     }
 
     /**
-     *Permet d'ajouter le marqueur étoile signifiant que la réponse à cette question est requise
+     * Permet d'ajouter le marqueur étoile signifiant que la réponse à cette question est requise
+     *
      * @param Question $question
      * @param string $html
      */
@@ -403,6 +421,7 @@ class QuestionnaireExtension extends AbstractExtension
 
     /**
      * Vérifie si les paramètres sont corrects
+     *
      * @param array $params
      * @throws Exception
      */
@@ -425,6 +444,7 @@ class QuestionnaireExtension extends AbstractExtension
 
     /**
      * Vérifie si la question comporte au moins 1 réponse
+     *
      * @param Question $question
      * @return boolean
      */
@@ -439,6 +459,7 @@ class QuestionnaireExtension extends AbstractExtension
 
     /**
      * Vérifie si le champ est en erreur ou non
+     *
      * @param Question $question
      * @return string ou '';
      */
@@ -453,10 +474,51 @@ class QuestionnaireExtension extends AbstractExtension
 
         return $erreur;
     }
+    
+    private function generateChartStats(Question $question)
+    {
+        $html = '';
+        
+        $html .= '
+            <div class="float-right google-chart" id="donutchart-' . $question->getId() . '"></div>
+        ';
+        
+        $data_value = json_decode($question->getListeValeur());
+        $data = '';
+        foreach ($data_value as $val) {
+            $data .= "['" . $val->libelle . "', 1],";
+        }
+        
+        $data = substr($data, 0, -1);
+        
+        $js = "<script>
+        google.charts.load('current', {packages:['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+          var data = google.visualization.arrayToDataTable([
+            ['Task', 'bla'],
+            " . $data . "
+          ]);
+    
+          var options = {
+            pieHole: 0.2,
+            chartArea: { 'width' : '100%', 'height' : '100%' } 
+          };
+    
+          var chart = new google.visualization.PieChart(document.getElementById('donutchart-" . $question->getId() . "'));
+          chart.draw(data, options);
+        }
+        </script>";
+        
+        $html .= $js;
+        
+        return $html;
+    }
 
     /**
-     *Permet de visualiser des réponses saisies au questionnaire de démo (mode debug)
-     *Prévoit l'affichage des erreurs (obligatoire, non-respect des règles fixées)
+     * Permet de visualiser des réponses saisies au questionnaire de démo (mode debug)
+     * Prévoit l'affichage des erreurs (obligatoire, non-respect des règles fixées)
+     *
      * @param array $result
      * @return string
      */
@@ -514,7 +576,7 @@ class QuestionnaireExtension extends AbstractExtension
                 $icon = '<span class="text-danger"><span class="oi oi-x"></span></span>';
                 $is_error = true;
             }
-            
+
             $html .= '<div>';
             $html .= $icon . ' Question <b>#' . $question->getId() . '</b> ' . $question->getLibelle() . '<br />';
 
@@ -532,9 +594,9 @@ class QuestionnaireExtension extends AbstractExtension
         $html = '<div class="card "><div class="card-body ' . $border . '">' . $html . '</div></div>';
         return $html;
     }
-    
+
     /**
-     * 
+     *
      * @param Paginator $liste_membres
      * @param Questionnaire $questionnaire
      * @return string
@@ -545,16 +607,18 @@ class QuestionnaireExtension extends AbstractExtension
         $i = 0;
         $aria_expanded = true;
         $show = 'show';
-        
+
+        if ($liste_membres->count() == 0) {
+            return '<p class="text-info text-center">Il n\'y a aucun membre correspondant à votre recherche.</p>';
+        }
+
         /* @var \App\Entity\Membre $membre */
-        foreach($liste_membres as $membre)
-        {
-            if($i > 0)
-            {
+        foreach ($liste_membres as $membre) {
+            if ($i > 0) {
                 $aria_expanded = false;
                 $show = '';
             }
-            
+
             $date_reponse = '';
             foreach ($questionnaire->getQuestions() as $question) {
                 foreach ($question->getReponses() as $reponse) {
@@ -564,12 +628,12 @@ class QuestionnaireExtension extends AbstractExtension
                     }
                 }
             }
-            
+
             $html .= '<div class="card">
-                <div class="card-header" id="card-' . $membre->getId() . '">
-                    <a class="btn btn-link" data-toggle="collapse" data-target="#collapse-' . $membre->getId() . '" aria-expanded="' . $aria_expanded . '" aria-controls="collapse-' . $membre->getId() . '">
+                <div class="card-header" id="card-' . $membre->getId() . '" data-toggle="collapse" data-target="#collapse-' . $membre->getId() . '" aria-expanded="' . $aria_expanded . '" aria-controls="collapse-' . $membre->getId() . '">
+                    <div class="float-left">
                         #' . $membre->getId() . ' ' . $membre->getPrenom() . ' ' . $membre->getNom() . ' (' . $membre->getUsername() . ')
-                    </a>
+                    </div>
                     <div class="float-right">' . $date_reponse . '</div>
                 </div>
                     
@@ -580,19 +644,19 @@ class QuestionnaireExtension extends AbstractExtension
                     if ($reponse->getMembre()->getId() == $membre->getId()) {
 
                         if ($reponse->getValeur() != "") {
-                            
+
                             $data_value = json_decode($question->getListeValeur());
                             $tmp = explode('|', $reponse->getValeur());
-                            
+
                             if (in_array($question->getType(), array(
                                 AppController::CHECKBOXTYPE,
                                 AppController::CHOICETYPE,
                                 AppController::RADIOTYPE
                             ))) {
-                                
+
                                 $repStr = '';
                                 foreach ($data_value as $val) {
-                                    
+
                                     foreach ($tmp as $tmpVal) {
                                         if ($tmpVal == $val->value) {
                                             $repStr .= "<b>" . $val->libelle . '</b>, ';
@@ -601,8 +665,11 @@ class QuestionnaireExtension extends AbstractExtension
                                 }
                                 $repStr = substr($repStr, 0, - 2);
                             } else {
+
                                 $repStr = '<b>' . $reponse->getValeur() . '</b>';
                             }
+                        } else {
+                            $repStr = '<i>Pas de réponse saisie</i>';
                         }
 
                         $html .= '<div class="float-left">' . $question->getLibelle() . ' <br />
@@ -610,14 +677,14 @@ class QuestionnaireExtension extends AbstractExtension
                     }
                 }
             }
-            
-                    $html .='</div>
+
+            $html .= '</div>
                 </div>
             </div>';
-            
-            $i++;
+
+            $i ++;
         }
-        
+
         $html .= '</div>';
         return $html;
     }

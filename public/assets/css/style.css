@@ -531,6 +531,15 @@ footer h6, footer p {
 	margin-bottom: 10px;
 }
 
+#ajax_questionnaire_see .form-check {
+	position: inherit;
+}
+
+#ajax_questionnaire_see .form-group select
+{
+	width: 30%;
+}
+
 /********************************************
 *
 * Fin page templates/questionnaire/ajax_see.html.twig
@@ -544,6 +553,10 @@ footer h6, footer p {
 ********************************************/
 #stats_questionnaire #listing_membres .card {
 	margin-bottom: 10px;
+}
+
+#stats_questionnaire #listing_membres .card-header {
+	cursor: pointer;
 }
 
 #stats_questionnaire #listing_membres {

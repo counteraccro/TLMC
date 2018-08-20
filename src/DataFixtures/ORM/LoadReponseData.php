@@ -21,14 +21,14 @@ class LoadReponseData extends Fixture implements DependentFixtureInterface
             'Reponse-1' => [
                 'setQuestion' => 'Question-1',
                 'setMembre' => 'Membre-1',
-                'setValeur' => 'Voici la réponse à Q1',
+                'setValeur' => '0',
                 'setDate' => '2017-04-12 12:00:00',
                 'setDisabled' => '1'
             ],
             'Reponse-2' => [
                 'setQuestion' => 'Question-2',
                 'setMembre' => 'Membre-1',
-                'setValeur' => 'Voici la réponse à Q2',
+                'setValeur' => '',
                 'setDate' => '2017-05-12 12:00:00',
                 'setDisabled' => '0'
             ],

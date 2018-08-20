@@ -39,7 +39,7 @@ Fiche d'un questionnaire
     $(document).ready(function() {
 
 		var params = {
-				url_ajax_see : '{{path('questionnaire_ajax_see', {'id': questionnaire.id }) }}',
+				url_ajax_see : '{{path('questionnaire_ajax_see', {'id': questionnaire.id, 'page' : page }) }}',
 				id_content_modal : '#bloc_modal',
 				id_modal : '#modal_questionnaire_global',
 				id_global : '#bloc_questionnaire',
