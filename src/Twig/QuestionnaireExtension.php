@@ -322,7 +322,7 @@ class QuestionnaireExtension extends AbstractExtension
         $html .= '<div id="bloc-' . $question->getId() . '" class="card">';
 
         $txt_id = '';
-        if ($this->params['statut'] == self::DEMO || $this->params['statut'] == self::EDIT) {
+        if ($this->params['statut'] == self::EDIT) {
             $txt_id = "#" . $question->getId() . ' -';
         }
 
@@ -349,12 +349,16 @@ class QuestionnaireExtension extends AbstractExtension
             }
         }
 
-        if (! empty($question->getLibelleTop())) {
-            $html .= '<div class="card-header">' . $txt_id . ' ' . $question->getLibelleTop() . $edit . '</div>';
+        $test = '';
+        if ($question->getLibelleTop() && ! empty($question->getLibelleTop())) {
+            if ($this->params['statut'] == self::PROD) {
+                $test = 'bg-primary';
+            } else if ($this->params['statut'] == self::DEMO) {
+                $test = 'bg-info';
+            }
+            $html .= '<div class="card-header ' . $test . '">' . $txt_id . ' ' . $question->getLibelleTop() . $edit . '</div>';
         } else if ($this->params['statut'] == self::EDIT) {
             $html .= '<div class="card-header">' . $txt_id . $edit . '</div>';
-        } else if ($this->params['statut'] == self::DEMO) {
-            $html .= '<div class="card-header">' . $txt_id . '</div>';
         }
 
         $html .= '<div class="card-body"><div class="form-group">';
@@ -482,34 +486,34 @@ class QuestionnaireExtension extends AbstractExtension
         $html = '';
 
         foreach ($questionnaire->getQuestions() as $question) {
-            
+
             //
-            if (!in_array($question->getType(), array(
+            if (! in_array($question->getType(), array(
                 AppController::CHECKBOXTYPE,
                 AppController::CHOICETYPE,
                 AppController::RADIOTYPE
             ))) {
                 continue;
             }
-            
+
+            if ($question->getDisabled()) {
+                continue;
+            }
+
             // Calcul de stat
             /* @var Reponse $reponse */
             $stat_reponse = array();
-            foreach($question->getReponses() as $reponse)
-            {
+            foreach ($question->getReponses() as $reponse) {
                 $tmp = explode('|', $reponse->getValeur());
-                foreach($tmp as $tmpVal)
-                {
-                    if(isset( $stat_reponse[$tmpVal]))
-                    {
-                        $stat_reponse[$tmpVal]++;
-                    }
-                    else {
+                foreach ($tmp as $tmpVal) {
+                    if (isset($stat_reponse[$tmpVal])) {
+                        $stat_reponse[$tmpVal] ++;
+                    } else {
                         $stat_reponse[$tmpVal] = 1;
                     }
                 }
             }
-            
+
             $html .= '
                 <div class="float-left">
                     <p><i>' . $question->getLibelle() . '</i></p>
@@ -520,14 +524,13 @@ class QuestionnaireExtension extends AbstractExtension
             $data_value = json_decode($question->getListeValeur());
             $data = '';
             foreach ($data_value as $val) {
-                
+
                 $tmpVal = 0;
-                if(isset($stat_reponse[$val->value]))
-                {
+                if (isset($stat_reponse[$val->value])) {
                     $tmpVal = $stat_reponse[$val->value];
                 }
-                
-                $data .= "['" . $val->libelle . "', " . $tmpVal . "],";
+
+                $data .= "['" . str_replace("'", "\'", $val->libelle) . "', " . $tmpVal . "],";
             }
 
             $data = substr($data, 0, - 1);
@@ -537,13 +540,13 @@ class QuestionnaireExtension extends AbstractExtension
             google.charts.setOnLoadCallback(drawChart);
             function drawChart() {
               var data = google.visualization.arrayToDataTable([
-                ['Task', 'bla'],
+                ['Libelle reponse', 'Valeur reponse'],
                 " . $data . "
               ]);
         
               var options = {
                 pieHole: 0.2,
-                title : '" . $question->getLibelle() . "',
+                title : '" . str_replace("'", "\'", $question->getLibelle()) . "',
                 chartArea: { 'width' : '100%', 'height' : '100%' } 
               };
         

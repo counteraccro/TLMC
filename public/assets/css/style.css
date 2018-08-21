@@ -397,8 +397,81 @@ a:hover {
 .alert-light {
   border-color: rgb(252, 248, 247);
 }
-/** Fin alert-dark **/
+/** Fin alert-light **/
 
+/********************************************
+*
+* FIN SURCHARGE ALERTS BOOTSTRAP
+*
+********************************************/
+
+/********************************************
+*
+* SURCHARGE BACKGROUNDS (BG) BOOTSTRAP
+*
+********************************************/
+
+/** Debut bg-primary **/
+.bg-primary {
+  color: #fff;
+  background-color: #E97EB2 !important;
+}
+/** Fin bg-primary **/
+
+/** Debut bg-secondary **/
+.bg-secondary {
+  color: #fff;
+  background-color: #ACADB1 !important;
+}
+/** Fin bg-secondary **/
+
+/** Debut bg-success **/
+.bg-success {
+  color: #fff;
+  background-color: #85BD67 !important;
+}
+/** Fin bg-success **/
+
+/** Debut bg-info **/
+.bg-info {
+  color: #fff;
+  background-color: #578FAD !important;
+}
+/** Fin bg-info **/
+
+/** Debut bg-warning **/
+.bg-warning {
+  color: #fff;
+  background-color: #EFD330 !important;
+}
+/** Fin bg-warning **/
+
+/** Debut bg-danger **/
+.bg-danger {
+  color: #fff;
+  background-color: #991B1E !important;
+}
+/** Fin bg-danger **/
+
+/** Debut bg-dark **/
+.bg-dark {
+  color: #fff;
+  background-color: #000 !important;
+}
+/** Fin bg-dark **/
+
+/** Debut bg-light **/
+.bg-light {
+  color: #000;
+  background-color: #f2f2f2 !important;
+}
+/** Fin bg-light **/
+
+/********************************************
+*
+* FIN SURCHARGE BACKGROUNDS (BG) BOOTSTRAP
+*
+********************************************/
 
 /********************************************
 *

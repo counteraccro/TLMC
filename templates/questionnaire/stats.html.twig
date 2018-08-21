@@ -17,8 +17,8 @@ Statistiques du questionnaire {{ questionnaire.titre }}
 <div id="stats_questionnaire">
 
 	<div class="card">
-  		<div class="card-header">
-    		Statistiques générales <div class="small-text text-muted float-right"><i>Calcul réalisé sur {{ pagination.nb_elements }} validations de ce questionnaire</i></div>
+  		<div class="card-header bg-primary">
+    		Statistiques générales <div class="small-text float-right"><i>Calcul réalisé sur {{ pagination.nb_elements }} validations de ce questionnaire</i></div>
   		</div>
   		<div class="card-body" id="block-chart-google">
     		{{ generateChartStats(questionnaire) | raw}}
@@ -27,7 +27,7 @@ Statistiques du questionnaire {{ questionnaire.titre }}
 
 	
 	<div class="card">
-  		<div class="card-header">
+  		<div class="card-header bg-primary">
     		Liste des {{ pagination.nb_elements }} membre{% if pagination.nb_elements > 1 %}s{% endif %} {% if pagination.pages_count > 0 %} - Page {{ pagination.page }} / {{ pagination.pages_count }} {% endif %}
     		<div class="float-right">
     			<form action="{{ path('questionnaire_stats', {'id' : questionnaire.id}) }}?#block-membre" method="POST">

@@ -142,15 +142,6 @@ class MembreRepository extends ServiceEntityRepository
      */
     public function GetAllMembresReponsesByQuestionnaire($questionnaire_id, int $page = 1, int $max = 10, $search = '')
     {
-        /*
-         * SELECT membre.id, membre.username, quest.libelle as titre, rep.id as id_rep, rep.valeur, rep.date as reponse
-         * FROM `membre`
-         * join reponse as rep on (membre.id = rep.membre_id)
-         * join question as quest on (quest.id = rep.question_id)
-         * join questionnaire as q on (q.id = quest.questionnaire_id)
-         * WHERE q.id = 50
-         * order by rep.date ASC
-         */
         if (! is_numeric($page)) {
             throw new \InvalidArgumentException('$page doit être un integer (' . gettype($page) . ' : ' . $page . ')');
         }
