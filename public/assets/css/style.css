@@ -535,11 +535,6 @@ footer h6, footer p {
 	position: inherit;
 }
 
-#ajax_questionnaire_see .form-group select
-{
-	width: 30%;
-}
-
 /********************************************
 *
 * Fin page templates/questionnaire/ajax_see.html.twig
@@ -564,8 +559,17 @@ footer h6, footer p {
 }
 
 #stats_questionnaire #listing_membres .card-body .float-left {
-	width: 33%;
+	width: 33.3%;
 	padding-bottom: 1.25rem;
+}
+
+#stats_questionnaire #block-chart-google .float-left {
+	width: 33.3%;
+	padding-bottom: 1.25rem;
+}
+
+#stats_questionnaire .card {
+	margin-bottom: 20px;
 }
 /********************************************
 *

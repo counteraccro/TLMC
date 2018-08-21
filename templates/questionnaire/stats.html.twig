@@ -16,39 +16,41 @@ Statistiques du questionnaire {{ questionnaire.titre }}
 
 <div id="stats_questionnaire">
 
-	<div class="row">
-		<div class="col-3">
-			<form action="{{ path('questionnaire_stats', {'id' : questionnaire.id}) }}" method="POST">
-    		<div class="input-group mb-3">
+	<div class="card">
+  		<div class="card-header">
+    		Statistiques générales <div class="small-text text-muted float-right"><i>Calcul réalisé sur {{ pagination.nb_elements }} validations de ce questionnaire</i></div>
+  		</div>
+  		<div class="card-body" id="block-chart-google">
+    		{{ generateChartStats(questionnaire) | raw}}
+  		</div>
+	</div>
+
+	
+	<div class="card">
+  		<div class="card-header">
+    		Liste des {{ pagination.nb_elements }} membre{% if pagination.nb_elements > 1 %}s{% endif %} {% if pagination.pages_count > 0 %} - Page {{ pagination.page }} / {{ pagination.pages_count }} {% endif %}
+    		<div class="float-right">
+    			<form action="{{ path('questionnaire_stats', {'id' : questionnaire.id}) }}?#block-membre" method="POST">
+    		<div class="input-group input-group-sm">
       			<input type="text" class="form-control" placeholder="Rechercher..." name="search_membre_stats" value="{{ search }}">
       			<div class="input-group-append">
         			<button class="btn btn-primary" type="submit"><span class="oi oi-magnifying-glass"></span></button>
         			{% if search != '' %}
-      					<button class="btn btn-secondary" type="button" id="btn-reset-search"><span class="oi oi-x"></span></button>
+      					<a href="{{ path('questionnaire_stats', {'id' : questionnaire.id}) }}" class="btn btn-secondary"><span class="oi oi-x"></span></a>
       				{% endif %}
       			</div>
     		</div>
     		</form>
+    		
+    		</div>
+  		</div>
+  		<div class="card-body">
+  		<a name="block-membre" id="block-membre"></a>
+	    {{ displayMembreWithReponse(liste_membres, questionnaire) | raw }}
+	    {% include 'elements/pagination.html.twig' %}
 		</div>
 	</div>
 	
-	<div>
-	 {{ pagination.nb_elements }} membre{% if pagination.nb_elements > 1 %}s{% endif %} {% if pagination.pages_count > 0 %} - Page {{ pagination.page }} / {{ pagination.pages_count }} {% endif %}
-	
-	</div>
-
-	{{ displayMembreWithReponse(liste_membres, questionnaire) | raw }}
-	
-	{% include 'elements/pagination.html.twig' %}
-	
 </div>
 
-{% endblock %}
-
-{% block javascripts %}
-    <script type="text/javascript">
-    	$('#stats_questionnaire #btn-reset-search').click(function() {
-        	window.location = '{{ path('questionnaire_stats', {'id' : questionnaire.id}) }}';	
-       	})
-	</script>
 {% endblock %}

@@ -30,6 +30,10 @@ class QuestionnaireExtension extends AbstractExtension
             new TwigFunction('displayMembreWithReponse', array(
                 $this,
                 'displayMembreWithReponse'
+            )),
+            new \Twig_Function('generateChartStats', array(
+                $this,
+                'generateChartStats'
             ))
         );
     }
@@ -113,11 +117,7 @@ class QuestionnaireExtension extends AbstractExtension
     {
         $html = '';
         $html = $this->beginBloc($question);
-        
-        if ($this->params['statut'] == self::EDIT) {
-        $html .= $this->generateChartStats($question);
-        }
-        
+
         $html .= '<label for="q-' . $question->getId() . '">' . $question->getLibelle() . '%o%</label>
                     <select class="form-control ' . $this->isValidateError($question) . '" id="q-' . $question->getId() . '" name="questionnaire[question][q-' . $question->getId() . ']">';
 
@@ -201,14 +201,9 @@ class QuestionnaireExtension extends AbstractExtension
     private function CheckboxType(Question $question)
     {
         $html = '';
-        
+
         $html = $this->beginBloc($question);
-        
-        //Le graphique ne doit pas s'afficher dans l'URL prod
-        if ($this->params['statut'] == self::EDIT) {
-        $html .= $this->generateChartStats($question);
-        }
-        
+
         $html .= '<label for="q-' . $question->getId() . '">' . $question->getLibelle() . '%o%</label>
           <div class="form-check">';
 
@@ -235,7 +230,6 @@ class QuestionnaireExtension extends AbstractExtension
             $html .= '<label class="form-check-label" for="q-' . $question->getId() . '-' . $i . '">' . $val->libelle . '</label><br>';
             $i ++;
         }
-        
 
         $html .= '</div>';
 
@@ -253,11 +247,7 @@ class QuestionnaireExtension extends AbstractExtension
     {
         $html = '';
         $html = $this->beginBloc($question);
-        
-        if ($this->params['statut'] == self::EDIT) {
-        $html .= $this->generateChartStats($question);
-        }
-        
+
         $html .= '<label for="q-' . $question->getId() . '">' . $question->getLibelle() . '%o%</label>
           <div class="form-check">';
 
@@ -333,7 +323,7 @@ class QuestionnaireExtension extends AbstractExtension
 
         $txt_id = '';
         if ($this->params['statut'] == self::DEMO || $this->params['statut'] == self::EDIT) {
-            $txt_id = "#" . $question->getId() . '-';
+            $txt_id = "#" . $question->getId() . ' -';
         }
 
         $edit = '';
@@ -481,46 +471,90 @@ class QuestionnaireExtension extends AbstractExtension
 
         return $erreur;
     }
-    
-    private function generateChartStats(Question $question)
+
+    /**
+     *
+     * @param Question $question
+     * @return string
+     */
+    public function generateChartStats(Questionnaire $questionnaire)
     {
-        //le graphique ne doit se générer que s'il y à au moins 1 réponse 
-        //checker pourquoi le radiotype du nouveau questionnaire ne renvoie pas de graphique contrairement au checkboxtype
         $html = '';
+
+        foreach ($questionnaire->getQuestions() as $question) {
+            
+            //
+            if (!in_array($question->getType(), array(
+                AppController::CHECKBOXTYPE,
+                AppController::CHOICETYPE,
+                AppController::RADIOTYPE
+            ))) {
+                continue;
+            }
+            
+            // Calcul de stat
+            /* @var Reponse $reponse */
+            $stat_reponse = array();
+            foreach($question->getReponses() as $reponse)
+            {
+                $tmp = explode('|', $reponse->getValeur());
+                foreach($tmp as $tmpVal)
+                {
+                    if(isset( $stat_reponse[$tmpVal]))
+                    {
+                        $stat_reponse[$tmpVal]++;
+                    }
+                    else {
+                        $stat_reponse[$tmpVal] = 1;
+                    }
+                }
+            }
+            
+            $html .= '
+                <div class="float-left">
+                    <p><i>' . $question->getLibelle() . '</i></p>
+                    <div class="google-chart" id="donutchart-' . $question->getId() . '"></div>
+                </div>
+            ';
+
+            $data_value = json_decode($question->getListeValeur());
+            $data = '';
+            foreach ($data_value as $val) {
+                
+                $tmpVal = 0;
+                if(isset($stat_reponse[$val->value]))
+                {
+                    $tmpVal = $stat_reponse[$val->value];
+                }
+                
+                $data .= "['" . $val->libelle . "', " . $tmpVal . "],";
+            }
+
+            $data = substr($data, 0, - 1);
+
+            $js = "<script>
+            google.charts.load('current', {packages:['corechart']});
+            google.charts.setOnLoadCallback(drawChart);
+            function drawChart() {
+              var data = google.visualization.arrayToDataTable([
+                ['Task', 'bla'],
+                " . $data . "
+              ]);
         
-        $html .= '
-            <div class="float-right google-chart" id="donutchart-' . $question->getId() . '"></div>
-        ';
+              var options = {
+                pieHole: 0.2,
+                title : '" . $question->getLibelle() . "',
+                chartArea: { 'width' : '100%', 'height' : '100%' } 
+              };
         
-        $data_value = json_decode($question->getListeValeur());
-        $data = '';
-        foreach ($data_value as $val) {
-            $data .= "['" . $val->libelle . "', 1],";
+              var chart = new google.visualization.PieChart(document.getElementById('donutchart-" . $question->getId() . "'));
+              chart.draw(data, options);
+            }
+            </script>";
+
+            $html .= $js;
         }
-        
-        $data = substr($data, 0, -1);
-        
-        $js = "<script>
-        google.charts.load('current', {packages:['corechart']});
-        google.charts.setOnLoadCallback(drawChart);
-        function drawChart() {
-          var data = google.visualization.arrayToDataTable([
-            ['Task', 'bla'],
-            " . $data . "
-          ]);
-    
-          var options = {
-            pieHole: 0.2,
-            chartArea: { 'width' : '100%', 'height' : '100%' } 
-          };
-    
-          var chart = new google.visualization.PieChart(document.getElementById('donutchart-" . $question->getId() . "'));
-          chart.draw(data, options);
-        }
-        </script>";
-        
-        $html .= $js;
-        
+
         return $html;
     }
 

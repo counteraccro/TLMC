@@ -48,8 +48,24 @@
                			{% if statistiques.nb_participants == 0 %}
                				<i>Il faut qu'au moins 1 participant ait répondu au questionnaire pour avoir accès aux statistiques</i>
                			{% else %}
-               				<b>Nombre de participants :</b> {{ statistiques.nb_participants }} | <a href="{{ path('questionnaire_stats', {'id' : questionnaire.id, 'page' : page}) }}"> Voir la liste</a>
+               				<b>Nombre de participants :</b> {{ statistiques.nb_participants }} <br />
+               				<a href="{{ path('questionnaire_stats', {'id' : questionnaire.id, 'page' : page}) }}"> Voir les statistiques générales</a>
                			{% endif %}
+               			<br /><br />
+               			<b>Export des données</b>
+               			<hr />
+               			<div class="btn-group btn-group-toggle" data-toggle="buttons" id="btn-choix-export">
+                          <label class="btn btn-secondary">
+                            <input type="radio" name="options" id="csv" autocomplete="off"> Format CSV
+                          </label>
+                          <label class="btn btn-secondary">
+                            <input type="radio" name="options" id="xml" autocomplete="off"> Format XML
+                          </label>
+                          <label class="btn btn-secondary">
+                            <input type="radio" name="options" id="xml-nodata" autocomplete="off"> Format XML sans données
+                          </label>
+                        </div>
+               			
                		</div>
            		</div>
           	</div>
@@ -80,6 +96,14 @@
     Questionnaire.EventDisabled(id_btn_disabled)
     
    	 $('[data-toggle="tooltip"]').tooltip();
+
+ 	 $('#btn-choix-export input[type=radio]').change(function() {
+
+ 		 var id = $(this).attr('id');
+ 		 console.log(id);
+   	 	
+ 	 	//window.location = 'url';
+ 	 });
     
     </script>
 {% endblock %}
