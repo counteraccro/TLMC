@@ -171,7 +171,20 @@ class LoadQuestionData extends Fixture implements DependentFixtureInterface
                 'setRegles' => '.',
                 'setMessageErreur' => 'Merci d\'indiquer les améliorations possibles',
                 'setOrdre' => '3'
-            ],         
+            ],       
+            'Question-12' => [
+                'setQuestionnaire' => 'Questionnaire-4',
+                'setLibelle' => 'Votez pour la prochaine activité mise en place par l\'association :',
+                'setLibelleBottom' => 'N\'hésitez pas à nous faire part de toute nouvelle idée d\'activité par e-mail.',
+                'setType' => 'ChoiceType',
+                'setValeurDefaut' => '0',
+                'setListeValeur' => '{"0":{"value":"0","libelle":"Natation"},"1":{"value":"1","libelle":"Escrime"},"2":{"value":"2","libelle":"Tennis"},"3":{"value":"3","libelle":"Yoga"},"4":{"value":"4","libelle":"Tournoi d\'échecs"},"5":{"value":"5","libelle":"Balades à poney"}}',
+                'setDisabled' => '0',
+                'setObligatoire' => 'true',
+                'setRegles' => '.',
+                'setMessageErreur' => 'Merci d\'indiquer votre vote concernant l\'activité à développer',
+                'setOrdre' => '4'
+            ]
         ]
     ];
 
