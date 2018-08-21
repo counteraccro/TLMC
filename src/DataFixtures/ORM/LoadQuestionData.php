@@ -184,6 +184,18 @@ class LoadQuestionData extends Fixture implements DependentFixtureInterface
                 'setRegles' => '.',
                 'setMessageErreur' => 'Merci d\'indiquer votre vote concernant l\'activité à développer',
                 'setOrdre' => '4'
+            ],
+            'Question-13' => [
+                'setQuestionnaire' => 'Questionnaire-4',
+                'setLibelle' => 'Vous pouvez nous suggérer un lieu pour notre prochaine nouvelle activité :',
+                'setLibelleBottom' => 'Cette question est facultative.',
+                'setType' => 'TextType',
+                'setValeurDefaut' => 'Gymnase Bombardier',
+                'setDisabled' => '0',
+                'setObligatoire' => 'false',
+                'setRegles' => '.',
+                'setMessageErreur' => 'Merci d\'indiquer votre réponse en lettres',
+                'setOrdre' => '5'
             ]
         ]
     ];

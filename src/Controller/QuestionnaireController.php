@@ -482,7 +482,13 @@ class QuestionnaireController extends AppController
                 }
             }
         }
-
-        return $exportManager->generateCSV($fileName, $content);;
+        
+//         $statut = '';
+//         if ($statut = 'csv') {
+        return $exportManager->generateCSV($fileName, $content);
+//         }
+//         else if ($statut = 'xml') {
+//             return $exportManager->generateXML($fileName, $content);
+//         }
     }
 }

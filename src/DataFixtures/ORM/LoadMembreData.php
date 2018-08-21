@@ -440,6 +440,57 @@ class LoadMembreData extends Fixture implements DependentFixtureInterface
                 'setSalt' => '1A2B3C4D5E6F7G8901',
                 'setRoles' => array('ROLE_BENEFICIAIRE')
             ],
+            'Membre-26' => [
+                'setNom' => 'Duloin',
+                'setUsername' => 'beneficiaire_direct8',
+                'setPassword' => 'beneficiaire_direct8',
+                'setPrenom' => 'Jules',
+                'setNumeroTel' => '+33454512478',
+                'setEmail' => 'jul_duloin@gmail.com',
+                'setFonction' => 'Responsable',
+                'setDecideur' => false,
+                'setAnnuaire' => true,
+                'setSignature' => 'Cordialement, Responsable Jules Duloin',
+                'setDisabled' => 0,
+                'setEtablissement' => 'Etablissement-3',
+                'setSpecialite' => 'Specialite-5',
+                'setSalt' => '1A2B3C4D5E6F7G890A',
+                'setRoles' => array('ROLE_BENEFICIAIRE_DIRECT')
+            ],
+            'Membre-27' => [
+                'setNom' => 'Damilat-Duclos',
+                'setUsername' => 'benevole9',
+                'setPassword' => 'benevole9',
+                'setPrenom' => 'Marie',
+                'setNumeroTel' => '0325878782',
+                'setEmail' => 'marie_damilat@gmail.com',
+                'setFonction' => 'Bénévole',
+                'setDecideur' => true,
+                'setAnnuaire' => true,
+                'setSignature' => 'à votre disposition, Marie Damilat-Duclos',
+                'setDisabled' => 0,
+                'setEtablissement' => 'Etablissement-5',
+                'setSpecialite' => 'Specialite-7',
+                'setSalt' => '1A2B3C4D5E6F7G8905',
+                'setRoles' => array('ROLE_BENEVOLE')
+            ],
+            'Membre-28' => [
+                'setNom' => 'Toulouse',
+                'setUsername' => 'beneficiaire10',
+                'setPassword' => 'beneficiaire10',
+                'setPrenom' => 'Edouard',
+                'setNumeroTel' => '+33321234588',
+                'setEmail' => 'toulouse-edouard@yahoo.fr',
+                'setFonction' => 'Gestionnaire',
+                'setDecideur' => false,
+                'setAnnuaire' => true,
+                'setSignature' => 'à votre disposition, Edouard Toulouse',
+                'setDisabled' => 0,
+                'setEtablissement' => 'Etablissement-1',
+                'setSpecialite' => 'Specialite-3',
+                'setSalt' => '1A2B3C4D5E6F7G8901',
+                'setRoles' => array('ROLE_BENEFICIAIRE')
+            ],
         ]
     ];
 

@@ -6,11 +6,14 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class ExportManager extends AppService
 {
-
     /**
+     * Fonction qui génère au format CSV un fichier téléchargeable
+     * il s'agit d'une fonction générique à laquelle on peut passer des informations différentes
+     * ex : génération d'un fichier CSV permettant l'export de questions, et/ou de réponses à un questionnaire.
      *
      * @param string $fileName
      * @param array $fileContent
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function generateCSV($fileName, $arrayContent = array())
     {
@@ -27,21 +30,18 @@ class ExportManager extends AppService
         $tabKey = array_keys($arrayContent);
         foreach ($arrayContent as $entete) {
             $tabKey = array_keys($entete);
-            foreach($tabKey as $key)
-            {
+            foreach ($tabKey as $key) {
                 $fileContent .= $key . ';';
             }
             break;
         }
-        $fileContent = substr($fileContent, 0, -1) . "\n";
-        
-        foreach($arrayContent as $content)
-        {
-            foreach($content as $data)
-            {
+        $fileContent = substr($fileContent, 0, - 1) . "\n";
+
+        foreach ($arrayContent as $content) {
+            foreach ($content as $data) {
                 $fileContent .= $data . ';';
             }
-            $fileContent = substr($fileContent, 0, -1) . "\n";
+            $fileContent = substr($fileContent, 0, - 1) . "\n";
         }
 
         $response = new Response(utf8_decode($fileContent));

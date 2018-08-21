@@ -10,7 +10,7 @@ use Doctrine\ORM\QueryBuilder;
 use App\Entity\Membre;
 
 /**
- *
+ * Méthodes présentes dans ce repository
  * @method Questionnaire|null find($id, $lockMode = null, $lockVersion = null)
  * @method Questionnaire|null findOneBy(array $criteria, array $orderBy = null)
  * @method Questionnaire[] findAll()
@@ -148,7 +148,7 @@ class QuestionnaireRepository extends ServiceEntityRepository
     }
 
     /**
-     *
+     * Requête permettant d'indiquer le nombre de participants ayant répondu
      * @param int $page
      * @param int $max
      * @param array $params
@@ -176,8 +176,9 @@ class QuestionnaireRepository extends ServiceEntityRepository
     }
 
     /**
-     *
+     * Requête permettant d'indiquer le nombre de participants ayant répondu à un questionnaire donné
      * @param int $id_questionnaire
+     * @return array|mixed|\Doctrine\DBAL\Driver\Statement|NULL
      */
     public function getNbParticipantsReponduByQuestionnaire($id_questionnaire)
     {
@@ -186,7 +187,6 @@ class QuestionnaireRepository extends ServiceEntityRepository
         $query->join('q.questions', 'qu');
         $query->leftJoin('qu.reponses', 'r');
         $query->leftJoin('r.membre', 'm');
-        // $query->addGroupBy('q.id');
         $query->andWhere('q.id = ' . $id_questionnaire);
         return $query->getQuery()->getArrayResult();
     }

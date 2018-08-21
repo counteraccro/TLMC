@@ -6,7 +6,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
- *
+ * Méthodes présentes dans ce repository
  * @method Question|null find($id, $lockMode = null, $lockVersion = null)
  * @method Question|null findOneBy(array $criteria, array $orderBy = null)
  * @method Question[] findAll()

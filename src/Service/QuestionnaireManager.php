@@ -256,7 +256,6 @@ class QuestionnaireManager extends AppService
     }
     
     /**
-     *
      * Enregistrement des données
      * @param Membre $membre
      */
