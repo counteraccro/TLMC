@@ -14,13 +14,29 @@
         {{ form_errors(form) }}
         
         {{ form_row(form.titre) }}
-    	{{ form_row(form.type) }}
-    	{{ form_row(form.genre) }}
+        
+        <div class="row">
+    		<div class="col-md-6">
+    			{{ form_row(form.type) }}
+    		</div>
+    		<div class="col-md-6">
+    			{{ form_row(form.genre) }}
+    		</div>
+    	</div>
+    	
     	{{ form_row(form.texte) }}
     	{{ form_row(form.texte_2) }}
     	{{ form_row(form.tranche_age) }}
-    	{{ form_row(form.quantite) }}
-    	{{ form_row(form.date_envoi) }}
+    	
+    	<div class="row align-middle">
+    		<div class="col-md-6 align-middle">
+    			{{ form_row(form.quantite) }}
+    		</div>
+    		<div class="col-md-6 align-middle">
+    			{{ form_row(form.date_envoi) }}
+    		</div>
+    	</div>
+    	
     	{{ form_row(form.image) }}
         
         <div class="form-group">

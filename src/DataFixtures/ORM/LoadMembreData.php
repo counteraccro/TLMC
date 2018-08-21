@@ -117,8 +117,8 @@ class LoadMembreData extends Fixture implements DependentFixtureInterface
                 'setAnnuaire' => true,
                 'setSignature' => 'à votre disposition, Andréa Lucas',
                 'setDisabled' => 1,
-                'setEtablissement' => 'Etablissement-1',
-                'setEtablissement' => 'Etablissement-2',
+                'setEtablissement' => 'Etablissement-5',
+                'setSpecialite' => 'Specialite-6',
                 'setSalt' => '1A2B3C4D5E6F7G8905',
                 'setRoles' => array('ROLE_BENEVOLE')
             ],
@@ -135,7 +135,7 @@ class LoadMembreData extends Fixture implements DependentFixtureInterface
                 'setSignature' => 'à votre disposition, Julie Lombardo',
                 'setDisabled' => 0,
                 'setEtablissement' => 'Etablissement-1',
-                'setSpecialite' => 'Specialite-2',
+                'setSpecialite' => 'Specialite-3',
                 'setSalt' => '1A2B3C4D5E6F7G8901',
                 'setRoles' => array('ROLE_BENEFICIAIRE')
             ],
@@ -168,8 +168,8 @@ class LoadMembreData extends Fixture implements DependentFixtureInterface
                 'setAnnuaire' => true,
                 'setSignature' => 'à votre disposition, Claudio Delamare',
                 'setDisabled' => 0,
-                'setEtablissement' => 'Etablissement-1',
-                'setSpecialite' => 'Specialite-2',
+                'setEtablissement' => 'Etablissement-3',
+                'setSpecialite' => 'Specialite-5',
                 'setSalt' => '1A2B3C4D5E6F7G8905',
                 'setRoles' => array('ROLE_BENEVOLE')
             ],
@@ -202,7 +202,7 @@ class LoadMembreData extends Fixture implements DependentFixtureInterface
                 'setSignature' => 'Cordialement, Directrice Regina Roya',
                 'setDisabled' => 0,
                 'setEtablissement' => 'Etablissement-3',
-                'setSpecialite' => 'Specialite-4',
+                'setSpecialite' => 'Specialite-5',
                 'setSalt' => '1A2B3C4D5E6F7G890A',
                 'setRoles' => array('ROLE_BENEFICIAIRE_DIRECT')
             ],
@@ -219,7 +219,7 @@ class LoadMembreData extends Fixture implements DependentFixtureInterface
                 'setSignature' => 'à votre disposition, Luigi Gervasoni',
                 'setDisabled' => 0,
                 'setEtablissement' => 'Etablissement-3',
-                'setSpecialite' => 'Specialite-2',
+                'setSpecialite' => 'Specialite-5',
                 'setSalt' => '1A2B3C4D5E6F7G8905',
                 'setRoles' => array('ROLE_BENEVOLE')
             ],
@@ -236,7 +236,7 @@ class LoadMembreData extends Fixture implements DependentFixtureInterface
                 'setSignature' => 'à votre disposition, Marc Vialou',
                 'setDisabled' => 0,
                 'setEtablissement' => 'Etablissement-3',
-                'setSpecialite' => 'Specialite-3',
+                'setSpecialite' => 'Specialite-4',
                 'setSalt' => '1A2B3C4D5E6F7G8901',
                 'setRoles' => array('ROLE_BENEFICIAIRE')
             ],
@@ -252,7 +252,7 @@ class LoadMembreData extends Fixture implements DependentFixtureInterface
                 'setAnnuaire' => true,
                 'setSignature' => 'Cordialement, Responsable Kamila Jordana',
                 'setDisabled' => 0,
-                'setEtablissement' => 'Etablissement-2',
+                'setEtablissement' => 'Etablissement-4',
                 'setSalt' => '1A2B3C4D5E6F7G890A',
                 'setRoles' => array('ROLE_BENEFICIAIRE_DIRECT')
             ],
@@ -269,7 +269,7 @@ class LoadMembreData extends Fixture implements DependentFixtureInterface
                 'setSignature' => 'à votre disposition, Pierre Durand',
                 'setDisabled' => 0,
                 'setEtablissement' => 'Etablissement-1',
-                'setSpecialite' => 'Specialite-2',
+                'setSpecialite' => 'Specialite-3',
                 'setSalt' => '1A2B3C4D5E6F7G8905',
                 'setRoles' => array('ROLE_BENEVOLE')
             ],
@@ -285,7 +285,7 @@ class LoadMembreData extends Fixture implements DependentFixtureInterface
                 'setAnnuaire' => true,
                 'setSignature' => 'à votre disposition, Olaf Petrowsky',
                 'setDisabled' => 0,
-                'setEtablissement' => 'Etablissement-2',
+                'setEtablissement' => 'Etablissement-4',
                 'setSalt' => '1A2B3C4D5E6F7G8901',
                 'setRoles' => array('ROLE_BENEFICIAIRE')
             ],
@@ -302,7 +302,7 @@ class LoadMembreData extends Fixture implements DependentFixtureInterface
                 'setSignature' => 'Cordialement, Responsable Olga Petrowsky',
                 'setDisabled' => 0,
                 'setEtablissement' => 'Etablissement-3',
-                'setSpecialite' => 'Specialite-2',
+                'setSpecialite' => 'Specialite-5',
                 'setSalt' => '1A2B3C4D5E6F7G890A',
                 'setRoles' => array('ROLE_BENEFICIAIRE_DIRECT')
             ],
@@ -336,7 +336,7 @@ class LoadMembreData extends Fixture implements DependentFixtureInterface
                 'setSignature' => 'à votre disposition, Yvonne Desidouz',
                 'setDisabled' => 0,
                 'setEtablissement' => 'Etablissement-3',
-                'setSpecialite' => 'Specialite-1',
+                'setSpecialite' => 'Specialite-4',
                 'setSalt' => '1A2B3C4D5E6F7G8901',
                 'setRoles' => array('ROLE_BENEFICIAIRE')
             ],
@@ -352,7 +352,7 @@ class LoadMembreData extends Fixture implements DependentFixtureInterface
                 'setAnnuaire' => true,
                 'setSignature' => 'Cordialement, Responsable Angelica Ruffier',
                 'setDisabled' => 0,
-                'setEtablissement' => 'Etablissement-2',
+                'setEtablissement' => 'Etablissement-4',
                 'setSalt' => '1A2B3C4D5E6F7G890A',
                 'setRoles' => array('ROLE_BENEFICIAIRE_DIRECT')
             ],
@@ -369,7 +369,7 @@ class LoadMembreData extends Fixture implements DependentFixtureInterface
                 'setSignature' => 'à votre disposition, Milicent Bulstrode',
                 'setDisabled' => 0,
                 'setEtablissement' => 'Etablissement-1',
-                'setSpecialite' => 'Specialite-4',
+                'setSpecialite' => 'Specialite-3',
                 'setSalt' => '1A2B3C4D5E6F7G8905',
                 'setRoles' => array('ROLE_BENEVOLE')
             ],

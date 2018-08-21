@@ -3,7 +3,7 @@
 {% block title %}Témoignages{% endblock %}
 
 {% block body %}
-<h1>Gestion des témoignages</h1>
+<h1>Gestion des témoignages {% if type == 'produit' %} des produits {% elseif type == 'evenement' %} des événements {% endif %}</h1>
 
 {% include 'elements/arborescence.html.twig' %}
 

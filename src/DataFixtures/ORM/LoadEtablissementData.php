@@ -51,6 +51,34 @@ class LoadEtablissementData extends Fixture
                 'setNbLit' => 56,
                 'setStatutConvention' => 1,
                 'setDateCollaboration' => '1991-09-30',
+                'setDisabled' => 0
+            ],
+            'Etablissement-4' => [
+                'setNom' => 'Maison Marie Curie',
+                'setType' => 'Maison de parents',
+                'setNumeroVoie' => 102,
+                'setVoie' => 'rue des Cocotiers',
+                'setVille' => 'Bagneux',
+                'setCodePostal' => 92230,
+                'setCodeLogistique' => 'MMC_92',
+                'setRegion' => 'Ile-de-France',
+                'setNbLit' => 25,
+                'setStatutConvention' => 2,
+                'setDateCollaboration' => '2005-11-25',
+                'setDisabled' => 0
+            ],
+            'Etablissement-5' => [
+                'setNom' => 'Clinique Georges 5',
+                'setType' => 'Clinique',
+                'setNumeroVoie' => 115,
+                'setVoie' => 'Route du maréchal Petain',
+                'setVille' => 'Argenteuille',
+                'setCodePostal' => 95100,
+                'setCodeLogistique' => 'CG5_95',
+                'setRegion' => 'Ile-de-France',
+                'setNbLit' => 102,
+                'setStatutConvention' => 0,
+                'setDateCollaboration' => '1998-02-16',
                 'setDisabled' => 1
             ]
         ]

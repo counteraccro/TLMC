@@ -123,7 +123,7 @@ class TemoignageController extends AppController
      * @Route("/temoignage/see/{id}/{type}/{page}", name="temoignage_see")
      * @Route("/temoignage/see/{id}", name="temoignage_ajax_see")
      * @ParamConverter("temoignage", options={"mapping": {"id": "id"}})
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT') or s_granted('ROLE_BENEVOLE')")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT') or is_granted('ROLE_BENEVOLE')")
      *
      * @param Request $request
      * @param SessionInterface $session

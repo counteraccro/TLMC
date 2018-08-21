@@ -14,13 +14,22 @@
 	{{ form_row(form.nom) }}
 	{{ form_row(form.type) }}
 	
-	{{ form_row(form.date_debut) }}
-	{{ form_row(form.date_fin) }}
+	<div class="row">
+		<div class="col-md-4">
+			{{ form_row(form.date_debut) }}
+		</div>
+		<div class="col-md-4">
+			{{ form_row(form.date_fin) }}
+		</div>
+		<div class="col-md-4">
+		    {{ form_row(form.date_fin_inscription) }}
+		</div>
+	</div>
 	
 	{{ form_row(form.description) }}
 	{{ form_row(form.nombre_max) }}
 	{{ form_row(form.tranche_age) }}
-	{{ form_row(form.date_fin_inscription) }}
+	
 	{{ form_row(form.information_complementaire) }}
 	
 	{{ form_row(form.nom_lieu) }}
