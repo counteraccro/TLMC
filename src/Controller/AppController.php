@@ -307,9 +307,10 @@ class AppController extends Controller
      * @param UploadedFile $file
      * @param string $type
      * @param string $nom
+     * @param string $ancienne_image
      * @return string
      */
-    public function telechargerImage(UploadedFile $file, string $type, string $nom)
+    public function telechargerImage(UploadedFile $file, string $type, string $nom, string $ancienne_image = null)
     {
         if($type != 'evenement' && $type != 'produit'){
             return false;
@@ -322,8 +323,12 @@ class AppController extends Controller
         
         $fileName = $this->cleanText($nom) . '_' . date('dmYHis') . '.' . $extension;
         
-        $directory = ($type == 'produit' ? 'pictures_products_directory' : 'pictures_events_directory');
-        $file->move($this->getParameter($directory), $fileName);
+        $directory = $this->getParameter('pictures_directory') . '/' . $type;
+        $file->move($directory, $fileName);
+        
+        if(!is_null($ancienne_image) && !preg_match("/^(http|https)/", $ancienne_image)){
+            unlink($directory . '/'  . $ancienne_image);
+        }
         
         return $fileName;
     }
@@ -348,6 +353,7 @@ class AppController extends Controller
         // Supprimer tout le reste
         $str = preg_replace('#&[^;]+;#', '', $str);
         
+        //retrait des caractères spéciaux
         $str = preg_replace("/(\\|\^|\.|\$|\||\(|\)|\[|\]|\*|\+|\?|\{|\}|\,|\=)/", '', $str);
         $str = preg_replace("/\d/", '_', $str);
         

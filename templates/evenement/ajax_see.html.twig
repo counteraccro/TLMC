@@ -10,7 +10,9 @@
          <div class="card-body">
 			<div class="row align-items-center">
     			<div class="col-md-3">
-    			    {% if evenement.image != null %}{{ image('evenement', evenement.image) | raw }}{% endif %}
+    			    {% if evenement.image != null %}
+    			        {{ image('evenement', evenement.image) | raw }}
+					{% endif %}
     			</div>
 				<div class="col-md-9">
                 	<table  class="table table-sm">
@@ -75,8 +77,16 @@
     <script type="text/javascript">
 
     $(document).ready(function() {
+    	$('#evenement_image').change(function() {
+    		var file = $(this)[0].files[0].name;
+    		$('.custom-file label[for="'+ $(this).attr('id') +'"]').html(file);
+    	});
+        
         var id_btn_evenement = '#btn-edit-evenement';
         Evenement.EventEdit(id_btn_evenement);
+
+        var id_btn_edit_image = '#btn-edit-image';
+        Evenement.EventEdit(id_btn_edit_image);
     });
     
     </script> 

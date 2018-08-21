@@ -66,9 +66,15 @@
         		{{ form_row(form.ville) }}
         	</div>
     	</div>
-    	
+    	<div class="row">
+    		<div class="col-md-12">
+    	        {{ form_row(form.image) }}
+    	    </div>
+    	</div>
     </div>
-        
+    
+    
+    
     <div class="modal-footer">
 		{{ form_widget(form.save) }}
 	</div>
@@ -82,16 +88,24 @@
 {% block javascripts %}
 
     <script type="text/javascript">
-    
-    
-    	$('#modal_evenement_global').modal({
- 		   'show' : true,
- 		   'backdrop' : 'static'
- 		});
- 	
-		var url = '{{path('evenement_ajax_edit', {'id': evenement.id }) }}';
-		Evenement.EventEditSubmit(url);
-    
+
+    	$(document).ready(function() {
+        	
+            $('.custom-file label[for="evenement_image"]').html('{{ evenement.image }}');
+
+            $('#evenement_image').change(function() {
+        		var file = $(this)[0].files[0].name;
+        		$('.custom-file label[for="'+ $(this).attr('id') +'"]').html(file);
+        	});
+            
+        	$('#modal_evenement_global').modal({
+     		   'show' : true,
+     		   'backdrop' : 'static'
+     		});
+         	
+    		var url = '{{path('evenement_ajax_edit', {'id': evenement.id }) }}';
+    		Evenement.EventEditSubmit(url);
+    	});
     </script> 
 
 {% endblock %}

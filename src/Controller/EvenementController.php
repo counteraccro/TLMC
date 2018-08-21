@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Form\EvenementType;
 use App\Entity\Specialite;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class EvenementController extends AppController
 {
@@ -198,10 +199,10 @@ class EvenementController extends AppController
 
             $file = $form['image']->getData();
             $fileName = $this->telechargerImage($file, 'evenement', $evenement->getNom());
-            if($fileName) {
+            if ($fileName) {
                 $evenement->setImage($fileName);
             }
-            
+
             $evenement->setDisabled(0);
 
             $em->persist($evenement);
@@ -244,13 +245,37 @@ class EvenementController extends AppController
     public function editAction(SessionInterface $session, Request $request, Evenement $evenement, int $page = 1)
     {
         $arrayFilters = $this->getDatasFilter($session);
-
+        $image = $evenement->getImage();
+        $default_image = $this->getParameter('pictures_directory') . '/logo-association-tlmc.png';
+        
         $form = $this->createForm(EvenementType::class, $evenement);
 
+        if (is_null($request->files->get('evenement')['image'])) {
+            $request->files->set('evenement', array(
+                'image' => new UploadedFile($default_image, 'image')
+            ));
+        }
+
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
 
             $em = $this->getDoctrine()->getManager();
+
+            /*$file = $form['image']->getData();
+
+            if ($evenement->getImage() == $default_image) {
+                $evenement->setImage($image);
+                $this->pre($evenement->getImage());
+            } else {
+                $fileName = $this->telechargerImage($file, 'evenement', $evenement->getNom(), $image);
+                if ($fileName) {
+                    $evenement->setImage($fileName);
+                } else {
+                    echo "ERREUR";
+                    die();
+                }
+            }*/
 
             $em->persist($evenement);
             $em->flush();
@@ -271,10 +296,10 @@ class EvenementController extends AppController
         // Si appel Ajax, on renvoi sur la page ajax
         if ($request->isXmlHttpRequest()) {
 
-            return $this->render('evenement/ajax_edit.html.twig', [
+            return $this->render('evenement/ajax_edit.html.twig', array(
                 'evenement' => $evenement,
                 'form' => $form->createView()
-            ]);
+            ));
         }
 
         return $this->render('evenement/edit.html.twig', array(

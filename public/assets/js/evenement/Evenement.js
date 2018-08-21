@@ -76,6 +76,7 @@ Evenement.Launch = function(params){
 				
 				if(reponse.statut === true)
 				{
+					console.log('DAC');
 					$(Evenement.id_modal).modal('hide');
 					Evenement.Ajax(Evenement.url_ajax_see, Evenement.id_global);
 				}
