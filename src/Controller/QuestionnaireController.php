@@ -9,12 +9,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use App\Form\QuestionnaireType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Response;
-use App\Entity\Reponse;
 use App\Service\QuestionnaireManager;
+use App\Service\ExportManager;
 use Symfony\Component\HttpFoundation\Session\Session;
 use App\Entity\Membre;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use App\Entity\Question;
 
 class QuestionnaireController extends AppController
 {
@@ -452,28 +453,36 @@ class QuestionnaireController extends AppController
     /**
      * Export statistiques questionnaire
      *
-     * @Route("/questionnaire/export/{id}/{page}/{type_export}", name="questionnaire_export")
+     * @Route("/questionnaire/export/{id}/{type_export}", name="questionnaire_export")
      * @ParamConverter("questionnaire", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function exportAction(SessionInterface $session, Questionnaire $questionnaire, int $page, $type_export = 'csv')
+    public function exportAction(Questionnaire $questionnaire, $type_export = 'csv', ExportManager $exportManager)
     {
-        $arrayFilters = $this->getDatasFilter($session);
-        
-        return $this->render('questionnaire/see.html.twig', [
-            'page' => $page,
-            'questionnaire' => $questionnaire,
-            'paths' => array(
-                'home' => $this->indexUrlProject(),
-                'urls' => array(
-                    $this->generateUrl('questionnaire_listing', array(
-                        'page' => $page,
-                        'field' => $arrayFilters['field'],
-                        'order' => $arrayFilters['order']
-                    )) => 'Gestion de questionnaires'
-                ),
-                'active' => 'Fiche d\'un questionnaire'
-            )
-        ]);
+        // Provide a name for your file with extension
+        $date_export = new \DateTime();
+        $fileName = $questionnaire->getTitre() . '-' . $date_export->format('d-m-Y H:i:s');
+        $content = array();
+
+        $repository = $this->getDoctrine()->getRepository(Membre::class);
+        $result = $repository->GetAllMembresReponsesByQuestionnaire($questionnaire->getId(), 1, 1000000000, '');
+
+        /* @var Membre $membre */
+        foreach ($result['paginator'] as $membre) {
+            $content[$membre->getId()]['id'] = $membre->getId();
+            $content[$membre->getId()]['nom'] = $membre->getNom();
+            $content[$membre->getId()]['prenom'] = $membre->getPrenom();
+
+            /* @var Question $question */
+            foreach ($questionnaire->getQuestions() as $question) {
+                foreach ($question->getReponses() as $reponse) {
+                    if ($reponse->getMembre()->getId() == $membre->getId()) {
+                        $content[$membre->getId()][$question->getLibelle()] = $reponse->getValeur();
+                    }
+                }
+            }
+        }
+
+        return $exportManager->generateCSV($fileName, $content);;
     }
 }

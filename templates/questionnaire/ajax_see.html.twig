@@ -97,12 +97,9 @@
     
    	 $('[data-toggle="tooltip"]').tooltip();
 
- 	 $('#btn-choix-export input[type=radio]').change(function() {
-
- 		 var id = $(this).attr('id');
- 		 console.log(id);
-   	 	
- 	 	window.location = '{{path('questionnaire_export', {'id': questionnaire.id, 'page': page })}}/' + id;
+ 	 $('#btn-choix-export .btn').click(function() {
+ 		var id = $(this).children().attr('id');
+ 	 	window.location = '{{path('questionnaire_export', {'id': questionnaire.id})}}/' + id;
  	 });
     
     </script>

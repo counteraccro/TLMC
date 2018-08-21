@@ -353,8 +353,7 @@ class QuestionnaireExtension extends AbstractExtension
         if ($question->getLibelleTop() && ! empty($question->getLibelleTop())) {
             if ($this->params['statut'] == self::PROD) {
                 $test = 'bg-primary';
-            }
-            else if ($this->params['statut'] == self::DEMO) {
+            } else if ($this->params['statut'] == self::DEMO) {
                 $test = 'bg-info';
             }
             $html .= '<div class="card-header ' . $test . '">' . $txt_id . ' ' . $question->getLibelleTop() . $edit . '</div>';
@@ -494,6 +493,10 @@ class QuestionnaireExtension extends AbstractExtension
                 AppController::CHOICETYPE,
                 AppController::RADIOTYPE
             ))) {
+                continue;
+            }
+
+            if ($question->getDisabled()) {
                 continue;
             }
 
