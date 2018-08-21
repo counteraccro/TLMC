@@ -406,15 +406,13 @@ class QuestionnaireController extends AppController
     public function statsAction(Request $request, Questionnaire $questionnaire, Session $session, int $page = 1, $page_search = 1)
     {
         $arrayFilters = $this->getDatasFilter($session);
-        
-        
+
         $post = $request->request->all();
         $search = '';
-        if(isset($post['search_membre_stats']))
-        {
+        if (isset($post['search_membre_stats'])) {
             $search = $post['search_membre_stats'];
         }
-        
+
         $repository = $this->getDoctrine()->getRepository(Membre::class);
         $result = $repository->GetAllMembresReponsesByQuestionnaire($questionnaire->getId(), $page_search, self::MAX_NB_RESULT, $search);
 
@@ -423,9 +421,11 @@ class QuestionnaireController extends AppController
             'route' => 'questionnaire_stats',
             'pages_count' => ceil($result['nb'] / self::MAX_NB_RESULT),
             'nb_elements' => $result['nb'],
-            'route_params' => array('id' => $questionnaire->getId())
+            'route_params' => array(
+                'id' => $questionnaire->getId()
+            )
         );
-        
+
         return $this->render('questionnaire/stats.html.twig', [
             'questionnaire' => $questionnaire,
             'liste_membres' => $result['paginator'],
@@ -445,6 +445,34 @@ class QuestionnaireController extends AppController
                     )) => 'Fiche du questionnaire'
                 ),
                 'active' => 'Statistiques de #' . $questionnaire->getId() . ' - ' . $questionnaire->getTitre()
+            )
+        ]);
+    }
+
+    /**
+     * Export statistiques questionnaire
+     *
+     * @Route("/questionnaire/export/{id}/{page}/{type_export}", name="questionnaire_export")
+     * @ParamConverter("questionnaire", options={"mapping": {"id": "id"}})
+     * @Security("is_granted('ROLE_ADMIN')")
+     */
+    public function exportAction(SessionInterface $session, Questionnaire $questionnaire, int $page, $type_export = 'csv')
+    {
+        $arrayFilters = $this->getDatasFilter($session);
+        
+        return $this->render('questionnaire/see.html.twig', [
+            'page' => $page,
+            'questionnaire' => $questionnaire,
+            'paths' => array(
+                'home' => $this->indexUrlProject(),
+                'urls' => array(
+                    $this->generateUrl('questionnaire_listing', array(
+                        'page' => $page,
+                        'field' => $arrayFilters['field'],
+                        'order' => $arrayFilters['order']
+                    )) => 'Gestion de questionnaires'
+                ),
+                'active' => 'Fiche d\'un questionnaire'
             )
         ]);
     }

@@ -102,7 +102,7 @@
  		 var id = $(this).attr('id');
  		 console.log(id);
    	 	
- 	 	//window.location = 'url';
+ 	 	window.location = '{{path('questionnaire_export', {'id': questionnaire.id, 'page': page })}}/' + id;
  	 });
     
     </script>
