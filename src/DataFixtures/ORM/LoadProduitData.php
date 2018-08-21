@@ -36,7 +36,7 @@ class LoadProduitData extends Fixture
                 'setTexte' => 'Ca va tacher !',
                 'setTrancheAge' => array(5),
                 'setGenre' => 0,
-                'setQuantite' => 20,
+                'setQuantite' => 24,
                 'setDateCreation' => '2018-07-17 19:00:00',
                 'setDateEnvoi' => '2018-08-30 12:00:00',
                 'setDisabled' => 0
@@ -58,7 +58,7 @@ class LoadProduitData extends Fixture
                 'setTexte' => 'Matelas avec ressorts',
                 'setTrancheAge' => array(0),
                 'setGenre' => 0,
-                'setQuantite' => 20,
+                'setQuantite' => 30,
                 'setDateCreation' => '2018-07-17 19:00:00',
                 'setDateEnvoi' => '2018-08-30 12:00:00',
                 'setDisabled' => 0
@@ -69,7 +69,7 @@ class LoadProduitData extends Fixture
                 'setTexte' => 'Defibrillateur',
                 'setTrancheAge' => array(0),
                 'setGenre' => 0,
-                'setQuantite' => 15,
+                'setQuantite' => 35,
                 'setDateCreation' => '2018-07-17 19:00:00',
                 'setDateEnvoi' => '2018-08-30 12:00:00',
                 'setDisabled' => 1
@@ -80,7 +80,7 @@ class LoadProduitData extends Fixture
                 'setTexte' => 'Chaise',
                 'setTrancheAge' => array(0),
                 'setGenre' => 0,
-                'setQuantite' => 12,
+                'setQuantite' => 30,
                 'setDateCreation' => '2016-07-17 09:28:36',
                 'setDateEnvoi' => '2016-07-18 14:00:00',
                 'setDisabled' => 0,

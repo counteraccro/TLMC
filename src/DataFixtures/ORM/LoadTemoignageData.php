@@ -70,7 +70,7 @@ class LoadTemoignageData extends Fixture implements DependentFixtureInterface
                 'setDateCreation' => '2018-05-23 09:12:13'
             ],
             'Temoignage-5' => [
-                'setEvenement' => 'Evenement-1',
+                'setEvenement' => 'Evenement-2',
                 'setMembre' => 'Membre-3',
                 'setTitre' => 'Un magnifique moment entre frères et soeurs',
                 'setCorps' => "Un dernier petit mot sur ce qui nous est apparu comme essentiel : associer les frères et sœurs ; ils ont souffert ensemble, de manière différente certes, mais aujourd’hui vous leur permettez de rêver ensemble.",
@@ -94,16 +94,76 @@ class LoadTemoignageData extends Fixture implements DependentFixtureInterface
                 'setDateCreation' => '2018-06-23 21:12:13'
             ],
             'Temoignage-7' => [
-                'setEvenement' => 'Evenement-5',
-                'setMembre' => 'Membre-25',
-                'setTitre' => 'Artistes formidables',
-                'setCorps' => "Les artistes ont fait preuve d’une grande disponibilité et gentillesse vis à vis des enfants. Quelle joie de les voir revenir dans la salle de l’Olympia en s’exclamant \"Tu ne devineras jamais qui j’ai vu ?…ou avec qui j’ai pris une photo ?\" Les enfants ne touchaient plus terre, et c’est bien là la réelle définition d’un Rêve…",
-                'setPrenomTemoin' => 'Silas',
-                'setLienParente' => 1,
-                'setVille' => 'Limoges',
-                'setAge' => 56,
+                'setProduit' => 'Produit-3',
+                'setMembre' => 'Membre-7',
+                'setTitre' => 'Super',
+                'setCorps' => "Les crayons de couleurs sont trop beau, j'ai pu faire pleins de dessins avec.",
+                'setPrenomTemoin' => 'Matéo',
+                'setLienParente' => 3,
+                'setVille' => 'Granville',
+                'setAge' => 6,
                 'setDisabled' => 0,
-                'setDateCreation' => '2018-06-23 21:12:13'
+                'setDateCreation' => '2018-01-24 17:17:17'
+            ],
+            'Temoignage-8' => [
+                'setProduit' => 'Produit-2',
+                'setMembre' => 'Membre-9',
+                'setTitre' => 'Ca fait mal',
+                'setCorps' => "On y a joué toute l'après-midi tellement on aimait!!!",
+                'setPrenomTemoin' => 'James',
+                'setLienParente' => 3,
+                'setVille' => 'Paris',
+                'setAge' => 15,
+                'setDisabled' => 0,
+                'setDateCreation' => '2018-02-12 19:30:32'
+            ],
+            'Temoignage-9' => [
+                'setEvenement' => 'Evenement-1',
+                'setMembre' => 'Membre-18',
+                'setTitre' => 'Des petits enfants ravis',
+                'setCorps' => "Ca faisait longtemps que je n'avais pas vu mon petit-fils et ma petite-fille rigoler comme cela. Le repas leur a fait beaucoup de bien.",
+                'setPrenomTemoin' => 'Gertrude',
+                'setLienParente' => 4,
+                'setVille' => 'Angers',
+                'setAge' => 84,
+                'setDisabled' => 0,
+                'setDateCreation' => '2018-01-14 09:14:00'
+            ],
+            'Temoignage-10' => [
+                'setEvenement' => 'Evenement-3',
+                'setMembre' => 'Membre-19',
+                'setTitre' => "Première leçon d'équitation",
+                'setCorps' => "Ma fille a toujours voulu faire de l'équitation et grâce à TLMC, elle a pu réaliser son rêve et pour cela je suis très reconnaissant envers l'association.",
+                'setPrenomTemoin' => 'Anna',
+                'setLienParente' => 2,
+                'setVille' => 'Besançon',
+                'setAge' => 36,
+                'setDisabled' => 0,
+                'setDateCreation' => '2018-09-30 17:45:12'
+            ],
+            'Temoignage-11' => [
+                'setEvenement' => 'Evenement-3',
+                'setMembre' => 'Membre-21',
+                'setTitre' => 'Balade très sympa',
+                'setCorps' => "Au début, je n'étais pas très rassuré, c'est mon fils qui tenait à faire cette balade mais les paysages étaient très beaux et les animateurs vraiment gentils et prennaient bien le temps d'attendre tout le monde et répondaient à toutes nos questions. Je pense pouvoir affirmer que les petits comme les grands ont été charmés.",
+                'setPrenomTemoin' => 'Harry',
+                'setLienParente' => 1,
+                'setVille' => 'Besançon',
+                'setAge' => 41,
+                'setDisabled' => 0,
+                'setDateCreation' => '2018-10-01 10:00:00'
+            ],
+            'Temoignage-12' => [
+                'setEvenement' => 'Evenement-4',
+                'setMembre' => 'Membre-21',
+                'setTitre' => 'La trouille',
+                'setCorps' => "Les bonbons étaient super bons et la déco étaient trop bien! Et les costumes et les maquillages étaient magnifiques: je ressemblais à une vraie fée! ",
+                'setPrenomTemoin' => 'Nina',
+                'setLienParente' => 4,
+                'setVille' => 'Pau',
+                'setAge' => 10,
+                'setDisabled' => 0,
+                'setDateCreation' => '2018-11-11 11:11:11'
             ]
         ]
     ];

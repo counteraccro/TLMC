@@ -25,6 +25,36 @@ class LoadProduitSpecialiteData extends Fixture implements DependentFixtureInter
                 'setProduit' => 'Produit-2',
                 'setQuantite' => '12',
                 'setDate' => '2018-07-18'
+            ],
+            'ProduitSpecialite-3' => [
+                'setSpecialite' => 'Specialite-7',
+                'setProduit' => 'Produit-5',
+                'setQuantite' => '12',
+                'setDate' => '2018-07-18'
+            ],
+            'ProduitSpecialite-4' => [
+                'setSpecialite' => 'Specialite-2',
+                'setProduit' => 'Produit-3',
+                'setQuantite' => '12',
+                'setDate' => '2018-07-18'
+            ],
+            'ProduitSpecialite-5' => [
+                'setSpecialite' => 'Specialite-4',
+                'setProduit' => 'Produit-1',
+                'setQuantite' => '7',
+                'setDate' => '2018-07-16'
+            ],
+            'ProduitSpecialite-6' => [
+                'setSpecialite' => 'Specialite-5',
+                'setProduit' => 'Produit-2',
+                'setQuantite' => '12',
+                'setDate' => '2018-07-18'
+            ],
+            'ProduitSpecialite-7' => [
+                'setSpecialite' => 'Specialite-4',
+                'setProduit' => 'Produit-2',
+                'setQuantite' => '12',
+                'setDate' => '2018-07-18'
             ]
         ]
     ];

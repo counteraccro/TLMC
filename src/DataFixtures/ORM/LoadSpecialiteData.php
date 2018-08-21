@@ -61,7 +61,7 @@ class LoadSpecialiteData extends Fixture implements DependentFixtureInterface
                 'setEtablissement' => 'Etablissement-3',
                 'setDisabled' => 1
             ],
-            'Specialite-6' => [
+            'Specialite-7' => [
                 'setCodeLogistique' => 'ONC_01',
                 'setAdulte' => true,
                 'setPediatrie' => false,
