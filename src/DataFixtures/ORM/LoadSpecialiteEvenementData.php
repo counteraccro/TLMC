@@ -34,7 +34,7 @@ class LoadSpecialiteEvenementData extends Fixture implements DependentFixtureInt
             ],
             'SpecialiteEvenement-4' => [
                 'setEvenement' => 'Evenement-4',
-                'setSpecialite' => 'Specialite-2',
+                'setSpecialite' => 'Specialite-3',
                 'setStatut' => 1,
                 'setDate' => '1991-09-30'
             ],
@@ -55,6 +55,30 @@ class LoadSpecialiteEvenementData extends Fixture implements DependentFixtureInt
                 'setSpecialite' => 'Specialite-3',
                 'setStatut' => 0,
                 'setDate' => '2018-04-28'
+            ],
+            'SpecialiteEvenement-8' => [
+                'setEvenement' => 'Evenement-5',
+                'setSpecialite' => 'Specialite-5',
+                'setStatut' => 0,
+                'setDate' => '2018-04-28'
+            ],
+            'SpecialiteEvenement-7' => [
+                'setEvenement' => 'Evenement-5',
+                'setSpecialite' => 'Specialite-4',
+                'setStatut' => 0,
+                'setDate' => '2018-04-28'
+            ],
+            'SpecialiteEvenement-8' => [
+                'setEvenement' => 'Evenement-4',
+                'setSpecialite' => 'Specialite-2',
+                'setStatut' => 1,
+                'setDate' => '1991-09-30'
+            ],
+            'SpecialiteEvenement-9' => [
+                'setEvenement' => 'Evenement-1',
+                'setSpecialite' => 'Specialite-4',
+                'setStatut' => 1,
+                'setDate' => '1991-09-30'
             ]
         ]
     ];

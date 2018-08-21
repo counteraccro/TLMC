@@ -31,6 +31,18 @@ class LoadProduitEtablissementData extends Fixture implements DependentFixtureIn
                 'setProduit' => 'Produit-6',
                 'setQuantite' => 10,
                 'setDate' => '2016-07-18'
+            ],
+            'ProduitEtablissement-4' => [
+                'setEtablissement' => 'Etablissement-4',
+                'setProduit' => 'Produit-6',
+                'setQuantite' => 10,
+                'setDate' => '2016-07-18'
+            ],
+            'ProduitEtablissement-5' => [
+                'setEtablissement' => 'Etablissement-4',
+                'setProduit' => 'Produit-4',
+                'setQuantite' => 10,
+                'setDate' => '2016-07-18'
             ]
         ]
     ];
