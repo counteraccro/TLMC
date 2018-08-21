@@ -57,7 +57,7 @@
     $(document).ready(function() {
     	$('#evenement_image').change(function() {
     		var file = $(this)[0].files[0].name;
-    		$(this).attr('placeholder', file);
+    		$('.custom-file label[for="'+ $(this).attr('id') +'"]').html(file);
     	});
         
 		var params = {

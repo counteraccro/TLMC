@@ -56,6 +56,10 @@
 {% block javascripts %}
 	<script type="text/javascript">
         $(document).ready(function() {
+        	$('#produit_image').change(function() {
+        		var file = $(this)[0].files[0].name;
+        		$('.custom-file label[for="'+ $(this).attr('id') +'"]').html(file);
+        	});
         	
     		$('#produit_row_etablissement').hide();
     		$('#produit_row_specialite').hide();
