@@ -66,11 +66,6 @@
         		{{ form_row(form.ville) }}
         	</div>
     	</div>
-    	<div class="row">
-    		<div class="col-md-12">
-    	        {{ form_row(form.image) }}
-    	    </div>
-    	</div>
     </div>
     
     
@@ -90,8 +85,6 @@
     <script type="text/javascript">
 
     	$(document).ready(function() {
-        	
-            $('.custom-file label[for="evenement_image"]').html('{{ evenement.image }}');
 
             $('#evenement_image').change(function() {
         		var file = $(this)[0].files[0].name;

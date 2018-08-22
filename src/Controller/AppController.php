@@ -312,9 +312,7 @@ class AppController extends Controller
      */
     public function telechargerImage(UploadedFile $file, string $type, string $nom, string $ancienne_image = null)
     {
-        if($type != 'evenement' && $type != 'produit'){
-            return false;
-        }
+        $type = strtolower($type);
         
         $extension = $file->getClientOriginalExtension();
         if($extension != 'jpeg' && $extension != 'jpg' && $extension != 'png'){
@@ -323,10 +321,12 @@ class AppController extends Controller
         
         $fileName = $this->cleanText($nom) . '_' . date('dmYHis') . '.' . $extension;
         
-        $directory = $this->getParameter('pictures_directory') . '/' . $type;
+        $directory = $this->getParameter('pictures_directory') . $type;
         $file->move($directory, $fileName);
         
-        if(!is_null($ancienne_image) && !preg_match("/^(http|https)/", $ancienne_image)){
+        $directory = str_replace("\\", "/", $directory);
+        
+        if(!is_null($ancienne_image) && !preg_match("/^(http|https)/", $ancienne_image) && file_exists($directory . '/'  . $ancienne_image)){
             unlink($directory . '/'  . $ancienne_image);
         }
         

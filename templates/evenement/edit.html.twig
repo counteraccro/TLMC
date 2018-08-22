@@ -46,9 +46,7 @@
     <script type="text/javascript">
     
     $(document).ready(function() {
-    	$('.custom-file label[for="evenement_image"]').html('{{ evenement.image }}');
-
-    	$('#evenement_image').change(function() {
+        $('#evenement_image').change(function() {
     		var file = $(this)[0].files[0].name;
     		$('.custom-file label[for="'+ $(this).attr('id') +'"]').html(file);
     	});
