@@ -27,7 +27,6 @@
         		<th>{{ headerFilter(path('evenement_listing', {'page' : pagination.page, 'field' : 'date_fin'} ), 'Date de fin', current_order, current_field) | raw }} </th>
             	<th>{{ headerFilter(path('evenement_listing', {'page' : pagination.page, 'field' : 'nombre_max'} ), 'Nombre maximun de participants', current_order, current_field) | raw }}</th>
         		<th>{{ headerFilter(path('evenement_listing', {'page' : pagination.page, 'field' : 'description'} ), 'Description', current_order, current_field) | raw }}</th>
-        		<th>{{ headerFilter(path('evenement_listing', {'page' : pagination.page, 'field' : 'information_complementaire'} ), 'Information complémentaire', current_order, current_field) | raw }}</th>
         		<th>Tranche d'age</th>
         		<th>{{ headerFilter(path('evenement_listing', {'page' : pagination.page, 'field' : 'type'} ), 'Type', current_order, current_field) | raw }}</th>
             	<th>{{ headerFilter(path('evenement_listing', {'page' : pagination.page, 'field' : 'statut'} ), 'Statut', current_order, current_field) | raw }}</th>
@@ -40,7 +39,6 @@
         		<td>{{ inputFilter(path('evenement_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Evenement-date_fin', current_search, 'Date fin') | raw }}</td>
         		<td>{{ inputFilter(path('evenement_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Evenement-nombre_max', current_search, 'Nombre max') | raw }}</td>
         		<td>{{ inputFilter(path('evenement_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Evenement-description', current_search, 'Description') | raw }}</td>
-        		<td>{{ inputFilter(path('evenement_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Evenement-information_complementaire', current_search, 'info complémentaire') | raw }}</td>
         		<td></td>
         		<td>{{ inputFilter(path('evenement_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Evenement-type', current_search, '', constant('App\\Controller\\EvenementController::TYPE')) | raw }}</td>
         		<td>{{ inputFilter(path('evenement_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Evenement-statut', current_search, '', constant('App\\Controller\\EvenementController::STATUT')) | raw }}</td>
@@ -56,9 +54,8 @@
         			<td>{{ evenement.dateDebut |date("d/m/Y H:i") }}</td>
         			<td>{{ evenement.dateFin|date("d/m/Y H:i") }}</td>
         			<td>{{ evenement.nombreMax }}</td>
-        			<td>{{ evenement.description }}</td>
-        			<td>{{ evenement.informationComplementaire }}</td>
-        			<td>
+        			<td width="30%">{{ evenement.description }}</td>
+        			<td width="90px">
         			    {% for tranche in evenement.trancheAge %}
         			    	{{ tranche |trancheAge }} <br />	
         			    {% endfor %}

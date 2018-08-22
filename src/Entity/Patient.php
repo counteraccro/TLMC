@@ -40,6 +40,7 @@ class Patient
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Famille", mappedBy="patient", cascade={"persist"})
+     * @ORM\OrderBy({"nom" = "ASC", "prenom" = "ASC"})
      */
     private $familles;
 
