@@ -27,7 +27,7 @@ class LoadQuestionData extends Fixture implements DependentFixtureInterface
                 'setValeurDefaut' => 'Vélo',
                 'setListeValeur' => '{"0":{"value":"0","libelle":"Choix transport"},"1":{"value":"2","libelle":"Bus"},"2":{"value":"3","libelle":"Trains"},"3":{"value":"4","libelle":"Vélo"},"4":{"value":"5","libelle":"A pied"},"5":{"value":"6","libelle":"Voiture"}}',
                 'setDisabled' => '0',
-                'setObligatoire' => 'true',
+                'setObligatoire' => true,
                 'setRegles' => '.',
                 'setMessageErreur' => 'Veuillez choisir un mode de transport',
                 'setOrdre' => '1'
@@ -42,7 +42,7 @@ class LoadQuestionData extends Fixture implements DependentFixtureInterface
                 'setValeurDefaut' => 'Je n\'ai pas d\'avis sur la question',
                 'setListeValeur' => '',
                 'setDisabled' => '0',
-                'setObligatoire' => 'true',
+                'setObligatoire' => true,
                 'setRegles' => '.',
                 'setMessageErreur' => 'Merci de nous donner votre opinion concernant la question posée ci-dessus',
                 'setOrdre' => '2'
@@ -56,7 +56,7 @@ class LoadQuestionData extends Fixture implements DependentFixtureInterface
                 'setValeurDefaut' => 'Marcel',
                 'setListeValeur' => '{"0":{"value":"0","libelle":"Sarah"},"1":{"value":"1","libelle":"Samuel"},"2":{"value":"2","libelle":"Marcel"},"3":{"value":"3","libelle":"Lara"},"4":{"value":"4","libelle":"Enzo"},"5":{"value":"5","libelle":"Oxana"}}',
                 'setDisabled' => '0',
-                'setObligatoire' => 'true',
+                'setObligatoire' => true,
                 'setRegles' => '.',
                 'setMessageErreur' => 'Merci d\'indiquer le prénom de l\'accompagnateur que vous préférez',
                 'setOrdre' => '1'
@@ -70,7 +70,7 @@ class LoadQuestionData extends Fixture implements DependentFixtureInterface
                 'setValeurDefaut' => '0',
                 'setListeValeur' => '{"0":{"value":"0","libelle":"Choix bonbon"},"1":{"value":"1","libelle":"Crocodiles"},"2":{"value":"2","libelle":"Oursons guimauve"},"3":{"value":"3","libelle":"Fraise Tagada"},"4":{"value":"4","libelle":"Kréma"},"5":{"value":"5","libelle":"Réglisse"}}',
                 'setDisabled' => '0',
-                'setObligatoire' => 'true',
+                'setObligatoire' => true,
                 'setRegles' => '.',
                 'setMessageErreur' => 'Merci d\'indiquer le bonbon que vous préférez',
                 'setOrdre' => '5'
@@ -84,7 +84,7 @@ class LoadQuestionData extends Fixture implements DependentFixtureInterface
                 'setValeurDefaut' => 'Au cinéma, ou dans un lieu de tranquilité',
                 'setListeValeur' => '',
                 'setDisabled' => '0',
-                'setObligatoire' => 'true',
+                'setObligatoire' => true,
                 'setRegles' => "^[a-zA-Z0-9\sáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ.;,!?\-']*$",
                 'setMessageErreur' => 'Merci d\'indiquer le lieu dans lequel vous mangez le plus souvent des bonbons',
                 'setOrdre' => '2'
@@ -98,7 +98,7 @@ class LoadQuestionData extends Fixture implements DependentFixtureInterface
                 'setValeurDefaut' => 'Haribo',
                 'setListeValeur' => '',
                 'setDisabled' => '0',
-                'setObligatoire' => 'true',
+                'setObligatoire' => true,
                 'setRegles' => "^[a-zA-Z\sáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ.;,!?\-']*$",
                 'setMessageErreur' => 'Merci d\'indiquer votre marque de bonbons préférée en lettre uniquement',
                 'setOrdre' => '3'
@@ -112,7 +112,7 @@ class LoadQuestionData extends Fixture implements DependentFixtureInterface
                 'setValeurDefaut' => '',
                 'setListeValeur' => '{"0":{"value":"0","libelle":"Bananes"},"1":{"value":"1","libelle":"Crocodiles"},"2":{"value":"2","libelle":"Oursons guimauve"},"3":{"value":"3","libelle":"Fraise Tagada"},"4":{"value":"4","libelle":"Kréma"},"5":{"value":"5","libelle":"Réglisse"}}',
                 'setDisabled' => '0',
-                'setObligatoire' => 'true',
+                'setObligatoire' => true,
                 'setRegles' => '.',
                 'setMessageErreur' => 'Merci d\'indiquer les bonbons que vous avez déjà goûtés',
                 'setOrdre' => '4'
@@ -126,7 +126,7 @@ class LoadQuestionData extends Fixture implements DependentFixtureInterface
                 'setValeurDefaut' => '',
                 'setListeValeur' => '{"0":{"value":"0","libelle":"0"},"1":{"value":"1","libelle":"1"},"2":{"value":"2","libelle":"2"},"3":{"value":"3","libelle":"3"},"4":{"value":"4","libelle":"4"},"5":{"value":"5","libelle":"5"}}',
                 'setDisabled' => '0',
-                'setObligatoire' => 'true',
+                'setObligatoire' => true,
                 'setRegles' => '.',
                 'setMessageErreur' => 'Merci d\'indiquer votre fréquence de consommation de bonbons',
                 'setOrdre' => '1'
@@ -140,7 +140,7 @@ class LoadQuestionData extends Fixture implements DependentFixtureInterface
                 'setValeurDefaut' => '',
                 'setListeValeur' => '{"0":{"value":"0","libelle":"en Mairie"},"1":{"value":"1","libelle":"par le bouche-à-oreille"},"2":{"value":"2","libelle":"par l\'école ou le collège"},"3":{"value":"3","libelle":"flyers"},"4":{"value":"4","libelle":"campagne de sensibilisation"}}',
                 'setDisabled' => '0',
-                'setObligatoire' => 'true',
+                'setObligatoire' => true,
                 'setRegles' => '.',
                 'setMessageErreur' => 'Merci d\'indiquer le canal principal par lequel vous nous avez connu',
                 'setOrdre' => '1'
@@ -153,7 +153,7 @@ class LoadQuestionData extends Fixture implements DependentFixtureInterface
                 'setValeurDefaut' => '',
                 'setListeValeur' => '{"0":{"value":"0","libelle":"participant à l’Assemblée Générale"},"1":{"value":"1","libelle":"participant aux réunions du Conseil d’Administration"},"2":{"value":"2","libelle":"participant à un comité de suivi ou un groupe de travail"},"3":{"value":"3","libelle":"en tant que bénévole dans une activité spécifique"},"4":{"value":"4","libelle":"non, car je manque de temps"},"5":{"value":"5","libelle":"non, je ne connaissais pas vraiment les possibilités"}}',
                 'setDisabled' => '0',
-                'setObligatoire' => 'true',
+                'setObligatoire' => true,
                 'setRegles' => '.',
                 'setMessageErreur' => 'Merci d\'indiquer les fonctions que vous avez déjà occupées',
                 'setOrdre' => '2'
@@ -167,7 +167,7 @@ class LoadQuestionData extends Fixture implements DependentFixtureInterface
                 'setValeurDefaut' => 'Vos suggestions peuvent porter sur l\'organisation, le matériel...',
                 'setListeValeur' => '',
                 'setDisabled' => '0',
-                'setObligatoire' => 'true',
+                'setObligatoire' => true,
                 'setRegles' => '.',
                 'setMessageErreur' => 'Merci d\'indiquer les améliorations possibles',
                 'setOrdre' => '3'
@@ -180,7 +180,7 @@ class LoadQuestionData extends Fixture implements DependentFixtureInterface
                 'setValeurDefaut' => '0',
                 'setListeValeur' => '{"0":{"value":"0","libelle":"Natation"},"1":{"value":"1","libelle":"Escrime"},"2":{"value":"2","libelle":"Tennis"},"3":{"value":"3","libelle":"Yoga"},"4":{"value":"4","libelle":"Tournoi d\'échecs"},"5":{"value":"5","libelle":"Balades à poney"}}',
                 'setDisabled' => '0',
-                'setObligatoire' => 'true',
+                'setObligatoire' => true,
                 'setRegles' => '.',
                 'setMessageErreur' => 'Merci d\'indiquer votre vote concernant l\'activité à développer',
                 'setOrdre' => '4'
@@ -192,7 +192,7 @@ class LoadQuestionData extends Fixture implements DependentFixtureInterface
                 'setType' => 'TextType',
                 'setValeurDefaut' => 'Gymnase Bombardier',
                 'setDisabled' => '0',
-                'setObligatoire' => 'false',
+                'setObligatoire' => false,
                 'setRegles' => '.',
                 'setMessageErreur' => 'Merci d\'indiquer votre réponse en lettres',
                 'setOrdre' => '5'

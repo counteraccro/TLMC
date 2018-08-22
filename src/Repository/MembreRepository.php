@@ -158,7 +158,7 @@ class MembreRepository extends ServiceEntityRepository
             ->join('rep.question', 'quest')
             ->join('quest.questionnaire', 'q')
             ->andWhere('q.id = ' . $questionnaire_id)
-            ->orderBy('rep.date', 'ASC')
+            ->orderBy('rep.date', 'DESC')
             ->setMaxResults($max);
 
         if (! empty($search)) {
