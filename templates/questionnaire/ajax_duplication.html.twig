@@ -1,0 +1,87 @@
+<div id="ajax_questionnaire_duplication">
+
+	<div class="modal-header">
+		<h5 class="modal-title">
+			Duplication du questionnaire #
+			{{ questionnaire.id }}
+		</h5>
+		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+	
+	<div class="modal-body">
+		{% if not erreur == '' %}
+			<div class="alert alert-danger">
+				<b>Une erreur est intervenue dans le traitement</b>
+				<p>{{ erreur }}</p>
+			</div>
+		{% endif %}
+		<div class="alert alert-warning">
+			<b><span class="oi oi-warning"></span> Attention</b>
+			<p>La duplication du questionnaire <b>{{ questionnaire.titre }}</b> va imposer certaines règles de gestion qui sont :
+			<ul>
+				<li><b>La duplication</b> des questions suivantes (actives ou non) <b>sans leurs réponses associées</b> :
+					<ul>
+						{% for question in questionnaire.questions %}
+							<li><i>{{ question.libelle }}</i></li>
+						{% endfor %}
+					</ul>
+				</li>
+				{% if(questionnaire.publication) %}
+					<li>Le questionnaire dupliqué sera par défaut <b>"non-publié"</b></li>
+				{% endif %}
+				{% if(questionnaire.disabled) %}
+					<li>Le questionnaire dupliqué <b>restera désactivé</b> par défaut</li>
+				{% endif %}
+				<li>Toutes <b>les dates</b> seront <b>dupliquées à l'identique</b></li>
+			</ul>
+			
+			
+		</div>
+		
+		<div>
+    		<b>Informations à compléter avant la duplication :</b>
+    		<hr>
+    		
+    		<div id="slug_text"></div>
+    		
+    		<form id="form-duplication">
+      			<div class="form-group">
+        			<label for="duplication-titre">Titre du questionnaire dupliqué :</label>
+        			<input type="text" name="questionnaire[titre]" class="form-control" id="duplication-titre" placeholder="Copie de {{ questionnaire.titre }}">
+        			<div class="invalid-feedback">
+        				Merci de saisir un titre pour lancer la duplication
+      				</div>
+        			<input type="hidden" name="questionnaire[slug]" class="form-control" id="duplication-hidden-titre">
+     			</div>
+    		</form>
+		</div>
+	</div>
+	
+	<div class="modal-footer">
+		{% if erreur == '' %}
+			<a href="#" class="btn btn-success" id="duplicate-yes"><span class="oi oi-check"></span> Confirmer</a>
+		{% endif %}
+		<a href="#" class="btn btn-secondary" id="duplicate-no"><span class="oi oi-x"></span> Annuler</a>
+	</div>
+</div>
+
+{% block javascripts %}
+<script type="text/javascript">
+    
+    $('#modal_questionnaire_global').modal({
+    	   'show' : true,
+    	   'backdrop' : 'static'
+    });
+
+    $('#duplicate-no').click(function() {
+    	$('#modal_questionnaire_global').modal('toggle');
+    })
+    
+    var url = '{{path('questionnaire_ajax_duplication_validation', {'id': questionnaire.id, 'val' : 1 })}}';
+    Questionnaire.EventConfirmationDuplication(url, '#duplicate-yes');
+    Questionnaire.EventOnTitle('#duplication-titre', '#duplication-hidden-titre', '#slug_text');
+	
+    </script>
+{% endblock %}

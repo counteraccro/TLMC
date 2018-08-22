@@ -132,23 +132,107 @@ Questionnaire.Launch = function(params) {
 	}
 
 	/**
+	 * Evenement à la duplication
+	 */
+	Questionnaire.EventDuplication = function(id)
+	{
+		// Event sur le bouton dupliquer d'un questionnaire
+		$(id).click(function() {
+
+			$(Questionnaire.id_container_global).showLoading();
+			
+			$.ajax({
+				method: 'GET',
+				url: $(this).attr('href'),
+			})
+			.done(function( reponse ) {
+				if(reponse.statut === true)
+				{
+					Questionnaire.Ajax(Questionnaire.url_ajax_see, Questionnaire.id_global);
+				}
+				else
+				{
+					$(Questionnaire.id_content_modal).html(reponse)
+					$(Questionnaire.id_container_global).hideLoading();
+				}
+					});
+
+			return false;
+		});
+	}
+
+	/**
+	 * Evenement à la confirmation de la duplication du questionnaire
+	 * loader + fermeture modal
+	 */
+	Questionnaire.EventConfirmationDuplication = function(url, id)
+	{
+		$(id).click(function() 
+		{
+			$('#duplication-titre').removeClass('is-invalid');
+			if($('#duplication-titre').val() == '')
+		    {
+				$('#duplication-titre').addClass('is-invalid');
+				return false
+		    }
+			
+			
+			$('#ajax_questionnaire_duplication').showLoading();
+			$(id).prop('disabled', true).html('loading...');
+			event.preventDefault();
+
+			$.ajax({
+				method: 'POST',
+				data : $('#form-duplication').serialize(),
+				url: url,
+			})
+			.done(function( reponse ) {
+
+				$('#ajax_questionnaire_duplication').hideLoading();
+
+				if(reponse.statut === true)
+				{
+					$(Questionnaire.id_modal).modal('hide');
+					Questionnaire.Ajax(Questionnaire.url_ajax_see, Questionnaire.id_global);
+				}
+				else
+				{
+					$(ajax_questionnaire_duplication).html(reponse);
+				}
+			});
+				});
+	}
+
+	/**
 	 *  Event au changement du titre d'un questionnaire
 	 *  Slugification du titre
 	 */
 	Questionnaire.EventOnTitle = function(id_title, id_slug, id_slug_text)
 	{
-		$(id_title).change(function() {
-			Questionnaire.Slug(id_title, id_slug, id_slug_text)
+		$(id_title).keyup(function() {
+			Questionnaire.Slug($(this), id_slug, id_slug_text)
 		});
 	}
 
 	/**
 	 * Génération du slug (url au format exemple : "questionnaire-de-satisfaction-soiree-evenement")
 	 */
-	Questionnaire.Slug = function(id_title, id_slug, id_slug_text)
+	Questionnaire.Slug = function(_this, id_slug, id_slug_text)
 	{
 		//Récupération de la valeur saisie pour le slug	
-		var textToSlug = $(id_title).val();
+		var textToSlug = _this.val();
+		if(textToSlug == '')
+	    {
+			var attr = _this.attr("placeholder");
+			if (typeof attr !== typeof undefined && attr !== false)
+		    {
+				textToSlug = attr;
+		    }
+			else {
+				textToSlug = 'titre-a-saisir';
+			}
+			
+	    }
 
 		//Gestion des accents (exporter dans AppController ?)
 		String.prototype.sansAccent = function(){
@@ -175,7 +259,7 @@ Questionnaire.Launch = function(params) {
 
 		//Renvoi des élements en slug dans les champs
 		$(id_slug).val(sluggedText);
-		$(id_slug_text).html('<div class="d-inline p-2 bg-dark text-white">URL public du questionnaire : http://[URL-A-MODIFIER]/' + sluggedText + '</div>');
+		$(id_slug_text).html('<div class="d-inline p-2 bg-dark text-white">URL public du questionnaire : http://' + window.location.host + '/questionnaire/' + sluggedText + '</div>');
 
 		return false;
 	}
@@ -218,10 +302,10 @@ Questionnaire.Launch = function(params) {
 	Questionnaire.EventDisabled = function(id)
 	{
 		$(id).click(function(event) 
-		{	
+				{	
 			$(Questionnaire.id_global).showLoading();	
 			event.preventDefault();
-			
+
 			$.ajax({
 				method: 'GET',
 				url: $(this).attr('href'),
@@ -239,6 +323,6 @@ Questionnaire.Launch = function(params) {
 					alert('Une erreur est survenue');
 				}
 			});
-		});
+				});
 	}
 }

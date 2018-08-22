@@ -14,11 +14,8 @@
             		  {{ edit(questionnaire, path('questionnaire_ajax_edit', {'id': questionnaire.id })) | raw }}
             		  {{ disabled(questionnaire, path('questionnaire_delete', {'id': questionnaire.id, 'page' : 1 })) | raw }}
             		  {{ test(questionnaire, path('questionnaire_demo', {'slug': questionnaire.slug })) | raw }}
-            		  
-            		                                    		  
-            		  {# ROUTES A MODIFIER QUAND ELLES SERONT CREEES #}
             		  {{ publish(questionnaire, path('questionnaire_ajax_publication', {'id': questionnaire.id })) | raw }}
-            		  {{ duplicate(questionnaire, path('questionnaire_ajax_edit', {'id': questionnaire.id })) | raw }}
+            		  {{ duplicate(questionnaire, path('questionnaire_ajax_duplication', {'id': questionnaire.id })) | raw }}
             		  {% endif %}
             	</div>
             </div>
@@ -65,7 +62,6 @@
                             <input type="radio" name="options" id="xml-nodata" autocomplete="off"> Format XML sans données
                           </label>
                         </div>
-               			
                		</div>
            		</div>
           	</div>
@@ -80,6 +76,9 @@
 	{% block javascripts %}
     <script type="text/javascript">
 
+    var id_btn_questionnaire_duplication = '#ajax_questionnaire_see #btn-duplicate-questionnaire';
+    Questionnaire.EventDuplication(id_btn_questionnaire_duplication);
+    
     var id_btn_questionnaire_publication = '#ajax_questionnaire_see #btn-publish-questionnaire';
     Questionnaire.EventPublication(id_btn_questionnaire_publication);
     

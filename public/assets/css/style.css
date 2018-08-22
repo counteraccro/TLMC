@@ -649,3 +649,23 @@ footer h6, footer p {
 * Fin page templates/questionnaire/stats.html.twig
 *
 ********************************************/
+
+/********************************************
+*
+* page templates/questionnaire/ajax_duplication.html.twig
+*
+********************************************/
+
+#ajax_questionnaire_duplication hr {
+	margin-top: 0px;
+}
+
+#ajax_questionnaire_duplication #slug_text {
+	margin-bottom: 10px;
+}
+
+/********************************************
+*
+* Fin Page templates/questionnaire/ajax_duplication.html.twig
+*
+********************************************/

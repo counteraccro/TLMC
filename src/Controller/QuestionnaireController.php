@@ -569,9 +569,9 @@ class QuestionnaireController extends AppController
 
             // Dans le cas d'un XML-nodata
         } else if ($type_export == 'xml-nodata') {
-            
+
             $fileName .= '-no-data';
-            
+
             $attributes = array(
                 'id',
                 'titre',
@@ -611,5 +611,39 @@ class QuestionnaireController extends AppController
 
             return $exportManager->generateXML($fileName, $questionnaire, $attributes, $arrayCallback);
         }
+    }
+
+    /**
+     * Duplication questionnaire
+     *
+     * @Route("/questionnaire/ajax/duplication/{id}", name="questionnaire_ajax_duplication")
+     * @Route("/questionnaire/ajax/duplication/validation/{id}/{val}", name="questionnaire_ajax_duplication_validation")
+     * @ParamConverter("questionnaire", options={"mapping": {"id": "id"}})
+     * @Security("is_granted('ROLE_ADMIN')")
+     */
+    public function duplicationAction(Request $request, Questionnaire $questionnaire, $val = '')
+    {
+        $questionnaire2 = new Questionnaire();
+        // Cas confirmation depuis la popin
+        if ($val == 1 &&  $request->isXmlHttpRequest() === true) {
+                      
+            // action duplication
+            foreach ($questionnaire->getQuestions() as $question) {
+                // récupérer questions de Q1 dans Q2
+                // $questionnaire2->addQuestion($question);
+                // $entityManager = $this->getDoctrine()->getManager();
+                // $entityManager->persist($questionnaire2);
+                // $entityManager->flush();
+            }
+            return $this->render('questionnaire/ajax_duplication.html.twig', [
+                'questionnaire' => $questionnaire,
+                'erreur' => 'oki'
+            ]);
+        }
+        
+        return $this->render('questionnaire/ajax_duplication.html.twig', [
+            'questionnaire' => $questionnaire,
+            'erreur' => '',
+        ]);
     }
 }

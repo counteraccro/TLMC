@@ -75,6 +75,7 @@ encoding//templates/produit_specialite/ajax_see.html.twig=UTF-8
 encoding//templates/produit_specialite/index.html.twig=UTF-8
 encoding//templates/question/ajax_edit.html.twig=UTF-8
 encoding//templates/questionnaire/add.html.twig=UTF-8
+encoding//templates/questionnaire/ajax_duplication.html.twig=UTF-8
 encoding//templates/questionnaire/ajax_edit.html.twig=UTF-8
 encoding//templates/questionnaire/ajax_publication.html.twig=UTF-8
 encoding//templates/questionnaire/ajax_see.html.twig=UTF-8
