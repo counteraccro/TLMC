@@ -19,7 +19,7 @@
 	{{ form_row(form.tranche_age) }}
 	{{ form_row(form.quantite) }}
 	{{ form_row(form.date_envoi) }}
-	{#{ form_row(form.image) }#}
+	{{ form_row(form.image) }}
     
     {{ form_rest(form) }}
     {{ form_errors(form) }}
@@ -27,4 +27,18 @@
     
 </div>
 	  
+{% endblock %}
+
+{% block javascripts %}
+
+    <script type="text/javascript">
+    
+    $(document).ready(function() {
+        $('#produit_image').change(function() {
+    		var file = $(this)[0].files[0].name;
+    		$('.custom-file label[for="'+ $(this).attr('id') +'"]').html(file);
+    	});
+    });
+    </script> 
+
 {% endblock %}

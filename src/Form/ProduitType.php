@@ -49,7 +49,7 @@ class ProduitType extends AbstractType
             'years' => range(date('Y'), date('Y') + 2)
         ));
 
-        if ($options['add']) {
+        if (! $options['ajax']) {
             $builder->add('image', FileType::class, array(
                 'label' => 'Image',
                 'data_class' => null,
@@ -57,8 +57,11 @@ class ProduitType extends AbstractType
                 'attr' => array(
                     'placeholder' => 'Choisir une image'
                 )
-            ))
-                ->add('produitEtablissements', CollectionType::class, array(
+            ));
+        }
+
+        if ($options['add']) {
+            $builder->add('produitEtablissements', CollectionType::class, array(
                 'label' => "Etablissements dans lesquels le produit est envoyé",
                 'label_attr' => array(
                     'id' => 'label_collection_type'
@@ -71,8 +74,7 @@ class ProduitType extends AbstractType
                 ),
                 'allow_add' => true,
                 'auto_initialize' => true
-            ))
-                ->add('produitSpecialites', CollectionType::class, array(
+            ))->add('produitSpecialites', CollectionType::class, array(
                 'label' => "Spécialités dans lesquelles le produit est envoyé",
                 'label_attr' => array(
                     'id' => 'label_collection_type'
@@ -97,13 +99,14 @@ class ProduitType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
+        $resolver->setDefaults(array(
             'data_class' => Produit::class,
             'label_submit' => 'Valider',
             'genre' => ProduitController::GENRE,
             'type' => ProduitController::TYPE,
             'trancheAge' => AppController::TRANCHE_AGE,
-            'add' => false
-        ]);
+            'add' => false,
+            'ajax' => false
+        ));
     }
 }
