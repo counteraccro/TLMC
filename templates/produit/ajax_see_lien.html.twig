@@ -19,13 +19,8 @@
        	    {% for connexion in connexions %}
                 {% for lien in connexion %}	
                		<tr>
-           		        {% if lien.specialite %}
-           					<td>{% if loop.index0 == 0 %}{{ lien.etablissement }}{% endif %}</td>
-           					<td>{{ lien.specialite }}</td>
-           		        {% else %}
-           					<td>{{ lien.etablissement }}</td>
-           					<td></td>
-           		        {% endif %}
+           		        <td>{% if loop.index0 == 0 %}{{ lien.etablissement }}{% endif %}</td>
+           				<td>{{ lien.specialite }}</td>
            				<td>{{ lien.quantite }}</td>
            				<td>{{ lien.date | date('d/m/Y H:i') }}</td>
            				<td>

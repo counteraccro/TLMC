@@ -17,7 +17,7 @@ class LoadFamilleData extends Fixture implements DependentFixtureInterface
             'Famille-1' => [
                 'setNom' => 'Dupont',
                 'setPrenom' => 'Jean-Henri',
-                'setLienFamille' => 0,
+                'setLienFamille' => 1,
                 'setEmail' => 'jh.dupont@gmail.com',
                 'setPmr' => false,
                 'setNumeroTel' => '0146598756',

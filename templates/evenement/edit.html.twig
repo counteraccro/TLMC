@@ -9,7 +9,8 @@
 {% include 'elements/arborescence.html.twig' %}
 
 <div>
-{{ form_start(form) }}
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
     
 	{{ form_row(form.nom) }}
 	{{ form_row(form.type) }}
@@ -34,7 +35,6 @@
 	{{ form_row(form.image) }}
     
     {{ form_rest(form) }}
-    {{ form_errors(form) }}
     {{ form_end(form) }}
     
 </div>
@@ -46,9 +46,7 @@
     <script type="text/javascript">
     
     $(document).ready(function() {
-    	$('.custom-file label[for="evenement_image"]').html('{{ evenement.image }}');
-
-    	$('#evenement_image').change(function() {
+        $('#evenement_image').change(function() {
     		var file = $(this)[0].files[0].name;
     		$('.custom-file label[for="'+ $(this).attr('id') +'"]').html(file);
     	});

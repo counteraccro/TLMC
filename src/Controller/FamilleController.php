@@ -41,7 +41,7 @@ class FamilleController extends AppController
         }
 
         $can_add = true;
-        
+
         $params = array(
             'field' => $field,
             'order' => $order,
@@ -66,7 +66,7 @@ class FamilleController extends AppController
                     'newrepository' => 'patient'
                 )
             );
-            
+
             $can_add = (! is_null($membre->getSpecialite()) ? true : false);
         }
 
@@ -99,32 +99,22 @@ class FamilleController extends AppController
     /**
      * Bloc famille d'un patient
      *
-     * @Route("/famille/ajax/see/{id}/{page}/{field}/{order}", name="famille_ajax_see")
+     * @Route("/famille/ajax/see/{id}/{page}", name="famille_ajax_see")
      * @ParamConverter("patient", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      *
      * @param Patient $patient
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function ajaxSeeAction(Patient $patient, Request $request, SessionInterface $session, int $page = 1, $field = null, $order = null)
+    public function ajaxSeeAction(Patient $patient, Request $request, SessionInterface $session, int $page = 1)
     {
-        // $familles = $this->getElementsLiesActifs($patient, 'getFamilles');
-        if (is_null($field)) {
-            $field = 'prenom';
-        }
-
-        if (is_null($order)) {
-            $order = 'ASC';
-        }
-
         $params = array(
-            'field' => $field,
-            'order' => $order,
+            'field' => 'nom ASC, Famille.prenom',
+            'order' => 'ASC',
             'page' => $page,
             'repositoryClass' => Famille::class,
             'repository' => 'Famille',
             'repositoryMethode' => 'findAllFamilles',
-            'ajax' => true
         );
 
         $params['condition'] = array(
@@ -134,8 +124,9 @@ class FamilleController extends AppController
         if (! $this->isAdmin()) {
             $params['condition'][] = $params['repository'] . 'disabled = 0';
         }
-
-        $result = $this->genericSearch($request, $session, $params);
+        
+        $repository = $this->getDoctrine()->getRepository($params['repositoryClass']);
+        $result = $repository->{$params['repositoryMethode']}($params['page'], self::MAX_NB_RESULT_AJAX, $params);
 
         $pagination = array(
             'page' => $page,
@@ -147,11 +138,8 @@ class FamilleController extends AppController
             )
         );
 
-        $this->setDatasFilter($session, $field, $order);
-
         return $this->render('famille/ajax_see.html.twig', array(
             'patient' => $patient,
-            // 'familles' => $familles,
             'familles' => $result['paginator'],
             'pagination' => $pagination
         ));

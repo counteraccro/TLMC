@@ -69,14 +69,20 @@ class EvenementType extends AbstractType
             'widget' => 'choice',
             'date_format' => 'dd MM yyyy',
             'years' => range(date('Y'), date('Y') + 2)
-            ))->add('image', FileType::class, array(
+        ));
+
+        if (! $options['ajax']) {
+            $builder->add('image', FileType::class, array(
                 'label' => 'Image',
                 'data_class' => null,
                 'required' => false,
+                'help' => ($options['add'] ? '' : 'Ne pas remplir si vous souhaitez conserver la même image'),
                 'attr' => array(
                     'placeholder' => 'Choisir une image'
                 )
             ));
+        }
+        
         if ($options['add']) {
             $builder->add('specialite_evenements', CollectionType::class, array(
                 'label' => "Spécialités auxquelles l'événement est proposé",
@@ -112,7 +118,8 @@ class EvenementType extends AbstractType
             'statut' => EvenementController::STATUT,
             'type' => EvenementController::TYPE,
             'trancheAge' => AppController::TRANCHE_AGE,
-            'query_specialite' => null
+            'query_specialite' => null,
+            'ajax' => false
         ));
     }
 }

@@ -55,7 +55,7 @@ class Evenement
     private $type;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $image;
 
@@ -120,6 +120,7 @@ class Evenement
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\ExtensionFormulaire", mappedBy="evenement")
+     * @ORM\OrderBy({"ordre" = "ASC"})
      */
     private $extensionFormulaires;
 
@@ -226,18 +227,6 @@ class Evenement
     public function setType(int $type): self
     {
         $this->type = $type;
-
-        return $this;
-    }
-
-    public function getImage(): ?string
-    {
-        return $this->image;
-    }
-
-    public function setImage(string $image): self
-    {
-        $this->image = $image;
 
         return $this;
     }
@@ -544,6 +533,18 @@ class Evenement
                 $historique->setEvenement(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
 
         return $this;
     }

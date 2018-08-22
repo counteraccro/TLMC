@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Form\ProduitType;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ProduitController extends AppController
 {
@@ -70,7 +71,7 @@ class ProduitController extends AppController
             $params['condition'] = array(
                 $params['repository'] . '.disabled = 0'
             );
-            
+
             if ($this->getMembre()->getSpecialite()) {
                 $params['jointure'] = array(
                     array(
@@ -78,7 +79,9 @@ class ProduitController extends AppController
                         'newrepository' => 'produitSpecialites'
                     )
                 );
-                $params['condition'][] = 'produitSpecialites.specialite = ' . $this->getMembre()->getSpecialite()->getId();
+                $params['condition'][] = 'produitSpecialites.specialite = ' . $this->getMembre()
+                    ->getSpecialite()
+                    ->getId();
             } else {
                 $params['jointure'] = array(
                     array(
@@ -86,9 +89,10 @@ class ProduitController extends AppController
                         'newrepository' => 'produitEtablissements'
                     )
                 );
-                $params['condition'][] = 'produitEtablissements.etablissement = ' . $this->getMembre()->getEtablissement()->getId();
+                $params['condition'][] = 'produitEtablissements.etablissement = ' . $this->getMembre()
+                    ->getEtablissement()
+                    ->getId();
             }
-            
         }
 
         $result = $this->genericSearch($request, $session, $params);
@@ -133,7 +137,7 @@ class ProduitController extends AppController
     public function seeAction(Request $request, SessionInterface $session, Produit $produit, int $page = 1)
     {
         $arrayFilters = $this->getDatasFilter($session);
-        
+
         // Si appel Ajax, on renvoi sur la page ajax
         if ($request->isXmlHttpRequest()) {
 
@@ -185,41 +189,49 @@ class ProduitController extends AppController
 
         // vérification que la quantité de produit est supérieur à la somme des quantités de produit dans les différentes spécialités
         if ($form->isSubmitted()) {
-            $quantite = 0;
+            $quantiteS = 0;
+            $quantiteE = 0;
             foreach ($produit->getProduitSpecialites() as $produitSpecialite) {
-                $quantite += $produitSpecialite->getQuantite();
+                $quantiteS += $produitSpecialite->getQuantite();
             }
-            if ($quantite > $produit->getQuantite()) {
-                $error = new FormError('La somme des quantités des produits envoyés dans les différentes spécialités');
-                $form->addError($error);
-            }
-        }
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $em = $this->getDoctrine()->getManager();
 
             foreach ($produit->getProduitEtablissements() as $produitEtablissement) {
-                $produitEtablissement->setProduit($produit);
+                $quantiteE += $produitEtablissement->getQuantite();
             }
 
-            foreach ($produit->getProduitSpecialites() as $produitSpecialite) {
-                $produitSpecialite->setProduit($produit);
+            if ($quantiteS > $produit->getQuantite() || $quantiteE > $produit->getQuantite()) {
+                $form->addError(new FormError('La somme des quantités de produits envoyés est supérieure à la quantité de produit'));
             }
 
             $file = $form['image']->getData();
-            $fileName = $this->telechargerImage($file, 'produit', $produit->getTitre());
-            if($fileName) {
-                $produit->setImage($fileName);
+            if (! is_null($file)) {
+                $fileName = $this->telechargerImage($file, 'produit', $produit->getTitre());
+                if ($fileName) {
+                    $produit->setImage($fileName);
+                } else {
+                    $form->addError(new FormError("Le fichier n'est pas au format autorisé (jpg, jpeg,png)."));
+                }
             }
-            
-            $produit->setDateCreation(new \DateTime());
-            $produit->setDisabled(0);
+            if ($form->isValid()) {
 
-            $em->persist($produit);
-            $em->flush();
+                $em = $this->getDoctrine()->getManager();
 
-            return $this->redirect($this->generateUrl('produit_listing'));
+                foreach ($produit->getProduitEtablissements() as $produitEtablissement) {
+                    $produitEtablissement->setProduit($produit);
+                }
+
+                foreach ($produit->getProduitSpecialites() as $produitSpecialite) {
+                    $produitSpecialite->setProduit($produit);
+                }
+
+                $produit->setDateCreation(new \DateTime());
+                $produit->setDisabled(0);
+
+                $em->persist($produit);
+                $em->flush();
+
+                return $this->redirect($this->generateUrl('produit_listing'));
+            }
         }
 
         return $this->render('produit/add.html.twig', array(
@@ -257,27 +269,53 @@ class ProduitController extends AppController
     {
         $arrayFilters = $this->getDatasFilter($session);
 
-        $form = $this->createForm(ProduitType::class, $produit);
+        $image = $produit->getImage();
+
+        $form = $this->createForm(ProduitType::class, $produit, array(
+            'ajax' => ($request->isXmlHttpRequest() ? true : false)
+        ));
 
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
 
-            $em = $this->getDoctrine()->getManager();
-
-            $em->persist($produit);
-            $em->flush();
-
-            if ($request->isXmlHttpRequest()) {
-                return $this->json(array(
-                    'statut' => true
-                ));
+        if ($form->isSubmitted()) {
+            if (! $request->isXmlHttpRequest()) {
+                if (is_null($produit->getImage()) && ! is_null($image)) {
+                    $produit->setImage($image);
+                } else {
+                    $file = $request->files->get('produit')['image'];
+                    $fileName = $this->telechargerImage($file, 'produit', $produit->getTitre(), $image);
+                    if ($fileName) {
+                        $produit->setImage($fileName);
+                    } else {
+                        $error = new FormError("Le fichier n'est pas au format autorisé (jpg, jpeg,png).");
+                        $form->addError($error);
+                    }
+                }
             }
 
-            return $this->redirect($this->generateUrl('produit_listing', array(
-                'page' => $page,
-                'field' => $arrayFilters['field'],
-                'order' => $arrayFilters['order']
-            )));
+            if ($form->isValid()) {
+
+                $em = $this->getDoctrine()->getManager();
+
+                $tranche_age = $request->request->get('produit')['tranche_age'];
+                asort($tranche_age);
+                $produit->setTrancheAge($tranche_age);
+
+                $em->persist($produit);
+                $em->flush();
+
+                if ($request->isXmlHttpRequest()) {
+                    return $this->json(array(
+                        'statut' => true
+                    ));
+                }
+
+                return $this->redirect($this->generateUrl('produit_listing', array(
+                    'page' => $page,
+                    'field' => $arrayFilters['field'],
+                    'order' => $arrayFilters['order']
+                )));
+            }
         }
 
         // Si appel Ajax, on renvoi sur la page ajax
@@ -341,27 +379,26 @@ class ProduitController extends AppController
             'order' => $arrayFilters['order']
         ));
     }
+
     /**
      * Edition d'un produit
      *
      * @Route("/produit/lien/ajax/see/{id}", name="produit_lien_ajax_see")
      * @ParamConverter("produit", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
-     * 
+     *
      * @param Request $request
      * @param Produit $produit
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    
     public function seeLienAction(Request $request, Produit $produit)
     {
         $repository = $this->getDoctrine()->getRepository(Produit::class);
         $connexions = $repository->findEtablissementAndSpecialite($produit->getId());
-        //$this->pre($connexions);die();
-        
+
         // Si appel Ajax, on renvoi sur la page ajax
         if ($request->isXmlHttpRequest()) {
-            
+
             return $this->render('produit/ajax_see_lien.html.twig', array(
                 'produit' => $produit,
                 'connexions' => $connexions

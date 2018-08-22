@@ -49,8 +49,8 @@
         			<td>
         				{{ produit.titre }}
         			</td>
-        			<td>{{ produit.texte }}</td>
-        			<td>
+        			<td width="30%">{{ produit.texte }}</td>
+        			<td width="90px">
         				{% for tranche in produit.trancheAge %}
         			        {{ tranche | trancheAge }}<br />
         			    {% endfor %}

@@ -12,9 +12,7 @@
     	<table class="table table-sm table-striped">
      		<tr>
      			{% if type == 'evenement' %}
-           			{% if is_granted('ROLE_ADMIN') %}
-        	   			<th> Etablissement </th>
-               		{% endif %}
+        	   		<th> Etablissement </th>
                		<th> Spécialité </th>
                	{% elseif type == 'specialite' %}
                		<th> Evénement </th>
@@ -23,23 +21,27 @@
            		<th> Statut </th>
            		<th></th>
            	</tr>
-           	{% for specialiteEvenement in objet.specialiteEvenements %}
-               	<tr>
-                   	{% if type == 'evenement' %}
-               			{% if is_granted('ROLE_ADMIN') %}
-            	   			<td> {{ specialiteEvenement.specialite.etablissement.nom }} </td>
-                   		{% endif %}
-                   		<td> {{ specialiteEvenement.specialite.service }} </td>
-                   	{% elseif type == 'specialite' %}
-                   		<td> {{ specialiteEvenement.evenement.nom }} </td>
-               		{% endif %}
-               		<td> {{ specialiteEvenement.date | date('d/m/Y H:i')}} </td>
-               		<td> {{ specialiteEvenement.statut | statutSpeEvent }} </td>
-              		<td>
-              			<a href="{{ path('specialite_evenement_ajax_edit', {'id' : specialiteEvenement.id, 'type':type}) }}" id="btn-edit-specialite-event-{{ specialiteEvenement.id }}"  title="Editer la fiche"><span class="oi oi-pencil"></span></a>
-                	</td>
-            	</tr>
-          	{% endfor %}
+           	
+               	{% for connexion in connexions %}
+                    {% for lien in connexion %}	
+                   		<tr>
+                   		    {% if type == 'evenement' %}
+               		            <td>{% if loop.index0 == 0 %}{{ lien.etablissement }}{% endif %}</td>
+               					<td>{{ lien.specialite }}</td>
+               		       	{% elseif type =='specialite' %}
+               		       		<td> {{ lien.evenement }} </td>
+               		       	{% endif %}
+               				<td>{{ lien.statut | statutSpeEvent }}</td>
+               				<td>{{ lien.date | date('d/m/Y H:i') }}</td>
+               				<td>
+               				    {% if is_granted("ROLE_ADMIN") %}
+                                	<a href="{{ path('specialite_evenement_ajax_edit', {'id' : lien.id, 'type': type}) }}" id="btn-edit-specialite-event-{{ lien.id }}" title="Editer la fiche"><span class="oi oi-pencil"></span></a>
+                            	{% endif %}
+                        	</td>
+               			</tr>
+           		    {% endfor %}
+           	    {% endfor %}
+       	    
         </table>
         
         {% if objet.specialiteEvenements is empty %}
@@ -59,12 +61,13 @@
             SpecialiteEvenement.EventAdd(id_btn_add);
 
 			//on associe une action pour chaque bouton edit ou delete
-            {% for specialiteEvenement in objet.specialiteEvenements %}
-            	var id_btn_edit_{{ specialiteEvenement.id }} = '#btn-edit-specialite-event-' + {{ specialiteEvenement.id }};
-            	SpecialiteEvenement.EventEdit(id_btn_edit_{{ specialiteEvenement.id }});
-    		    
-            {% endfor %}
-            
+
+                {% for connexion in connexions %}
+        	        {% for lien in connexion %}
+        	        SpecialiteEvenement.EventEdit('#btn-edit-specialite-event-' + {{ lien.id }});
+        	       	{% endfor %}
+                {% endfor %}
+			
         </script>
     {% endblock %}
     

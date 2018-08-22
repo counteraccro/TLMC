@@ -34,7 +34,7 @@
                     		<td>{{ historique.membre.prenom }} {{ historique.membre.nom }} </td>
                     	{% endif %}
                     	{% if type != 'specialite' %}
-                        	<td>{{ historique.specialite.service }}</td>
+                        	<td>{{ historique.specialite.service }} ({{ historique.specialite.etablissement.nom }})</td>
                         {% endif %}
                         {% if type != 'evenement' %}
                         	<td>{{ historique.evenement.nom }}</td>

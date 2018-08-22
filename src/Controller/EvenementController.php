@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Form\EvenementType;
 use App\Entity\Specialite;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Form\FormError;
 
 class EvenementController extends AppController
 {
@@ -189,26 +190,32 @@ class EvenementController extends AppController
         ));
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $em = $this->getDoctrine()->getManager();
-
-            foreach ($evenement->getSpecialiteEvenements() as $specialiteEvenement) {
-                $specialiteEvenement->setEvenement($evenement);
-            }
+        if ($form->isSubmitted()) {
 
             $file = $form['image']->getData();
-            $fileName = $this->telechargerImage($file, 'evenement', $evenement->getNom());
-            if ($fileName) {
-                $evenement->setImage($fileName);
+            if (! is_null($file)) {
+                $fileName = $this->telechargerImage($file, 'evenement', $evenement->getTitre());
+                if ($fileName) {
+                    $evenement->setImage($fileName);
+                } else {
+                    $form->addError(new FormError("Le fichier n'est pas au format autorisé (jpg, jpeg,png)."));
+                }
             }
 
-            $evenement->setDisabled(0);
+            if ($form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
 
-            $em->persist($evenement);
-            $em->flush();
+                foreach ($evenement->getSpecialiteEvenements() as $specialiteEvenement) {
+                    $specialiteEvenement->setEvenement($evenement);
+                }
 
-            return $this->redirect($this->generateUrl('evenement_listing'));
+                $evenement->setDisabled(0);
+
+                $em->persist($evenement);
+                $em->flush();
+
+                return $this->redirect($this->generateUrl('evenement_listing'));
+            }
         }
 
         return $this->render('evenement/add.html.twig', array(
@@ -246,51 +253,51 @@ class EvenementController extends AppController
     {
         $arrayFilters = $this->getDatasFilter($session);
         $image = $evenement->getImage();
-        $default_image = $this->getParameter('pictures_directory') . '/logo-association-tlmc.png';
-        
-        $form = $this->createForm(EvenementType::class, $evenement);
 
-        if (is_null($request->files->get('evenement')['image'])) {
-            $request->files->set('evenement', array(
-                'image' => new UploadedFile($default_image, 'image')
-            ));
-        }
+        $form = $this->createForm(EvenementType::class, $evenement, array(
+            'ajax' => ($request->isXmlHttpRequest() ? true : false)
+        ));
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $em = $this->getDoctrine()->getManager();
-
-            /*$file = $form['image']->getData();
-
-            if ($evenement->getImage() == $default_image) {
-                $evenement->setImage($image);
-                $this->pre($evenement->getImage());
-            } else {
-                $fileName = $this->telechargerImage($file, 'evenement', $evenement->getNom(), $image);
-                if ($fileName) {
-                    $evenement->setImage($fileName);
+        if ($form->isSubmitted()) {
+            if (! $request->isXmlHttpRequest()) {
+                if (is_null($evenement->getImage()) && ! is_null($image)) {
+                    $evenement->setImage($image);
                 } else {
-                    echo "ERREUR";
-                    die();
+                    $file = $request->files->get('evenement')['image'];
+                    $fileName = $this->telechargerImage($file, 'evenement', $evenement->getNom(), $image);
+                    if ($fileName) {
+                        $evenement->setImage($fileName);
+                    } else {
+                        $form->addError(new FormError("Le fichier n'est pas au format autorisé (jpg, jpeg,png)."));
+                    }
                 }
-            }*/
-
-            $em->persist($evenement);
-            $em->flush();
-
-            if ($request->isXmlHttpRequest()) {
-                return $this->json(array(
-                    'statut' => true
-                ));
             }
 
-            return $this->redirect($this->generateUrl('evenement_listing', array(
-                'page' => $page,
-                'field' => $arrayFilters['field'],
-                'order' => $arrayFilters['order']
-            )));
+            if ($form->isValid()) {
+
+                $em = $this->getDoctrine()->getManager();
+
+                $tranche_age = $request->request->get('evenement')['tranche_age'];
+                asort($tranche_age);
+                $evenement->setTrancheAge($tranche_age);
+
+                $em->persist($evenement);
+                $em->flush();
+
+                if ($request->isXmlHttpRequest()) {
+                    return $this->json(array(
+                        'statut' => true
+                    ));
+                }
+
+                return $this->redirect($this->generateUrl('evenement_listing', array(
+                    'page' => $page,
+                    'field' => $arrayFilters['field'],
+                    'order' => $arrayFilters['order']
+                )));
+            }
         }
 
         // Si appel Ajax, on renvoi sur la page ajax
