@@ -120,6 +120,7 @@ class Evenement
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\ExtensionFormulaire", mappedBy="evenement")
+     * @ORM\OrderBy({"ordre" = "ASC"})
      */
     private $extensionFormulaires;
 

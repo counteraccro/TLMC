@@ -27,9 +27,9 @@ class LoadExtensionFormulaireData extends Fixture implements DependentFixtureInt
                 'setType' => 'input',
                 'setValeurDefaut' => 'Joji123',
                 'setListeValeur' => '{"coucou","c\'est","moi"}',
-                'setObligatoire' => '1',
-                'setDisabled' => '1',
-                'setOrdre' => '1',
+                'setObligatoire' => true,
+                'setDisabled' => 1,
+                'setOrdre' => 1,
                 'setRegles' => '{"voila"}'
             ],
             'ExtensionFormulaire-2' => [
@@ -39,9 +39,9 @@ class LoadExtensionFormulaireData extends Fixture implements DependentFixtureInt
                 'setType' => 'Textarea',
                 'setValeurDefaut' => '2',
                 'setListeValeur' => 'Paris',
-                'setObligatoire' => '0',
-                'setDisabled' => '0',
-                'setOrdre' => '2',
+                'setObligatoire' => false,
+                'setDisabled' => 0,
+                'setOrdre' => 1,
                 'setRegles' => '{"voici"}'
             ]
         ]

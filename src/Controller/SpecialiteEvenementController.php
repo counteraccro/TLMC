@@ -5,10 +5,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use App\Entity\Evenement;
+use App\Entity\Specialite;
 use App\Entity\SpecialiteEvenement;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\SpecialiteEvenementType;
-use App\Entity\Specialite;
 
 class SpecialiteEvenementController extends AppController
 {
@@ -46,12 +46,17 @@ class SpecialiteEvenementController extends AppController
      */
     public function ajaxSeeAction(int $id, string $type)
     {
+        $repositorySE = $this->getDoctrine()->getRepository(SpecialiteEvenement::class);
+        $connexions = array();
+        
         switch($type){
             case 'evenement':
                 $repository = $this->getDoctrine()->getRepository(Evenement::class);
+                $connexions = $repositorySE->getSpecialites($id);
                 break;
             case 'specialite':
                 $repository = $this->getDoctrine()->getRepository(Specialite::class);
+                $connexions = $repositorySE->getEvenements($id);
                 break;
         }
         
@@ -60,6 +65,7 @@ class SpecialiteEvenementController extends AppController
         
         return $this->render('specialite_evenement/ajax_see.html.twig', array(
             'objet' => $objet,
+            'connexions' => $connexions,
             'type' => $type
         ));
     }

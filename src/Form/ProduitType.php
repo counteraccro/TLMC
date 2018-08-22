@@ -54,6 +54,7 @@ class ProduitType extends AbstractType
                 'label' => 'Image',
                 'data_class' => null,
                 'required' => false,
+                'help' => ($options['add'] ? '' : 'Ne pas remplir si vous souhaitez conserver la même image'),
                 'attr' => array(
                     'placeholder' => 'Choisir une image'
                 )

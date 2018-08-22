@@ -80,6 +80,7 @@ class Produit
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\ExtensionFormulaire", mappedBy="produit")
+     * @ORM\OrderBy({"ordre" = "ASC"})
      */
     private $extensionFormulaires;
 
