@@ -461,34 +461,155 @@ class QuestionnaireController extends AppController
     {
         // Provide a name for your file with extension
         $date_export = new \DateTime();
-        $fileName = $questionnaire->getTitre() . '-' . $date_export->format('d-m-Y H:i:s');
-        $content = array();
+        $fileName = 'Questionnaire-' . $questionnaire->getId() . '-' . $questionnaire->getTitre() . '-' . $date_export->format('d-m-Y H:i:s');
 
-        $repository = $this->getDoctrine()->getRepository(Membre::class);
-        $result = $repository->GetAllMembresReponsesByQuestionnaire($questionnaire->getId(), 1, 1000000000, '');
+        // Dans le cas d'un CSV
+        if ($type_export == 'csv') {
 
-        /* @var Membre $membre */
-        foreach ($result['paginator'] as $membre) {
-            $content[$membre->getId()]['id'] = $membre->getId();
-            $content[$membre->getId()]['nom'] = $membre->getNom();
-            $content[$membre->getId()]['prenom'] = $membre->getPrenom();
+            $content = array();
 
-            /* @var Question $question */
-            foreach ($questionnaire->getQuestions() as $question) {
-                foreach ($question->getReponses() as $reponse) {
-                    if ($reponse->getMembre()->getId() == $membre->getId()) {
-                        $content[$membre->getId()][$question->getLibelle()] = $reponse->getValeur();
+            $repository = $this->getDoctrine()->getRepository(Membre::class);
+            $result = $repository->GetAllMembresReponsesByQuestionnaire($questionnaire->getId(), 1, 1000000000, '');
+
+            /* @var Membre $membre */
+            foreach ($result['paginator'] as $membre) {
+                $content[$membre->getId()]['date'] = '';
+                $content[$membre->getId()]['id'] = $membre->getId();
+                $content[$membre->getId()]['nom'] = $membre->getNom();
+                $content[$membre->getId()]['prénom'] = $membre->getPrenom();
+
+                /* @var Question $question */
+                foreach ($questionnaire->getQuestions() as $question) {
+                    foreach ($question->getReponses() as $reponse) {
+                        if ($reponse->getMembre()->getId() == $membre->getId()) {
+                            $content[$membre->getId()]['date'] = $reponse->getDate()->format('d-m-Y H:i:s');
+
+                            $qKey = 'Q#' . $question->getId() . ' ' . $question->getLibelle();
+
+                            $data_value = json_decode($question->getListeValeur());
+                            $tmp = explode('|', $reponse->getValeur());
+
+                            if (in_array($question->getType(), array(
+                                AppController::CHECKBOXTYPE,
+                                AppController::CHOICETYPE,
+                                AppController::RADIOTYPE
+                            ))) {
+
+                                foreach ($data_value as $val) {
+                                    foreach ($tmp as $tmpVal) {
+                                        if ($tmpVal == $val->value) {
+                                            $content[$membre->getId()]['Q#' . $question->getId() . ' - Valeur'] = $val->value;
+                                            $content[$membre->getId()][$qKey] = $val->libelle;
+                                        }
+                                    }
+                                }
+                            } else {
+                                $content[$membre->getId()][$qKey] = $reponse->getValeur();
+                            }
+                        }
                     }
                 }
             }
+
+            return $exportManager->generateCSV($fileName, $content);
+
+            // Dans le cas d'un XML
+        } else if ($type_export == 'xml') {
+            $attributes = array(
+                'id',
+                'titre',
+                'description',
+                'dateCreation',
+                'dateFin',
+                'jourRelance',
+                'disabled',
+                'slug',
+                'datePublication',
+                'descriptionAfterSubmit',
+                'questions' => array(
+                    'id',
+                    'libelle',
+                    'libelleTop',
+                    'libelleBottom',
+                    'type',
+                    'valeurDefaut',
+                    'listeValeur',
+                    'obligatoire',
+                    'regles',
+                    'messageErreur',
+                    'ordre',
+                    'disabled',
+                    'reponses' => array(
+                        'id',
+                        'valeur',
+                        'date',
+                        'disabled',
+                        'membre' => array(
+                            'id',
+                            'username',
+                            'nom',
+                            'prenom'
+                        )
+                    )
+                )
+            );
+
+            $callback = function ($dateTime) {
+                return $dateTime instanceof \DateTime ? $dateTime->getTimestamp() : '';
+            };
+
+            $arrayCallback = array(
+                'date' => $callback,
+                'dateCreation' => $callback,
+                'dateFin' => $callback,
+                'datePublication' => $callback
+            );
+
+            return $exportManager->generateXML($fileName, $questionnaire, $attributes, $arrayCallback);
+
+            // Dans le cas d'un XML-nodata
+        } else if ($type_export == 'xml-nodata') {
+            
+            $fileName .= '-no-data';
+            
+            $attributes = array(
+                'id',
+                'titre',
+                'description',
+                'dateCreation',
+                'dateFin',
+                'jourRelance',
+                'disabled',
+                'slug',
+                'datePublication',
+                'descriptionAfterSubmit',
+                'questions' => array(
+                    'id',
+                    'libelle',
+                    'libelleTop',
+                    'libelleBottom',
+                    'type',
+                    'valeurDefaut',
+                    'listeValeur',
+                    'obligatoire',
+                    'regles',
+                    'messageErreur',
+                    'ordre',
+                    'disabled'
+                )
+            );
+
+            $callback = function ($dateTime) {
+                return $dateTime instanceof \DateTime ? $dateTime->getTimestamp() : '';
+            };
+
+            $arrayCallback = array(
+                'dateCreation' => $callback,
+                'dateFin' => $callback,
+                'datePublication' => $callback
+            );
+
+            return $exportManager->generateXML($fileName, $questionnaire, $attributes, $arrayCallback);
         }
-        
-//         $statut = '';
-//         if ($statut = 'csv') {
-        return $exportManager->generateCSV($fileName, $content);
-//         }
-//         else if ($statut = 'xml') {
-//             return $exportManager->generateXML($fileName, $content);
-//         }
     }
 }

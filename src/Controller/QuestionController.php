@@ -124,25 +124,6 @@ class QuestionController extends AppController
                 'statut' => 'edit'
             ]);
         }
-
-        /*
-         * return $this->render('question/edit.html.twig', [
-         * 'page' => $page,
-         * 'form' => $form->createView(),
-         * 'question' => $question,
-         * 'paths' => array(
-         * 'home' => $this->indexUrlProject(),
-         * 'urls' => array(
-         * $this->generateUrl('questionnaire_listing', array(
-         * 'page' => $page,
-         * 'field' => $arrayFilters['field'],
-         * 'order' => $arrayFilters['order']
-         * )) => 'Gestion de questions'
-         * ),
-         * 'active' => 'Edition de #' . $question->getId() . ' - ' . $question->getLibelle()
-         * )
-         * ]);
-         */
     }
 
     /**

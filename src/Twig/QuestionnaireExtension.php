@@ -99,7 +99,6 @@ class QuestionnaireExtension extends AbstractExtension
                     $html .= '<div class="alert alert-danger">Le type ' . $question->getType() . ' n\'existe pas</div>';
                     break;
             }
-            //echo ('ici <br/>');
             $html = $this->isObligatoire($question, $html);
         }
 
@@ -413,11 +412,9 @@ class QuestionnaireExtension extends AbstractExtension
      */
     private function isObligatoire(Question $question, $html)
     {
-        if ($question->getObligatoire() === true) {
-            //echo ($question->getLibelle());
+        if ($question->getObligatoire()) {
             return str_replace('%o%', ' <span class="text-danger">*</span>', $html);
         } else {
-            //echo ('la');
             return str_replace('%o%', '', $html);
         }
     }

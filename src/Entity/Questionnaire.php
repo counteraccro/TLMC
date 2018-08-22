@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -8,6 +7,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ *
  * @ORM\Entity(repositoryClass="App\Repository\QuestionnaireRepository")
  * @UniqueEntity(
  *     fields={"slug"},
@@ -17,7 +17,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Questionnaire
 {
+
     /**
+     *
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -25,70 +27,83 @@ class Questionnaire
     private $id;
 
     /**
+     *
      * @ORM\Column(type="string", length=300)
      */
     private $titre;
 
     /**
+     *
      * @ORM\Column(type="text")
      */
     private $description;
 
     /**
+     *
      * @ORM\Column(type="datetime")
      */
     private $date_creation;
 
     /**
+     *
      * @ORM\Column(type="datetime")
      */
     private $date_fin;
 
     /**
+     *
      * @ORM\Column(type="integer")
      */
     private $jour_relance;
 
     /**
+     *
      * @ORM\Column(type="boolean")
      */
     private $disabled;
-    
+
     /**
+     *
      * @ORM\Column(type="string", length=255)
      */
     private $slug;
 
     /**
+     *
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $date_publication;
-    
+
     /**
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $publication;
+
+    /**
+     *
+     * @ORM\Column(type="text")
+     */
+    private $description_after_submit;
+
+    /**
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\Question", mappedBy="questionnaire")
      * @ORM\OrderBy({"ordre" = "ASC"})
      */
     private $questions;
 
     /**
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\ProduitQuestionnaire", mappedBy="questionnaire")
      */
     private $produitQuestionnaires;
 
     /**
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\EvenementQuestionnaire", mappedBy="questionnaire")
      */
     private $evenementQuestionnaires;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $publication;
-
-    /**
-     * @ORM\Column(type="text")
-     */
-    private $description_after_submit;
 
     public function __construct()
     {
@@ -175,37 +190,7 @@ class Questionnaire
     }
 
     /**
-     * @return Collection|Question[]
-     */
-    public function getQuestions(): Collection
-    {
-        return $this->questions;
-    }
-
-    public function addQuestion(Question $question): self
-    {
-        if (!$this->questions->contains($question)) {
-            $this->questions[] = $question;
-            $question->setQuestionnaire($this);
-        }
-
-        return $this;
-    }
-
-    public function removeQuestion(Question $question): self
-    {
-        if ($this->questions->contains($question)) {
-            $this->questions->removeElement($question);
-            // set the owning side to null (unless already changed)
-            if ($question->getQuestionnaire() === $this) {
-                $question->setQuestionnaire(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
+     *
      * @return Collection|ProduitQuestionnaire[]
      */
     public function getProduitQuestionnaires(): Collection
@@ -215,7 +200,7 @@ class Questionnaire
 
     public function addProduitQuestionnaire(ProduitQuestionnaire $produitQuestionnaire): self
     {
-        if (!$this->produitQuestionnaires->contains($produitQuestionnaire)) {
+        if (! $this->produitQuestionnaires->contains($produitQuestionnaire)) {
             $this->produitQuestionnaires[] = $produitQuestionnaire;
             $produitQuestionnaire->setQuestionnaire($this);
         }
@@ -237,6 +222,7 @@ class Questionnaire
     }
 
     /**
+     *
      * @return Collection|EvenementQuestionnaire[]
      */
     public function getEvenementQuestionnaires(): Collection
@@ -246,7 +232,7 @@ class Questionnaire
 
     public function addEvenementQuestionnaire(EvenementQuestionnaire $evenementQuestionnaire): self
     {
-        if (!$this->evenementQuestionnaires->contains($evenementQuestionnaire)) {
+        if (! $this->evenementQuestionnaires->contains($evenementQuestionnaire)) {
             $this->evenementQuestionnaires[] = $evenementQuestionnaire;
             $evenementQuestionnaire->setQuestionnaire($this);
         }
@@ -311,6 +297,38 @@ class Questionnaire
     public function setDescriptionAfterSubmit(string $description_after_submit): self
     {
         $this->description_after_submit = $description_after_submit;
+
+        return $this;
+    }
+
+    /**
+     *
+     * @return Collection|Question[]
+     */
+    public function getQuestions(): Collection
+    {
+        return $this->questions;
+    }
+
+    public function addQuestion(Question $question): self
+    {
+        if (! $this->questions->contains($question)) {
+            $this->questions[] = $question;
+            $question->setQuestionnaire($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuestion(Question $question): self
+    {
+        if ($this->questions->contains($question)) {
+            $this->questions->removeElement($question);
+            // set the owning side to null (unless already changed)
+            if ($question->getQuestionnaire() === $this) {
+                $question->setQuestionnaire(null);
+            }
+        }
 
         return $this;
     }
