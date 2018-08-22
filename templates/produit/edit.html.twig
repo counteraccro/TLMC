@@ -10,6 +10,7 @@
 
 <div>
     {{ form_start(form) }}
+    {{ form_errors(form) }}
     
     {{ form_row(form.titre) }}
 	{{ form_row(form.type) }}
@@ -22,7 +23,6 @@
 	{{ form_row(form.image) }}
     
     {{ form_rest(form) }}
-    {{ form_errors(form) }}
     {{ form_end(form) }}
     
 </div>

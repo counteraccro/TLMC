@@ -9,7 +9,8 @@
 {% include 'elements/arborescence.html.twig' %}
 
 <div>
-{{ form_start(form) }}
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
     
 	{{ form_row(form.nom) }}
 	{{ form_row(form.type) }}
@@ -34,7 +35,6 @@
 	{{ form_row(form.image) }}
     
     {{ form_rest(form) }}
-    {{ form_errors(form) }}
     {{ form_end(form) }}
     
 </div>

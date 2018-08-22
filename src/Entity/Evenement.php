@@ -230,18 +230,6 @@ class Evenement
         return $this;
     }
 
-    public function getImage(): ?string
-    {
-        return $this->image;
-    }
-
-    public function setImage(string $image): self
-    {
-        $this->image = $image;
-
-        return $this;
-    }
-
     public function getNomLieu(): ?string
     {
         return $this->nom_lieu;
@@ -544,6 +532,18 @@ class Evenement
                 $historique->setEvenement(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
 
         return $this;
     }
