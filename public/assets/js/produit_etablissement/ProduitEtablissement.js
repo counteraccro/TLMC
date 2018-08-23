@@ -177,15 +177,6 @@ ProduitEtablissement.LaunchAddCollection = function(params) {
 			e.preventDefault(); // évite qu'un # apparaisse dans l'URL
 			return false;
 		});
-
-		if (ProduitEtablissement.index == 0) {
-			ProduitEtablissement.AddElement();
-		} else {
-			// S'il existe déjà des éléments, on ajoute un lien de suppression pour chacun d'entre eux
-			ProduitEtablissement.container.children('div').each(function() {
-				ProduitEtablissement.addDeleteLink($(this));
-			});
-		}
 	}
 
 	//ajout d'un élément dans le conteneur
@@ -220,6 +211,10 @@ ProduitEtablissement.LaunchAddCollection = function(params) {
 			prototype.remove();
 			e.preventDefault();
 			return false;
+		});
+		
+		$('#produit_typelink').change(function(){
+			prototype.remove();
 		});
 	}
 }
