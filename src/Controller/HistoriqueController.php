@@ -11,6 +11,7 @@ use App\Entity\Evenement;
 use App\Entity\Patient;
 use App\Form\HistoriqueType;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use App\Entity\Membre;
 
 class HistoriqueController extends AppController
 {
@@ -108,7 +109,9 @@ class HistoriqueController extends AppController
                 $objet = $objets[0];
                 break;
             case 'membre':
-                $objet = $this->getMembre();
+                $repository = $this->getDoctrine()->getRepository(Membre::class);
+                $objets = $repository->findById($id);
+                $objet = $objets[0];
                 break;
         }
 
