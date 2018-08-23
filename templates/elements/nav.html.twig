@@ -69,7 +69,7 @@
           			{% endif %}
         		</a>
         		<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          			<a class="dropdown-item" href="#"><span class="oi oi-person"></span> Mon compte</a>
+          			<a class="dropdown-item" href="{{ path('membre_see_fiche', {'id':app.user.id}) }}"><span class="oi oi-person"></span> Mon compte</a>
           			<a class="dropdown-item" href="{{ path('message') }}"><span class="nb-message-no-read-link"></span></a>
           			<div class="dropdown-divider"></div>
           				<a class="dropdown-item" href='{{ path('security_logout') }}'><span class="oi oi-account-logout"></span> Déconnexion</a>

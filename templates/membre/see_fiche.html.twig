@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Mon compte {% endblock %}
+
+{% block body %}
+
+    <h1>Mon compte</h1>
+    
+    {% include 'elements/arborescence.html.twig' %}
+    
+    <div id="accordionMembre">
+    	<div class="card">
+        	<div class="card-header float-left" id="headingMembre" data-toggle="collapse" data-target="#collapseMembre" aria-expanded="true" aria-controls="collapseMembre">
+            	Informations personnelles
+            	<div class="float-right"> 
+            		<a href="{{path('membre_ajax_edit_fiche', {'id': membre.id }) }}" id="btn-edit-membre" class="btn btn-dark"><span class="oi oi-pencil"></span> Modifier ses informations</a>
+            	</div>
+        	</div>
+        	
+        	<div id="collapseMembre" class="collapse show" aria-labelledby="headingMembre" data-parent="#accordionMembre">
+          		{% include 'membre/ajax_see_fiche.html.twig' %}
+        	</div>
+      	</div>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="modal_membre_global" tabindex="-1" role="dialog">
+    	<div class="modal-dialog modal-lg" role="document">
+    		<div class="modal-content" id="bloc_modal"></div>
+    	</div>
+    </div>
+    
+{% endblock %}
+
+{% block script %}
+ 	<script src="{{ asset('assets/js/membre/Membre.js') }}?{{ date().timestamp }}"></script>
+{% endblock %}
+    
+{% block javascripts %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+
+			var paramsM = {
+					url_ajax_see : '{{path('membre_ajax_see_fiche', {'id': membre.id}) }}',
+					id_content_modal : '#bloc_modal',
+					id_modal : '#modal_membre_global',
+					id_global : '#collapseMembre'
+			};
+	        
+	    	Membre.Launch(paramsM);
+            var id_btn_edit_membre = '#btn-edit-membre';
+            Membre.EventEdit(id_btn_edit_membre);
+        });
+    </script>
+{% endblock %}
