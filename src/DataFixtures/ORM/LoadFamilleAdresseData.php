@@ -39,6 +39,41 @@ class LoadFamilleAdresseData extends Fixture implements DependentFixtureInterfac
                 'setVille' => 'Paris',
                 'setCodePostal' => 75002,
                 'setDisabled' => false
+            ],
+            'FamilleAdresse-5' => [
+                'setNumeroVoie' => 2,
+                'setVoie' => 'Avenue des Etoiles',
+                'setVille' => 'Paris',
+                'setCodePostal' => 75017,
+                'setDisabled' => false
+            ],
+            'FamilleAdresse-6' => [
+                'setNumeroVoie' => 25,
+                'setVoie' => 'rue Tolbiac',
+                'setVille' => 'Paris',
+                'setCodePostal' => 75013,
+                'setDisabled' => false
+            ],
+            'FamilleAdresse-7' => [
+                'setNumeroVoie' => 125,
+                'setVoie' => 'Avenue de Choisy',
+                'setVille' => 'Paris',
+                'setCodePostal' => 75013,
+                'setDisabled' => false
+            ],
+            'FamilleAdresse-8' => [
+                'setNumeroVoie' => 11,
+                'setVoie' => 'Avenue Centrale',
+                'setVille' => 'Paris',
+                'setCodePostal' => 75013,
+                'setDisabled' => false
+            ],
+            'FamilleAdresse-9' => [
+                'setNumeroVoie' => 255,
+                'setVoie' => 'Avenue des Charettes',
+                'setVille' => 'Paris',
+                'setCodePostal' => 75013,
+                'setDisabled' => false
             ]
         ]
     ];

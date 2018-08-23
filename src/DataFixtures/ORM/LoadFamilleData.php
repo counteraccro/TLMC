@@ -68,6 +68,94 @@ class LoadFamilleData extends Fixture implements DependentFixtureInterface
                 'setFamilleAdresse' => 'FamilleAdresse-4',
                 'setPatient' => 'Patient-2',
                 'setDisabled' => false
+            ],
+            'Famille-6' => [
+                'setNom' => 'Skywalker',
+                'setPrenom' => 'Leïa',
+                'setLienFamille' => 4,
+                'setEmail' => 'princesse.leia@gmail.com',
+                'setPmr' => false,
+                'setNumeroTel' => '+33145566778',
+                'setFamilleAdresse' => 'FamilleAdresse-5',
+                'setPatient' => 'Patient-7',
+                'setDisabled' => false
+            ],
+            'Famille-7' => [
+                'setNom' => 'Henri',
+                'setPrenom' => 'Mélanie',
+                'setLienFamille' => 9,
+                'setEmail' => 'melanie.henri@gmail.com',
+                'setPmr' => false,
+                'setNumeroTel' => '0113754313',
+                'setFamilleAdresse' => 'FamilleAdresse-6',
+                'setPatient' => 'Patient-4',
+                'setDisabled' => false
+            ],
+            'Famille-8' => [
+                'setNom' => 'Henri',
+                'setPrenom' => 'Daniel',
+                'setLienFamille' => 10,
+                'setEmail' => 'daniel.henri@gmail.com',
+                'setPmr' => false,
+                'setNumeroTel' => '0113754313',
+                'setFamilleAdresse' => 'FamilleAdresse-6',
+                'setPatient' => 'Patient-4',
+                'setDisabled' => false
+            ],
+            'Famille-9' => [
+                'setNom' => 'Henri',
+                'setPrenom' => 'Eva',
+                'setLienFamille' => 4,
+                'setEmail' => 'eva-henri@gmail.com',
+                'setPmr' => true,
+                'setNumeroTel' => '0113754313',
+                'setFamilleAdresse' => 'FamilleAdresse-6',
+                'setPatient' => 'Patient-4',
+                'setDisabled' => false
+            ],
+            'Famille-10' => [
+                'setNom' => 'Henri',
+                'setPrenom' => 'Gertrude',
+                'setLienFamille' => 2,
+                'setEmail' => 'gertrude.henri@gmail.com',
+                'setPmr' => false,
+                'setNumeroTel' => '+33145564678',
+                'setFamilleAdresse' => 'FamilleAdresse-7',
+                'setPatient' => 'Patient-4',
+                'setDisabled' => false
+            ],
+            'Famille-11' => [
+                'setNom' => 'Henri',
+                'setPrenom' => 'Michel',
+                'setLienFamille' => 1,
+                'setEmail' => 'henri.michel@gmail.com',
+                'setPmr' => true,
+                'setNumeroTel' => '+33145564678',
+                'setFamilleAdresse' => 'FamilleAdresse-7',
+                'setPatient' => 'Patient-4',
+                'setDisabled' => false
+            ],
+            'Famille-12' => [
+                'setNom' => 'Micoton',
+                'setPrenom' => 'Mylène',
+                'setLienFamille' => 10,
+                'setEmail' => 'mylene.micoton@gmail.com',
+                'setPmr' => false,
+                'setNumeroTel' => '0656545253',
+                'setFamilleAdresse' => 'FamilleAdresse-8',
+                'setPatient' => 'Patient-4',
+                'setDisabled' => false
+            ],
+            'Famille-13' => [
+                'setNom' => 'De La Tour',
+                'setPrenom' => 'Isabella',
+                'setLienFamille' => 10,
+                'setEmail' => 'isabella.henri@gmail.com',
+                'setPmr' => false,
+                'setNumeroTel' => '0778797475',
+                'setFamilleAdresse' => 'FamilleAdresse-9',
+                'setPatient' => 'Patient-4',
+                'setDisabled' => false
             ]
         ]
     ];

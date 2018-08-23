@@ -24,61 +24,61 @@ class LoadSpecialiteEvenementData extends Fixture implements DependentFixtureInt
                 'setEvenement' => 'Evenement-2',
                 'setSpecialite' => 'Specialite-1',
                 'setStatut' => 0,
-                'setDate' => '1991-09-30'
+                'setDate' => '2018-10-30 18:00:00'
             ],
             'SpecialiteEvenement-3' => [
                 'setEvenement' => 'Evenement-3',
                 'setSpecialite' => 'Specialite-3',
                 'setStatut' => 0,
-                'setDate' => '1991-09-30'
+                'setDate' => '2018-09-22 08:30:00'
             ],
             'SpecialiteEvenement-4' => [
                 'setEvenement' => 'Evenement-4',
                 'setSpecialite' => 'Specialite-3',
                 'setStatut' => 1,
-                'setDate' => '1991-09-30'
+                'setDate' => '2018-10-31 18:00:00'
             ],
             'SpecialiteEvenement-5' => [
                 'setEvenement' => 'Evenement-3',
                 'setSpecialite' => 'Specialite-4',
                 'setStatut' => 0,
-                'setDate' => '1991-09-30'
+                'setDate' => '2018-09-22 08:30:00'
             ],
             'SpecialiteEvenement-6' => [
                 'setEvenement' => 'Evenement-5',
                 'setSpecialite' => 'Specialite-1',
                 'setStatut' => 0,
-                'setDate' => '2018-04-28'
+                'setDate' => '2018-04-28 19:00:00'
             ],
             'SpecialiteEvenement-7' => [
                 'setEvenement' => 'Evenement-5',
                 'setSpecialite' => 'Specialite-3',
                 'setStatut' => 0,
-                'setDate' => '2018-04-28'
+                'setDate' => '2018-04-28 19:00:00'
             ],
             'SpecialiteEvenement-8' => [
                 'setEvenement' => 'Evenement-5',
                 'setSpecialite' => 'Specialite-5',
                 'setStatut' => 0,
-                'setDate' => '2018-04-28'
+                'setDate' => '2018-04-28 19:00:00'
             ],
             'SpecialiteEvenement-7' => [
                 'setEvenement' => 'Evenement-5',
                 'setSpecialite' => 'Specialite-4',
                 'setStatut' => 0,
-                'setDate' => '2018-04-28'
+                'setDate' => '2018-04-28 19:00:00'
             ],
             'SpecialiteEvenement-8' => [
                 'setEvenement' => 'Evenement-4',
                 'setSpecialite' => 'Specialite-2',
                 'setStatut' => 1,
-                'setDate' => '1991-09-30'
+                'setDate' => '2018-10-31 18:00:00'
             ],
             'SpecialiteEvenement-9' => [
                 'setEvenement' => 'Evenement-1',
                 'setSpecialite' => 'Specialite-4',
                 'setStatut' => 1,
-                'setDate' => '1991-09-30'
+                'setDate' => '2017-12-25 12:00:00'
             ]
         ]
     ];

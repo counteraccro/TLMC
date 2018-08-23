@@ -24,17 +24,38 @@ class LoadHistoriqueData extends Fixture implements DependentFixtureInterface
         'Historique' => [
             'Historique-1' => [
                 'setEvenement' => 'Evenement-1',
-                'setSpecialite' => 'Specialite-2',
+                'setSpecialite' => 'Specialite-1',
                 'setPatient' => 'Patient-1',
                 'setMembre' => 'Membre-1',
                 'setDate' => '2017-12-25 12:00:00'
             ],
             'Historique-2' => [
                 'setEvenement' => 'Evenement-2',
-                'setSpecialite' => 'Specialite-3',
-                'setPatient' => 'Patient-2',
-                'setMembre' => 'Membre-2',
+                'setSpecialite' => 'Specialite-1',
+                'setPatient' => 'Patient-3',
+                'setMembre' => 'Membre-3',
                 'setDate' => '2018-10-30 18:00:00'
+            ],
+            'Historique-3' => [
+                'setEvenement' => 'Evenement-1',
+                'setSpecialite' => 'Specialite-1',
+                'setPatient' => 'Patient-2',
+                'setMembre' => 'Membre-1',
+                'setDate' => '2017-12-25 12:00:00'
+            ],
+            'Historique-4' => [
+                'setEvenement' => 'Evenement-1',
+                'setSpecialite' => 'Specialite-4',
+                'setPatient' => 'Patient-7',
+                'setMembre' => 'Membre-4',
+                'setDate' => '2017-12-25 12:00:00'
+            ],
+            'Historique-4' => [
+                'setEvenement' => 'Evenement-4',
+                'setSpecialite' => 'Specialite-2',
+                'setPatient' => 'Patient-4',
+                'setMembre' => 'Membre-7',
+                'setDate' => '2018-10-31 18:00:00'
             ]
         ]
     ];

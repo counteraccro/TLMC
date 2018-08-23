@@ -8,6 +8,16 @@ use App\Entity\Participant;
 class ParticipantController extends AppController
 {
     /**
+     * Tableau des statuts
+     *
+     * @var array
+     */
+    const STATUT = array(
+        1 => 'Présent',
+        2 => 'Annulé'
+    );
+    
+    /**
      * @Route("/participant", name="participant")
      */
     public function index()
