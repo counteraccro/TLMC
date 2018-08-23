@@ -160,7 +160,7 @@ class LoadQuestionData extends Fixture implements DependentFixtureInterface
             ],
             'Question-11' => [
                 'setQuestionnaire' => 'Questionnaire-4',
-                'setLibelle' => 'S\'il y avait des améliorations à apporter, que proposeriez-vous ? ',
+                'setLibelle' => "S'il y avait des améliorations à apporter, que proposeriez-vous ? ",
                 'setLibelleTop' => 'Pouvons-nous en faire davantage ? nous améliorer ?',
                 'setLibelleBottom' => 'N\'hésitez pas à nous faire part de toutes vos remarques.',
                 'setType' => 'TextareaType',

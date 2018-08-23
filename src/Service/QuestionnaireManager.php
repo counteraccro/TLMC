@@ -35,9 +35,10 @@ class QuestionnaireManager extends AppService
      * @var Questionnaire
      */
     private $questionnaire;
-    
+
     /**
      * Si au moins une erreur true
+     *
      * @var boolean
      */
     private $is_error = false;
@@ -64,10 +65,10 @@ class QuestionnaireManager extends AppService
         $this->doctrine = $doctrine;
     }
 
- 
     /**
      * Fonction qui appelle les fonctions questionnaire (initialisation, création réponse, validation...)
      * Le membre est obligatoire pour l'enregistrement en base
+     *
      * @param Questionnaire $questionnaire
      * @param string $statut
      * @param Membre $membre
@@ -81,17 +82,18 @@ class QuestionnaireManager extends AppService
         $this->validate();
 
         // En statut PROD et si pas d'erreur on enregistre en base
-        if(!$this->is_error && $statut == AppController::PROD)
-        {
-            if(is_null($membre))
-            {
+        if (! $this->is_error && $statut == AppController::PROD) {
+            if (is_null($membre)) {
                 throw new \ErrorException('Le membre est obligatoire pour enregistrer les réponses en base de données');
             }
-            
-           $this->saveData($membre);
+
+            $this->saveData($membre);
         }
-        
-        return array('result' => $this->return, 'validateSubmit' => !$this->is_error);
+
+        return array(
+            'result' => $this->return,
+            'validateSubmit' => ! $this->is_error
+        );
     }
 
     /**
@@ -108,7 +110,7 @@ class QuestionnaireManager extends AppService
                     'is' => false,
                     'libelle' => '',
                     'regle' => ''
-                ),
+                )
             ];
             $this->return[$question->getid()] = (object) $array;
         }
@@ -127,15 +129,13 @@ class QuestionnaireManager extends AppService
             /* @var Reponse $reponse */
             $reponse = $object->reponse;
 
-            if ($question->getObligatoire()) {
-                if ($reponse->getValeur() == "") {
+            if ($question->getObligatoire() && $reponse->getValeur() == "") {
 
-                    $this->return[$key]->erreur->is = true;
-                    $this->return[$key]->erreur->libelle = 'Cette question est obligatoire';
-                    $this->return[$key]->erreur->regle = 'Question obligatoire';
-                    $this->is_error = true;
-                    continue;
-                }
+                $this->return[$key]->erreur->is = true;
+                $this->return[$key]->erreur->libelle = 'Cette question est obligatoire';
+                $this->return[$key]->erreur->regle = 'Question obligatoire';
+                $this->is_error = true;
+                continue;
             }
 
             // Si le Type de question est un champ ou une zone de texte
@@ -143,7 +143,12 @@ class QuestionnaireManager extends AppService
                 AppController::TEXTAREATYPE,
                 AppController::TEXTYPE
             ))) {
-                if (! preg_match('/' . $question->getRegles() . '/', $reponse->getValeur())) {
+                if ($question->getRegles() != '.' && ! preg_match('/' . $question->getRegles() . '/', $reponse->getValeur())) {
+
+                    if (!$question->getObligatoire() && $reponse->getValeur() == "") {
+                        continue;
+                    }
+                   
                     $this->return[$key]->erreur->is = true;
                     $this->return[$key]->erreur->libelle = $question->getMessageErreur();
                     $this->return[$key]->erreur->regle = 'Regle de validation : ' . AppController::QUESTION_REGLES_REGEX[$question->getRegles()];
@@ -208,6 +213,7 @@ class QuestionnaireManager extends AppService
     /**
      * Autorisation d'accès à un questionnaire donné
      * ex : si questionnaire déjà répondu, l'utilisateur n'y a plus accès
+     *
      * @param Questionnaire $questionnaire
      * @param Membre $membre
      */
@@ -229,7 +235,8 @@ class QuestionnaireManager extends AppService
     }
 
     /**
-     * Possibilité de personnaliser la description d'un questionnaire 
+     * Possibilité de personnaliser la description d'un questionnaire
+     *
      * @nom et @prenom mis en place pour changement automatique par ceux de l'utilisateur connecté
      * @param Questionnaire $questionnaire
      * @param Membre $membre
@@ -241,31 +248,33 @@ class QuestionnaireManager extends AppService
             '@prenom' => $membre->getPrenom(),
             '@nom' => $membre->getNom()
         );
-        
-        $fields = array('Description', 'DescriptionAfterSubmit');
-        
-        foreach($fields as $field)
-        {
+
+        $fields = array(
+            'Description',
+            'DescriptionAfterSubmit'
+        );
+
+        foreach ($fields as $field) {
             $txt = $questionnaire->{'get' . $field}();
             $txt = str_replace("@prenom", $masque['@prenom'], $txt);
             $txt = str_replace("@nom", $masque['@nom'], $txt);
             $questionnaire->{'set' . $field}($txt);
         }
-        
+
         return $questionnaire;
     }
-    
+
     /**
      * Enregistrement des données
+     *
      * @param Membre $membre
      */
     private function saveData(Membre $membre)
     {
         $em = $this->doctrine->getManager();
-        
+
         /* @var Reponse $reponse */
-        foreach($this->return as $value)
-        {
+        foreach ($this->return as $value) {
             $reponse = $value->reponse;
             $reponse->setMembre($membre);
             $em->persist($reponse);
