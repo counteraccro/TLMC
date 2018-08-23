@@ -1,6 +1,6 @@
 {% extends 'base_questionnaire.html.twig' %}
 
-{% block title %}{% endblock %}
+{% block title %}{{questionnaire.titre}}{% endblock %}
 
 {% block body %}
 
@@ -19,8 +19,8 @@
 	<div class="col-12">
 		{% if validateSubmit %}
 			<div class="card shadow">
-              <div class="card-header bg-primary">
-                <span class="text-success"><span class="oi oi-check"></span> Vos réponses ont bien été enregistrées avec succès</span>
+              <div class="card-header bg-success">
+                <span class="text-light"><span class="oi oi-check"></span> Vos réponses ont été enregistrées avec succès</span>
               </div>
             <div class="card-body">
                 

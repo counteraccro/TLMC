@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Login{% endblock %}
+{% block title %}Connexion{% endblock %}
 
 {% block body %}
 
@@ -48,9 +48,14 @@
         $('.link-debug-auto-login').click(function() {
             $('#username').val($(this).data('pseudo'));
             $('#password').val($(this).data('password'));
-            $('#btn-submit-login').addClass('disabled').html('Connection...');
+            $('#btn-submit-login').addClass('disabled').html('Connexion...');
             $('#login-form').submit();
-        })
+        });
+
+        $('#btn-submit-login').click(function() {
+            $(this).addClass('disabled').html('Connexion...');
+        });
+
          {% endif %}
     
     </script>

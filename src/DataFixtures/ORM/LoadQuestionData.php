@@ -24,16 +24,16 @@ class LoadQuestionData extends Fixture implements DependentFixtureInterface
                 'setLibelleTop' => 'A partir de maintenant nous allons vous poser des questions sur vos modes de transports...',
                 'setLibelleBottom' => 'Il peut être public ou privé',
                 'setType' => 'ChoiceType',
-                'setValeurDefaut' => 'Vélo',
+                'setValeurDefaut' => '0',
                 'setListeValeur' => '{"0":{"value":"0","libelle":"Choix transport"},"1":{"value":"2","libelle":"Bus"},"2":{"value":"3","libelle":"Trains"},"3":{"value":"4","libelle":"Vélo"},"4":{"value":"5","libelle":"A pied"},"5":{"value":"6","libelle":"Voiture"}}',
                 'setDisabled' => '0',
                 'setObligatoire' => true,
                 'setRegles' => '.',
                 'setMessageErreur' => 'Veuillez choisir un mode de transport',
                 'setOrdre' => '1'
+                
             ],
             'Question-2' => [
-                //'setQuestion' => 'Question-1',
                 'setQuestionnaire' => 'Questionnaire-1',
                 'setLibelle' => 'Que pensez-vous de la voiture électrique ?',
                 'setLibelleTop' => 'Evoquons désormais des modes de transports plus modernes/écologiques',
@@ -178,7 +178,7 @@ class LoadQuestionData extends Fixture implements DependentFixtureInterface
                 'setLibelleBottom' => 'N\'hésitez pas à nous faire part de toute nouvelle idée d\'activité par e-mail.',
                 'setType' => 'ChoiceType',
                 'setValeurDefaut' => '0',
-                'setListeValeur' => '{"0":{"value":"0","libelle":"Natation"},"1":{"value":"1","libelle":"Escrime"},"2":{"value":"2","libelle":"Tennis"},"3":{"value":"3","libelle":"Yoga"},"4":{"value":"4","libelle":"Tournoi d\'échecs"},"5":{"value":"5","libelle":"Balades à poney"}}',
+                'setListeValeur' => '{"0":{"value":"0","libelle":"Choix de l\'activité"},"1":{"value":"1","libelle":"Escrime"},"2":{"value":"2","libelle":"Tennis"},"3":{"value":"3","libelle":"Yoga"},"4":{"value":"4","libelle":"Tournoi d\'échecs"},"5":{"value":"5","libelle":"Balades à poney"}}',
                 'setDisabled' => '0',
                 'setObligatoire' => true,
                 'setRegles' => '.',

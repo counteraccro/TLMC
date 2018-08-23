@@ -354,6 +354,76 @@ class LoadReponseData extends Fixture implements DependentFixtureInterface
                 'setDate' => '2018-08-20 15:02:07',
                 'setDisabled' => '0'
             ],
+            'Reponse-49' => [
+                'setQuestion' => 'Question-9',
+                'setMembre' => 'Membre-3',
+                'setValeur' => '2',
+                'setDate' => '2018-08-22 15:32:57',
+                'setDisabled' => '0'
+            ],
+            'Reponse-50' => [
+                'setQuestion' => 'Question-10',
+                'setMembre' => 'Membre-3',
+                'setValeur' => '1',
+                'setDate' => '2018-08-22 15:32:57',
+                'setDisabled' => '0'
+            ],
+            'Reponse-51' => [
+                'setQuestion' => 'Question-11',
+                'setMembre' => 'Membre-3',
+                'setValeur' => 'Nous pourrions organiser une kermesse pour les enfants 1 fois par trimestre.',
+                'setDate' => '2018-08-22 15:32:57',
+                'setDisabled' => '0'
+            ],
+            'Reponse-52' => [
+                'setQuestion' => 'Question-12',
+                'setMembre' => 'Membre-3',
+                'setValeur' => '3',
+                'setDate' => '2018-08-22 15:32:57',
+                'setDisabled' => '0'
+            ],
+            'Reponse-53' => [
+                'setQuestion' => 'Question-13',
+                'setMembre' => 'Membre-3',
+                'setValeur' => 'La Butte-aux-Cailles',
+                'setDate' => '2018-08-22 15:32:57',
+                'setDisabled' => '0'
+            ],
+            'Reponse-54' => [
+                'setQuestion' => 'Question-9',
+                'setMembre' => 'Membre-14',
+                'setValeur' => '4',
+                'setDate' => '2018-08-19 11:06:12',
+                'setDisabled' => '0'
+            ],
+            'Reponse-55' => [
+                'setQuestion' => 'Question-10',
+                'setMembre' => 'Membre-14',
+                'setValeur' => '5',
+                'setDate' => '2018-08-19 11:06:12',
+                'setDisabled' => '0'
+            ],
+            'Reponse-56' => [
+                'setQuestion' => 'Question-11',
+                'setMembre' => 'Membre-14',
+                'setValeur' => 'Pouvons-nous obtenir des T-shirts aux couleurs de l\'asso ?',
+                'setDate' => '2018-08-19 11:06:12',
+                'setDisabled' => '0'
+            ],
+            'Reponse-57' => [
+                'setQuestion' => 'Question-12',
+                'setMembre' => 'Membre-14',
+                'setValeur' => '5',
+                'setDate' => '2018-08-19 11:06:12',
+                'setDisabled' => '0'
+            ],
+            'Reponse-58' => [
+                'setQuestion' => 'Question-13',
+                'setMembre' => 'Membre-14',
+                'setValeur' => 'Salle de sport du collège Henri Dunand',
+                'setDate' => '2018-08-19 11:06:12',
+                'setDisabled' => '0'
+            ],
         ]
     ];
 
