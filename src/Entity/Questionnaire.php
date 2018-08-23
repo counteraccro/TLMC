@@ -64,7 +64,7 @@ class Questionnaire
 
     /**
      *
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=300)
      */
     private $slug;
 
@@ -88,7 +88,7 @@ class Questionnaire
 
     /**
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\Question", mappedBy="questionnaire")
+     * @ORM\OneToMany(targetEntity="App\Entity\Question", mappedBy="questionnaire", cascade={"persist"})
      * @ORM\OrderBy({"ordre" = "ASC"})
      */
     private $questions;
@@ -331,5 +331,35 @@ class Questionnaire
         }
 
         return $this;
+    }
+
+    /**
+     * Clone de l'objet questionnaire sans prendre en compte les collections
+     *
+     * @param Questionnaire $questionnaire
+     */
+    public function clone(Questionnaire $questionnaire)
+    {
+        $vars = get_class_vars(get_class($this));
+
+        foreach ($vars as $key => $var) {
+            $value = ucwords(str_replace(array(
+                '-',
+                '_'
+            ), ' ', $key));
+            $value = str_replace(' ', '', $value);
+            $value = lcfirst($value);
+
+            if ($key == 'id') {
+                continue;
+            }
+
+            $getMethode = 'get' . ucfirst($value);
+            $setMethode = 'set' . ucfirst($value);
+
+            if (! $questionnaire->{$getMethode}() instanceof Collection) {
+                $this->{$setMethode}($questionnaire->{$getMethode}());
+            }
+        }
     }
 }

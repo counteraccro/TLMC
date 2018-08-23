@@ -616,34 +616,60 @@ class QuestionnaireController extends AppController
     /**
      * Duplication questionnaire
      *
-     * @Route("/questionnaire/ajax/duplication/{id}", name="questionnaire_ajax_duplication")
-     * @Route("/questionnaire/ajax/duplication/validation/{id}/{val}", name="questionnaire_ajax_duplication_validation")
+     * @Route("/questionnaire/ajax/duplication/{id}/{page}", name="questionnaire_ajax_duplication")
+     * @Route("/questionnaire/ajax/duplication/validation/{id}/{statut}/{page}", name="questionnaire_ajax_duplication_validation")
      * @ParamConverter("questionnaire", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function duplicationAction(Request $request, Questionnaire $questionnaire, $val = '')
+    public function duplicationAction(Request $request, Questionnaire $questionnaire, $statut = 0, $page)
     {
-        $questionnaire2 = new Questionnaire();
         // Cas confirmation depuis la popin
-        if ($val == 1 &&  $request->isXmlHttpRequest() === true) {
-                      
-            // action duplication
-            foreach ($questionnaire->getQuestions() as $question) {
-                // récupérer questions de Q1 dans Q2
-                // $questionnaire2->addQuestion($question);
-                // $entityManager = $this->getDoctrine()->getManager();
-                // $entityManager->persist($questionnaire2);
-                // $entityManager->flush();
+        if ($statut == 1 && $request->isXmlHttpRequest() === true) {
+
+            $dataPost = $request->request->all();
+            $repository = $this->getDoctrine()->getRepository(Questionnaire::class);
+
+            if (! $repository->isExistingTitleAndSlug($dataPost['questionnaire']['titre'], $dataPost['questionnaire']['slug'])) {
+                // action duplication
+
+                $entityManager = $this->getDoctrine()->getManager();
+
+                $questionnaireDuplicate = new Questionnaire();
+                $questionnaireDuplicate->clone($questionnaire);
+                $questionnaireDuplicate->setTitre($dataPost['questionnaire']['titre']);
+                $questionnaireDuplicate->setSlug($dataPost['questionnaire']['slug']);
+                $questionnaireDuplicate->setPublication(0);
+
+                /* @var Question $question */
+                foreach ($questionnaire->getQuestions() as $question) {
+                    $questionDuplicate = new Question();
+                    $questionDuplicate->clone($question);
+                    $questionnaireDuplicate->addQuestion($questionDuplicate);
+                    $questionDuplicate->setQuestionnaire($questionnaireDuplicate);
+                    $entityManager->persist($questionDuplicate);
+                }
+
+                $entityManager->persist($questionnaireDuplicate);
+                $entityManager->flush();
+                
+                return $this->json(array(
+                    'statut' => true,
+                    'url' => $this->generateUrl('questionnaire_see', array('id' => $questionnaireDuplicate->getId(), 'page' => $page))
+                ));
+                
+            } else {
+                return $this->render('questionnaire/ajax_duplication.html.twig', [
+                    'questionnaire' => $questionnaire,
+                    'erreur' => 'Le titre <b>' . $dataPost['questionnaire']['titre'] . '</b> existe déjà',
+                    'page' => $page
+                ]);
             }
-            return $this->render('questionnaire/ajax_duplication.html.twig', [
-                'questionnaire' => $questionnaire,
-                'erreur' => 'oki'
-            ]);
         }
-        
+
         return $this->render('questionnaire/ajax_duplication.html.twig', [
             'questionnaire' => $questionnaire,
             'erreur' => '',
+            'page' => $page
         ]);
     }
 }

@@ -14,10 +14,10 @@
 		{% if not erreur == '' %}
 			<div class="alert alert-danger">
 				<b>Une erreur est intervenue dans le traitement</b>
-				<p>{{ erreur }}</p>
+				<p>{{ erreur | raw}}</p>
 			</div>
 		{% endif %}
-		<div class="alert alert-warning">
+		<div class="alert alert-warning" id="alert-duplicate">
 			<b><span class="oi oi-warning"></span> Attention</b>
 			<p>La duplication du questionnaire <b>{{ questionnaire.titre }}</b> va imposer certaines règles de gestion qui sont :
 			<ul>
@@ -60,9 +60,7 @@
 	</div>
 	
 	<div class="modal-footer">
-		{% if erreur == '' %}
-			<a href="#" class="btn btn-success" id="duplicate-yes"><span class="oi oi-check"></span> Confirmer</a>
-		{% endif %}
+		<a href="#" class="btn btn-success" id="duplicate-yes"><span class="oi oi-check"></span> Confirmer</a>
 		<a href="#" class="btn btn-secondary" id="duplicate-no"><span class="oi oi-x"></span> Annuler</a>
 	</div>
 </div>
@@ -79,7 +77,7 @@
     	$('#modal_questionnaire_global').modal('toggle');
     })
     
-    var url = '{{path('questionnaire_ajax_duplication_validation', {'id': questionnaire.id, 'val' : 1 })}}';
+    var url = '{{path('questionnaire_ajax_duplication_validation', {'id': questionnaire.id, 'statut' : 1 , 'page' : page})}}';
     Questionnaire.EventConfirmationDuplication(url, '#duplicate-yes');
     Questionnaire.EventOnTitle('#duplication-titre', '#duplication-hidden-titre', '#slug_text');
 	

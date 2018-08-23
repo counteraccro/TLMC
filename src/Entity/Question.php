@@ -323,5 +323,35 @@ class Question
 
         return $this;
     }
+    
+    /**
+     * Clone de l'objet questionnaire sans prendre en compte les collections
+     *
+     * @param Questionnaire $questionnaire
+     */
+    public function clone(Question $question)
+    {
+        $vars = get_class_vars(get_class($this));
+        
+        foreach ($vars as $key => $var) {
+            $value = ucwords(str_replace(array(
+                '-',
+                '_'
+            ), ' ', $key));
+            $value = str_replace(' ', '', $value);
+            $value = lcfirst($value);
+            
+            if ($key == 'id') {
+                continue;
+            }
+            
+            $getMethode = 'get' . ucfirst($value);
+            $setMethode = 'set' . ucfirst($value);
+            
+            if (! $question->{$getMethode}() instanceof Collection) {
+                $this->{$setMethode}($question->{$getMethode}());
+            }
+        }
+    }
 
   }

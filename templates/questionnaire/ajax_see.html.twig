@@ -15,7 +15,7 @@
             		  {{ disabled(questionnaire, path('questionnaire_delete', {'id': questionnaire.id, 'page' : 1 })) | raw }}
             		  {{ test(questionnaire, path('questionnaire_demo', {'slug': questionnaire.slug })) | raw }}
             		  {{ publish(questionnaire, path('questionnaire_ajax_publication', {'id': questionnaire.id })) | raw }}
-            		  {{ duplicate(questionnaire, path('questionnaire_ajax_duplication', {'id': questionnaire.id })) | raw }}
+            		  {{ duplicate(questionnaire, path('questionnaire_ajax_duplication', {'id': questionnaire.id, 'page' : page })) | raw }}
             		  {% endif %}
             	</div>
             </div>

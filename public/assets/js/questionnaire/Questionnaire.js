@@ -192,8 +192,8 @@ Questionnaire.Launch = function(params) {
 
 				if(reponse.statut === true)
 				{
-					$(Questionnaire.id_modal).modal('hide');
-					Questionnaire.Ajax(Questionnaire.url_ajax_see, Questionnaire.id_global);
+					$('#alert-duplicate').removeClass('alert-warning').addClass('alert-success').html('Duplication réussie avec succès <br /> Redirection vers le questionnaire dupliqué...')
+					$(location ).attr("href", reponse.url);
 				}
 				else
 				{

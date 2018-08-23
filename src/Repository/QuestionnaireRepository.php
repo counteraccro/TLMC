@@ -217,7 +217,31 @@ class QuestionnaireRepository extends ServiceEntityRepository
         }
         return true;
     }
-
+    
+    /**
+     * Requête qui vérifie si un couple 'slug/titre' existe pour un questionnaire
+     * Permet de s'assurer de l'unicité du titre et du slug d'un questionnaire
+     * @param string $questionnaire_titre
+     * @param string $slug
+     * @return boolean
+     */
+    public function isExistingTitleAndSlug($questionnaire_titre, $questionnaire_slug)
+    {
+        $return = $this->createQueryBuilder('q')
+        ->select('q.titre', 'q.slug')
+        ->andWhere('q.titre = :titre')
+        ->andWhere('q.slug = :slug')
+        ->setParameter('titre', $questionnaire_titre)
+        ->setParameter('slug', $questionnaire_slug)
+        ->getQuery()
+        ->getArrayResult();
+        
+        // Si pas de réponses tout est ok
+        if (empty($return)) {
+            return false;
+        }
+        return true;
+    }
     
     // /**
     // * @return Questionnaire[] Returns an array of Questionnaire objects
