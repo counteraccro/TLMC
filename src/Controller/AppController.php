@@ -322,6 +322,9 @@ class AppController extends Controller
         $fileName = $this->cleanText($nom) . '_' . date('dmYHis') . '.' . $extension;
         
         $directory = $this->getParameter('pictures_directory') . $type;
+        if(!file_exists($directory)) {
+            mkdir($directory);
+        }
         $file->move($directory, $fileName);
         
         $directory = str_replace("\\", "/", $directory);
