@@ -19,6 +19,27 @@ class MessageRepository extends ServiceEntityRepository
         parent::__construct($registry, Message::class);
     }
 
+
+    /**
+     * 
+     * @param unknown $id_membre
+     */
+    public function nbMessageNoRead($id_membre)
+    {
+        $return = $this->createQueryBuilder('m')
+        ->select('count(m.id) as nb_message')
+        ->join('m.messageLus', 'ml')
+        ->andWhere('m.destinataire = ' . $id_membre)
+        ->andWhere('ml.lu = 0')
+        ->getQuery()
+        ->getArrayResult();
+        
+        return $return[0]['nb_message'];
+    }
+    
+
+    
+    
 //    /**
 //     * @return Message[] Returns an array of Message objects
 //     */

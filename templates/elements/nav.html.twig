@@ -6,10 +6,6 @@
 
   	<div class="collapse navbar-collapse" id="navbarSupportedContent">
     	<ul class="navbar-nav mr-auto">
-      		<!-- <li class="nav-item active">
-        		<a class="nav-link" href="/">Accueil<span class="sr-only">(current)</span></a>
-      		</li>-->
-			
 			<li class="nav-item dropdown">
         		<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
           			<span class="oi oi-person"></span> Espace patients
@@ -60,19 +56,51 @@
           			<a class="dropdown-item" href="{{ path('specialite_listing') }}"><span class="oi oi-medical-cross"></span> Spécialités</a>
           		</div>
       		</li>
+      	</ul>
+      	{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+      	<ul class="navbar-nav justify-content-end">
+      		<li class="nav-item dropdown">
+        		<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          			Bonjour {{ app.user.username }} <span class="nb-message-no-read"></span>
+          			{% if app.environment == 'dev' %}
+          				{% for role in app.user.roles %}
+     						[{{ role }}]
+     				    {% endfor %}
+          			{% endif %}
+        		</a>
+        		<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          			<a class="dropdown-item" href="#"><span class="oi oi-person"></span> Mon compte</a>
+          			<a class="dropdown-item" href="{{ path('message') }}"><span class="nb-message-no-read-link"></span></a>
+          			<div class="dropdown-divider"></div>
+          				<a class="dropdown-item" href='{{ path('security_logout') }}'><span class="oi oi-account-logout"></span> Déconnexion</a>
+        			</div>
+      		</li>
     	</ul>
+    	 {% endif %}
     	<span class="navbar-text">
-    		{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-     			Bonjour {{ app.user.username }} 
-     			
-     			{% for role in app.user.roles %}
-     				[{{ role }}]
-     			{% endfor %}
-     			 - <a href='{{ path('security_logout') }}'>Deconnexion</a>
-            {% else %}
-     			 <a href='{{ path('security_login') }}'>Connexion</a>
+    		{% if not is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+     			 <a href='{{ path('security_login') }}'><span class="oi oi-account-login"></span> Connexion</a>
             {% endif %}
       		
     	</span>
   	</div>
 </nav>
+
+{% block javascripts %}
+    <script type="text/javascript">
+
+    $(document).ready(function() {
+
+		var params = {
+			'urlNbMessageNoRead' :  '{{ path('questionnaire_ajax_message_read') }}',
+		};
+    	NavMessage.Launch(params);
+    	NavMessage.GetNbMessageNoRead();
+
+    	var nbMessageInterval = setInterval("NavMessage.GetNbMessageNoRead()", 10000);
+
+    	setTimeout(function() { clearInterval(nbMessageInterval); }, 300000); 
+    });
+	
+    </script>
+{% endblock %}

@@ -84,7 +84,7 @@ class QuestionnaireActionExtension extends AbstractExtension
         // Cas ou le questionnaire est publié ou qu'au moins 1 réponse à été faite sur 1 question
         $question = $questionnaire->getQuestions()->first();
         if (! empty($question)) {
-            if ($question->getReponses()->count() > 0 || $questionnaire->getPublication()) {
+            if ($question->getReponses()->count() > 0 && $questionnaire->getPublication()) {
 
                 $bloc_begin = '<span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Edition vérouillée car publié et/ou possède déjà au moins 1 réponse">';
                 $disabled = 'disabled';
