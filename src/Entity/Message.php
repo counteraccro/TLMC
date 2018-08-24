@@ -76,6 +76,11 @@ class Message
      * @ORM\JoinColumn(name="message_id", referencedColumnName="id")
      */
     private $message;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $brouillon;
     
     public function __construct()
     {
@@ -274,6 +279,18 @@ class Message
     public function setDisabled(int $disabled): self
     {
         $this->disabled = $disabled;
+
+        return $this;
+    }
+
+    public function getBrouillon(): ?bool
+    {
+        return $this->brouillon;
+    }
+
+    public function setBrouillon(bool $brouillon): self
+    {
+        $this->brouillon = $brouillon;
 
         return $this;
     }

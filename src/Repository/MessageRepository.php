@@ -37,8 +37,36 @@ class MessageRepository extends ServiceEntityRepository
         return $return[0]['nb_message'];
     }
     
-
+    /**
+     * 
+     */
+    public function findByUserByParameter($id_membre, $brouillon = 0, $role = 'destinataire')
+    {
+        $return = $this->createQueryBuilder('m')
+        ->join('m.messageLus', 'ml')
+        ->andWhere('m.' . $role . ' = ' . $id_membre)
+        ->andWhere('m.brouillon = ' . $brouillon)
+        ->andWhere('ml.corbeille = 0')
+        ->getQuery()
+        ->getResult();
+        
+        return $return;
+    }
     
+    /**
+     *
+     */
+    public function findCorbeilleByUser($id_membre)
+    {
+        $return = $this->createQueryBuilder('m')
+        ->join('m.messageLus', 'ml')
+        ->andWhere('(m.expediteur = ' . $id_membre . ' OR m.destinataire = ' . $id_membre . ')')
+        ->andWhere('ml.corbeille = 1')
+        ->getQuery()
+        ->getResult();
+        
+        return $return;
+    }
     
 //    /**
 //     * @return Message[] Returns an array of Message objects

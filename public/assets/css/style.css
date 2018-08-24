@@ -536,7 +536,7 @@ a:hover {
 	color: #B13075;
 }
 
-.page-item.active .page-link {
+.page-item.active .page-link, .nav-pills .nav-link.active, .list-group .list-group-item.active {
 	background-color: #d5488b;
 	border-color: #B13075;
 }
@@ -667,5 +667,41 @@ footer h6, footer p {
 /********************************************
 *
 * Fin Page templates/questionnaire/ajax_duplication.html.twig
+*
+********************************************/
+
+/********************************************
+*
+* debut Page templates/message/index.html.twig
+*
+********************************************/
+
+@media screen and (max-width: 1024px) {
+  #messagerie-block .nav-link .nav-text {
+    display: none;
+  }
+  
+  #messagerie-block .nav-link {
+    text-align: center;
+  }
+}
+
+#messagerie-block .nav-pills .nav-link {
+	border-radius: .25rem 0 0 .25rem;
+}
+
+#messagerie-block .list-group-item:first-child {
+    border-radius: 0;
+}
+
+#messagerie-block .list-group-item {
+	padding: .5rem 1rem;
+	height: 40px;
+}
+
+
+/********************************************
+*
+* fin Page templates/message/index.html.twig
 *
 ********************************************/
