@@ -65,12 +65,32 @@
         			<td>{{ temoignage.ville }}</td>
         			<td>{{ temoignage.dateCreation |date("d/m/Y H:i") }}</td>
         			{% if type != 'produit' %}
-        				<td>{% if temoignage.evenement != null %} {{ temoignage.evenement.nom }} {% endif %}</td>
+        				<td>
+        				    {% if temoignage.evenement != null %}
+        				    	<a href="{{ path('evenement_see', {'id': temoignage.evenement.id, 'page' : pagination.page}) }}"> 
+        				        {{ temoignage.evenement.nom }}
+        				        </a> 
+        				    {% endif %}
+        				</td>
                     {% endif %}
         		    {% if type != 'evenement' %}
-                		<td>{% if temoignage.produit != null %} {{ temoignage.produit.titre }} {% endif %}</td>
+                		<td>
+        				    {% if temoignage.produit != null %}
+        				    	<a href="{{ path('produit_see', {'id': temoignage.produit.id, 'page' : pagination.page}) }}"> 
+        				        {{ temoignage.produit.titre }}
+        				        </a> 
+        				    {% endif %}
+        				</td>
                 	{% endif %}
-        			<td>{{ temoignage.membre.prenom }} {{ temoignage.membre.nom }}</td>
+        			<td>
+        				{% if is_granted("ROLE_ADMIN") %}
+        					<a href="{{ path('membre_see', {'id': temoignage.membre.id, 'page' : pagination.page}) }}"> 
+        				{% endif %}
+        			    {{ temoignage.membre.prenom }} {{ temoignage.membre.nom }}
+        			    {% if is_granted("ROLE_ADMIN") %}
+        			    	</a>
+        			    {% endif %}
+        			</td>
         			<td>
         			    {{ actionSee(path('temoignage_see', {'id' : temoignage.id, 'page' : pagination.page, 'type': type})) | raw }}
         				{% if is_granted("ROLE_ADMIN") or is_granted("ROLE_BENEFICIAIRE_DIRECT") or is_granted("ROLE_BENEFICIAIRE") %}
