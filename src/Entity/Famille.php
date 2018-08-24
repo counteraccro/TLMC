@@ -76,9 +76,15 @@ class Famille
      */
     private $famille_adresse;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Temoignage", mappedBy="famille")
+     */
+    private $temoignages;
+
     public function __construct()
     {
         $this->participants = new ArrayCollection();
+        $this->temoignages = new ArrayCollection();
     }
 
 
@@ -226,6 +232,37 @@ class Famille
     public function setFamilleAdresse(?FamilleAdresse $famille_adresse): self
     {
         $this->famille_adresse = $famille_adresse;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Temoignage[]
+     */
+    public function getTemoignages(): Collection
+    {
+        return $this->temoignages;
+    }
+
+    public function addTemoignage(Temoignage $temoignage): self
+    {
+        if (!$this->temoignages->contains($temoignage)) {
+            $this->temoignages[] = $temoignage;
+            $temoignage->setFamille($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTemoignage(Temoignage $temoignage): self
+    {
+        if ($this->temoignages->contains($temoignage)) {
+            $this->temoignages->removeElement($temoignage);
+            // set the owning side to null (unless already changed)
+            if ($temoignage->getFamille() === $this) {
+                $temoignage->setFamille(null);
+            }
+        }
 
         return $this;
     }

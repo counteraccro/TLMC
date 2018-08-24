@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use App\Entity\Famille;
 
 class TemoignageType extends AbstractType
 {
@@ -21,16 +22,7 @@ class TemoignageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('titre')
-            ->add('corps', TextareaType::class)
-            ->add('prenom_temoin', TextType::class, array(
-            'label' => 'Prénom du témoin'
-        ))
-            ->add('age', IntegerType::class)
-            ->add('lien_parente', ChoiceType::class, array(
-            'label' => 'Lien de parenté avec le patient',
-            'choices' => array_flip($options['famille_parente'])
-        ))
-            ->add('ville');
+            ->add('corps', TextareaType::class);
 
         if ($options['avec_event']) {
             $event_opt = array(
@@ -44,7 +36,8 @@ class TemoignageType extends AbstractType
                 $event_opt['query_builder'] = $options['query_event'];
             }
             
-            $builder->add('evenement', EntityType::class, $event_opt);
+            $builder->add('famille', EntityType::class, array('class' => Famille::class, 'choice_label' => 'nom'))
+                ->add('evenement', EntityType::class, $event_opt);
         }
 
         if ($options['avec_prod']) {

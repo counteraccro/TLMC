@@ -12,10 +12,6 @@
            		<tr>
                		<th> Titre </th>
                		<th> Contenu </th>
-               		<th> Prénom du témoin </th>
-               		<th> Age </th>
-               		<th> Lien de parenté</th>
-               		<th> Ville </th>
                		<th> Date de création </th>
                		{% if type == 'membre' %}
                    		<th> Evénement </th>
@@ -28,10 +24,6 @@
                		<tr>
                			<td>{{ temoignage.titre }}</td>
                			<td>{{ temoignage.corps }}</td>
-               			<td>{{ temoignage.prenomTemoin }}</td>
-               			<td>{{ temoignage.age }}</td>
-                		<td>{{ temoignage.lienParente | lienParente }}</td>
-                		<td>{{ temoignage.ville }}</td>
                 		<td>{{ temoignage.dateCreation | date('d/m/Y H:i') }}</td>
                 		{% if type == 'membre' %}
                     		<td>{% if temoignage.evenement != null %} {{ temoignage.evenement.nom }} {% endif %}</td>
