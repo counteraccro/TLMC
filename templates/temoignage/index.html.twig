@@ -21,10 +21,6 @@
         		<th>{{ headerFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : 'id'} ), '#', current_order, current_field) | raw }}</th>
         		<th>{{ headerFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : 'titre'} ), 'Titre', current_order, current_field) | raw }}</th>
         		<th>{{ headerFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : 'corps'} ), 'Contenu', current_order, current_field) | raw }}</th>
-        		<th>{{ headerFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : 'prenom_temoin'} ), 'Prénom du témoin', current_order, current_field) | raw }}</th>
-        		<th>{{ headerFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : 'lien_parente'} ), 'Lien de parenté', current_order, current_field) | raw }}</th>
-        		<th>{{ headerFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : 'age'} ), 'Age', current_order, current_field) | raw }}</th>
-        		<th>{{ headerFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : 'ville'} ), 'Ville', current_order, current_field) | raw }}</th>
         		<th>{{ headerFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : 'date_creation'} ), 'Date de création', current_order, current_field) | raw }}</th>
         		{% if type != 'produit' %}
         			<th>Evénement</th>
@@ -39,10 +35,6 @@
         		<td>{{ inputFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Temoignage-id', current_search, 'Identifiant') | raw }}</td>
         		<td>{{ inputFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Temoignage-titre', current_search, 'Titre') | raw }}</td>
         		<td>{{ inputFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Temoignage-corps', current_search, 'Contenu') | raw }}</td>
-        		<td>{{ inputFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Temoignage-prenom_temoin', current_search, 'Prénom du témoin') | raw }}</td>
-        		<td>{{ inputFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Temoignage-lien_parente', current_search, '', constant('App\\Controller\\AppController::FAMILLE_PARENTE')) | raw }}</td>
-        		<td>{{ inputFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Temoignage-age', current_search, 'Age') | raw }}</td>
-        		<td>{{ inputFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Temoignage-ville', current_search, 'Identifiant') | raw }}</td>
         		<td>{{ inputFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Temoignage-date_creation', current_search, 'Titre') | raw }}</td>
         		<td>{{ inputFilter(path('temoignage_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Temoignage-evenement-nom', current_search, 'Evénement') | raw }}</td>
         		{% if type != 'produit' %}
@@ -59,10 +51,6 @@
         			<td>{{ temoignage.id }}</td>
         			<td>{{ temoignage.titre }}</td>
         			<td width="40%">{{ temoignage.corps }}</td>
-        			<td>{{ temoignage.prenomTemoin }}</td>
-        			<td>{{ temoignage.lienParente | lienParente }}</td>
-        			<td>{{ temoignage.age }} ans</td>
-        			<td>{{ temoignage.ville }}</td>
         			<td>{{ temoignage.dateCreation |date("d/m/Y H:i") }}</td>
         			{% if type != 'produit' %}
         				<td>

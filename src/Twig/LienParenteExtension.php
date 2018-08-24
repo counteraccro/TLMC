@@ -44,7 +44,7 @@ class LienParenteExtension extends AbstractExtension
      * @param int $key
      * @return string
      */
-    public function getLienParente(int $key)
+    public function getLienParente($key)
     {
         return (isset(AppController::FAMILLE_PARENTE[$key]) ? AppController::FAMILLE_PARENTE[$key] : $key);
     }

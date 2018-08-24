@@ -24,6 +24,7 @@ class Participant
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Famille", inversedBy="participants")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $famille;
 
@@ -42,10 +43,34 @@ class Participant
      * @ORM\Column(type="integer")
      */
     private $statut;
-    
-    public function getId()
+
+    public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTimeInterface $date): self
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    public function getStatut(): ?int
+    {
+        return $this->statut;
+    }
+
+    public function setStatut(int $statut): self
+    {
+        $this->statut = $statut;
+
+        return $this;
     }
 
     public function getEvenement(): ?Evenement
@@ -83,28 +108,5 @@ class Participant
 
         return $this;
     }
-
-    public function getDate(): ?\DateTimeInterface
-    {
-        return $this->date;
-    }
-
-    public function setDate(\DateTimeInterface $date): self
-    {
-        $this->date = $date;
-
-        return $this;
-    }
-
-    public function getStatut(): ?int
-    {
-        return $this->statut;
-    }
-
-    public function setStatut(int $statut): self
-    {
-        $this->statut = $statut;
-
-        return $this;
-    }
+    
 }

@@ -32,26 +32,6 @@ class Temoignage
     private $date_creation;
 
     /**
-     * @ORM\Column(type="string", length=300)
-     */
-    private $prenom_temoin;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $lien_parente;
-
-    /**
-     * @ORM\Column(type="string", length=300)
-     */
-    private $ville;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $age;
-
-    /**
      * @ORM\Column(type="smallint")
      */
     private $disabled;
@@ -71,8 +51,13 @@ class Temoignage
      * @ORM\JoinColumn(nullable=false)
      */
     private $membre;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Famille", inversedBy="temoignages")
+     */
+    private $famille;
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -109,54 +94,6 @@ class Temoignage
     public function setDateCreation(\DateTimeInterface $date_creation): self
     {
         $this->date_creation = $date_creation;
-
-        return $this;
-    }
-
-    public function getPrenomTemoin(): ?string
-    {
-        return $this->prenom_temoin;
-    }
-
-    public function setPrenomTemoin(string $prenom_temoin): self
-    {
-        $this->prenom_temoin = $prenom_temoin;
-
-        return $this;
-    }
-
-    public function getLienParente(): ?int
-    {
-        return $this->lien_parente;
-    }
-
-    public function setLienParente(int $lien_parente): self
-    {
-        $this->lien_parente = $lien_parente;
-
-        return $this;
-    }
-
-    public function getVille(): ?string
-    {
-        return $this->ville;
-    }
-
-    public function setVille(string $ville): self
-    {
-        $this->ville = $ville;
-
-        return $this;
-    }
-
-    public function getAge(): ?int
-    {
-        return $this->age;
-    }
-
-    public function setAge(int $age): self
-    {
-        $this->age = $age;
 
         return $this;
     }
@@ -205,6 +142,18 @@ class Temoignage
     public function setMembre(?Membre $membre): self
     {
         $this->membre = $membre;
+
+        return $this;
+    }
+
+    public function getFamille(): ?Famille
+    {
+        return $this->famille;
+    }
+
+    public function setFamille(?Famille $famille): self
+    {
+        $this->famille = $famille;
 
         return $this;
     }
