@@ -17,6 +17,7 @@ use App\Entity\Etablissement;
 use App\Entity\Specialite;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use App\Controller\AppController;
+
 class MembreType extends AbstractType
 {
 
@@ -60,10 +61,6 @@ class MembreType extends AbstractType
             'label' => 'Adresse email'
         ))
             ->add('fonction')
-            ->add('decideur', CheckboxType::class, array(
-            'label' => 'Décideur',
-            'required' => false
-        ))
             ->add('annuaire', CheckboxType::class, array(
             'label' => "Présent dans l'annuaire",
             'required' => false
@@ -71,20 +68,29 @@ class MembreType extends AbstractType
             ->add('signature', TextareaType::class)
             ->add('etablissement', EntityType::class, array(
             'class' => Etablissement::class,
+            'disabled' => $options['disabled_etablissement'],
             'choice_label' => 'nom'
         ))
             ->add('specialite', EntityType::class, array(
             'class' => Specialite::class,
             'choice_label' => 'service',
             'label' => 'Spécialité',
+            'disabled' => $options['disabled_specialite'],
             'required' => false
-        ))
-            ->add('roles', ChoiceType::class, array(
-            'choices' => array_flip($options['roles']),
-            'label' => 'Droits',
-            'multiple' => true
-        ))
-            ->add('save', SubmitType::class, array(
+        ));
+
+        if ($options['admin']) {
+            $builder->add('decideur', CheckboxType::class, array(
+                'label' => 'Décideur',
+                'required' => false
+            ))->add('roles', ChoiceType::class, array(
+                'choices' => array_flip($options['roles']),
+                'label' => 'Droits',
+                'multiple' => true
+            ));
+        }
+
+        $builder->add('save', SubmitType::class, array(
             'label' => $options['label_submit'],
             'attr' => array(
                 'class' => 'btn btn-primary'
@@ -98,7 +104,10 @@ class MembreType extends AbstractType
             'data_class' => Membre::class,
             'label_submit' => 'Valider',
             'edit' => false,
-            'roles' => AppController::DROITS
+            'roles' => AppController::DROITS,
+            'disabled_etablissement' => false,
+            'disabled_specialite' => false,
+            'admin' => true
         ]);
     }
 }

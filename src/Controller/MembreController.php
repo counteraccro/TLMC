@@ -77,7 +77,7 @@ class MembreController extends AppController
      * @Route("/membre/ajax/see/{id}", name="membre_ajax_see")
      * @ParamConverter("membre", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
-     * 
+     *
      * @param Request $request
      * @param SessionInterface $session
      * @param Membre $membre
@@ -90,12 +90,12 @@ class MembreController extends AppController
 
         // Si appel Ajax, on renvoi sur la page ajax
         if ($request->isXmlHttpRequest()) {
-            
+
             return $this->render('membre/ajax_see.html.twig', array(
-                'membre' => $membre,
+                'membre' => $membre
             ));
         }
-        
+
         return $this->render('membre/see.html.twig', array(
             'page' => $page,
             'membre' => $membre,
@@ -109,6 +109,36 @@ class MembreController extends AppController
                     )) => 'Gestion de membres'
                 ),
                 'active' => 'Fiche d\'un membre'
+            )
+        ));
+    }
+
+    /**
+     * Page "Mon compte"
+     *
+     * @Route("/membre/see_fiche/{id}", name="membre_see_fiche")
+     * @Route("/membre/ajax/see_fiche/{id}", name="membre_ajax_see_fiche")
+     * @ParamConverter("membre", options={"mapping": {"id": "id"}})
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE_DIRECT') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEVOLE')")
+     *
+     * @param Membre $membre
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function seeFicheAction(Request $request, Membre $membre)
+    {
+        // Si appel Ajax, on renvoi sur la page ajax
+        if ($request->isXmlHttpRequest()) {
+
+            return $this->render('membre/ajax_see_fiche.html.twig', array(
+                'membre' => $membre
+            ));
+        }
+
+        return $this->render('membre/see_fiche.html.twig', array(
+            'membre' => $membre,
+            'paths' => array(
+                'home' => $this->indexUrlProject(),
+                'active' => 'Mon compte'
             )
         ));
     }
@@ -169,6 +199,56 @@ class MembreController extends AppController
     /**
      * Edition d'un membre
      *
+     * @Route("/membre/ajax/edit_fiche/{id}", name="membre_ajax_edit_fiche")
+     * @ParamConverter("membre", options={"mapping": {"id": "id"}})
+     *
+     * @param SessionInterface $session
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $encoder
+     * @param Membre $membre
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function editFicheAction(SessionInterface $session, Request $request, UserPasswordEncoderInterface $encoder, Membre $membre)
+    {
+        $form = $this->createForm(MembreType::class, $membre, array(
+            'edit' => true,
+            'disabled_etablissement' => true,
+            'disabled_specialite' => true,
+            'admin' => false
+        ));
+        $password = $membre->getPassword();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $em = $this->getDoctrine()->getManager();
+
+            if ($membre->getPassword() == 'password') {
+                $membre->setPassword($password);
+            } else {
+                $encodePassword = $encoder->encodePassword($membre, $membre->getPassword());
+                $membre->setPassword($encodePassword);
+            }
+
+            $em->persist($membre);
+            $em->flush();
+
+            return $this->json(array(
+                'statut' => true
+            ));
+        }
+
+        return $this->render('membre/ajax_edit.html.twig', [
+            'membre' => $membre,
+            'form' => $form->createView(),
+            'admin' => false
+        ]);
+    }
+
+    /**
+     * Edition d'un membre
+     *
      * @Route("/membre/edit/{id}/{page}", name="membre_edit")
      * @Route("/membre/ajax/edit/{id}", name="membre_ajax_edit")
      * @ParamConverter("membre", options={"mapping": {"id": "id"}})
@@ -211,23 +291,23 @@ class MembreController extends AppController
                     'statut' => true
                 ));
             }
-            
+
             return $this->redirect($this->generateUrl('membre_listing', array(
                 'page' => $page,
                 'field' => $arrayFilters['field'],
                 'order' => $arrayFilters['order']
             )));
         }
-        
+
         // Si appel Ajax, on renvoi sur la page ajax
         if ($request->isXmlHttpRequest()) {
-            
+
             return $this->render('membre/ajax_edit.html.twig', [
                 'membre' => $membre,
                 'form' => $form->createView()
             ]);
         }
-        
+
         return $this->render('membre/edit.html.twig', array(
             'page' => $page,
             'form' => $form->createView(),
@@ -252,7 +332,7 @@ class MembreController extends AppController
      * @Route("/membre/delete/{id}/{page}", name="membre_delete")
      * @ParamConverter("membre", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
-     * 
+     *
      * @param Request $request
      * @param SessionInterface $session
      * @param Membre $membre
@@ -281,7 +361,7 @@ class MembreController extends AppController
                 'page' => $page
             ));
         }
-        
+
         return $this->redirectToRoute('membre_listing', array(
             'page' => $page,
             'field' => $arrayFilters['field'],

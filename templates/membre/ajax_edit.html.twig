@@ -34,15 +34,26 @@
     	<div class="row">
 			<div class="col-md-6">
     	        {{ form_row(form.username) }}
-            	<div class="shadow-sm p-3 mb-5 bg-white rounded border">
-                    {{ form_row(form.password) }}
-            	</div>
+    	        {% if admin == true %}
+                	<div class="shadow-sm p-3 mb-5 bg-white rounded border">
+                        {{ form_row(form.password) }}
+                	</div>
+            	{% else %}
+            		{{ form_row(form.annuaire) }}
+            	{% endif %}
     	    </div>
     	    
     	    <div class="col-md-6">
-    	        {{ form_row(form.roles) }}
-    	        {{ form_row(form.decideur) }}
-            	{{ form_row(form.annuaire) }}
+    	    	{% if admin == true %}
+        	        {{ form_row(form.roles) }}
+        	        {{ form_row(form.decideur) }}
+        	        {{ form_row(form.annuaire) }}
+        	    {% else %}
+        	    	<div class="shadow-sm p-3 mb-5 bg-white rounded border">
+                        {{ form_row(form.password) }}
+                	</div>
+    	        {% endif %}
+            	
     	    </div>
     	</div>
     	
@@ -50,15 +61,14 @@
         
 		<div class="row">
     	    <div class="col-md-6">
-    	    {{ form_row(form.fonction) }}
-            {{ form_row(form.signature) }}
-          	
+        	    {{ form_row(form.fonction) }}
+                {{ form_row(form.signature) }}
           	</div>
             <div class="col-md-6">
-            {{ form_row(form.etablissement) }}
-            	<div id="bloc_specialite">
-            		{{ form_row(form.specialite) }}
-            	</div>
+            	{{ form_row(form.etablissement) }}
+                <div id="bloc_specialite">
+                	{{ form_row(form.specialite) }}
+                </div>
             </div>
     	</div>
     </div>
@@ -74,7 +84,9 @@
 </div>
 
 {% block script %}
- 	<script src="{{ asset('assets/js/specialite/Specialite.js') }}?{{ date().timestamp }}"></script>
+    {% if admin == true %}
+ 		<script src="{{ asset('assets/js/specialite/Specialite.js') }}?{{ date().timestamp }}"></script>
+ 	{% endif %}
 {% endblock %}
 
 {% block javascripts %}
@@ -86,19 +98,26 @@
  	   'backdrop' : 'static'
  	});
 
- 	var url = '{{path('membre_ajax_edit', {'id': membre.id }) }}';
+    {% if admin == true %}
+ 		var url = '{{path('membre_ajax_edit', {'id': membre.id }) }}';
+ 	{% else %}
+ 		var url = '{{path('membre_ajax_edit_fiche', {'id': membre.id }) }}';
+ 	{% endif %}
 	Membre.EventEditSubmit(url);
 
 	$(document).ready(function() {
-		var params = {
-				url_ajax_see : '{{ path('specialite_ajax_edit_dropdown', {'id': membre.id, 'type': 'membre'}) }}',
-				id_specialite : '#bloc_specialite',
-				id_bloc_etablissement : '#membre_etablissement'
-		};
-        
-    	Specialite.Launch(params);
-    	Specialite.LoadDropdownSpecialite();
-    	Specialite.EventChange('#membre_save');
+
+		{% if admin == true %}
+    		var params = {
+    				url_ajax_see : '{{ path('specialite_ajax_edit_dropdown', {'id': membre.id, 'type': 'membre'}) }}',
+    				id_specialite : '#bloc_specialite',
+    				id_bloc_etablissement : '#membre_etablissement'
+    		};
+            
+        	Specialite.Launch(params);
+        	Specialite.LoadDropdownSpecialite();
+        	Specialite.EventChange('#membre_save');
+    	{% endif %}
     });
     
     </script> 

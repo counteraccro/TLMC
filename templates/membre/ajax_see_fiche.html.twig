@@ -1,0 +1,32 @@
+<div class="card-body">
+	<table  class="table table-sm">
+       	<tr>
+       		<th scope="col"> Nom </th>
+       		<td> {{ membre.nom }} </td>
+       		<th scope="col"> Prénom </th>
+       		<td> {{ membre.prenom }} </td>
+       		<th scope="col"> Pseudo </th>
+       		<td > {{ membre.username }} </td>
+       	</tr>
+       	<tr>
+       		<th scope="col"> Numéro de téléphone </th>
+       		<td> {{ membre.numeroTel }} </td>
+       		<th scope="col"> Email </th>
+            <td> {{ membre.email }} </td>
+            <th scope="col"> Membre présent dans l'annuaire </th>
+            <td> {{ membre.annuaire | bool }} </td>
+        </tr>
+        <tr>
+        	<th scope="col"> Etablissement </th>
+            <td> {{ membre.etablissement.nom }} </td>
+            <th scope="col"> Spécialité </th>
+            <td> {% if membre.specialite != null %} {{ membre.specialite.service }} {% endif %} </td>
+            <th scope="col"> Fonction </th>
+            <td> {{ membre.fonction }} </td>
+        </tr>
+        <tr>
+        	<th scope="col"> Signature </th>
+            <td colspan="5"> {{ membre.signature }} </td>
+        </tr>
+	</table>
+</div>
