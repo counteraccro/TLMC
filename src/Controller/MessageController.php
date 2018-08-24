@@ -108,4 +108,22 @@ class MessageController extends AppController
             'messages' => $messages
         ]);
     }
+    
+    /**
+     * Affiche une prévisualisation du message selectionné par l'user courant
+     *
+     * @Route("/messagerie/ajax/messagespreview", name="message_ajax_messages_preview")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
+     */
+    public function ajaxMessagesPreview()
+    {
+        $repository = $this->getDoctrine()->getRepository(Message::class);
+        
+        $messages = $repository->findByUserByParameter($this->getUser()
+            ->getId(), 0, 'expediteur');
+        
+        return $this->render('message/ajax_messages_preview.html.twig', [
+            'messages' => $messages
+        ]);
+    }
 }

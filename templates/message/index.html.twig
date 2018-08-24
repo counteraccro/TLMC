@@ -22,6 +22,9 @@
               <a class="nav-link" id="corbeille" data-toggle="pill" href="#v-pills-corbeille" role="tab" aria-controls="v-pills-corbeille" aria-selected="false">
               	<span class="oi oi-trash"></span> <span class="nav-text">Corbeille</span>
               </a>
+              <a class="nav-link" id="preview" data-toggle="pill" href="#v-pills-preview" role="tab" aria-controls="v-pills-preview" aria-selected="false">
+              	<span class="oi oi-eye"></span> <span class="nav-text">Preview</span>
+              </a>
             </div>
         </div>
         <div class="col-3">
@@ -32,10 +35,14 @@
               	<div class="tab-pane fade" id="v-pills-brouillons" role="tabpanel" aria-labelledby="v-pills-brouillons-tab"></div>
               	<div class="tab-pane fade" id="v-pills-envoyes" role="tabpanel" aria-labelledby="v-pills-envoyes-tab"></div>
               	<div class="tab-pane fade" id="v-pills-corbeille" role="tabpanel" aria-labelledby="v-pills-corbeille-tab"></div>
-            	</div>
+            </div>
         	</div>
         <div class="col-8">
-        	preview
+        	    <div class="tab-content" id="v-pills-tabPreview">
+        	    <div class="tab-pane fade show active" id="v-pills-preview" role="tabpanel" aria-labelledby="v-pills-preview-tab">
+					&nbsp;&nbsp;&nbsp;&nbsp;Chargement de la prévisualisation des messages...
+              	</div>
+                </div>
         </div>
     </div>
 </div>
@@ -57,6 +64,7 @@ $(document).ready(function() {
 		'urlBrouillons' : '{{path('message_ajax_messages_brouillons')}}',
 		'urlCorbeille' : '{{path('message_ajax_messages_corbeille')}}',
 		'urlEnvoyes' : '{{path('message_ajax_messages_envoyes')}}',
+		'urlPreview' : '{{path('message_ajax_messages_preview')}}',
 	};
 	Messagerie.Launch(params);
 	Messagerie.Event();
