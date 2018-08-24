@@ -74,6 +74,13 @@ class LoadFamilleAdresseData extends Fixture implements DependentFixtureInterfac
                 'setVille' => 'Paris',
                 'setCodePostal' => 75013,
                 'setDisabled' => false
+            ],
+            'FamilleAdresse-10' => [
+                'setNumeroVoie' => 22,
+                'setVoie' => 'Avenue Albert Camus',
+                'setVille' => 'Paris',
+                'setCodePostal' => 75018,
+                'setDisabled' => false
             ]
         ]
     ];

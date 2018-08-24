@@ -91,6 +91,7 @@ class TemoignageType extends AbstractType
             'avec_prod' => true,
             'query_prod' => null,
             'query_event' => null,
+            'query_famille' => null,
             'required_prod' => false,
             'required_event' => false
         ]);

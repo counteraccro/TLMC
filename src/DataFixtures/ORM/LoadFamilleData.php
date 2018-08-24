@@ -156,6 +156,17 @@ class LoadFamilleData extends Fixture implements DependentFixtureInterface
                 'setFamilleAdresse' => 'FamilleAdresse-9',
                 'setPatient' => 'Patient-4',
                 'setDisabled' => false
+            ],
+            'Famille-14' => [
+                'setNom' => 'Joséphine',
+                'setPrenom' => 'Irina',
+                'setLienFamille' => 9,
+                'setEmail' => 'irina.champs@gmail.com',
+                'setPmr' => false,
+                'setNumeroTel' => '+33178797475',
+                'setFamilleAdresse' => 'FamilleAdresse-10',
+                'setPatient' => 'Patient-5',
+                'setDisabled' => false
             ]
         ]
     ];

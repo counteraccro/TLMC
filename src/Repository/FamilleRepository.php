@@ -118,14 +118,36 @@ class FamilleRepository extends ServiceEntityRepository
                 $query->join($jointure['oldrepository'] . '.' . $jointure['newrepository'], $jointure['newrepository']);
             }
         }
-        
-        if(isset($params['condition'])){
-            foreach ($params['condition'] as $condition){
+
+        if (isset($params['condition'])) {
+            foreach ($params['condition'] as $condition) {
                 $query->andWhere($condition);
             }
         }
 
         return $query;
+    }
+
+    /**
+     * Récupération des familles participant à un événement
+     *
+     * @param int $id_evenement
+     * @param bool $admin
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getFamilles(int $id_evenement, bool $admin = false)
+    {
+        $return = $this->createQueryBuilder('f')
+            ->innerJoin('App:Participant', 'pa', 'WITH', 'pa.famille = f.id')
+            ->innerJoin('App:Patient', 'p', 'WITH', 'p.id = f.patient')
+            ->andWhere('pa.evenement = :idEvenement');
+
+        if (! $admin) {
+            $return->andWhere('f.disabled = 0');
+        }
+        $return->setParameter('idEvenement', $id_evenement)->orderBy('p.nom ASC, p.prenom ASC, f.nom ASC, f.prenom');
+
+        return $return;
     }
 
     // /**

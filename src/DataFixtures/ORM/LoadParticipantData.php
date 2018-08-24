@@ -104,6 +104,20 @@ class LoadParticipantData extends Fixture implements DependentFixtureInterface
                 'setPatient' => 'Patient-4',
                 'setStatut' => 2,
                 'setDate' => '2018-10-31 18:00:00'
+            ],
+            'Participant-13' => [
+                'setEvenement' => 'Evenement-3',
+                'setFamille' => 'Famille-14',
+                'setPatient' => 'Patient-5',
+                'setStatut' => 2,
+                'setDate' => '2018-10-31 18:00:00'
+            ],
+            'Participant-14' => [
+                'setEvenement' => 'Evenement-5',
+                'setFamille' => 'Famille-1',
+                'setPatient' => 'Patient-1',
+                'setStatut' => 2,
+                'setDate' => '2018-10-31 18:00:00'
             ]
         ]
     ];

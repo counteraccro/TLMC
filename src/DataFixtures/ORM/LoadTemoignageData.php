@@ -61,7 +61,7 @@ class LoadTemoignageData extends Fixture implements DependentFixtureInterface
                 'setMembre' => 'Membre-3',
                 'setTitre' => 'Un magnifique moment entre frères et soeurs',
                 'setCorps' => "Un dernier petit mot sur ce qui nous est apparu comme essentiel : associer les frères et sœurs ; ils ont souffert ensemble, de manière différente certes, mais aujourd’hui vous leur permettez de rêver ensemble.",
-                'setFamille' => 'Famille-1',
+                'setFamille' => 'Famille-4',
                 'setDisabled' => 0,
                 'setDateCreation' => '2018-06-23 21:12:13'
             ],
@@ -95,7 +95,7 @@ class LoadTemoignageData extends Fixture implements DependentFixtureInterface
                 'setMembre' => 'Membre-18',
                 'setTitre' => 'Des petits enfants ravis',
                 'setCorps' => "Ca faisait longtemps que je n'avais pas vu mon petit-fils et ma petite-fille rigoler comme cela. Le repas leur a fait beaucoup de bien.",
-                'setFamille' => 'Famille-4',
+                'setFamille' => 'Famille-5',
                 'setDisabled' => 0,
                 'setDateCreation' => '2018-01-14 09:14:00'
             ],
@@ -104,7 +104,7 @@ class LoadTemoignageData extends Fixture implements DependentFixtureInterface
                 'setMembre' => 'Membre-19',
                 'setTitre' => "Première leçon d'équitation",
                 'setCorps' => "Ma fille a toujours voulu faire de l'équitation et grâce à TLMC, elle a pu réaliser son rêve et pour cela je suis très reconnaissant envers l'association.",
-                'setFamille' => 'Famille-1',
+                'setFamille' => 'Famille-14',
                 'setDisabled' => 0,
                 'setDateCreation' => '2018-09-30 17:45:12'
             ],
@@ -113,7 +113,7 @@ class LoadTemoignageData extends Fixture implements DependentFixtureInterface
                 'setMembre' => 'Membre-21',
                 'setTitre' => 'Balade très sympa',
                 'setCorps' => "Au début, je n'étais pas très rassuré, c'est mon fils qui tenait à faire cette balade mais les paysages étaient très beaux et les animateurs vraiment gentils et prennaient bien le temps d'attendre tout le monde et répondaient à toutes nos questions. Je pense pouvoir affirmer que les petits comme les grands ont été charmés.",
-                'setFamille' => 'Famille-1',
+                'setFamille' => 'Famille-14',
                 'setDisabled' => 0,
                 'setDateCreation' => '2018-10-01 10:00:00'
             ],
@@ -122,7 +122,7 @@ class LoadTemoignageData extends Fixture implements DependentFixtureInterface
                 'setMembre' => 'Membre-21',
                 'setTitre' => 'La trouille',
                 'setCorps' => "Les bonbons étaient super bons et la déco étaient trop bien! Et les costumes et les maquillages étaient magnifiques: je ressemblais à une vraie fée! ",
-                'setFamille' => 'Famille-1',
+                'setFamille' => 'Famille-10',
                 'setDisabled' => 0,
                 'setDateCreation' => '2018-11-11 11:11:11'
             ]
