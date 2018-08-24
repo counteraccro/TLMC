@@ -26,11 +26,10 @@
            				<td>
            				    {% if is_granted("ROLE_ADMIN") %}
                    				{% if lien.specialite %}
-                            		<a href="{{ path('produit_specialite_ajax_edit', {'id' : lien.id, 'type':'produit'}) }}" id="btn-edit-produit-specialite-{{ lien.id }}" title="Editer la fiche">
+                   					{{ actionEdit(path('produit_specialite_ajax_edit', {'id' : lien.id, 'type':'produit'}), 'btn-edit-produit-specialite-'~ lien.id ) | raw }}
                             	{% else %}
-                            		<a href="{{ path('produit_etablissement_ajax_edit', {'id' : lien.id, 'type':'produit'}) }}" id="btn-edit-produit-etablissement-{{ lien.id }}" title="Editer la fiche">
-                            	{% endif %}
-                            	<span class="oi oi-pencil"></span></a>
+                                    {{ actionEdit(path('produit_etablissement_ajax_edit', {'id' : lien.id, 'type':'produit'}), 'btn-edit-produit-etablissement-'~ lien.id ) | raw }}
+                                {% endif %}
                         	{% endif %}
                     	</td>
            			</tr>

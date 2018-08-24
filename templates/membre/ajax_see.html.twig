@@ -2,7 +2,7 @@
          <div class="card-header bg-light">
            	 <b>Membre :</b> {{ membre.prenom }} {{ membre.nom }}
            	<div class="float-right"> 
-           		<a href="{{path('membre_ajax_edit', {'id': membre.id }) }}" id="btn-edit-membre" class="btn btn-dark"><span class="oi oi-pencil"></span> Editer le membre</a>
+           		{{ editObjet(path('membre_ajax_edit', {'id': membre.id }), "Editer le membre", "btn-edit-membre") | raw }}
            		{{ desactiverMembre(membre, path('membre_delete', {'id': membre.id, 'page' : 1 })) | raw }}
            	</div>
          </div>

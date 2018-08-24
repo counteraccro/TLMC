@@ -72,7 +72,7 @@ class LoadEtablissementData extends Fixture
                 'setType' => 'Clinique',
                 'setNumeroVoie' => 115,
                 'setVoie' => 'Route du maréchal Petain',
-                'setVille' => 'Argenteuille',
+                'setVille' => 'Argenteuil',
                 'setCodePostal' => 95100,
                 'setCodeLogistique' => 'CG5_95',
                 'setRegion' => 'Ile-de-France',

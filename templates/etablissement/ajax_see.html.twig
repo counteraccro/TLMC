@@ -2,7 +2,7 @@
          <div class="card-header bg-light">
            	 <b>Etablissement :</b> {{ etablissement.nom }}
            	<div class="float-right"> 
-           		<a href="{{path('etablissement_ajax_edit', {'id': etablissement.id }) }}" id="btn-edit-etablissement" class="btn btn-dark"><span class="oi oi-pencil"></span> Editer l'établissement</a>
+           	    {{ editObjet(path('etablissement_ajax_edit', {'id': etablissement.id }), "Editer l'établissement", "btn-edit-etablissement") | raw }}
            	</div>
          </div>
          <div class="card-body">

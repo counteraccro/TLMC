@@ -3,7 +3,7 @@
     	<b>Spécialité :</b> {{ specialite.service }}
        	<div class="float-right"> 
        		{% if is_granted("ROLE_ADMIN") %}
-       			<a href="{{path('specialite_ajax_edit', {'id': specialite.id, 'type': 'specialite' }) }}" id="btn-edit-specialite" class="btn btn-dark"><span class="oi oi-pencil"></span> Editer la spécialité</a>
+       			{{ editObjet(path('specialite_ajax_edit', {'id': specialite.id }), "Editer la spécialité", "btn-edit-specialite") | raw }}
        		{% endif %}
        	</div>
     </div>

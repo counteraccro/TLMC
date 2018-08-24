@@ -6,7 +6,9 @@
         	     rédigé par {{ temoignage.membre.prenom }} {{ temoignage.membre.nom }}
         	{% endif %}
         	<br><b>Actif :</b> {{ temoignage.disabled | actif }}
-        	<a href="{{ path('temoignage_ajax_edit', {'id' : temoignage.id, 'type': 'temoignage'}) }}" id="btn-edit-temoignage" class="btn btn-dark float-right"><span class="oi oi-pencil"></span> Editer le témoignage</a>
+        	<div class="float-right">
+        		{{ editObjet(path('temoignage_ajax_edit', {'id': temoignage.id, 'type':'temoignage' }), "Editer le témoignage", "btn-edit-temoignage") | raw }}
+        	</div>
         </div>
         
         <div class="card-body">

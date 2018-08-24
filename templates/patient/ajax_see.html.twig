@@ -2,7 +2,7 @@
          <div class="card-header bg-light">
            	 <b>Patient :</b> {{ patient.prenom }} {{ patient.nom }}
            	<div class="float-right"> 
-           		<a href="{{path('patient_ajax_edit', {'id': patient.id }) }}" id="btn-edit-patient" class="btn btn-dark"><span class="oi oi-pencil"></span> Editer le patient</a>
+           	    {{ editObjet(path('patient_ajax_edit', {'id': patient.id }), "Editer le patient", "btn-edit-patient") | raw }}
            	</div>
          </div>
          <div class="card-body">

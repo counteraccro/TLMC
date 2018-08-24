@@ -31,8 +31,8 @@
                		<td> {{ produitEtablissement.quantite }} </td>
                		<td> {{ produitEtablissement.date | date('d/m/Y H:i')}} </td>
               		<td>
-              			<a href="{{ path('produit_etablissement_ajax_edit', {'id' : produitEtablissement.id, 'type':type}) }}" id="btn-edit-produit-etablissement-{{ produitEtablissement.id }}"  title="Editer la fiche"><span class="oi oi-pencil"></span></a>
-                	</td>
+              			{{ actionEdit(path('produit_etablissement_ajax_edit', {'id' : produitEtablissement.id, 'type':type}), 'btn-edit-produit-etablissement-'~ produitEtablissement.id ) | raw }}
+              		</td>
             	</tr>
           	{% endfor %}
         </table>

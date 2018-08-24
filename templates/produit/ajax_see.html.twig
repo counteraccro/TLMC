@@ -3,7 +3,7 @@
     	<b>Produit :</b> {{ produit.titre }}
        	<div class="float-right"> 
        		{% if is_granted("ROLE_ADMIN") %}
-       			<a href="{{path('produit_ajax_edit', {'id': produit.id }) }}" id="btn-edit-produit" class="btn btn-dark"><span class="oi oi-pencil"></span> Editer le produit</a>
+       			{{ editObjet(path('produit_ajax_edit', {'id': produit.id }), "Editer le produit", "btn-edit-produit") | raw }}
        		{% endif %}
        	</div>
     </div>
