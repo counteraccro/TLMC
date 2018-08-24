@@ -8,7 +8,6 @@ use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 use App\Controller\AppController;
-use App\Entity\Membre;
 
 class MembreExtension extends AbstractExtension
 {
