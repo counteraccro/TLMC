@@ -1,4 +1,7 @@
 <?php
+/**
+ * Définition des filtres et fonctions en rapport avec le membre
+ */
 namespace App\Twig;
 
 use Twig\Extension\AbstractExtension;
@@ -30,24 +33,13 @@ class MembreExtension extends AbstractExtension
         );
     }
 
+    /**
+     * Donne les droits correspondants
+     * @param int $key
+     * @return int|string
+     */
     public function getDroit($key)
     {
         return (isset(AppController::DROITS[$key]) ? AppController::DROITS[$key] : $key);
-    }
-
-    /**
-     * Bouton desactiver/activer d'un membre
-     *
-     * @param Membre $membre
-     * @param string $url
-     * @return string
-     */
-    public function disabledBtn(Membre $membre, $url)
-    {
-        if ($membre->getDisabled()) {
-            return '<a href="' . $url . '" id="btn-disabled-membre" class="btn btn-secondary"><span class="oi oi-check"></span> Activer</a>';
-        } else {
-            return '<a href="' . $url . '" id="btn-disabled-membre" class="btn btn-secondary"><span class="oi oi-x"></span> Désactiver</a>';
-        }
     }
 }

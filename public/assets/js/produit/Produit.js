@@ -86,4 +86,27 @@ Produit.Launch = function(params){
 			});
 		});
 	}
+	
+	/**
+	 * désactivation d'un produit au click
+	 */
+	Produit.EventDelete = function(id, url)
+	{
+		$(id).click(function(){
+			event.preventDefault();
+
+			//envoi d'une requête POST en AJAX
+			$.ajax({
+				method: 'POST',
+				url: $(this).attr('href')
+			})
+			.done(function( reponse ) {
+
+				if(reponse.statut === true)
+				{
+					Produit.Ajax(Produit.url_ajax_see, Produit.id_global);
+				}
+			});
+		});
+	}
 }

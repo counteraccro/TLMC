@@ -4,6 +4,7 @@
        	<div class="float-right"> 
        		{% if is_granted("ROLE_ADMIN") %}
        			{{ editObjet(path('specialite_ajax_edit', {'id': specialite.id }), "Editer la spécialité", "btn-edit-specialite") | raw }}
+       			{{ deleteObjet(specialite.disabled, path('specialite_delete', {'id': specialite.id, 'page' : 1 }), 'btn-disabled-specialite') | raw }}
        		{% endif %}
        	</div>
     </div>
@@ -40,6 +41,9 @@
     $(document).ready(function() {
         var id_btn_specialite = '#btn-edit-specialite';
         Specialite.EventEdit(id_btn_specialite);
+
+        var id_btn_delete_specialite = '#btn-disabled-specialite';
+        Specialite.EventDelete(id_btn_delete_specialite);
     });
     
     </script> 

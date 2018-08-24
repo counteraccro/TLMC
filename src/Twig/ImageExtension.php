@@ -1,6 +1,8 @@
 <?php
 namespace App\Twig;
-
+/**
+ * Traitement des images
+ */
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;

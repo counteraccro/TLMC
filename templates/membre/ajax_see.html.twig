@@ -3,7 +3,7 @@
            	 <b>Membre :</b> {{ membre.prenom }} {{ membre.nom }}
            	<div class="float-right"> 
            		{{ editObjet(path('membre_ajax_edit', {'id': membre.id }), "Editer le membre", "btn-edit-membre") | raw }}
-           		{{ desactiverMembre(membre, path('membre_delete', {'id': membre.id, 'page' : 1 })) | raw }}
+           		{{ deleteObjet(membre.disabled, path('membre_delete', {'id': membre.id, 'page' : 1 }), 'btn-disabled-membre') | raw }}
            	</div>
          </div>
          <div class="card-body">

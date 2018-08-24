@@ -58,6 +58,10 @@ class ActionExtension extends AbstractExtension
                 $this,
                 'actionEditObjet'
             )),
+            new TwigFunction('deleteObjet', array(
+                $this,
+                'actionDeleteObjet'
+            )),
         );
     }
 
@@ -136,6 +140,33 @@ class ActionExtension extends AbstractExtension
             $return .= 'id="' . $id . '"';
         }
         $return .= ' class="btn btn-dark"><span class="oi oi-pencil"></span> ' . $label . '</a>';
+        
+        return $return;
+    }
+    
+    /**
+     * Bouton desactiver/activer d'un objet
+     *
+     * @param int $disabled
+     * @param string $url_delete
+     * @param string $id
+     * @return string
+     */
+    public function actionDeleteObjet($disabled, $url_delete, string $id = null)
+    {
+        $return = '<a href="' . $url_delete . '"';
+        
+        if(!is_null($id)){
+            $return .= ' id="' . $id . '"';
+        }
+        
+        $label = "Désactiver";
+        $icon = "oi-x";
+        if ($disabled == 1) {
+            $label = "Activer";
+            $icon = "oi-check";
+        }
+        $return .= ' class="btn btn-secondary"><span class="oi ' . $icon . '"></span> '. $label . '</a>';
         
         return $return;
     }

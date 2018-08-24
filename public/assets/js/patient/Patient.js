@@ -86,4 +86,27 @@ Patient.Launch = function(params){
 			});
 		});
 	}
+	
+	/**
+	 * désactivation d'un patient au click
+	 */
+	Patient.EventDelete = function(id, url)
+	{
+		$(id).click(function(){
+			event.preventDefault();
+
+			//envoi d'une requête POST en AJAX
+			$.ajax({
+				method: 'POST',
+				url: $(this).attr('href')
+			})
+			.done(function( reponse ) {
+
+				if(reponse.statut === true)
+				{
+					Patient.Ajax(Patient.url_ajax_see, Patient.id_global);
+				}
+			});
+		});
+	}
 }

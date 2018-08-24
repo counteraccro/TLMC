@@ -4,6 +4,7 @@
            	<div class="float-right"> 
            	    {% if is_granted("ROLE_ADMIN") %}
            			{{ editObjet(path('evenement_ajax_edit', {'id': evenement.id }), "Editer l'événement", "btn-edit-evenement") | raw }}
+           			{{ deleteObjet(evenement.disabled, path('evenement_delete', {'id': evenement.id, 'page' : 1 }), 'btn-disabled-evenement') | raw }}
            	    {% endif %}
            	</div>
          </div>
@@ -77,16 +78,11 @@
     <script type="text/javascript">
 
     $(document).ready(function() {
-    	$('#evenement_image').change(function() {
-    		var file = $(this)[0].files[0].name;
-    		$('.custom-file label[for="'+ $(this).attr('id') +'"]').html(file);
-    	});
-        
-        var id_btn_evenement = '#btn-edit-evenement';
+    	var id_btn_evenement = '#btn-edit-evenement';
         Evenement.EventEdit(id_btn_evenement);
 
-        var id_btn_edit_image = '#btn-edit-image';
-        Evenement.EventEdit(id_btn_edit_image);
+        var id_btn_delete_evenement = '#btn-disabled-evenement';
+        Evenement.EventDelete(id_btn_delete_evenement);
     });
     
     </script> 

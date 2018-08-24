@@ -3,6 +3,7 @@
            	 <b>Patient :</b> {{ patient.prenom }} {{ patient.nom }}
            	<div class="float-right"> 
            	    {{ editObjet(path('patient_ajax_edit', {'id': patient.id }), "Editer le patient", "btn-edit-patient") | raw }}
+           	    {{ deleteObjet(patient.disabled, path('patient_delete', {'id': patient.id, 'page' : 1 }), 'btn-disabled-patient') | raw }}
            	</div>
          </div>
          <div class="card-body">
@@ -22,6 +23,9 @@
     $(document).ready(function() {
         var id_btn_patient = '#btn-edit-patient';
         Patient.EventEdit(id_btn_patient);
+
+        var id_btn_delete_patient = '#btn-disabled-patient';
+        Patient.EventDelete(id_btn_delete_patient);
     });
     
     </script> 
