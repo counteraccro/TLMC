@@ -14,6 +14,11 @@ use Doctrine\ORM\Mapping as ORM;
  *     errorPath="slug",
  *     message="L'url saisie est déjà utilisée pour un autre questionnaire"
  * )
+ * @UniqueEntity(
+ *     fields={"titre"},
+ *     errorPath="titre",
+ *     message="Le titre saisi est déjà utilisé pour un autre questionnaire"
+ * )
  */
 class Questionnaire
 {

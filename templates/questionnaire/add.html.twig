@@ -68,7 +68,7 @@ Nouveau questionnaire
 		Questionnaire.EventOnTitle('#questionnaire_titre', '#questionnaire_slug', '#slug_text');
 
 		{% if not form.vars.valid %}
-			Questionnaire.Slug('#questionnaire_titre', '#questionnaire_slug', '#slug_text');
+			Questionnaire.Slug($('#questionnaire_titre'), '#questionnaire_slug', '#slug_text');
 		{% endif %}
     });
 		

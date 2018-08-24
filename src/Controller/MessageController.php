@@ -11,7 +11,7 @@ use App\Entity\Message;
 class MessageController extends AppController
 {
     /**
-     * @Route("/message", name="message")
+     * @Route("/messagerie", name="message")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      */
     public function index()
