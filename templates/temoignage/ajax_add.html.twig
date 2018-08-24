@@ -30,12 +30,14 @@
         	</div>
         	<div id="temoignage_row_evenement">
         		{{ form_row(form.evenement) }}
+        		{{ form_row(form.famille) }}
         	</div>
         	<div id="temoignage_row_produit">
         		{{ form_row(form.produit) }}
         	</div>
     	{% elseif type == 'evenement' %}
     		{{ form_row(form.evenement) }}
+    		{{ form_row(form.famille) }}
     	{% elseif type == 'produit' %}
     	    {{ form_row(form.produit) }}
     	{% endif %}
@@ -74,6 +76,8 @@
     				$('#temoignage_row_produit').hide();
                 }
             });
+        {% elseif type == 'evenement' %}
+			$('#temoignage_famille').attr('disabled', false);
     	{% endif %}
 		var url = '{{path('temoignage_ajax_add', {'id': objet.id, 'type': type }) }}';
 		Temoignage.EventAddSubmit(url);

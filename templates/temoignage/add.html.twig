@@ -26,6 +26,7 @@
     
     <div id="temoignage_row_evenement">
     	{{ form_row(form.evenement) }}
+    	{{ form_row(form.famille) }}
     </div>
 	
 	<div id="temoignage_row_produit">
@@ -49,10 +50,15 @@
             $('#temoignage_type').change(function(){
                 if($(this).val() == 1){
                 	$('#temoignage_row_produit').show();
+                	
                 	$('#temoignage_row_evenement').hide();
+                	$('#temoignage_row_evenement #temoignage_evenement').val(0);
+                	$('#temoignage_row_evenement #temoignage_famille').val(0);
                 } else {
     				$('#temoignage_row_evenement').show();
+    				
     				$('#temoignage_row_produit').hide();
+    				$('#temoignage_row_produit #temoignage_produit').val(0);
                 }
             });
         {% elseif type == 'evenement' %}

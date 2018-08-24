@@ -13,11 +13,15 @@
 	<div class="modal-body">
     	{% if type == 'evenement' %}
     		{{ form_row(form.evenement) }}
+    		{{ form_row(form.famille) }}
     	{% elseif type == 'produit' %}
     	    {{ form_row(form.produit) }}
     	{% else %}
     	    <div id="temoignage_row_evenement">
         		{{ form_row(form.evenement) }}
+        	</div>
+        	<div id="temoignage_row_famille">
+        		{{ form_row(form.famille) }}
         	</div>
     	    <div id="temoignage_row_produit">
         		{{ form_row(form.produit) }}
@@ -48,6 +52,7 @@
 	        	$('#temoignage_row_produit').hide();
 	        } else {
 				$('#temoignage_row_evenement').hide();
+				$('#temoignage_row_famille').hide();
 	        }
 
     		var url = '{{path('temoignage_ajax_edit', {'id': temoignage.id, 'type': type }) }}';

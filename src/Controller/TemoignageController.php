@@ -236,6 +236,7 @@ class TemoignageController extends AppController
                     $objet = $objets[0];
 
                     $opt_form['disabled_event'] = true;
+                    $opt_form['required_event'] = true;
                     $opt_form['avec_prod'] = false;
 
                     $temoignage->setEvenement($objet);

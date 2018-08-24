@@ -17,6 +17,11 @@
 	<div id="temoignage_row_evenement">
 		{{ form_row(form.evenement) }}
 	</div>
+	
+	<div id="temoignage_row_famille">
+    	{{ form_row(form.famille) }}
+    </div>
+	
 	<div id="temoignage_row_produit">
 		{{ form_row(form.produit) }}
 	</div>
@@ -35,8 +40,10 @@
         if($('#temoignage_evenement').val()){
         	$('#temoignage_row_produit').hide();
            	$('#temoignage_evenement').attr('disabled', true);
+           	$('#temoignage_famille').attr('disabled', true);
         } else {
 			$('#temoignage_row_evenement').hide();
+			$('#temoignage_row_famille').hide();
 			$('#temoignage_produit').attr('disabled', true);
         }
 	</script>

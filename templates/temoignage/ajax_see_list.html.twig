@@ -12,10 +12,16 @@
            		<tr>
                		<th> Titre </th>
                		<th> Contenu </th>
+               		{% if type != 'produit' %}
+               			<th>Témoin</th>
+               			<th>Patient</th>
+                		<th>Lien de parenté avec le patient</th>
+                		<th>Ville</th>
+                	{% endif %}
                		<th> Date de création </th>
                		{% if type == 'membre' %}
                    		<th> Evénement </th>
-                   		<th> produit </th>
+                   		<th> Produit </th>
                		{% endif %}
                		<th></th>
                	</tr>
@@ -23,7 +29,23 @@
                 {% for temoignage in temoignages %}
                		<tr>
                			<td>{{ temoignage.titre }}</td>
-               			<td>{{ temoignage.corps }}</td>
+               			<td width="40%">{{ temoignage.corps }}</td>
+               			{% if type != 'produit' %}
+               				{% if temoignage.famille != null %}
+                   				<td>{{ temoignage.famille.prenom }} {{ temoignage.famille.nom }}</td>
+                   				<td>
+                   				    {{ temoignage.famille.patient.prenom }} {{ temoignage.famille.patient.nom }}
+                   				    ({{ temoignage.famille.patient.dateNaissance | age }} ans)
+                   				</td>
+                    			<td>{{ temoignage.famille.lienFamille | lienParente }}</td>
+                    			<td>{{ temoignage.famille.familleAdresse.ville }}</td>
+                    		{% else %}
+                    			<td></td>
+                    			<td></td>
+                    			<td></td>
+                    			<td></td>
+                    		{% endif %}
+                		{% endif %}
                 		<td>{{ temoignage.dateCreation | date('d/m/Y H:i') }}</td>
                 		{% if type == 'membre' %}
                     		<td>{% if temoignage.evenement != null %} {{ temoignage.evenement.nom }} {% endif %}</td>

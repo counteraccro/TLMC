@@ -36,7 +36,7 @@ class LoadTemoignageData extends Fixture implements DependentFixtureInterface
                 'setMembre' => 'Membre-2',
                 'setTitre' => 'Un plaisir',
                 'setCorps' => 'Le repas était très bon.',
-                'setFamille' => 'Famille-1',
+                'setFamille' => 'Famille-2',
                 'setDisabled' => 0,
                 'setDateCreation' => '2018-01-05 13:18:32'
             ],
@@ -95,7 +95,7 @@ class LoadTemoignageData extends Fixture implements DependentFixtureInterface
                 'setMembre' => 'Membre-18',
                 'setTitre' => 'Des petits enfants ravis',
                 'setCorps' => "Ca faisait longtemps que je n'avais pas vu mon petit-fils et ma petite-fille rigoler comme cela. Le repas leur a fait beaucoup de bien.",
-                'setFamille' => 'Famille-1',
+                'setFamille' => 'Famille-4',
                 'setDisabled' => 0,
                 'setDateCreation' => '2018-01-14 09:14:00'
             ],
