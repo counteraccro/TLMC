@@ -34,6 +34,7 @@ Famille.Launch = function(params) {
 		.done(function( html ) {
 			$(id_done).html(html)
 			$(Famille.id_container_global).hideLoading();
+			$(Famille.id_global).hideLoading();
 		});
 	}
 

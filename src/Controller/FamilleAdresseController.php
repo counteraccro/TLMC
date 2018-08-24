@@ -95,18 +95,28 @@ class FamilleAdresseController extends AppController
      * Affichage de la fiche d'une adresse
      *
      * @Route("/famille_adresse/see/{id}/{page}", name="famille_adresse_see")
+     * @Route("/famille_adresse/see/{id}", name="famille_adresse_ajax_see")
      * @ParamConverter("famille_adresse", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      *
+     * @param Request $request
      * @param SessionInterface $session
      * @param FamilleAdresse $adresse
      * @param int $page
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function seeAction(SessionInterface $session, FamilleAdresse $adresse, int $page)
+    public function seeAction(Request $request, SessionInterface $session, FamilleAdresse $adresse, int $page = 1)
     {
         $arrayFilters = $this->getDatasFilter($session);
 
+        // Si appel Ajax, on renvoi sur la page ajax
+        if ($request->isXmlHttpRequest()) {
+            
+            return $this->render('famille_adresse/ajax_see.html.twig', array(
+                'adresse' => $adresse
+            ));
+        }
+        
         return $this->render('famille_adresse/see.html.twig', array(
             'page' => $page,
             'adresse' => $adresse,
@@ -247,12 +257,13 @@ class FamilleAdresseController extends AppController
      * @ParamConverter("famille_adresse", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
      *
+     * @param Request $request
      * @param SessionInterface $session
      * @param FamilleAdresse $adresse
      * @param int $page
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function deleteAction(SessionInterface $session, FamilleAdresse $adresse, int $page)
+    public function deleteAction(Request $request, SessionInterface $session, FamilleAdresse $adresse, int $page)
     {
         $arrayFilters = $this->getDatasFilter($session);
 
@@ -268,6 +279,13 @@ class FamilleAdresseController extends AppController
 
         $entityManager->flush();
 
+        if ($request->isXmlHttpRequest()) {
+            return $this->json(array(
+                'statut' => true,
+                'page' => $page
+            ));
+        }
+        
         return $this->redirectToRoute('famille_adresse_listing', array(
             'page' => $page,
             'field' => $arrayFilters['field'],

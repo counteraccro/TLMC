@@ -1,0 +1,33 @@
+<div id="ajax_famille_adresse_see">
+    <div class="card">
+        <div class="card-header">
+        	<b>Adresse</b>
+        	{% if adresse.disabled %}
+        		(Inactive)
+        	{% else %}
+        		(Active)
+        	{% endif %}
+        	<div class="float-right">
+        		{{ editObjet(path('famille_adresse_ajax_edit', {'id': adresse.id }), "Editer l'adresse", "btn-edit-adresse") | raw }}
+        		{{ deleteObjet(adresse.disabled, path('famille_adresse_delete', {'id': adresse.id, 'page' : 1 }), 'btn-disabled-adresse') | raw }}
+        	</div>
+        </div>
+        
+        <div class="card-body">
+        	{{ adresse.numeroVoie }}, {{ adresse.voie }} <br>
+        	{{ adresse.codePostal }} {{ adresse.ville }}
+     	</div>
+    </div>
+    
+    {% block javascripts %}
+        <script type="text/javascript">
+        
+            var id_btn_edit = '#btn-edit-adresse';
+            Famille.EventEdit(id_btn_edit);
+
+            var id_btn_delete_adresse = '#btn-disabled-adresse';
+            Famille.EventDelete(id_btn_delete_adresse);
+        </script>
+    {% endblock %}
+    
+</div>

@@ -4,33 +4,45 @@
 
 {% block body %}
 
-<h1>Fiche de l'adresse #{{ adresse.id }}</h1>
+	<h1>Fiche de l'adresse #{{ adresse.id }}</h1>
 
-{% include 'elements/arborescence.html.twig' %}
+    {% include 'elements/arborescence.html.twig' %}
 
-<table  class="table table-sm">
-	<tr>
-		<th scope="col"> N° de voie </th>
-		<td> {{ adresse.numeroVoie }} </td>
-	</tr>
-	<tr>
-		<th scope="col"> Voie </th>
-		<td> {{ adresse.voie }} </td>
-	</tr>
-	<tr>
-		<th scope="col"> Ville </th>
-		<td> {{ adresse.ville }} </td>
-	</tr>
-	<tr>
-		<th scope="col"> Code postal </th>
-		<td> {{ adresse.codePostal }} </td>
-	</tr>
-	<tr>
-		<th scope="col">Actif</th>
-		<td> {{ adresse.disabled | actif }} </td>
-	</tr>
+	<div id="bloc_adresse">
+    	<div class="row">
+    		<div class="col-md-4 offset-md-4">
+    		</div>
+    	</div>
+    </div>
 
-</table>
+	<!-- Modal -->
+    <div class="modal fade" id="modal_patient_global" tabindex="-1" role="dialog">
+    	<div class="modal-dialog" role="document">
+    		<div class="modal-content" id="bloc_modal"></div>
+    	</div>
+    </div>
 
-<div> Famille </div>
+{% endblock %}
+
+{% block script %}
+ 	<script src="{{ asset('assets/js/famille/Famille.js') }}?{{ date().timestamp }}"></script>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+    $('#bloc_adresse').showLoading();
+    $(document).ready(function() {
+		
+    	var params = {
+				url_ajax_see : '{{path('famille_adresse_ajax_see', {'id': adresse.id}) }}',
+				id_content_modal : '#bloc_modal',
+				id_modal : '#modal_patient_global',
+				id_global : '#bloc_adresse',
+		};
+        
+    	Famille.Launch(params);
+    	Famille.LoadFamille();
+    });
+    
+    </script>
 {% endblock %}
