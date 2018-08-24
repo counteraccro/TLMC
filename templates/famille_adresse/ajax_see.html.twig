@@ -9,7 +9,9 @@
         	{% endif %}
         	<div class="float-right">
         		{{ editObjet(path('famille_adresse_ajax_edit', {'id': adresse.id }), "Editer l'adresse", "btn-edit-adresse") | raw }}
-        		{{ deleteObjet(adresse.disabled, path('famille_adresse_delete', {'id': adresse.id, 'page' : 1 }), 'btn-disabled-adresse') | raw }}
+        		{% if is_granted("ROLE_ADMIN") %}
+        		    {{ deleteObjet(adresse.disabled, path('famille_adresse_delete', {'id': adresse.id, 'page' : 1 }), 'btn-disabled-adresse') | raw }}
+        		{% endif %}
         	</div>
         </div>
         

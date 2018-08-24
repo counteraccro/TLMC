@@ -8,7 +8,9 @@
         	<br><b>Actif :</b> {{ temoignage.disabled | actif }}
         	<div class="float-right">
         		{{ editObjet(path('temoignage_ajax_edit', {'id': temoignage.id, 'type':'temoignage' }), "Editer le témoignage", "btn-edit-temoignage") | raw }}
-        		{{ deleteObjet(temoignage.disabled, path('temoignage_delete', {'id': temoignage.id, 'page' : 1 }), 'btn-disabled-temoignage') | raw }}
+        		{% if is_granted("ROLE_ADMIN") %}
+        		    {{ deleteObjet(temoignage.disabled, path('temoignage_delete', {'id': temoignage.id, 'page' : 1 }), 'btn-disabled-temoignage') | raw }}
+        		{% endif %}
         	</div>
         </div>
         

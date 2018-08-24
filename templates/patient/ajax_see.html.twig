@@ -3,7 +3,9 @@
            	 <b>Patient :</b> {{ patient.prenom }} {{ patient.nom }}
            	<div class="float-right"> 
            	    {{ editObjet(path('patient_ajax_edit', {'id': patient.id }), "Editer le patient", "btn-edit-patient") | raw }}
-           	    {{ deleteObjet(patient.disabled, path('patient_delete', {'id': patient.id, 'page' : 1 }), 'btn-disabled-patient') | raw }}
+           	    {% if is_granted("ROLE_ADMIN") %}
+           	        {{ deleteObjet(patient.disabled, path('patient_delete', {'id': patient.id, 'page' : 1 }), 'btn-disabled-patient') | raw }}
+           	    {% endif %}
            	</div>
          </div>
          <div class="card-body">
