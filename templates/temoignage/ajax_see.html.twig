@@ -6,7 +6,12 @@
         	     rédigé par {{ temoignage.membre.prenom }} {{ temoignage.membre.nom }}
         	{% endif %}
         	<br><b>Actif :</b> {{ temoignage.disabled | actif }}
-        	<a href="{{ path('temoignage_ajax_edit', {'id' : temoignage.id, 'type': 'temoignage'}) }}" id="btn-edit-temoignage" class="btn btn-dark float-right"><span class="oi oi-pencil"></span> Editer le témoignage</a>
+        	<div class="float-right">
+        		{{ editObjet(path('temoignage_ajax_edit', {'id': temoignage.id, 'type':'temoignage' }), "Editer le témoignage", "btn-edit-temoignage") | raw }}
+        		{% if is_granted("ROLE_ADMIN") %}
+        		    {{ deleteObjet(temoignage.disabled, path('temoignage_delete', {'id': temoignage.id, 'page' : 1 }), 'btn-disabled-temoignage') | raw }}
+        		{% endif %}
+        	</div>
         </div>
         
         <div class="card-body">
@@ -31,6 +36,9 @@
         
             var id_btn_edit = '#btn-edit-temoignage';
             Temoignage.EventEdit(id_btn_edit);
+
+            var id_btn_delete_temoignage = '#btn-disabled-temoignage';
+            Temoignage.EventDelete(id_btn_delete_temoignage);
         </script>
     {% endblock %}
     

@@ -246,12 +246,13 @@ class EtablissementController extends AppController
      * @ParamConverter("etablissement", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
      *
+     * @param Request $request
      * @param SessionInterface $session
      * @param Etablissement $etablissement
      * @param int $page
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function deleteAction(SessionInterface $session, Etablissement $etablissement, int $page)
+    public function deleteAction(Request $request, SessionInterface $session, Etablissement $etablissement, int $page)
     {
         $arrayFilters = $this->getDatasFilter($session);
 
@@ -267,6 +268,13 @@ class EtablissementController extends AppController
 
         $entityManager->flush();
 
+        if ($request->isXmlHttpRequest()) {
+            return $this->json(array(
+                'statut' => true,
+                'page' => $page
+            ));
+        }
+        
         return $this->redirectToRoute('etablissement_listing', array(
             'page' => $page,
             'field' => $arrayFilters['field'],

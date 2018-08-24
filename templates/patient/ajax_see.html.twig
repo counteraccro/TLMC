@@ -2,7 +2,10 @@
          <div class="card-header bg-light">
            	 <b>Patient :</b> {{ patient.prenom }} {{ patient.nom }}
            	<div class="float-right"> 
-           		<a href="{{path('patient_ajax_edit', {'id': patient.id }) }}" id="btn-edit-patient" class="btn btn-dark"><span class="oi oi-pencil"></span> Editer le patient</a>
+           	    {{ editObjet(path('patient_ajax_edit', {'id': patient.id }), "Editer le patient", "btn-edit-patient") | raw }}
+           	    {% if is_granted("ROLE_ADMIN") %}
+           	        {{ deleteObjet(patient.disabled, path('patient_delete', {'id': patient.id, 'page' : 1 }), 'btn-disabled-patient') | raw }}
+           	    {% endif %}
            	</div>
          </div>
          <div class="card-body">
@@ -22,6 +25,9 @@
     $(document).ready(function() {
         var id_btn_patient = '#btn-edit-patient';
         Patient.EventEdit(id_btn_patient);
+
+        var id_btn_delete_patient = '#btn-disabled-patient';
+        Patient.EventDelete(id_btn_delete_patient);
     });
     
     </script> 

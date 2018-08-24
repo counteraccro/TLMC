@@ -27,8 +27,6 @@
         		<th>Spécialité</th>
             	<th>{{ headerFilter(path('membre_listing', {'page' : pagination.page, 'field' : 'fonction'} ), 'Fonction', current_order, current_field) | raw }} </th>
             	<th></th>
-            	<th></th>
-            	<th></th>
         	</tr>
         	<tr>
         		<td>{{ inputFilter(path('membre_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Membre-id', current_search, 'Identifiant') | raw }}</td>
@@ -40,8 +38,6 @@
             	<td>{{ inputFilter(path('membre_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Membre-specialite-service', current_search, 'Spécialité') | raw }}</td>
         		<td>{{ inputFilter(path('membre_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Membre-fonction', current_search, 'Fonction') | raw }}</td>
         		<td></td>
-        		<td></td>
-        		<td></td>
         	</tr>
         	
   		{% for membre in membres %}
@@ -51,15 +47,19 @@
         			<td>{{ membre.prenom }}</td>
         			<td>{{ membre.email }}</td>
         			<td>{{ membre.numeroTel }}</td>
-        			<td>{{ membre.etablissement.nom }}</td>
-        			<td>{% if membre.specialite != null %} {{ membre.specialite.service }} {% endif %}</td>
-        			<td>{{ membre.fonction }}</td>
-        			<td>{{ membre.username }}</td>
         			<td>
-        				{% for role in membre.roles %}
-        					{{ role |droit }}<br>
-        				{% endfor %}
+        				<a href="{{ path('etablissement_see', {'id': membre.etablissement.id, 'page' : pagination.page}) }}">
+        			    {{ membre.etablissement.nom }}
+        			    </a>
         			</td>
+        			<td>
+        			    {% if membre.specialite != null %} 
+        			    	<a href="{{ path('specialite_see', {'id': membre.specialite.id, 'page' : pagination.page}) }}">
+        			        {{ membre.specialite.service }} 
+        			        </a>
+        			    {% endif %}
+        			</td>
+        			<td>{{ membre.fonction }}</td>
         			<td>
         			    {{ actionSee(path('membre_see', {'id' : membre.id, 'page' : pagination.page})) | raw }}
         			    {{ actionEdit(path('membre_edit', {'id' : membre.id, 'page' : pagination.page})) | raw }}

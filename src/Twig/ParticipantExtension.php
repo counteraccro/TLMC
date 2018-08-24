@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * Définition des filtres et fonctions en rapport l'entity Participant
+ */
 namespace App\Twig;
 
 use Twig\Extension\AbstractExtension;

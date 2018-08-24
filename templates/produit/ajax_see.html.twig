@@ -3,7 +3,8 @@
     	<b>Produit :</b> {{ produit.titre }}
        	<div class="float-right"> 
        		{% if is_granted("ROLE_ADMIN") %}
-       			<a href="{{path('produit_ajax_edit', {'id': produit.id }) }}" id="btn-edit-produit" class="btn btn-dark"><span class="oi oi-pencil"></span> Editer le produit</a>
+       			{{ editObjet(path('produit_ajax_edit', {'id': produit.id }), "Editer le produit", "btn-edit-produit") | raw }}
+       			{{ deleteObjet(produit.disabled, path('produit_delete', {'id': produit.id, 'page' : 1 }), 'btn-disabled-produit') | raw }}
        		{% endif %}
        	</div>
     </div>
@@ -68,6 +69,9 @@
     $(document).ready(function() {
         var id_btn_produit = '#btn-edit-produit';
         Produit.EventEdit(id_btn_produit);
+        
+        var id_btn_delete_produit = '#btn-disabled-produit';
+        Produit.EventDelete(id_btn_delete_produit);
     });
     
     </script> 

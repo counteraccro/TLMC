@@ -23,8 +23,8 @@
                         <td>{{ specialite.adulte | bool }} </td>
                         <td>{{ specialite.pediatrie | bool }} </td>
                         <td>
-            		        <a href="{{ path('specialite_ajax_edit', {'id' : specialite.id, 'type' : 'etablissement'}) }}" id="btn-edit-specialite-{{ specialite.id }}"  title="Editer la fiche"><span class="oi oi-pencil"></span></a>
-                		    {{ actionDelete(specialite.disabled, path('specialite_delete', {'id' : specialite.id}), specialite.id) | raw }}
+                        	{{ actionEdit(path('specialite_ajax_edit', {'id' : specialite.id, 'type' : 'etablissement'}), 'btn-edit-specialite-'~ specialite.id ) | raw }}
+            		        {{ actionDelete(specialite.disabled, path('specialite_delete', {'id' : specialite.id}), specialite.id) | raw }}
                 		</td>
                     </tr>
                 

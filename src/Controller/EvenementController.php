@@ -334,12 +334,13 @@ class EvenementController extends AppController
      * @ParamConverter("evenement", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
      *
+     * @param Request $request
      * @param SessionInterface $session
      * @param Evenement $evenement
      * @param int $page
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function deleteAction(SessionInterface $session, Evenement $evenement, int $page)
+    public function deleteAction(Request $request, SessionInterface $session, Evenement $evenement, int $page)
     {
         $arrayFilters = $this->getDatasFilter($session);
 
@@ -355,6 +356,13 @@ class EvenementController extends AppController
 
         $entityManager->flush();
 
+        if ($request->isXmlHttpRequest()) {
+            return $this->json(array(
+                'statut' => true,
+                'page' => $page
+            ));
+        }
+        
         return $this->redirectToRoute('evenement_listing', array(
             'page' => $page,
             'field' => $arrayFilters['field'],

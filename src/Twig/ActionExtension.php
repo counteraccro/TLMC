@@ -54,6 +54,14 @@ class ActionExtension extends AbstractExtension
              $this,
              'actionsAllFilter'
              )),
+            new TwigFunction('editObjet', array(
+                $this,
+                'actionEditObjet'
+            )),
+            new TwigFunction('deleteObjet', array(
+                $this,
+                'actionDeleteObjet'
+            )),
         );
     }
 
@@ -87,11 +95,17 @@ class ActionExtension extends AbstractExtension
     /**
      * Génération du lien Edit
      * @param string $url_edit
+     * @param string $id
      * @return string
      */
-    public function actionEditFilter($url_edit)
+    public function actionEditFilter($url_edit, string $id = null)
     {
-        return '<a href="' . $url_edit . '" title="Editer la fiche"><span class="oi oi-pencil"></span></a>';
+        $return = '<a href="' . $url_edit . '"';
+        if(!is_null($id)){
+            $return .= ' id="' . $id . '"';
+        }
+        $return .= ' title="Editer la fiche"><span class="oi oi-pencil"></span></a>';
+        return $return;
     }
 
     /**
@@ -110,5 +124,50 @@ class ActionExtension extends AbstractExtension
         }
 
         return '<a href="' . $url_delete . '" title="' . $title . '" class="link-delete" ' . ($id ? 'id="delete-' . $id . '"' : '') . '><span class="oi ' . $icon . '"></span></a>';
+    }
+    
+    /**
+     * Génération du bouton edit dans les fiches des éléments
+     * 
+     * @param string $url
+     * @param string $label
+     * @param string $id
+     * @return string
+     */
+    public function actionEditObjet(string $url, string $label, string $id = null){
+        $return = '<a href="' . $url . '"';
+        if(!is_null($id)){
+            $return .= 'id="' . $id . '"';
+        }
+        $return .= ' class="btn btn-dark"><span class="oi oi-pencil"></span> ' . $label . '</a>';
+        
+        return $return;
+    }
+    
+    /**
+     * Bouton desactiver/activer d'un objet
+     *
+     * @param int $disabled
+     * @param string $url_delete
+     * @param string $id
+     * @return string
+     */
+    public function actionDeleteObjet($disabled, $url_delete, string $id = null)
+    {
+        $return = '<a href="' . $url_delete . '"';
+        
+        if(!is_null($id)){
+            $return .= ' id="' . $id . '"';
+        }
+        
+        $label = "Désactiver";
+        $icon = "oi-x";
+        if ($disabled == 1) {
+            $label = "Activer";
+            $icon = "oi-check";
+        }
+        $return .= ' class="btn btn-secondary"><span class="oi ' . $icon . '"></span> '. $label . '</a>';
+        
+        return $return;
     }
 }

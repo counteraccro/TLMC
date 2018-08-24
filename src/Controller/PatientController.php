@@ -300,12 +300,13 @@ class PatientController extends AppController
      * @ParamConverter("patient", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
      *
+     * @param Request $request
      * @param SessionInterface $session
      * @param Patient $patient
      * @param int $page
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function deleteAction(SessionInterface $session, Patient $patient, int $page)
+    public function deleteAction(Request $request, SessionInterface $session, Patient $patient, int $page)
     {
         $arrayFilters = $this->getDatasFilter($session);
 
@@ -321,6 +322,13 @@ class PatientController extends AppController
 
         $entityManager->flush();
 
+        if ($request->isXmlHttpRequest()) {
+            return $this->json(array(
+                'statut' => true,
+                'page' => $page
+            ));
+        }
+        
         return $this->redirectToRoute('patient_listing', array(
             'page' => $page,
             'field' => $arrayFilters['field'],

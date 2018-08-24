@@ -304,7 +304,8 @@ class MembreController extends AppController
 
             return $this->render('membre/ajax_edit.html.twig', [
                 'membre' => $membre,
-                'form' => $form->createView()
+                'form' => $form->createView(),
+                'admin' => true
             ]);
         }
 

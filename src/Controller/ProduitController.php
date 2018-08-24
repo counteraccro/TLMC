@@ -352,12 +352,13 @@ class ProduitController extends AppController
      * @ParamConverter("produit", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
      *
+     * @param Request $request
      * @param SessionInterface $session
      * @param Produit $produit
      * @param int $page
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function deleteAction(SessionInterface $session, Produit $produit, int $page)
+    public function deleteAction(Request $request, SessionInterface $session, Produit $produit, int $page)
     {
         $arrayFilters = $this->getDatasFilter($session);
 
@@ -373,6 +374,13 @@ class ProduitController extends AppController
 
         $entityManager->flush();
 
+        if ($request->isXmlHttpRequest()) {
+            return $this->json(array(
+                'statut' => true,
+                'page' => $page
+            ));
+        }
+        
         return $this->redirectToRoute('produit_listing', array(
             'page' => $page,
             'field' => $arrayFilters['field'],

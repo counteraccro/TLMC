@@ -43,8 +43,24 @@
         			<td>{{ patient.nom }}</td>
         			<td>{{ patient.prenom }}</td>
         			<td>{{ patient.dateNaissance | date('d/m/Y') }} ({{ patient.dateNaissance | age }} ans)</td>
-        			<td>{{ patient.specialite.service }}</td>
-        			<td>{{ patient.specialite.etablissement.nom }}</td>
+        			<td>
+        				{% if is_granted("ROLE_ADMIN") %}
+        					<a href="{{ path('specialite_see', {'id': patient.specialite.id, 'page' : pagination.page}) }}">
+        				{% endif %}
+        			    {{ patient.specialite.service }} 
+        			    {% if is_granted("ROLE_ADMIN") %}
+        			    	</a>
+        			    {% endif %}
+        			</td>
+        			<td>
+        				{% if is_granted("ROLE_ADMIN") %}
+        			    	<a href="{{ path('etablissement_see', {'id': patient.specialite.etablissement.id, 'page' : pagination.page}) }}">
+        			    {% endif %}
+        			    {{ patient.specialite.etablissement.nom }}
+        			    {% if is_granted("ROLE_ADMIN") %}
+        			    	</a>
+        			    {% endif %}
+        			</td>
         			<td>
         			    {{ actionSee(path('patient_see', {'id' : patient.id, 'page' : pagination.page})) | raw }}
         			    {{ actionEdit(path('patient_edit', {'id' : patient.id, 'page' : pagination.page})) | raw }}

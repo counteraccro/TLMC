@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * Définition des filtres et fonctions en rapport avec l'établissement
+ */
 namespace App\Twig;
 
 use Twig\Extension\AbstractExtension;

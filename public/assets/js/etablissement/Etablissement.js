@@ -86,4 +86,27 @@ Etablissement.Launch = function(params){
 			});
 		});
 	}
+	
+	/**
+	 * désactivation d'un établissement au click
+	 */
+	Etablissement.EventDelete = function(id, url)
+	{
+		$(id).click(function(){
+			event.preventDefault();
+
+			//envoi d'une requête POST en AJAX
+			$.ajax({
+				method: 'POST',
+				url: $(this).attr('href')
+			})
+			.done(function( reponse ) {
+
+				if(reponse.statut === true)
+				{
+					Etablissement.Ajax(Etablissement.url_ajax_see, Etablissement.id_global);
+				}
+			});
+		});
+	}
 }

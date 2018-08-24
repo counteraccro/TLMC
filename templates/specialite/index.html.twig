@@ -41,7 +41,11 @@
         			<td>{{ specialite.id }}</td>
         			<td>{{ specialite.service }}</td>
         			<td>{{ specialite.codeLogistique }}</td>
-        			<td>{{ specialite.etablissement.nom }}</td>
+        			<td>
+        				<a href="{{ path('etablissement_see', {'id': specialite.etablissement.id, 'page' : pagination.page}) }}"> 
+        			    {{ specialite.etablissement.nom }}
+        			    </a>
+        			</td>
         			<td>{{ specialite.adulte | bool }}</td>
         			<td>{{ specialite.pediatrie | bool }}</td>
         			<td>

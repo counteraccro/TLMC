@@ -2,7 +2,8 @@
          <div class="card-header bg-light">
            	 <b>Etablissement :</b> {{ etablissement.nom }}
            	<div class="float-right"> 
-           		<a href="{{path('etablissement_ajax_edit', {'id': etablissement.id }) }}" id="btn-edit-etablissement" class="btn btn-dark"><span class="oi oi-pencil"></span> Editer l'établissement</a>
+           	    {{ editObjet(path('etablissement_ajax_edit', {'id': etablissement.id }), "Editer l'établissement", "btn-edit-etablissement") | raw }}
+           	    {{ deleteObjet(etablissement.disabled, path('etablissement_delete', {'id': etablissement.id, 'page' : 1 }), 'btn-disabled-etablissement') | raw }}
            	</div>
          </div>
          <div class="card-body">
@@ -54,6 +55,8 @@
     $(document).ready(function() {
         var id_btn_etablissement = '#btn-edit-etablissement';
         Etablissement.EventEdit(id_btn_etablissement);
+        var id_btn_delete_etablissement = '#btn-disabled-etablissement';
+        Etablissement.EventDelete(id_btn_delete_etablissement);
     });
     
     </script> 
