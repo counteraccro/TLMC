@@ -138,7 +138,7 @@ class FamilleController extends AppController
             )
         );
 
-        return $this->render('famille/ajax_see.html.twig', array(
+        return $this->render('famille/ajax_see_liste.html.twig', array(
             'patient' => $patient,
             'familles' => $result['paginator'],
             'pagination' => $pagination
@@ -152,15 +152,24 @@ class FamilleController extends AppController
      * @ParamConverter("famille", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      *
+     * @param Request $request
      * @param SessionInterface $session
      * @param Famille $famille
      * @param int $page
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function seeAction(SessionInterface $session, Famille $famille, int $page)
+    public function seeAction(Request $request, SessionInterface $session, Famille $famille, int $page = 1)
     {
         $arrayFilters = $this->getDatasFilter($session);
 
+        // Si appel Ajax, on renvoi sur la page ajax
+        if ($request->isXmlHttpRequest()) {
+            
+            return $this->render('famille/ajax_see.html.twig', array(
+                'famille' => $famille
+            ));
+        }
+        
         return $this->render('famille/see.html.twig', array(
             'page' => $page,
             'famille' => $famille,

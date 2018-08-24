@@ -1,0 +1,74 @@
+<div id="ajax_patient_famille_see">
+    <div class="card">
+        <div class="card-header">
+        	{{ pagination.nb_elements }} famille{% if pagination.nb_elements > 1 %}s{% endif %} {% if pagination.pages_count > 0 %} - Page {{ pagination.page }} / {{ pagination.pages_count }} {% endif %}
+        	<a href="{{ path('famille_ajax_add', {'id' : patient.id}) }}" id="btn-add-famille" class="float-right"><span class="oi oi-person"></span> Nouvelle famille</a>
+        </div>
+        
+        <div class="card-body">
+          	<table class="table table-sm table-striped">
+           		<tr>
+               		<th> Prénom </th>
+               		<th> Nom </th>
+               		<th> Lien avec le patient </th>
+               		<th> Email </th>
+               		<th> N° de téléphone</th>
+               		<th> Adresse </th>
+               		<th> Mobilité réduite</th>
+               		<th></th>
+               	</tr>
+               	
+                {% for famille in familles %}
+               		<tr>
+               			<td>{{ famille.prenom }} </td>
+               			<td> {{ famille.nom }} </td>
+                		<td>{{ famille.lienFamille | lienParente }}</td>
+                		<td>{{ famille.email }} </td>
+                		<td>{{ famille.numeroTel }} </td>
+                		<td>
+                		    {{ famille.familleAdresse.numeroVoie }}, {{ famille.familleAdresse.voie }}<br />
+                		    {{ famille.familleAdresse.codePostal }} {{ famille.familleAdresse.ville }}
+                		    {{ actionEdit(path('famille_adresse_ajax_edit', {'id' : famille.familleAdresse.id, 'page' : pagination.page}), 'btn-edit-famille-adresse-'~ famille.familleAdresse.id ) | raw }}
+                		</td>
+                		<td>{{ famille.pmr | bool }}</td>
+                		<td>
+                			{{ actionEdit(path('famille_ajax_edit', {'id' : famille.id, 'page' : pagination.page}), 'btn-edit-famille-'~ famille.id ) | raw }}
+            		        {% if is_granted("ROLE_ADMIN") %}
+                		        {{ actionDelete(famille.disabled, path('famille_delete', {'id' : famille.id, 'page': pagination.page}), famille.id) | raw }}
+                		    {% endif %}
+                		</td>
+                	</tr>
+                {% endfor %}
+        	</table>
+        	
+        	{% if patient.familles is empty %}
+            	<p class="text-info text-center">Il  n'y a aucune famille associée à ce patient.</p>
+            {% endif %}
+        	
+        </div>
+        
+        <div class="card-footer">
+      		{% include 'elements/ajax_pagination.html.twig' %}
+      	</div>
+    </div>
+</div>
+
+<hr>
+
+{% block javascripts %}
+	<script type="text/javascript">
+    
+        Famille.EventAdd('#btn-add-famille');
+			
+    	//on associe une action pour chaque bouton edit ou delete
+        {% for famille in familles %}
+            Famille.EventEdit('#btn-edit-famille-' + {{ famille.id }});
+    		
+            Famille.EventEdit('#btn-edit-famille-adresse-' + {{ famille.familleAdresse.id }});
+
+            {% if is_granted("ROLE_ADMIN") %}
+				Famille.EventDelete('#delete-' + {{ famille.id }});
+    		{% endif %}
+        {% endfor %}
+    </script>
+{% endblock %}
