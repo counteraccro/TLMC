@@ -122,11 +122,13 @@ class HistoriqueController extends AppController
             'repositoryClass' => Historique::class,
             'repository' => 'Historique',
             'repositoryMethode' => 'findAllHistoriques',
+            'condition' => array('Historique.' . $type . ' = ' . $id)
         );
         
-        $params['condition'] = array(
-            $params['repository'] . '.' . $type . ' = ' . $id
-        );
+        if($type != 'specialite' && $this->isAdmin()){
+            $specialite = $this->getMembre()->getSpecialite();
+            $params['condition'][] = 'Historique.specialite = ' . (is_null($specialite) ? 0 : $specialite->getId());
+        }
         
         $repository = $this->getDoctrine()->getRepository($params['repositoryClass']);
         $result = $repository->{$params['repositoryMethode']}($params['page'], self::MAX_NB_RESULT_AJAX, $params);
