@@ -31,40 +31,56 @@ class ProduitEtablissementController extends AppController
      * @Security("is_granted('ROLE_ADMIN')")
      *
      * @param int $id
-     * @param string type
+     * @param
+     *            string type
      * @param int $page
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function ajaxSeeAction(int $id, string $type, int $page = 1)
     {
-        switch($type){
+        switch ($type) {
             case 'produit':
                 $repository = $this->getDoctrine()->getRepository(Produit::class);
+                $field = 'etablissement.nom';
+                $jointure = array(
+                    array(
+                        'oldrepository' => 'ProduitEtablissement',
+                        'newrepository' => 'etablissement'
+                    )
+                );
                 break;
             case 'etablissement':
                 $repository = $this->getDoctrine()->getRepository(Etablissement::class);
+                $field = 'produit.titre';
+                $jointure = array(
+                    array(
+                        'oldrepository' => 'ProduitEtablissement',
+                        'newrepository' => 'produit'
+                    )
+                );
                 break;
         }
-        
+
         $objets = $repository->findById($id);
         $objet = $objets[0];
-        
+
         $params = array(
-            'field' => 'id',
+            'field' => $field,
             'order' => 'ASC',
             'page' => $page,
             'repositoryClass' => ProduitEtablissement::class,
             'repository' => 'ProduitEtablissement',
             'repositoryMethode' => 'findAllProduitEtablissements',
+            'jointure' => $jointure
         );
-        
+
         $params['condition'] = array(
             $params['repository'] . '.' . $type . ' = ' . $id
         );
-        
+
         $repository = $this->getDoctrine()->getRepository($params['repositoryClass']);
         $result = $repository->{$params['repositoryMethode']}($params['page'], self::MAX_NB_RESULT_AJAX, $params);
-        
+
         $pagination = array(
             'page' => $page,
             'route' => 'produit_etablissement_ajax_see',
@@ -76,7 +92,7 @@ class ProduitEtablissementController extends AppController
                 'type' => $type
             )
         );
-        
+
         return $this->render('produit_etablissement/ajax_see.html.twig', array(
             'objet' => $objet,
             'type' => $type,
@@ -100,7 +116,7 @@ class ProduitEtablissementController extends AppController
     {
         $produitEtablissement = new ProduitEtablissement();
 
-        switch($type){
+        switch ($type) {
             case 'produit':
                 $repository = $this->getDoctrine()->getRepository(Produit::class);
                 $methode = 'setProduit';
@@ -114,10 +130,10 @@ class ProduitEtablissementController extends AppController
                 $disabled_etablissement = true;
                 break;
         }
-        
+
         $objets = $repository->findById($id);
         $objet = $objets[0];
-        
+
         $produitEtablissement->{$methode}($objet);
 
         $form = $this->createForm(ProduitEtablissementType::class, $produitEtablissement, array(
@@ -125,7 +141,7 @@ class ProduitEtablissementController extends AppController
             'disabled_produit' => $disabled_produit,
             'disabled_etablissement' => $disabled_etablissement
         ));
-        
+
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 

@@ -116,8 +116,8 @@ class HistoriqueController extends AppController
         }
         
         $params = array(
-            'field' => 'id',
-            'order' => 'ASC',
+            'field' => 'date',
+            'order' => 'DESC',
             'page' => $page,
             'repositoryClass' => Historique::class,
             'repository' => 'Historique',

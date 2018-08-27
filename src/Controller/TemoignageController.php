@@ -192,8 +192,8 @@ class TemoignageController extends AppController
         $objet = $objets[0];
 
         $params = array(
-            'field' => 'id',
-            'order' => 'ASC',
+            'field' => 'date_creation',
+            'order' => 'DESC',
             'page' => $page,
             'repositoryClass' => Temoignage::class,
             'repository' => 'Temoignage',

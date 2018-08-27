@@ -51,9 +51,23 @@ class SpecialiteEvenementController extends AppController
         switch($type){
             case 'evenement':
                 $repository = $this->getDoctrine()->getRepository(Evenement::class);
+                $field = 'specialite.service';
+                $jointure = array(
+                    array(
+                        'oldrepository' => 'SpecialiteEvenement',
+                        'newrepository' => 'specialite'
+                    )
+                );
                 break;
             case 'specialite':
                 $repository = $this->getDoctrine()->getRepository(Specialite::class);
+                $field = 'evenement.nom';
+                $jointure = array(
+                    array(
+                        'oldrepository' => 'SpecialiteEvenement',
+                        'newrepository' => 'evenement'
+                    )
+                );
                 break;
         }
         
@@ -61,12 +75,13 @@ class SpecialiteEvenementController extends AppController
         $objet = $objets[0];
         
         $params = array(
-            'field' => 'id',
+            'field' => $field,
             'order' => 'ASC',
             'page' => $page,
             'repositoryClass' => SpecialiteEvenement::class,
             'repository' => 'SpecialiteEvenement',
             'repositoryMethode' => 'findAllSpecialiteEvenements',
+            'jointure' => $jointure
         );
         
         $params['condition'] = array(

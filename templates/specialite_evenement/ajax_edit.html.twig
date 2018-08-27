@@ -33,7 +33,7 @@
     		   'backdrop' : 'static'
     	});
     	
-		var url = '{{path('specialite_evenement_ajax_edit', {'id': specialiteEvenement.id, 'type': type }) }}';
+		var url = '{{path('specialite_evenement_ajax_edit', {'id': specialiteEvenement.id, 'type': type, 'page': page }) }}';
 		SpecialiteEvenement.EventEditSubmit(url);
 		
 	</script>

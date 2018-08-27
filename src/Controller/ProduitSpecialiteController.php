@@ -39,9 +39,23 @@ class ProduitSpecialiteController extends AppController
         switch($type){
             case 'produit':
                 $repository = $this->getDoctrine()->getRepository(Produit::class);
+                $field = 'specialite.service';
+                $jointure = array(
+                    array(
+                        'oldrepository' => 'ProduitSpecialite',
+                        'newrepository' => 'specialite'
+                    )
+                );
                 break;
             case 'specialite':
                 $repository = $this->getDoctrine()->getRepository(Specialite::class);
+                $field = 'produit.titre';
+                $jointure = array(
+                    array(
+                        'oldrepository' => 'ProduitSpecialite',
+                        'newrepository' => 'produit'
+                    )
+                );
                 break;
         }
         
@@ -49,12 +63,13 @@ class ProduitSpecialiteController extends AppController
         $objet = $objets[0];
         
         $params = array(
-            'field' => 'id',
+            'field' => $field,
             'order' => 'ASC',
             'page' => $page,
             'repositoryClass' => ProduitSpecialite::class,
             'repository' => 'ProduitSpecialite',
             'repositoryMethode' => 'findAllProduitSpecialites',
+            'jointure' => $jointure
         );
         
         $params['condition'] = array(

@@ -33,7 +33,7 @@
     		   'backdrop' : 'static'
     	});
     	
-		var url = '{{path('produit_etablissement_ajax_edit', {'id': produitEtablissement.id, 'type': type }) }}';
+		var url = '{{path('produit_etablissement_ajax_edit', {'id': produitEtablissement.id, 'type': type, 'page': page }) }}';
 		ProduitEtablissement.EventEditSubmit(url);
 		
 	</script>

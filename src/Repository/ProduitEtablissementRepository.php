@@ -60,7 +60,7 @@ class ProduitEtablissementRepository extends ServiceEntityRepository
         // Génération des paramètres SQL
         $query = $this->generateParamsSql($query, $params);
         
-        $query->orderBy($params['repository'] . '.' . $params['field'], $params['order'])->setMaxResults($max);
+        $query->orderBy($params['field'], $params['order'])->setMaxResults($max);
         $paginator = new Paginator($query);
         
         // Nombre total d'établissements ou de produits

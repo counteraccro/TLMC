@@ -320,7 +320,7 @@ class SpecialiteController extends AppController
     public function ajaxSeeAction(Etablissement $etablissement, int $page = 1)
     {
         $params = array(
-            'field' => 'id',
+            'field' => 'service',
             'order' => 'ASC',
             'page' => $page,
             'repositoryClass' => Specialite::class,
