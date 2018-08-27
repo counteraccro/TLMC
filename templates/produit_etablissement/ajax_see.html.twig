@@ -62,7 +62,7 @@
             ProduitEtablissement.EventAdd(id_btn_add);
 
 			//on associe une action pour chaque bouton edit
-            {% for produitEtablissement in objet.produitEtablissements %}
+            {% for produitEtablissement in produitEtablissements %}
             	var id_btn_edit_{{ produitEtablissement.id }} = '#btn-edit-produit-etablissement-' + {{ produitEtablissement.id }};
             	ProduitEtablissement.EventEdit(id_btn_edit_{{ produitEtablissement.id }});
     		    

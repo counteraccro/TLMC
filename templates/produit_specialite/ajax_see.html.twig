@@ -1,56 +1,63 @@
-<div id="bloc_produit_specialite" class="card">
-	<div class="card-header">
-    	{% if type == 'produit' %}
-        	Spécialités
-        	<a href="{{ path('produit_specialite_ajax_add', {'id' : objet.id, 'type': type}) }}" id="btn-add-produit-specialite" class="float-right"><span class="oi oi-link-intact"></span> Nouveau lien avec une spécialité</a>
-       	{% elseif type == 'specialite' %}
-       		Produits
-        	<a href="{{ path('produit_specialite_ajax_add', {'id' : objet.id, 'type': type}) }}" id="btn-add-produit-specialite" class="float-right"><span class="oi oi-link-intact"></span> Nouveau lien avec un produit</a>
-       	{% endif %}
-   	</div>
-    <div class="card-body">
-    	<table class="table table-sm table-striped">
-     		<tr>
-                {% if type == 'produit'  %}
-                    {% if is_granted('ROLE_ADMIN') %}
-    	   			<th> Etablissement </th>
-    	   			{% endif %}
-    	   			<th> Spécialité </th>
-    	   		{% elseif type == 'specialite' %}
-    	   			<th> Produit </th>
-           		{% endif %}
-           		<th> Quantité </th>
-           		<th> Date </th>
-           		<th></th>
-           	</tr>
-           	{% for produitSpecialite in objet.produitSpecialites %}
-               	<tr>
-               		{% if type == 'produit'  %}
-                	    {% if is_granted('ROLE_ADMIN') %}
-                   			<td> {{ produitSpecialite.specialite.etablissement.nom }} </td>
-                   		{% endif %}
-                   		<td> {{ produitSpecialite.specialite.service }} </td>
-                   	{% elseif type == 'specialite' %}
-        	   			<th> {{ produitSpecialite.produit.titre }} </th>
-               		{% endif %}
-               		<td> {{ produitSpecialite.quantite }} </td>
-               		<td> {{ produitSpecialite.date | date('d/m/Y H:i')}} </td>
-              		<td>
-              			{{ actionEdit(path('produit_specialite_ajax_edit', {'id' : produitSpecialite.id, 'type':type}), 'btn-edit-produit-specialite-'~ produitSpecialite.id ) | raw }}
-              		</td>
-            	</tr>
-          	{% endfor %}
-        </table>
-        
-        {% if objet.produitSpecialites is empty %}
-           	<p class="text-info text-center">Il  n'y a 
-           	{% if type == 'produit' %}
-           		aucune spécialité associée au produit.</p>
+<div id="bloc_produit_specialite">
+	<div class="card">
+    	<div class="card-header">
+    		{{ pagination.nb_elements }} 
+        	{% if type == 'produit' %}
+            	Spécialité{% if pagination.nb_elements > 1 %}s{% endif %} {% if pagination.pages_count > 0 %} - Page {{ pagination.page }} / {{ pagination.pages_count }} {% endif %}
+            	<a href="{{ path('produit_specialite_ajax_add', {'id' : objet.id, 'type': type}) }}" id="btn-add-produit-specialite" class="float-right"><span class="oi oi-link-intact"></span> Nouveau lien avec une spécialité</a>
            	{% elseif type == 'specialite' %}
-           		aucun produit associé à cette spécialité.</p>
+           		Produit{% if pagination.nb_elements > 1 %}s{% endif %} {% if pagination.pages_count > 0 %} - Page {{ pagination.page }} / {{ pagination.pages_count }} {% endif %}
+            	<a href="{{ path('produit_specialite_ajax_add', {'id' : objet.id, 'type': type}) }}" id="btn-add-produit-specialite" class="float-right"><span class="oi oi-link-intact"></span> Nouveau lien avec un produit</a>
            	{% endif %}
-           	
-        {% endif %}
+       	</div>
+        <div class="card-body">
+        	<table class="table table-sm table-striped">
+         		<tr>
+                    {% if type == 'produit'  %}
+                        {% if is_granted('ROLE_ADMIN') %}
+        	   			<th> Etablissement </th>
+        	   			{% endif %}
+        	   			<th> Spécialité </th>
+        	   		{% elseif type == 'specialite' %}
+        	   			<th> Produit </th>
+               		{% endif %}
+               		<th> Quantité </th>
+               		<th> Date </th>
+               		<th></th>
+               	</tr>
+               	{% for produitSpecialite in produitSpecialites %}
+                   	<tr>
+                   		{% if type == 'produit'  %}
+                    	    {% if is_granted('ROLE_ADMIN') %}
+                       			<td> {{ produitSpecialite.specialite.etablissement.nom }} </td>
+                       		{% endif %}
+                       		<td> {{ produitSpecialite.specialite.service }} </td>
+                       	{% elseif type == 'specialite' %}
+            	   			<th> {{ produitSpecialite.produit.titre }} </th>
+                   		{% endif %}
+                   		<td> {{ produitSpecialite.quantite }} </td>
+                   		<td> {{ produitSpecialite.date | date('d/m/Y H:i')}} </td>
+                  		<td>
+                  			{{ actionEdit(path('produit_specialite_ajax_edit', {'id' : produitSpecialite.id, 'type':type}), 'btn-edit-produit-specialite-'~ produitSpecialite.id ) | raw }}
+                  		</td>
+                	</tr>
+              	{% endfor %}
+            </table>
+        	
+            {% if objet.produitSpecialites is empty %}
+               	<p class="text-info text-center">Il  n'y a 
+               	{% if type == 'produit' %}
+               		aucune spécialité associée au produit.</p>
+               	{% elseif type == 'specialite' %}
+               		aucun produit associé à cette spécialité.</p>
+               	{% endif %}
+               	
+            {% endif %}
+		</div>
+		
+        <div class="card-footer">
+        	{% include 'elements/ajax_pagination.html.twig' %}
+        </div>
         
     </div>
     
@@ -60,7 +67,7 @@
             ProduitSpecialite.EventAdd(id_btn_add);
 
 			//on associe une action pour chaque bouton edit ou delete
-            {% for produitSpecialite in objet.produitSpecialites %}
+            {% for produitSpecialite in produitSpecialites %}
             	var id_btn_edit_{{ produitSpecialite.id }} = '#btn-edit-produit-specialite-' + {{ produitSpecialite.id }};
             	ProduitSpecialite.EventEdit(id_btn_edit_{{ produitSpecialite.id }});
     		    
@@ -68,7 +75,5 @@
             
         </script>
     {% endblock %}
-    
+    <hr>
 </div>
-
-<hr>
