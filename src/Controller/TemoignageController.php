@@ -11,6 +11,7 @@ use App\Form\TemoignageType;
 use App\Entity\Membre;
 use App\Entity\Evenement;
 use App\Entity\Produit;
+use App\Entity\Famille;
 
 class TemoignageController extends AppController
 {
@@ -302,6 +303,14 @@ class TemoignageController extends AppController
 
             $em = $this->getDoctrine()->getManager();
             
+            //Pour associer la famille lors de l'ajout depuis une modale
+            if ($request->isXmlHttpRequest()) {
+                $famille_id = $request->request->get('temoignage')['famille'];
+                $familles = $this->getDoctrine()->getRepository(Famille::class)->findById($famille_id);
+                $famille = $familles[0];
+                $temoignage->setFamille($famille);
+            }
+            
             $temoignage->setMembre($membre);
             $temoignage->setDisabled(0);
             $temoignage->setDateCreation(new \DateTime());
@@ -367,7 +376,7 @@ class TemoignageController extends AppController
     public function editAction(SessionInterface $session, Request $request, Temoignage $temoignage, int $page = 1, string $type = 'tous')
     {
         $arrayFilters = $this->getDatasFilter($session);
-
+    
         $opt_form = array(
             'label_submit' => 'Modifier'
         );
@@ -389,11 +398,12 @@ class TemoignageController extends AppController
                     break;
             }
         } else {
-            // récyupération du produit ou de l'événement associé
+            // récupération du produit ou de l'événement associé
             if ($type == 'produit') {
                 $produit = $temoignage->getProduit();
             } elseif ($type == 'evenement') {
                 $evenement = $temoignage->getEvenement();
+                $famille = $temoignage->getFamille();
             }
         }
 
@@ -410,6 +420,7 @@ class TemoignageController extends AppController
                     $temoignage->setProduit($produit);
                 } elseif ($type == 'evenement') {
                     $temoignage->setEvenement($evenement);
+                    $temoignage->setFamille($famille);
                 }
             }
 
