@@ -30,14 +30,18 @@
         	</div>
         	<div id="temoignage_row_evenement">
         		{{ form_row(form.evenement) }}
-        		{{ form_row(form.famille) }}
+        		<div id="bloc_famille">
+        		    {{ form_row(form.famille) }}
+        		</div>
         	</div>
         	<div id="temoignage_row_produit">
         		{{ form_row(form.produit) }}
         	</div>
     	{% elseif type == 'evenement' %}
     		{{ form_row(form.evenement) }}
-    		{{ form_row(form.famille) }}
+    		<div id="bloc_famille">
+    		    {{ form_row(form.famille) }}
+    		</div>
     	{% elseif type == 'produit' %}
     	    {{ form_row(form.produit) }}
     	{% endif %}
@@ -56,9 +60,23 @@
 	{{ form_errors(form) }}
 	{{ form_end(form) }}
 
+	{% block script %}
+ 		<script src="{{ asset('assets/js/famille/famille.js') }}?{{ date().timestamp }}"></script>
+    {% endblock %}
+
 	{% block javascripts %}
 	<script type="text/javascript">
-    
+
+    	var params = {
+    			url_ajax_see : '{{ path('famille_ajax_add_dropdown') }}',
+    			id_famille : '#bloc_famille',
+    			id_bloc_evenement : '#temoignage_evenement'
+    	};
+        
+    	Famille.Launch(params);
+    	Famille.LoadDropdownFamille();
+    	Famille.EventChange('#temoignage_save');
+    	
     	$('#modal_{{ type }}_global').modal({
     		   'show' : true,
     		   'backdrop' : 'static'

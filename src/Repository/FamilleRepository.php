@@ -138,6 +138,7 @@ class FamilleRepository extends ServiceEntityRepository
     public function getFamilles(int $id_evenement, bool $admin = false)
     {
         $return = $this->createQueryBuilder('f')
+            ->select('p.id as id_patient, p.nom as nom_patient, p.prenom as prenom_patient, f.prenom, f.nom, f.id')
             ->innerJoin('App:Participant', 'pa', 'WITH', 'pa.famille = f.id')
             ->innerJoin('App:Patient', 'p', 'WITH', 'p.id = f.patient')
             ->andWhere('pa.evenement = :idEvenement');
@@ -147,7 +148,7 @@ class FamilleRepository extends ServiceEntityRepository
         }
         $return->setParameter('idEvenement', $id_evenement)->orderBy('p.nom ASC, p.prenom ASC, f.nom ASC, f.prenom');
 
-        return $return;
+        return $return->getQuery()->getResult();
     }
 
     // /**

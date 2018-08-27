@@ -13,6 +13,7 @@ use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
+use App\Entity\Evenement;
 
 class FamilleController extends AppController
 {
@@ -420,6 +421,36 @@ class FamilleController extends AppController
             'page' => $page,
             'field' => $arrayFilters['field'],
             'order' => $arrayFilters['order']
+        ));
+    }
+    
+    /**
+     * Mise à jour du dropdown Famille lorsque l'événement change dans le formulaire d'ajout d'un témoignage
+     *
+     * @Route("/famille/ajax/add/dropdown/{id}", name="famille_ajax_add_dropdown", defaults={"id" = 0})
+     * @ParamConverter("evenement", options={"mapping": {"id": "id"}})
+     * Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
+     *
+     * @param Request $request
+     * @param Evenement $evenement
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function addAjaxDropdownAction(Request $request, Evenement $evenement)
+    {
+        $repository = $this->getDoctrine()->getRepository(Famille::class);
+        $resultats = $repository->getFamilles($evenement->getId(), $this->isAdmin());
+        
+        $familles = array();
+        foreach ($resultats as $resultat){
+            if(isset($familles[$resultat['id_patient']])){
+                $familles[$resultat['id_patient']][] = $resultat;
+            } else {
+                $familles[$resultat['id_patient']][0] = $resultat;
+            }
+        }
+        
+        return $this->render('famille/ajax_dropdown.html.twig', array(
+            'familles' => $familles
         ));
     }
 }

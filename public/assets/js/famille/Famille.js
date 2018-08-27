@@ -9,6 +9,10 @@ Famille.Launch = function(params) {
 	Famille.id_global = params.id_global;
 	//cible la div '#bloc_modal'
 	Famille.id_modal = params.id_modal;
+	//cible la div '#id_famille'
+	Famille.id_famille = params.id_famille;
+	//cible la div '#temoignage_evenement'
+	Famille.id_bloc_evenement = params.id_bloc_evenement;
 
 	Famille.id_content_modal = params.id_content_modal;
 
@@ -35,9 +39,35 @@ Famille.Launch = function(params) {
 			$(id_done).html(html)
 			$(Famille.id_container_global).hideLoading();
 			$(Famille.id_global).hideLoading();
+			$(Famille.id_famille).hideLoading();
 		});
 	}
 
+	/**
+	 * fonction prévue pour le chargement d'un dropdown des spécialités d'un établissement
+	 */
+	Famille.LoadDropdownFamille = function()
+	{
+		Famille.Ajax(Famille.url_ajax_see + '/' + $(Famille.id_bloc_evenement).val(), Famille.id_famille);
+	}
+	
+	/**
+	 * Evénement changement du select établissement
+	 */
+	Famille.EventChange = function(id)
+	{
+		$(Famille.id_bloc_evenement).change(function(){
+			event.preventDefault();
+			//désactivation du bouton de sauvegarde pour éviter les erreurs
+			$(id).prop('disabled', true);
+			//affichage du loader
+			$(Famille.id_famille).showLoading();
+			//chargement du dropdown
+			Famille.LoadDropdownFamille();
+			
+		});
+	}
+	
 	/**
 	 * Evenement ajout d'une famille
 	 */

@@ -1,0 +1,20 @@
+<div id="ajax_temoignage_famille">
+	<div class="form-group">
+    	<label for="temoignage_famille">Témoin</label> 
+        <select id="temoignage_famille" name="temoignage[famille]" class="form-control">
+            {%  for famille in familles %}
+            	<optgroup label="{{ famille.0.prenom_patient }} {{ famille.0.nom_patient }}">
+            	{% for membre_famille in famille %}
+            		<option value="{{ membre_famille.id }}">{{ membre_famille.prenom }} {{ membre_famille.nom }}</option>
+            	{% endfor %}
+            	</optgroup>
+            {% endfor %}
+        </select>
+    </div>
+</div>
+
+{% block javascripts %}
+    <script type="text/javascript">
+    	$('#temoignage_save').prop('disabled', false);
+    </script>
+{% endblock %}
