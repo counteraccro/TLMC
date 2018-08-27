@@ -711,6 +711,22 @@ footer h6, footer p {
 	padding-right: 10px;
 }
 
+#messagerie-block #v-pills-tabContent .list-group-item div.small-head {
+	margin-top: -10px;
+	position: absolute;
+	left: 45px;
+	top: 10px;
+	font-size: 0.9em;
+}
+
+#messagerie-block #v-pills-tabContent .list-group-item div.small-body {
+	margin-top: -10px;
+	position: absolute;
+	left: 45px;
+	top: 25px;
+	font-size: 0.9em;
+}
+
 
 /********************************************
 *

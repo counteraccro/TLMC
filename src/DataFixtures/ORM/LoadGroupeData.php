@@ -26,6 +26,16 @@ class LoadGroupeData extends Fixture
                 'setNom' => 'Inscription',
                 'setDate' => '2018-03-05 12:12:00',
                 'setDisabled' => '0'
+            ],
+            'Groupe-3' => [
+                'setNom' => 'Tests avec Admin',
+                'setDate' => '2018-11-04 10:03:13',
+                'setDisabled' => '0'
+            ],
+            'Groupe-4' => [
+                'setNom' => 'Tests avec User',
+                'setDate' => '2018-12-01 09:30:08',
+                'setDisabled' => '0'
             ]
         ]
     ];

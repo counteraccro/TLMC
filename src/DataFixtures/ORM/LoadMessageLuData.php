@@ -32,7 +32,7 @@ class LoadMessageLuData extends Fixture implements DependentFixtureInterface
                 'setMembre' => 'Membre-1',
                 'setMessage' => 'Message-2',
                 'setCorbeille' => '0',
-                'setLu' => '0',
+                'setLu' => '1',
                 'setDate' => '2018-02-23 17:53:00'
             ],
             'MessageMembre-4' => [
@@ -41,7 +41,21 @@ class LoadMessageLuData extends Fixture implements DependentFixtureInterface
                 'setCorbeille' => '0',
                 'setLu' => '1',
                 'setDate' => '2018-02-23 17:53:00'
-            ]
+            ],
+            'MessageMembre-5' => [
+                'setMembre' => 'Membre-1',
+                'setMessage' => 'Message-7',
+                'setCorbeille' => '1',
+                'setLu' => '0',
+                'setDate' => '2018-03-05 14:17:00'
+            ],
+            'MessageMembre-6' => [
+                'setMembre' => 'Membre-27',
+                'setMessage' => 'Message-11',
+                'setCorbeille' => '1',
+                'setLu' => '0',
+                'setDate' => '2018-12-01 09:30:08'
+            ]            
         ]
     ];
 

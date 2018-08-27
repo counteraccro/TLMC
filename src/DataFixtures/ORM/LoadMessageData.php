@@ -34,7 +34,7 @@ class LoadMessageData extends Fixture implements DependentFixtureInterface
                 'setGroupe' => 'Groupe-1',
                 'setCorps' => 'Coucou Eric, ça va très bien et toi ?',
                 'setTitre' => 'Re:Nouvelles',
-                'setDateEnvoi' => '2018-02-24 08:45:00',
+                'setDateEnvoi' => '2018-08-28 16:03:00',
                 'setDisabled' => 0,
                 'setBrouillon' => 0
             ],
@@ -57,7 +57,87 @@ class LoadMessageData extends Fixture implements DependentFixtureInterface
                 'setDateEnvoi' => '2018-03-05 14:12:00',
                 'setDisabled' => 0,
                 'setBrouillon' => 0
-            ]
+            ],
+            'Message-5' => [
+                'setExpediteur' => 'Membre-17',
+                'setDestinataire' => 'Membre-1',
+                'setGroupe' => 'Groupe-3',
+                'setCorps' => 'Message d\'Olga pour Eric',
+                'setTitre' => 'Test MESSAGE admin',
+                'setDateEnvoi' => '2018-08-27 16:03:00',
+                'setDisabled' => 0,
+                'setBrouillon' => 0
+            ],
+            'Message-6' => [
+                'setExpediteur' => 'Membre-1',
+                'setDestinataire' => 'Membre-17',
+                'setGroupe' => 'Groupe-3',
+                'setCorps' => '*BROUILLON* Re: Message brouillon d\'Eric pour Olga',
+                'setTitre' => 'Test BROUILLON admin',
+                'setDateEnvoi' => '2018-03-05 14:12:00',
+                'setDisabled' => 0,
+                'setBrouillon' => 1
+            ],
+            'Message-7' => [
+                'setExpediteur' => 'Membre-17',
+                'setDestinataire' => 'Membre-1',
+                'setGroupe' => 'Groupe-3',
+                'setCorps' => '*CORBEILLE* Message corbeille d\'Olga pour Eric',
+                'setTitre' => 'Test CORBEILLE admin',
+                'setDateEnvoi' => '2018-03-05 14:12:00',
+                'setDisabled' => 0,
+                'setBrouillon' => 0
+            ],
+            'Message-8' => [
+                'setExpediteur' => 'Membre-1',
+                'setDestinataire' => 'Membre-17',
+                'setGroupe' => 'Groupe-3',
+                'setCorps' => '*ENVOYE* Message envoye d\'Eric pour Olga',
+                'setTitre' => 'Test ENVOYE admin',
+                'setDateEnvoi' => '2018-03-05 14:12:00',
+                'setDisabled' => 0,
+                'setBrouillon' => 0
+            ],
+            'Message-9' => [
+                'setExpediteur' => 'Membre-28',
+                'setDestinataire' => 'Membre-27',
+                'setGroupe' => 'Groupe-4',
+                'setCorps' => 'Message d\'Edouard pour Marie',
+                'setTitre' => 'Test MESSAGE user',
+                'setDateEnvoi' => '2018-12-01 09:30:08',
+                'setDisabled' => 0,
+                'setBrouillon' => 0
+            ],
+            'Message-10' => [
+                'setExpediteur' => 'Membre-27',
+                'setDestinataire' => 'Membre-28',
+                'setGroupe' => 'Groupe-4',
+                'setCorps' => '*BROUILLON* Re: Message brouillon de Marie pour Edouard',
+                'setTitre' => 'Test BROUILLON user',
+                'setDateEnvoi' => '2018-12-01 09:30:08',
+                'setDisabled' => 0,
+                'setBrouillon' => 1
+            ],
+            'Message-11' => [
+                'setExpediteur' => 'Membre-28',
+                'setDestinataire' => 'Membre-27',
+                'setGroupe' => 'Groupe-4',
+                'setCorps' => '*CORBEILLE* Message corbeille d\'Edouard pour Marie',
+                'setTitre' => 'Test CORBEILLE user',
+                'setDateEnvoi' => '2018-12-01 09:30:08',
+                'setDisabled' => 0,
+                'setBrouillon' => 0
+            ],
+            'Message-12' => [
+                'setExpediteur' => 'Membre-27',
+                'setDestinataire' => 'Membre-28',
+                'setGroupe' => 'Groupe-4',
+                'setCorps' => '*ENVOYE* Message envoye par Marie pour Edouard',
+                'setTitre' => 'Test ENVOYE user',
+                'setDateEnvoi' => '2018-12-01 09:30:08',
+                'setDisabled' => 0,
+                'setBrouillon' => 0
+            ],
         ]
     ];
 

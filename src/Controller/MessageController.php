@@ -11,7 +11,7 @@ class MessageController extends AppController
 {
 
     /**
-     *
+     * Route de base nécessaire vers la messagerie (hors appels ajax)
      * @Route("/messagerie", name="message")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      */
@@ -21,7 +21,7 @@ class MessageController extends AppController
     }
 
     /**
-     * Récupère le nombre de message non lu
+     * Récupère le nombre de message non-lus
      *
      * @Route("/messagerie/ajax/messageread", name="message_ajax_message_read")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")

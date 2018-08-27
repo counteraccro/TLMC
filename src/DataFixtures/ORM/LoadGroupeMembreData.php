@@ -33,6 +33,26 @@ class LoadGroupeMembreData extends Fixture implements DependentFixtureInterface
                 'setMembre' => 'Membre-2',
                 'setGroupe' => 'Groupe-2',
                 'setDate' => '2018-03-05 12:12:00'
+            ],
+            'GroupeMembre-5' => [
+                'setMembre' => 'Membre-17',
+                'setGroupe' => 'Groupe-3',
+                'setDate' => '2018-11-04 10:03:13'
+            ],
+            'GroupeMembre-6' => [
+                'setMembre' => 'Membre-1',
+                'setGroupe' => 'Groupe-3',
+                'setDate' => '2018-11-04 10:03:13'
+            ],
+            'GroupeMembre-7' => [
+                'setMembre' => 'Membre-27',
+                'setGroupe' => 'Groupe-4',
+                'setDate' => '2018-12-01 09:30:08'
+            ],
+            'GroupeMembre-8' => [
+                'setMembre' => 'Membre-28',
+                'setGroupe' => 'Groupe-4',
+                'setDate' => '2018-12-01 09:30:08'
             ]
         ]
     ];

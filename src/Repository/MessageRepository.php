@@ -7,6 +7,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Doctrine\ORM\Query\Expr;
 
 /**
  * @method Message|null find($id, $lockMode = null, $lockVersion = null)
@@ -57,7 +58,7 @@ class MessageRepository extends ServiceEntityRepository
         
         $query = $this->createQueryBuilder('m')
         ->setFirstResult($firstResult)
-        ->leftJoin('m.messageLus', 'ml')
+        ->leftJoin('m.messageLus', 'ml', Expr\Join::WITH , 'ml.membre = ' . $id_membre)
         ->andWhere('m.' . $role . ' = ' . $id_membre )
         ->andWhere('(m.brouillon = ' . $brouillon . ' OR m.brouillon IS NULL)')
         ->andWhere('(ml.corbeille = 0  OR ml.corbeille IS NULL)')
@@ -71,7 +72,7 @@ class MessageRepository extends ServiceEntityRepository
         
         $query = $this->createQueryBuilder('m')
         ->select('COUNT(DISTINCT m.id)')
-        ->leftJoin('m.messageLus', 'ml')
+        ->leftJoin('m.messageLus', 'ml', Expr\Join::WITH , 'ml.membre = ' . $id_membre)
         ->andWhere('m.' . $role . ' = ' . $id_membre)
         ->andWhere('(m.brouillon = ' . $brouillon . ' OR m.brouillon IS NULL)')
         ->andWhere('(ml.corbeille = 0  OR ml.corbeille IS NULL)');

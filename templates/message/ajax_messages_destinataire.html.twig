@@ -7,17 +7,8 @@
 	</div>
 	<div class="list-group">
 		{% for message in messages %}
-			<a href="#" class="list-group-item list-group-item-action active">
-        		{{ message.titre }}
-      		</a>
+			{{ listingMessage(message, app.user.id) | raw }}
 		{% endfor %}
-    	<a href="#" class="list-group-item list-group-item-action active">
-        	Réception
-      	</a>
-      	<a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
-      	<a href="#" class="list-group-item list-group-item-action">Morbi leo risus</a>
-      	<a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
-      	<a href="#" class="list-group-item list-group-item-action disabled">Vestibulum at eros</a>
     </div>
     
     {% include 'elements/ajax_pagination.html.twig' %}
