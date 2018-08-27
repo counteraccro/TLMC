@@ -26,14 +26,15 @@ class ProduitSpecialiteController extends AppController
     /**
      * Bloc produit - spécialité dans la vue d'un produit
      *
-     * @Route("/produit_specialite/ajax/see/{id}/{type}", name="produit_specialite_ajax_see")
+     * @Route("/produit_specialite/ajax/see/{id}/{type}/{page}", name="produit_specialite_ajax_see")
      * @Security("is_granted('ROLE_ADMIN')")
      *
      * @param int $id
      * @param string $type
+     * @param $page
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function ajaxSeeAction (int $id, string $type)
+    public function ajaxSeeAction (int $id, string $type, int $page = 1)
     {
         switch($type){
             case 'produit':
@@ -47,9 +48,39 @@ class ProduitSpecialiteController extends AppController
         $objets = $repository->findById($id);
         $objet = $objets[0];
         
+        $params = array(
+            'field' => 'id',
+            'order' => 'ASC',
+            'page' => $page,
+            'repositoryClass' => ProduitSpecialite::class,
+            'repository' => 'ProduitSpecialite',
+            'repositoryMethode' => 'findAllProduitSpecialites',
+        );
+        
+        $params['condition'] = array(
+            $params['repository'] . '.' . $type . ' = ' . $id
+        );
+        
+        $repository = $this->getDoctrine()->getRepository($params['repositoryClass']);
+        $result = $repository->{$params['repositoryMethode']}($params['page'], self::MAX_NB_RESULT_AJAX, $params);
+        
+        $pagination = array(
+            'page' => $page,
+            'route' => 'produit_specialite_ajax_see',
+            'pages_count' => ceil($result['nb'] / self::MAX_NB_RESULT_AJAX),
+            'nb_elements' => $result['nb'],
+            'id_div' => '#bloc_produit_specialite',
+            'route_params' => array(
+                'id' => $id,
+                'type' => $type
+            )
+        );
+        
         return $this->render('produit_specialite/ajax_see.html.twig', array(
             'objet' => $objet,
-            'type' => $type
+            'type' => $type,
+            'pagination' => $pagination,
+            'produitSpecialites' => $result['paginator']
         ));
     }
 
