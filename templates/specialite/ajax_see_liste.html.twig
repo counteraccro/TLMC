@@ -1,7 +1,7 @@
 <div id="ajax_etablissement_specialite_see">
     <div class="card">
         <div class="card-header">
-        	Spécialités
+        	{{ pagination.nb_elements }} spécialité{% if pagination.nb_elements > 1 %}s{% endif %} {% if pagination.pages_count > 0 %} - Page {{ pagination.page }} / {{ pagination.pages_count }} {% endif %}
         	<a href="{{ path('specialite_ajax_add', {'id' : etablissement.id}) }}" id="btn-add-specialite" class="float-right"><span class="oi oi-medical-cross"></span> Nouvelle spécialité</a>
         </div>
         
@@ -36,6 +36,10 @@
             {% endif %}
         	
         </div>
+        
+        <div class="card-footer">
+      		{% include 'elements/ajax_pagination.html.twig' %}
+      	</div>
     </div>
     
     {% block javascripts %}

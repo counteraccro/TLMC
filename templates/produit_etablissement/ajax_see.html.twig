@@ -1,53 +1,59 @@
-<div id="bloc_produit_etablissement" class="card">
-	<div class="card-header">
-	{% if type == 'produit' %}
-    	Etablissements
-    	<a href="{{ path('produit_etablissement_ajax_add', {'id' : objet.id, 'type': type}) }}" id="btn-add-produit-etablissement" class="float-right"><span class="oi oi-link-intact"></span> Nouveau lien avec un établissement</a>
-   	{% elseif type == 'etablissement' %}
-   		Produits
-    	<a href="{{ path('produit_etablissement_ajax_add', {'id' : objet.id, 'type': type}) }}" id="btn-add-produit-etablissement" class="float-right"><span class="oi oi-link-intact"></span> Nouveau lien avec un produit</a>
-   	{% endif %}
-    </div>
-    <div class="card-body">
-    	<table class="table table-sm table-striped">
-     		<tr>
-     		
-       			{% if type == 'produit' and is_granted('ROLE_ADMIN')  %}
-    	   			<th> Etablissement </th>
-    	   		{% elseif type == 'etablissement' %}
-    	   			<th> Produit </th>
-           		{% endif %}
-           		<th> Quantité </th>
-           		<th> Date </th>
-           		<th></th>
-           	</tr>
-           	{% for produitEtablissement in objet.produitEtablissements %}
-               	<tr>
-            	    {% if type == 'produit' and is_granted('ROLE_ADMIN') %}
-               			<td> {{ produitEtablissement.etablissement.nom }} </td>
-               		{% elseif type == 'etablissement' %}
-        	   			<td> {{ produitEtablissement.produit.titre }} </td>
+<div id="bloc_produit_etablissement">
+	<div class="card">
+    	<div class="card-header">
+    	{{ pagination.nb_elements }} 
+    	{% if type == 'produit' %}
+        	Etablissement{% if pagination.nb_elements > 1 %}s{% endif %} {% if pagination.pages_count > 0 %} - Page {{ pagination.page }} / {{ pagination.pages_count }} {% endif %}
+        	<a href="{{ path('produit_etablissement_ajax_add', {'id' : objet.id, 'type': type}) }}" id="btn-add-produit-etablissement" class="float-right"><span class="oi oi-link-intact"></span> Nouveau lien avec un établissement</a>
+       	{% elseif type == 'etablissement' %}
+       		Produit{% if pagination.nb_elements > 1 %}s{% endif %} {% if pagination.pages_count > 0 %} - Page {{ pagination.page }} / {{ pagination.pages_count }} {% endif %}
+        	<a href="{{ path('produit_etablissement_ajax_add', {'id' : objet.id, 'type': type}) }}" id="btn-add-produit-etablissement" class="float-right"><span class="oi oi-link-intact"></span> Nouveau lien avec un produit</a>
+       	{% endif %}
+        </div>
+        <div class="card-body">
+        	<table class="table table-sm table-striped">
+         		<tr>
+         		
+           			{% if type == 'produit' and is_granted('ROLE_ADMIN')  %}
+        	   			<th> Etablissement </th>
+        	   		{% elseif type == 'etablissement' %}
+        	   			<th> Produit </th>
                		{% endif %}
-               		<td> {{ produitEtablissement.quantite }} </td>
-               		<td> {{ produitEtablissement.date | date('d/m/Y H:i')}} </td>
-              		<td>
-              			{{ actionEdit(path('produit_etablissement_ajax_edit', {'id' : produitEtablissement.id, 'type':type}), 'btn-edit-produit-etablissement-'~ produitEtablissement.id ) | raw }}
-              		</td>
-            	</tr>
-          	{% endfor %}
-        </table>
+               		<th> Quantité </th>
+               		<th> Date </th>
+               		<th></th>
+               	</tr>
+               	{% for produitEtablissement in produitEtablissements %}
+                   	<tr>
+                	    {% if type == 'produit' and is_granted('ROLE_ADMIN') %}
+                   			<td> {{ produitEtablissement.etablissement.nom }} </td>
+                   		{% elseif type == 'etablissement' %}
+            	   			<td> {{ produitEtablissement.produit.titre }} </td>
+                   		{% endif %}
+                   		<td> {{ produitEtablissement.quantite }} </td>
+                   		<td> {{ produitEtablissement.date | date('d/m/Y H:i')}} </td>
+                  		<td>
+                  			{{ actionEdit(path('produit_etablissement_ajax_edit', {'id' : produitEtablissement.id, 'type':type}), 'btn-edit-produit-etablissement-'~ produitEtablissement.id ) | raw }}
+                  		</td>
+                	</tr>
+              	{% endfor %}
+            </table>
+            
+            {% if objet.produitEtablissements is empty %}
+               	<p class="text-info text-center">Il  n'y a aucun 
+               	
+                {% if type == 'produit' %}
+               		établissement associé à ce produit.</p>
+               	{% elseif type == 'etablissement' %}
+               		produit associé à cet établissement.</p>
+               	{% endif %}
+              	
+            {% endif %}
+        </div>
         
-        {% if objet.produitEtablissements is empty %}
-           	<p class="text-info text-center">Il  n'y a aucun 
-           	
-            {% if type == 'produit' %}
-           		établissement associé à ce produit.</p>
-           	{% elseif type == 'etablissement' %}
-           		produit associé à cet établissement.</p>
-           	{% endif %}
-          	
-        {% endif %}
-        
+        <div class="card-footer">
+      		{% include 'elements/ajax_pagination.html.twig' %}
+      	</div>
     </div>
     
     {% block javascripts %}
@@ -65,6 +71,6 @@
         </script>
     {% endblock %}
     
+    <hr>
+    
 </div>
-
-<hr>

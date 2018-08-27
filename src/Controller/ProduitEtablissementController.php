@@ -27,14 +27,15 @@ class ProduitEtablissementController extends AppController
     /**
      * Bloc produit - établissement dans la vue d'un produit
      *
-     * @Route("/produit_etablissement/ajax/see/{id}/{type}", name="produit_etablissement_ajax_see")
+     * @Route("/produit_etablissement/ajax/see/{id}/{type}/{page}", name="produit_etablissement_ajax_see")
      * @Security("is_granted('ROLE_ADMIN')")
      *
      * @param int $id
      * @param string type
+     * @param int $page
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function ajaxSeeAction(int $id, string $type)
+    public function ajaxSeeAction(int $id, string $type, int $page = 1)
     {
         switch($type){
             case 'produit':
@@ -48,9 +49,39 @@ class ProduitEtablissementController extends AppController
         $objets = $repository->findById($id);
         $objet = $objets[0];
         
+        $params = array(
+            'field' => 'id',
+            'order' => 'ASC',
+            'page' => $page,
+            'repositoryClass' => ProduitEtablissement::class,
+            'repository' => 'ProduitEtablissement',
+            'repositoryMethode' => 'findAllProduitEtablissements',
+        );
+        
+        $params['condition'] = array(
+            $params['repository'] . '.' . $type . ' = ' . $id
+        );
+        
+        $repository = $this->getDoctrine()->getRepository($params['repositoryClass']);
+        $result = $repository->{$params['repositoryMethode']}($params['page'], self::MAX_NB_RESULT_AJAX, $params);
+        
+        $pagination = array(
+            'page' => $page,
+            'route' => 'produit_etablissement_ajax_see',
+            'pages_count' => ceil($result['nb'] / self::MAX_NB_RESULT_AJAX),
+            'nb_elements' => $result['nb'],
+            'id_div' => '#bloc_produit_etablissement',
+            'route_params' => array(
+                'id' => $id,
+                'type' => $type
+            )
+        );
+        
         return $this->render('produit_etablissement/ajax_see.html.twig', array(
             'objet' => $objet,
-            'type' => $type
+            'type' => $type,
+            'pagination' => $pagination,
+            'produitEtablissements' => $result['paginator']
         ));
     }
 

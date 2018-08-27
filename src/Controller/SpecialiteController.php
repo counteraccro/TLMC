@@ -310,20 +310,46 @@ class SpecialiteController extends AppController
     /**
      * Bloc spécialité dans la vue d'un établissement
      *
-     * @Route("/specialite/etablissement/ajax/see/{id}", name="specialite_etablissement_ajax_see")
+     * @Route("/specialite/etablissement/ajax/see/{id}/{page}", name="specialite_etablissement_ajax_see")
      * @ParamConverter("etablissement", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
      *
      * @param Etablissement $etablissement
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function ajaxSeeAction(Etablissement $etablissement)
+    public function ajaxSeeAction(Etablissement $etablissement, int $page = 1)
     {
-        $specialites = $this->getElementsLiesActifs($etablissement, 'getSpecialites');
-
+        $params = array(
+            'field' => 'id',
+            'order' => 'ASC',
+            'page' => $page,
+            'repositoryClass' => Specialite::class,
+            'repository' => 'Specialite',
+            'repositoryMethode' => 'findAllSpecialites',
+        );
+        
+        $params['condition'] = array(
+            $params['repository'] . '.etablissement = ' . $etablissement->getId()
+        );
+        
+        $repository = $this->getDoctrine()->getRepository($params['repositoryClass']);
+        $result = $repository->{$params['repositoryMethode']}($params['page'], self::MAX_NB_RESULT_AJAX, $params);
+        
+        $pagination = array(
+            'page' => $page,
+            'route' => 'specialite_etablissement_ajax_see',
+            'pages_count' => ceil($result['nb'] / self::MAX_NB_RESULT_AJAX),
+            'nb_elements' => $result['nb'],
+            'id_div' => '#ajax_etablissement_specialite_see',
+            'route_params' => array(
+                'id' => $etablissement->getId()
+            )
+        );
+        
         return $this->render('specialite/ajax_see_liste.html.twig', array(
             'etablissement' => $etablissement,
-            'specialites' => $specialites
+            'specialites' => $result['paginator'],
+            'pagination' => $pagination
         ));
     }
 

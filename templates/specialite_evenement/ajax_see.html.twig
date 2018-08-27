@@ -1,61 +1,62 @@
-<div id="bloc_evenement_specialite" class="card">
-	<div class="card-header">
-		{{ pagination.nb_elements }} 
-        {% if type == 'evenement' %}
-        	Spécialité{% if pagination.nb_elements > 1 %}s{% endif %} {% if pagination.pages_count > 0 %} - Page {{ pagination.page }} / {{ pagination.pages_count }} {% endif %}
-        	<a href="{{ path('specialite_evenement_ajax_add', {'id' : objet.id, 'type':type}) }}" id="btn-add-specialite-event" class="float-right"><span class="oi oi-link-intact"></span> Nouveau lien avec une spécialité</a>
-        {% elseif type == 'specialite' %}
-    		Evénement{% if pagination.nb_elements > 1 %}s{% endif %} {% if pagination.pages_count > 0 %} - Page {{ pagination.page }} / {{ pagination.pages_count }} {% endif %}
-        	<a href="{{ path('specialite_evenement_ajax_add', {'id' : objet.id, 'type':type}) }}" id="btn-add-specialite-event" class="float-right"><span class="oi oi-link-intact"></span> Nouveau lien avec un événement</a>
-        {% endif %}
-    </div>
-    <div class="card-body">
-    	<table class="table table-sm table-striped">
-     		<tr>
-     			{% if type == 'evenement' %}
-        	   		<th> Etablissement </th>
-               		<th> Spécialité </th>
-               	{% elseif type == 'specialite' %}
-               		<th> Evénement </th>
-           		{% endif %}
-           		<th> Statut </th>
-           		<th> Date </th>
-           		<th></th>
-           	</tr>
-            {% for connexion in connexions %}	
-               	<tr>
-              	    {% if type == 'evenement' %}
-            	    	<td>{{ lien.specialite.etablissement.nom }}</td>
-            			<td>{{ lien.specialite.service }}</td>
-            	    {% elseif type =='specialite' %}
-            	    	<td> {{ lien.evenement.nom }} </td>
-            	    {% endif %}
-            		<td>{{ lien.statut | statutSpeEvent }}</td>
-            		<td>{{ lien.date | date('d/m/Y H:i') }}</td>
-            		<td>
-            		    {% if is_granted("ROLE_ADMIN") %}
-                           	<a href="{{ path('specialite_evenement_ajax_edit', {'id' : lien.id, 'type': type}) }}" id="btn-edit-specialite-event-{{ lien.id }}" title="Editer la fiche"><span class="oi oi-pencil"></span></a>
-                       	{% endif %}
-                    </td>
-            	</tr>
-           	{% endfor %}
-        </table>
-        
-        {% if objet.specialiteEvenements is empty %}
-           	<p class="text-info text-center">Il  n'y a 
-           	{% if type == 'evenement' %}
-           		aucune spécialité associée à cet événement.</p>
-          	{% elseif type == 'specialite' %}
-          		aucun événement associé à cette spécialité.</p>
-          	{% endif %}
-        {% endif %}
-        
-    </div>
+<div id="bloc_evenement_specialite">
+	<div class="card">
+    	<div class="card-header">
+    		{{ pagination.nb_elements }} 
+            {% if type == 'evenement' %}
+            	Spécialité{% if pagination.nb_elements > 1 %}s{% endif %} {% if pagination.pages_count > 0 %} - Page {{ pagination.page }} / {{ pagination.pages_count }} {% endif %}
+            	<a href="{{ path('specialite_evenement_ajax_add', {'id' : objet.id, 'type':type}) }}" id="btn-add-specialite-event" class="float-right"><span class="oi oi-link-intact"></span> Nouveau lien avec une spécialité</a>
+            {% elseif type == 'specialite' %}
+        		Evénement{% if pagination.nb_elements > 1 %}s{% endif %} {% if pagination.pages_count > 0 %} - Page {{ pagination.page }} / {{ pagination.pages_count }} {% endif %}
+            	<a href="{{ path('specialite_evenement_ajax_add', {'id' : objet.id, 'type':type}) }}" id="btn-add-specialite-event" class="float-right"><span class="oi oi-link-intact"></span> Nouveau lien avec un événement</a>
+            {% endif %}
+        </div>
+        <div class="card-body">
+        	<table class="table table-sm table-striped">
+         		<tr>
+         			{% if type == 'evenement' %}
+            	   		<th> Etablissement </th>
+                   		<th> Spécialité </th>
+                   	{% elseif type == 'specialite' %}
+                   		<th> Evénement </th>
+               		{% endif %}
+               		<th> Statut </th>
+               		<th> Date </th>
+               		<th></th>
+               	</tr>
+                {% for connexion in connexions %}	
+                   	<tr>
+                  	    {% if type == 'evenement' %}
+                	    	<td>{{ connexion.specialite.etablissement.nom }}</td>
+                			<td>{{ connexion.specialite.service }}</td>
+                	    {% elseif type =='specialite' %}
+                	    	<td> {{ connexion.evenement.nom }} </td>
+                	    {% endif %}
+                		<td>{{ connexion.statut | statutSpeEvent }}</td>
+                		<td>{{ connexion.date | date('d/m/Y H:i') }}</td>
+                		<td>
+                		    {% if is_granted("ROLE_ADMIN") %}
+                               	<a href="{{ path('specialite_evenement_ajax_edit', {'id' : connexion.id, 'type': type}) }}" id="btn-edit-specialite-event-{{ connexion.id }}" title="Editer la fiche"><span class="oi oi-pencil"></span></a>
+                           	{% endif %}
+                        </td>
+                	</tr>
+               	{% endfor %}
+            </table>
+            
+            {% if connexions is empty %}
+               	<p class="text-info text-center">Il  n'y a 
+               	{% if type == 'evenement' %}
+               		aucune spécialité associée à cet événement.</p>
+              	{% elseif type == 'specialite' %}
+              		aucun événement associé à cette spécialité.</p>
+              	{% endif %}
+            {% endif %}
+            
+        </div>
     
-    <div class="card-footer">
+    	<div class="card-footer">
       		{% include 'elements/ajax_pagination.html.twig' %}
       	</div>
-    
+    </div>
     {% block javascripts %}
         <script type="text/javascript">
             var id_btn_add = '#btn-add-specialite-event';
@@ -67,7 +68,5 @@
        	    {% endfor %}
         </script>
     {% endblock %}
-    
+    <hr>
 </div>
-
-<hr>
