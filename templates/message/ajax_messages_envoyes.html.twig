@@ -1,5 +1,16 @@
 <div id="ajax_messages_expediteur">
+	<div class="bloc_btn_messagerie">
+		<a href="#" class="btn btn-primary btn-sm">E</a>
+		<a href="#" class="btn btn-primary btn-sm">F</a>
+		<a href="#" class="btn btn-primary btn-sm">G</a>
+		<a href="#" class="btn btn-primary btn-sm">H</a>
+	</div>
 	<div class="list-group">
+			{% for message in messages %}
+			<a href="#" class="list-group-item list-group-item-action active">
+        		{{ message.titre }}
+      		</a>
+      		{% endfor %}
     	<a href="#" class="list-group-item list-group-item-action active">
         	Messages envoyés
       	</a>
@@ -8,4 +19,16 @@
       	<a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
       	<a href="#" class="list-group-item list-group-item-action disabled">Vestibulum at eros</a>
     </div>
+   
+    {% include 'elements/ajax_pagination.html.twig' %}
 </div>
+
+{% block javascripts %}
+	<script type="text/javascript">
+
+	$(document).ready(function() {
+		;
+	});
+		
+    </script>
+{% endblock %}

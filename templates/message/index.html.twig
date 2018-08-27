@@ -7,8 +7,17 @@
 <div id="messagerie-block">
 
 	<h1>Ma messagerie</h1>
+	
     <div class="row align-items-start no-gutters">
     	<div class="col-1">
+    		<div id="bloc_search" class="bloc_btn_messagerie">
+				<div class="input-group input-group-sm">
+                 	<input type="text" class="form-control border-primary" placeholder="Rechercher...">
+                  	<div class="input-group-append">
+                    	<button class="btn btn-outline-primary" type="button" id="search-btn"><span class="oi oi-magnifying-glass"></span></button>
+                  	</div>
+                </div>
+			</div>
             <div class="nav flex-column nav-pills" id="v-pills-messagerie" role="tablist" aria-orientation="vertical">
               <a class="nav-link active" id="reception" data-toggle="pill" href="#v-pills-reception" role="tab" aria-controls="v-pills-reception" aria-selected="true">
               	<span class="oi oi-home"></span> <span class="nav-text">Réception</span>
@@ -22,14 +31,12 @@
               <a class="nav-link" id="corbeille" data-toggle="pill" href="#v-pills-corbeille" role="tab" aria-controls="v-pills-corbeille" aria-selected="false">
               	<span class="oi oi-trash"></span> <span class="nav-text">Corbeille</span>
               </a>
-              <a class="nav-link" id="preview" data-toggle="pill" href="#v-pills-preview" role="tab" aria-controls="v-pills-preview" aria-selected="false">
-              	<span class="oi oi-eye"></span> <span class="nav-text">Preview</span>
-              </a>
             </div>
         </div>
         <div class="col-3">
             <div class="tab-content" id="v-pills-tabContent">
              	<div class="tab-pane fade show active" id="v-pills-reception" role="tabpanel" aria-labelledby="v-pills-reception-tab">
+             		<div class="bloc_btn_messagerie"></div>
 					&nbsp;&nbsp;&nbsp;&nbsp;Chargement des messages...
               	</div>
               	<div class="tab-pane fade" id="v-pills-brouillons" role="tabpanel" aria-labelledby="v-pills-brouillons-tab"></div>
@@ -38,11 +45,7 @@
             </div>
         	</div>
         <div class="col-8">
-        	    <div class="tab-content" id="v-pills-tabPreview">
-        	    <div class="tab-pane fade show active" id="v-pills-preview" role="tabpanel" aria-labelledby="v-pills-preview-tab">
-					&nbsp;&nbsp;&nbsp;&nbsp;Chargement de la prévisualisation des messages...
-              	</div>
-                </div>
+       		<div class="bloc_btn_messagerie"></div>
         </div>
     </div>
 </div>
@@ -64,7 +67,6 @@ $(document).ready(function() {
 		'urlBrouillons' : '{{path('message_ajax_messages_brouillons')}}',
 		'urlCorbeille' : '{{path('message_ajax_messages_corbeille')}}',
 		'urlEnvoyes' : '{{path('message_ajax_messages_envoyes')}}',
-		'urlPreview' : '{{path('message_ajax_messages_preview')}}',
 	};
 	Messagerie.Launch(params);
 	Messagerie.Event();
