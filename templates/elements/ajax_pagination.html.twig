@@ -23,18 +23,18 @@
 	
 	{% if pagination.pages_count > 0 %}
         {% if pagination.page>1 %}
-    		Pagination.EventChangePage('#page-first-{{ pagination.route }}', '{{ id_div }}');
-    		Pagination.EventChangePage('#page-previous-{{ pagination.route }}', '{{ id_div }}');
+    		Pagination.EventChangePage('#page-first-{{ pagination.route }}', '{{ pagination.id_div }}');
+    		Pagination.EventChangePage('#page-previous-{{ pagination.route }}', '{{ pagination.id_div }}');
         {% endif %}
 		
         {% for p in range(max(pagination.page-4, 1), min(pagination.page+4, pagination.pages_count)) %}
             var id_btn_change_{{ p }} = '#page-{{ pagination.route }}-' + {{ p }};
-    		Pagination.EventChangePage(id_btn_change_{{ p }}, '{{ id_div }}');
+    		Pagination.EventChangePage(id_btn_change_{{ p }}, '{{ pagination.id_div }}');
         {% endfor %}
         
         {% if pagination.page<pagination.pages_count %}
-    		Pagination.EventChangePage('#page-next-{{ pagination.route }}', '{{ id_div }}');
-    		Pagination.EventChangePage('#page-last-{{ pagination.route }}', '{{ id_div }}');
+    		Pagination.EventChangePage('#page-next-{{ pagination.route }}', '{{ pagination.id_div }}');
+    		Pagination.EventChangePage('#page-last-{{ pagination.route }}', '{{ pagination.id_div }}');
     		
         {% endif %}
     {% endif %}
