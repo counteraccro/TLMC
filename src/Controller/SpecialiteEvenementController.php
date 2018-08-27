@@ -38,35 +38,61 @@ class SpecialiteEvenementController extends AppController
     /**
      * Bloc spécialité - événement dans la vue d'un événement
      *
-     * @Route("/specialite_evenement/ajax/see/{id}/{type}", name="specialite_evenement_ajax_see")
+     * @Route("/specialite_evenement/ajax/see/{id}/{type}/{page}", name="specialite_evenement_ajax_see")
      * @Security("is_granted('ROLE_ADMIN')")
      *
-     * @param Evenement $evenement
+     * @param int $id
+     * @param string $type
+     * @param int $page
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function ajaxSeeAction(int $id, string $type)
+    public function ajaxSeeAction(int $id, string $type, int $page = 1)
     {
-        $repositorySE = $this->getDoctrine()->getRepository(SpecialiteEvenement::class);
-        $connexions = array();
-        
         switch($type){
             case 'evenement':
                 $repository = $this->getDoctrine()->getRepository(Evenement::class);
-                $connexions = $repositorySE->getSpecialites($id);
                 break;
             case 'specialite':
                 $repository = $this->getDoctrine()->getRepository(Specialite::class);
-                $connexions = $repositorySE->getEvenements($id);
                 break;
         }
         
         $objets = $repository->findById($id);
         $objet = $objets[0];
         
+        $params = array(
+            'field' => 'id',
+            'order' => 'ASC',
+            'page' => $page,
+            'repositoryClass' => SpecialiteEvenement::class,
+            'repository' => 'SpecialiteEvenement',
+            'repositoryMethode' => 'findAllSpecialiteEvenements',
+        );
+        
+        $params['condition'] = array(
+            $params['repository'] . '.' . $type . ' = ' . $id
+        );
+        
+        $repository = $this->getDoctrine()->getRepository($params['repositoryClass']);
+        $result = $repository->{$params['repositoryMethode']}($params['page'], self::MAX_NB_RESULT_AJAX, $params);
+        
+        $pagination = array(
+            'page' => $page,
+            'route' => 'specialite_evenement_ajax_see',
+            'pages_count' => ceil($result['nb'] / self::MAX_NB_RESULT_AJAX),
+            'nb_elements' => $result['nb'],
+            'id_div' => '#bloc_evenement_specialite',
+            'route_params' => array(
+                'id' => $id,
+                'type' => $type
+            )
+        );
+        
         return $this->render('specialite_evenement/ajax_see.html.twig', array(
             'objet' => $objet,
-            'connexions' => $connexions,
-            'type' => $type
+            'type' => $type,
+            'pagination' => $pagination,
+            'connexions' => $result['paginator']
         ));
     }
 

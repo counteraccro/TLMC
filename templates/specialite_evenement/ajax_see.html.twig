@@ -1,10 +1,11 @@
 <div id="bloc_evenement_specialite" class="card">
 	<div class="card-header">
-		{% if type == 'evenement' %}
-        	Spécialités
+		{{ pagination.nb_elements }} 
+        {% if type == 'evenement' %}
+        	Spécialité{% if pagination.nb_elements > 1 %}s{% endif %} {% if pagination.pages_count > 0 %} - Page {{ pagination.page }} / {{ pagination.pages_count }} {% endif %}
         	<a href="{{ path('specialite_evenement_ajax_add', {'id' : objet.id, 'type':type}) }}" id="btn-add-specialite-event" class="float-right"><span class="oi oi-link-intact"></span> Nouveau lien avec une spécialité</a>
         {% elseif type == 'specialite' %}
-    		Evénements
+    		Evénement{% if pagination.nb_elements > 1 %}s{% endif %} {% if pagination.pages_count > 0 %} - Page {{ pagination.page }} / {{ pagination.pages_count }} {% endif %}
         	<a href="{{ path('specialite_evenement_ajax_add', {'id' : objet.id, 'type':type}) }}" id="btn-add-specialite-event" class="float-right"><span class="oi oi-link-intact"></span> Nouveau lien avec un événement</a>
         {% endif %}
     </div>
@@ -21,27 +22,23 @@
            		<th> Date </th>
            		<th></th>
            	</tr>
-           	
-               	{% for connexion in connexions %}
-                    {% for lien in connexion %}	
-                   		<tr>
-                   		    {% if type == 'evenement' %}
-               		            <td>{% if loop.index0 == 0 %}{{ lien.etablissement }}{% endif %}</td>
-               					<td>{{ lien.specialite }}</td>
-               		       	{% elseif type =='specialite' %}
-               		       		<td> {{ lien.evenement }} </td>
-               		       	{% endif %}
-               				<td>{{ lien.statut | statutSpeEvent }}</td>
-               				<td>{{ lien.date | date('d/m/Y H:i') }}</td>
-               				<td>
-               				    {% if is_granted("ROLE_ADMIN") %}
-                                	<a href="{{ path('specialite_evenement_ajax_edit', {'id' : lien.id, 'type': type}) }}" id="btn-edit-specialite-event-{{ lien.id }}" title="Editer la fiche"><span class="oi oi-pencil"></span></a>
-                            	{% endif %}
-                        	</td>
-               			</tr>
-           		    {% endfor %}
-           	    {% endfor %}
-       	    
+            {% for connexion in connexions %}	
+               	<tr>
+              	    {% if type == 'evenement' %}
+            	    	<td>{{ lien.specialite.etablissement.nom }}</td>
+            			<td>{{ lien.specialite.service }}</td>
+            	    {% elseif type =='specialite' %}
+            	    	<td> {{ lien.evenement.nom }} </td>
+            	    {% endif %}
+            		<td>{{ lien.statut | statutSpeEvent }}</td>
+            		<td>{{ lien.date | date('d/m/Y H:i') }}</td>
+            		<td>
+            		    {% if is_granted("ROLE_ADMIN") %}
+                           	<a href="{{ path('specialite_evenement_ajax_edit', {'id' : lien.id, 'type': type}) }}" id="btn-edit-specialite-event-{{ lien.id }}" title="Editer la fiche"><span class="oi oi-pencil"></span></a>
+                       	{% endif %}
+                    </td>
+            	</tr>
+           	{% endfor %}
         </table>
         
         {% if objet.specialiteEvenements is empty %}
@@ -55,19 +52,19 @@
         
     </div>
     
+    <div class="card-footer">
+      		{% include 'elements/ajax_pagination.html.twig' %}
+      	</div>
+    
     {% block javascripts %}
         <script type="text/javascript">
             var id_btn_add = '#btn-add-specialite-event';
             SpecialiteEvenement.EventAdd(id_btn_add);
 
 			//on associe une action pour chaque bouton edit ou delete
-
-                {% for connexion in connexions %}
-        	        {% for lien in connexion %}
-        	        SpecialiteEvenement.EventEdit('#btn-edit-specialite-event-' + {{ lien.id }});
-        	       	{% endfor %}
-                {% endfor %}
-			
+            {% for connexion in connexions %}
+      	        SpecialiteEvenement.EventEdit('#btn-edit-specialite-event-' + {{ connexion.id }});
+       	    {% endfor %}
         </script>
     {% endblock %}
     

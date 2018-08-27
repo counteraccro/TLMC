@@ -104,9 +104,10 @@ class FamilleController extends AppController
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      *
      * @param Patient $patient
+     * @param int $page
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function ajaxSeeAction(Patient $patient, Request $request, SessionInterface $session, int $page = 1)
+    public function ajaxSeeAction(Patient $patient, int $page = 1)
     {
         $params = array(
             'field' => 'nom ASC, Famille.prenom',
@@ -133,6 +134,7 @@ class FamilleController extends AppController
             'route' => 'famille_ajax_see',
             'pages_count' => ceil($result['nb'] / self::MAX_NB_RESULT_AJAX),
             'nb_elements' => $result['nb'],
+            'id_div' => '#ajax_patient_famille_see',
             'route_params' => array(
                 'id' => $patient->getId()
             )

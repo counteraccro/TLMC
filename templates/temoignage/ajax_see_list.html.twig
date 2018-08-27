@@ -2,6 +2,7 @@
     <div class="card">
         <div class="card-header">
         	Témoignages
+        	{{ pagination.nb_elements }} témoignage{% if pagination.nb_elements > 1 %}s{% endif %} {% if pagination.pages_count > 0 %} - Page {{ pagination.page }} / {{ pagination.pages_count }} {% endif %}
         	{% if (is_granted("ROLE_ADMIN") or is_granted("ROLE_BENEFICIAIRE_DIRECT") or is_granted("ROLE_BENEFICIAIRE")) and type != 'membre' %}
         		<a href="{{ path('temoignage_ajax_add', {'id' : objet.id, 'type': type}) }}" id="btn-add-temoignage" class="float-right"><span class="oi oi-comment-square"></span> Nouveau témoignage</a>
         	{% endif %}
@@ -78,6 +79,10 @@
             {% endif %}
         	
         </div>
+        
+        <div class="card-footer">
+      		{% include 'elements/ajax_pagination.html.twig' %}
+      	</div>
     </div>
     
     <hr>

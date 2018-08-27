@@ -166,14 +166,15 @@ class TemoignageController extends AppController
     /**
      * Bloc témoignage d'un membre / d'un événement / d'un produit
      *
-     * @Route("/temoignage/ajax/see/listing/{id}/{type}", name="temoignage_ajax_see_liste")
+     * @Route("/temoignage/ajax/see/listing/{id}/{type}/{page}", name="temoignage_ajax_see_liste")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT') or is_granted('ROLE_BENEVOLE')")
      *
      * @param int $id
      * @param string $type
+     * @param int $page
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function ajaxSeeAction(int $id, string $type)
+    public function ajaxSeeAction(int $id, string $type, int $page = 1)
     {
         switch ($type) {
             case 'membre':
@@ -190,12 +191,43 @@ class TemoignageController extends AppController
         $objets = $repository->findById($id);
         $objet = $objets[0];
 
-        $temoignages = $this->getElementsLiesActifs($objet, 'getTemoignages');
+        $params = array(
+            'field' => 'id',
+            'order' => 'ASC',
+            'page' => $page,
+            'repositoryClass' => Temoignage::class,
+            'repository' => 'Temoignage',
+            'repositoryMethode' => 'findAllTemoignages',
+        );
+        
+        $params['condition'] = array(
+            $params['repository'] . '.' . $type . '  = ' . $id
+        );
+        
+        if (! $this->isAdmin()) {
+            $params['condition'][] = $params['repository'] . 'disabled = 0';
+        }
+        
+        $repository = $this->getDoctrine()->getRepository($params['repositoryClass']);
+        $result = $repository->{$params['repositoryMethode']}($params['page'], self::MAX_NB_RESULT_AJAX, $params);
+        
+        $pagination = array(
+            'page' => $page,
+            'route' => 'temoignage_ajax_see_liste',
+            'pages_count' => ceil($result['nb'] / self::MAX_NB_RESULT_AJAX),
+            'nb_elements' => $result['nb'],
+            'id_div' => '#ajax_' . $type . '_temoignage_see',
+            'route_params' => array(
+                'id' => $id,
+                'type' => $type
+            )
+        );
 
         return $this->render('temoignage/ajax_see_list.html.twig', array(
             'objet' => $objet,
             'type' => $type,
-            'temoignages' => $temoignages
+            'temoignages' => $result['paginator'],
+            'pagination' => $pagination
         ));
     }
 

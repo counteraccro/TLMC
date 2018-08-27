@@ -82,15 +82,15 @@ class HistoriqueController extends AppController
     /**
      * Bloc historique
      *
-     * @Route("/historique/ajax/see/{id}/{type}", name="historique_ajax_see")
+     * @Route("/historique/ajax/see/{id}/{type}/{page}", name="historique_ajax_see")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      *
      * @param int $id
-     * @param
-     *            string type
+     * @param string type
+     * @param int $page
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function ajaxSeeAction(int $id, string $type)
+    public function ajaxSeeAction(int $id, string $type, int $page = 1)
     {
         switch ($type) {
             case 'specialite':
@@ -114,10 +114,40 @@ class HistoriqueController extends AppController
                 $objet = $objets[0];
                 break;
         }
+        
+        $params = array(
+            'field' => 'id',
+            'order' => 'ASC',
+            'page' => $page,
+            'repositoryClass' => Historique::class,
+            'repository' => 'Historique',
+            'repositoryMethode' => 'findAllHistoriques',
+        );
+        
+        $params['condition'] = array(
+            $params['repository'] . '.' . $type . ' = ' . $id
+        );
+        
+        $repository = $this->getDoctrine()->getRepository($params['repositoryClass']);
+        $result = $repository->{$params['repositoryMethode']}($params['page'], self::MAX_NB_RESULT_AJAX, $params);
+        
+        $pagination = array(
+            'page' => $page,
+            'route' => 'historique_ajax_see',
+            'pages_count' => ceil($result['nb'] / self::MAX_NB_RESULT_AJAX),
+            'nb_elements' => $result['nb'],
+            'id_div' => '#ajax_historique_see',
+            'route_params' => array(
+                'id' => $id,
+                'type' => $type
+            )
+        );
 
         return $this->render('historique/ajax_see.html.twig', array(
             'objet' => $objet,
-            'type' => $type
+            'type' => $type,
+            'historiques' => $result['paginator'],
+            'pagination' => $pagination
         ));
     }
 

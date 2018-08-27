@@ -132,8 +132,9 @@ class FilterExtension extends AbstractExtension
         $return = "";
         foreach ($array_values as $key => $val) {
             if (! empty($val)) {
-                $nb = strrpos($key, '-');
-                $return .= '<a href="' . $url . '/' . $key . '" class="badge badge-primary">' . ucfirst(substr($key, $nb + 1)) . ' <b>X</b></a> ';
+                $filtres = explode('-', str_replace('_', ' ', $key));
+
+                $return .= '<a href="' . $url . '/' . $key . '" class="badge badge-primary">' . ucfirst($filtres['1']) . (isset($filtres['2']) ? ' ' . ucfirst($filtres['2']) : '') . ' <b>X</b></a> ';
             }
         }
 

@@ -5,6 +5,9 @@ namespace App\Repository;
 use App\Entity\SpecialiteEvenement;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Doctrine\ORM\Tools\Pagination\Paginator;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * @method SpecialiteEvenement|null find($id, $lockMode = null, $lockVersion = null)
@@ -20,69 +23,111 @@ class SpecialiteEvenementRepository extends ServiceEntityRepository
     }
     
     /**
-     * Récupération des spécialités liées à un événement ordonnées par le nom des établissements et le nom du service
-     * 
-     * @param int $id_evenement
-     * @return array
+     * Retourne une liste d'événements ou de spécialités paginé en fonction de l'ordre et de la recherche courante
+     *
+     * @param int $page
+     * @param int $max
+     * @param array $params
+     *            [order] => ordre de tri
+     *            [page] => page (pagination)
+     *            [search] => tableau contenant les éléments de la recherche
+     *            [repository] => repository (objet courant)
+     *            [field] => champ de tri,
+     *            [condition] => tableau contenant des conditions supplémentaires en dehors des filtres de l'utilisateur
+     * @throws \InvalidArgumentException
+     * @throws NotFoundHttpException::
+     * @return \Doctrine\ORM\Tools\Pagination\Paginator[]|mixed[]|\Doctrine\DBAL\Driver\Statement[]|array[]|NULL[]
      */
-    public function getSpecialites(int $id_evenement){
-        
-        $specialites = $this->createQueryBuilder('se')
-        ->select("E.id as EtablissementId, se.id, E.nom as etablissement, S.service as specialite, se.statut, se.date")
-        ->innerJoin('App:Specialite', 'S', 'WITH', 'se.specialite = S.id')
-        ->innerJoin('App:Etablissement', 'E', 'WITH', 'S.etablissement = E.id')
-        ->andWhere('se.evenement = :idEvenement')
-        ->setParameter('idEvenement', $id_evenement)
-        ->orderBy('E.nom ASC, S.service')
-        ->getQuery()
-        ->getResult();
-        
-        if (count($specialites) == 1 && is_null($specialites[0]['EtablissementId'])) {
-            $specialites = array();
+    public function findAllSpecialiteEvenements(int $page = 1, int $max = 10, $params = array())
+    {
+        if (! is_numeric($page)) {
+            throw new \InvalidArgumentException('$page doit être un integer (' . gettype($page) . ' : ' . $page . ')');
         }
         
-        $connexions = array();
-        
-        foreach ($specialites as $specialite) {
-            if (isset($connexions[$specialite['EtablissementId']])) {
-                $connexions[$specialite['EtablissementId']][] = $specialite;
-            } else {
-                $connexions[$specialite['EtablissementId']][0] = $specialite;
-            }
+        if (! is_numeric($max)) {
+            throw new \InvalidArgumentException('$max doit être un integer (' . gettype($max) . ' : ' . $max . ')');
         }
         
-        return $connexions;
+        if (! isset($params['field']) && ! isset($params['order'])) {
+            throw new \InvalidArgumentException('order et field ne sont pas présents comme clés dans $params');
+        }
+        
+        $firstResult = ($page - 1) * $max;
+        
+        // pagination
+        $query = $this->createQueryBuilder($params['repository'])->setFirstResult($firstResult);
+        
+        // Génération des paramètres SQL
+        $query = $this->generateParamsSql($query, $params);
+        
+        $query->orderBy($params['repository'] . '.' . $params['field'], $params['order'])->setMaxResults($max);
+        $paginator = new Paginator($query);
+        
+        // Nombre total d'événements ou de spécialités
+        $query = $this->createQueryBuilder($params['repository'])->select('COUNT(' . $params['repository'] . '.id)');
+        
+        // Génération des paramètres SQL
+        $query = $this->generateParamsSql($query, $params);
+        $result = $query->getQuery()->getSingleScalarResult();
+        
+        if (($paginator->count() <= $firstResult) && $page != 1) {
+            throw new NotFoundHttpException('Page not found');
+        }
+        
+        return array(
+            'paginator' => $paginator,
+            'nb' => $result
+        );
     }
     
     /**
-     * Récupération des événements liées à une spécialité ordonnés par le nom de l'événement
-     * 
-     * @param int $id_specialite
-     * @return array
+     * Génération de la requête
+     *
+     * @param QueryBuilder $query
+     * @param array $params
+     *            [order] => ordre de tri
+     *            [page] => page (pagination)
+     *            [search] => tableau contenant les éléments de la recherche
+     *            [repository] => repository (objet courant)
+     *            [field] => champ de tri,
+     *            [condition] => tableau contenant des conditions supplémentaires en dehors des filtres de l'utilisateur
+     * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getEvenements(int $id_specialite){
-        
-        $evenements = $this->createQueryBuilder('se')
-        ->select("se.id, E.nom as evenement, se.statut, se.date")
-        ->innerJoin('App:Evenement', 'E', 'WITH', 'se.evenement = E.id')
-        ->andWhere('se.specialite = :idSpecialite')
-        ->setParameter('idSpecialite', $id_specialite)
-        ->orderBy('E.nom')
-        ->getQuery()
-        ->getResult();
-        
-        $connexions = array();
-        if (count($evenements) == 1 && is_null($evenements[0]['id'])) {
-            $evenements = array();
+    private function generateParamsSql(QueryBuilder $query, array $params)
+    {
+        $index = 1;
+        if (isset($params['search'])) {
+            foreach ($params['search'] as $searchKey => $valueKey) {
+                
+                $explode_key = explode('-', $searchKey);
+                if (count($explode_key) == 3) {
+                    // traitement des liaisons avec une autre table
+                    $query = $query->join($explode_key[0] . '.' . $explode_key[1], $explode_key[1]);
+                    $query->andWhere($explode_key[1] . "." . $explode_key[2] . " LIKE :searchTerm$index");
+                    $query->setParameter('searchTerm' . $index, '%' . $valueKey . '%');
+                } else {
+                    $query->andWhere(str_replace('-', '.', $searchKey) . " LIKE :searchTerm$index");
+                    $query->setParameter('searchTerm' . $index, '%' . $valueKey . '%');
+                }
+                $index ++;
+            }
         }
         
-        foreach ($evenements as $evenement) {
-            $connexions[$evenement['id']] = array($evenement);
+        if (isset($params['jointure'])) {
+            foreach ($params['jointure'] as $jointure) {
+                $query->join($jointure['oldrepository'] . '.' . $jointure['newrepository'], $jointure['newrepository']);
+            }
         }
         
-        return $connexions;
+        if (isset($params['condition'])) {
+            foreach ($params['condition'] as $condition) {
+                $query->andWhere($condition);
+            }
+        }
+        
+        return $query;
     }
-
+    
 //    /**
 //     * @return SpecialiteEvenement[] Returns an array of SpecialiteEvenement objects
 //     */

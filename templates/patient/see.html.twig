@@ -42,7 +42,7 @@
  	<script src="{{ asset('assets/js/famille/Famille.js') }}?{{ date().timestamp }}"></script>
  	<script src="{{ asset('assets/js/patient/Patient.js') }}?{{ date().timestamp }}"></script>
  	<script src="{{ asset('assets/js/historique/Historique.js') }}?{{ date().timestamp }}"></script>
- 	<script src="{{ asset('assets/js/pagination/Pagination.js') }}?{{ date().timestamp }}"></script>
+ 	
 {% endblock %}
 
 {% block javascripts %}
@@ -81,13 +81,8 @@
         
 		Historique.Launch(paramsH);
 		Historique.LoadHistorique();
-
-		var paramsPa = {
-				url_ajax_see : '{{path('famille_ajax_see', {'id': patient.id}) }}',
-				id_global : '#ajax_patient_famille_see'
-		};
-        
-    	Pagination.Launch(paramsPa);
+		
+    	Pagination.Launch();
     });
     
     </script>

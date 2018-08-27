@@ -23,7 +23,7 @@
                     <th>Familles</th>
                 </tr>
                 
-                {% for historique in objet.historiques %}
+                {% for historique in historiques %}
                 	<tr>
                 		{% if type != 'membre' %}
                     		<td>{{ historique.membre.prenom }} {{ historique.membre.nom }} </td>
@@ -65,5 +65,9 @@
             	
             {% endif %}
      	</div>
+     	
+     	<div class="card-footer">
+      		{% include 'elements/ajax_pagination.html.twig' %}
+      	</div>
     </div>
 </div>
