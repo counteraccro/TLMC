@@ -144,7 +144,7 @@ ProduitEtablissement.Launch = function(params) {
 				{
 					//on cache la modale si le formulaire est valide
 					$(ProduitEtablissement.id_modal).modal('hide');
-					ProduitEtablissement.Ajax(ProduitEtablissement.url_ajax_see, ProduitEtablissement.id_global);
+					ProduitEtablissement.Ajax(ProduitEtablissement.url_ajax_see + '/' + reponse.page, ProduitEtablissement.id_global);
 				}
 				else
 				{

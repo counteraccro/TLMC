@@ -352,7 +352,7 @@ class TemoignageController extends AppController
      * Edition d'un témoignage
      *
      * @Route("/temoignage/edit/{id}/{page}/{type}", name="temoignage_edit")
-     * @Route("/temoignage/ajax/edit/{id}/{type}", name="temoignage_ajax_edit")
+     * @Route("/temoignage/ajax/edit/{id}/{type}/{page}", name="temoignage_ajax_edit")
      * @ParamConverter("temoignage", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      *
@@ -418,7 +418,8 @@ class TemoignageController extends AppController
 
             if ($request->isXmlHttpRequest()) {
                 return $this->json(array(
-                    'statut' => true
+                    'statut' => true,
+                    'page' => $page
                 ));
             }
 
@@ -435,7 +436,8 @@ class TemoignageController extends AppController
             return $this->render('temoignage/ajax_edit.html.twig', array(
                 'form' => $form->createView(),
                 'temoignage' => $temoignage,
-                'type' => $type
+                'type' => $type,
+                'page' => $page
             ));
         }
 
@@ -462,7 +464,7 @@ class TemoignageController extends AppController
     /**
      * Désactivation d'un témoignage
      *
-     * @Route("/temoignage/delete/{id}/{page}/{type}", name="temoignage_delete")
+     * @Route("/temoignage/delete/{id}/{type}/{page}", name="temoignage_delete")
      * @ParamConverter("temoignage", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      *
@@ -489,7 +491,8 @@ class TemoignageController extends AppController
 
         if ($request->isXmlHttpRequest()) {
             return $this->json(array(
-                'statut' => true
+                'statut' => true,
+                'page' => $page
             ));
         }
 

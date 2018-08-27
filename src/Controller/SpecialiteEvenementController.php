@@ -159,16 +159,17 @@ class SpecialiteEvenementController extends AppController
     /**
      * Edition d'un lien spécialité - événement
      *
-     * @Route("/specialite_evenement/ajax/edit/{id}/{type}", name="specialite_evenement_ajax_edit")
+     * @Route("/specialite_evenement/ajax/edit/{id}/{type}/{page}", name="specialite_evenement_ajax_edit")
      * @ParamConverter("specialiteEvenement", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
      *
      * @param Request $request
      * @param SpecialiteEvenement $specialiteEvenement
      * @param string $type
+     * @param int $page
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function editAction(Request $request, SpecialiteEvenement $specialiteEvenement, string $type)
+    public function editAction(Request $request, SpecialiteEvenement $specialiteEvenement, string $type, int $page = 1)
     {
         $form = $this->createForm(SpecialiteEvenementType::class, $specialiteEvenement, array(
             'label_submit' => 'Modifier',
@@ -186,14 +187,16 @@ class SpecialiteEvenementController extends AppController
             $em->flush();
 
             return $this->json(array(
-                'statut' => true
+                'statut' => true,
+                'page' => $page
             ));
         }
 
         return $this->render('specialite_evenement/ajax_edit.html.twig', array(
             'form' => $form->createView(),
             'specialiteEvenement' => $specialiteEvenement,
-            'type' => $type
+            'type' => $type,
+            'page' => $page
         ));
     }
 }

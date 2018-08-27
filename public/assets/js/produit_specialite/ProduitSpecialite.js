@@ -143,7 +143,7 @@ ProduitSpecialite.Launch = function(params) {
 				{
 					//on cache la modale si le formulaire est valide
 					$(ProduitSpecialite.id_modal).modal('hide');
-					ProduitSpecialite.Ajax(ProduitSpecialite.url_ajax_see, ProduitSpecialite.id_global);
+					ProduitSpecialite.Ajax(ProduitSpecialite.url_ajax_see + '/' + reponse.page, ProduitSpecialite.id_global);
 				}
 				else
 				{

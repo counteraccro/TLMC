@@ -134,7 +134,7 @@ SpecialiteEvenement.Launch = function(params) {
 				{
 					//on cache la modale si le formulaire est valide
 					$(SpecialiteEvenement.id_modal).modal('hide');
-					SpecialiteEvenement.Ajax(SpecialiteEvenement.url_ajax_see, SpecialiteEvenement.id_global);
+					SpecialiteEvenement.Ajax(SpecialiteEvenement.url_ajax_see + '/' + reponse.page, SpecialiteEvenement.id_global);
 				}
 				else
 				{

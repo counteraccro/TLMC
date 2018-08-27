@@ -147,7 +147,7 @@ class ProduitSpecialiteController extends AppController
     /**
      * Edition d'un lien produit - spécialité
      *
-     * @Route("/produit_specialite/ajax/edit/{id}/{type}", name="produit_specialite_ajax_edit")
+     * @Route("/produit_specialite/ajax/edit/{id}/{type}/{page}", name="produit_specialite_ajax_edit")
      * @ParamConverter("produitSpecialite", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
      *
@@ -156,7 +156,7 @@ class ProduitSpecialiteController extends AppController
      * @param string $type
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function editAction(Request $request, ProduitSpecialite $produitSpecialite, string $type)
+    public function editAction(Request $request, ProduitSpecialite $produitSpecialite, string $type, int $page = 1)
     {
         $form = $this->createForm(ProduitSpecialiteType::class, $produitSpecialite, array(
             'label_submit' => 'Modifier',
@@ -174,14 +174,16 @@ class ProduitSpecialiteController extends AppController
             $em->flush();
 
             return $this->json(array(
-                'statut' => true
+                'statut' => true,
+                'page' => $page
             ));
         }
 
         return $this->render('produit_specialite/ajax_edit.html.twig', array(
             'form' => $form->createView(),
             'produitSpecialite' => $produitSpecialite,
-            'type' => $type
+            'type' => $type,
+            'page' => $page
         ));
     }
 }

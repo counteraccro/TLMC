@@ -53,9 +53,9 @@
                     	{% endif %}
                     	{% if is_granted("ROLE_BENEVOLE") or is_granted("ROLE_BENEFICIAIRE_DIRECT") or is_granted("ROLE_BENEFICIAIRE") %}
                     		<td>
-                    			{{ actionEdit(path('temoignage_ajax_edit', {'id' : temoignage.id, 'type' : type}), 'btn-edit-temoignage-'~ temoignage.id ) | raw }}
+                    			{{ actionEdit(path('temoignage_ajax_edit', {'id' : temoignage.id, 'type' : type, 'page' : pagination.page}), 'btn-edit-temoignage-'~ temoignage.id ) | raw }}
                 		        {% if is_granted("ROLE_ADMIN") %}
-                    		        {{ actionDelete(temoignage.disabled, path('temoignage_delete', {'id' : temoignage.id}), temoignage.id) | raw }}
+                    		        {{ actionDelete(temoignage.disabled, path('temoignage_delete', {'id' : temoignage.id, 'page' : pagination.page}), temoignage.id) | raw }}
                     		    {% endif %}
                     		</td>
                     	{% endif %}

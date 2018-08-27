@@ -55,7 +55,7 @@
 				$('#temoignage_row_famille').hide();
 	        }
 
-    		var url = '{{path('temoignage_ajax_edit', {'id': temoignage.id, 'type': type }) }}';
+    		var url = '{{path('temoignage_ajax_edit', {'id': temoignage.id, 'type': type, 'page': page  }) }}';
     		Temoignage.EventEditSubmit(url);
 	
 	    </script>

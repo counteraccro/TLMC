@@ -149,16 +149,17 @@ class ProduitEtablissementController extends AppController
     /**
      * Edition d'un lien produit - établissement
      *
-     * @Route("/produit_etablissement/ajax/edit/{id}/{type}", name="produit_etablissement_ajax_edit")
+     * @Route("/produit_etablissement/ajax/edit/{id}/{type}/{page}", name="produit_etablissement_ajax_edit")
      * @ParamConverter("produitEtablissement", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
      *
      * @param Request $request
      * @param ProduitEtablissement $produitEtablissement
      * @param string $type
+     * @param int $page
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function editAction(Request $request, ProduitEtablissement $produitEtablissement, string $type)
+    public function editAction(Request $request, ProduitEtablissement $produitEtablissement, string $type, int $page = 1)
     {
         $form = $this->createForm(ProduitEtablissementType::class, $produitEtablissement, array(
             'label_submit' => 'Modifier',
@@ -176,14 +177,16 @@ class ProduitEtablissementController extends AppController
             $em->flush();
 
             return $this->json(array(
-                'statut' => true
+                'statut' => true,
+                'page' => $page
             ));
         }
 
         return $this->render('produit_etablissement/ajax_edit.html.twig', array(
             'form' => $form->createView(),
             'produitEtablissement' => $produitEtablissement,
-            'type' => $type
+            'type' => $type,
+            'page' => $page
         ));
     }
 }

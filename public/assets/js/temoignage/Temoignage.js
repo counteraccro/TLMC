@@ -135,7 +135,7 @@ Temoignage.Launch = function(params) {
 				{
 					//on cache la modale si le formulaire est valide
 					$(Temoignage.id_modal).modal('hide');
-					Temoignage.Ajax(Temoignage.url_ajax_see, Temoignage.id_global);
+					Temoignage.Ajax(Temoignage.url_ajax_see + '/' + reponse.page, Temoignage.id_global);
 				}
 				else
 				{
@@ -163,7 +163,7 @@ Temoignage.Launch = function(params) {
 
 				if(reponse.statut === true)
 				{
-					Temoignage.Ajax(Temoignage.url_ajax_see, Temoignage.id_global);
+					Temoignage.Ajax(Temoignage.url_ajax_see + '/' + reponse.page, Temoignage.id_global);
 				}
 			});
 		});
