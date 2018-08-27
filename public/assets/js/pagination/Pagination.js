@@ -8,12 +8,15 @@ Pagination.Launch = function() {
 	 */
 	Pagination.Ajax = function(url, id_done, method = 'GET')
 	{	
+		$(id_done).showLoading();
+		
 		$.ajax({
 			method: method,
 			url: url,
 		})
 		.done(function( html ) {
 			$(id_done).html(html);
+			$(id_done).hideLoading();
 		});
 	}
 	
@@ -23,8 +26,8 @@ Pagination.Launch = function() {
 	Pagination.EventChangePage = function(id, id_done)
 	{
 		$(id).click(function(){
+				
 			event.preventDefault();
-			
 			Pagination.Ajax($(this).attr('href'), id_done);
 		});
 	}

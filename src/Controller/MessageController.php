@@ -40,90 +40,123 @@ class MessageController extends AppController
     /**
      * Affiche la liste des messages destinataire du user courant
      *
-     * @Route("/messagerie/ajax/messagesdestinataire", name="message_ajax_messages_destinataire")
+     * @Route("/messagerie/ajax/messagesdestinataire/{page}", name="message_ajax_messages_destinataire")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      */
-    public function ajaxMessagesDestinataire()
+    public function ajaxMessagesDestinataire($page = 1)
     {
+        
+        $search = '';
+        
         $repository = $this->getDoctrine()->getRepository(Message::class);
+        $result = $repository->findByUserByParameter($this->getUser()
+            ->getId(), 0, 'destinataire', $page, AppController::MAX_NB_RESULT, $search);
 
-        $messages = $repository->findByUserByParameter($this->getUser()
-            ->getId());
-
+        $pagination = array(
+            'page' => $page,
+            'route' => 'message_ajax_messages_destinataire',
+            'pages_count' => ceil($result['nb'] / AppController::MAX_NB_RESULT),
+            'nb_elements' => $result['nb'],
+            'route_params' => array(),
+            'id_div' => '#v-pills-reception'
+        );
+        
         return $this->render('message/ajax_messages_destinataire.html.twig', [
-            'messages' => $messages
+            'pagination' => $pagination,
+            'search' => $search,
+            'messages' => $result['paginator'],
         ]);
     }
 
     /**
      * Affiche les messages en brouillon du user courant
      *
-     * @Route("/messagerie/ajax/messagesbrouillons", name="message_ajax_messages_brouillons")
+     * @Route("/messagerie/ajax/messagesbrouillons/{page}", name="message_ajax_messages_brouillons")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      */
-    public function ajaxMessagesBrouillons()
+    public function ajaxMessagesBrouillons($page = 1)
     {
+        $search = '';
+        
         $repository = $this->getDoctrine()->getRepository(Message::class);
-
-        $messages = $repository->findByUserByParameter($this->getUser()
-            ->getId(), 1, 'expediteur');
-
+        $result = $repository->findByUserByParameter($this->getUser()
+            ->getId(), 1, 'expediteur', $page, AppController::MAX_NB_RESULT, $search);
+        
+        $pagination = array(
+            'page' => $page,
+            'route' => 'message_ajax_messages_brouillons',
+            'pages_count' => ceil($result['nb'] / AppController::MAX_NB_RESULT),
+            'nb_elements' => $result['nb'],
+            'route_params' => array(),
+            'id_div' => '#v-pills-brouillons'
+        );
+        
         return $this->render('message/ajax_messages_brouillons.html.twig', [
-            'messages' => $messages
+            'pagination' => $pagination,
+            'search' => $search,
+            'messages' => $result['paginator'],
         ]);
     }
 
     /**
      * Affiche les messages placés en corbeille du user courant
      *
-     * @Route("/messagerie/ajax/messagescorbeille", name="message_ajax_messages_corbeille")
+     * @Route("/messagerie/ajax/messagescorbeille/{page}", name="message_ajax_messages_corbeille")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      */
-    public function ajaxMessagesCorbeille()
+    public function ajaxMessagesCorbeille($page = 1)
     {
+        $search = '';
+        
         $repository = $this->getDoctrine()->getRepository(Message::class);
 
-        $messages = $repository->findCorbeilleByUser($this->getUser()
-            ->getId());
+        $result = $repository->findCorbeilleByUser($this->getUser()
+            ->getId(), $page, AppController::MAX_NB_RESULT, $search);
+        
+        $pagination = array(
+            'page' => $page,
+            'route' => 'message_ajax_messages_corbeille',
+            'pages_count' => ceil($result['nb'] / AppController::MAX_NB_RESULT),
+            'nb_elements' => $result['nb'],
+            'route_params' => array(),
+            'id_div' => '#v-pills-corbeille'
+        );
 
         return $this->render('message/ajax_messages_corbeille.html.twig', [
-            'messages' => $messages
+            'pagination' => $pagination,
+            'search' => $search,
+            'messages' => $result['paginator'],
         ]);
     }
     
     /**
      * Affiche les messages envoyés par le user courant
      *
-     * @Route("/messagerie/ajax/messagesenvoyes", name="message_ajax_messages_envoyes")
+     * @Route("/messagerie/ajax/messagesenvoyes/{page}", name="message_ajax_messages_envoyes")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      */
-    public function ajaxMessagesEnvoyes()
+    public function ajaxMessagesEnvoyes($page = 1)
     {
+        $search = '';
+
         $repository = $this->getDoctrine()->getRepository(Message::class);
         
-        $messages = $repository->findByUserByParameter($this->getUser()
-            ->getId(), 0, 'expediteur');
+        $result = $repository->findByUserByParameter($this->getUser()
+            ->getId(), 0, 'expediteur', $page, AppController::MAX_NB_RESULT, $search);
+        
+        $pagination = array(
+            'page' => $page,
+            'route' => 'message_ajax_messages_envoyes',
+            'pages_count' => ceil($result['nb'] / AppController::MAX_NB_RESULT),
+            'nb_elements' => $result['nb'],
+            'route_params' => array(),
+            'id_div' => '#v-pills-envoyes'
+        );
         
         return $this->render('message/ajax_messages_envoyes.html.twig', [
-            'messages' => $messages
-        ]);
-    }
-    
-    /**
-     * Affiche une prévisualisation du message selectionné par l'user courant
-     *
-     * @Route("/messagerie/ajax/messagespreview", name="message_ajax_messages_preview")
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
-     */
-    public function ajaxMessagesPreview()
-    {
-        $repository = $this->getDoctrine()->getRepository(Message::class);
-        
-        $messages = $repository->findByUserByParameter($this->getUser()
-            ->getId(), 0, 'expediteur');
-        
-        return $this->render('message/ajax_messages_preview.html.twig', [
-            'messages' => $messages
+            'pagination' => $pagination,
+            'search' => $search,
+            'messages' => $result['paginator'],
         ]);
     }
 }

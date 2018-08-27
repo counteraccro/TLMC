@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\Message;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\ORM\Tools\Pagination\Paginator;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * @method Message|null find($id, $lockMode = null, $lockVersion = null)
@@ -21,8 +23,8 @@ class MessageRepository extends ServiceEntityRepository
 
 
     /**
-     * 
-     * @param unknown $id_membre
+     * Fonction permettant d'obtenir le nombre de messages non-lus pour un membre
+     * @param int $id_membre
      */
     public function nbMessageNoRead($id_membre)
     {
@@ -40,32 +42,109 @@ class MessageRepository extends ServiceEntityRepository
     /**
      * 
      */
-    public function findByUserByParameter($id_membre, $brouillon = 0, $role = 'destinataire')
+    public function findByUserByParameter($id_membre, $brouillon = 0, $role = 'destinataire',  int $page = 1, int $max = 10, $search = '')
     {
-        $return = $this->createQueryBuilder('m')
-        ->join('m.messageLus', 'ml')
-        ->andWhere('m.' . $role . ' = ' . $id_membre)
-        ->andWhere('m.brouillon = ' . $brouillon)
-        ->andWhere('ml.corbeille = 0')
-        ->getQuery()
-        ->getResult();
         
-        return $return;
+        if (! is_numeric($page)) {
+            throw new \InvalidArgumentException('$page doit être un integer (' . gettype($page) . ' : ' . $page . ')');
+        }
+        
+        if (! is_numeric($max)) {
+            throw new \InvalidArgumentException('$max doit être un integer (' . gettype($max) . ' : ' . $max . ')');
+        }
+        
+        $firstResult = ($page - 1) * $max;
+        
+        $query = $this->createQueryBuilder('m')
+        ->setFirstResult($firstResult)
+        ->leftJoin('m.messageLus', 'ml')
+        ->andWhere('m.' . $role . ' = ' . $id_membre )
+        ->andWhere('(m.brouillon = ' . $brouillon . ' OR m.brouillon IS NULL)')
+        ->andWhere('(ml.corbeille = 0  OR ml.corbeille IS NULL)')
+        ->setMaxResults($max);
+        
+        if (! empty($search)) {
+            //@todo : Recherche à faire
+        }
+        
+        $paginator = new Paginator($query);
+        
+        $query = $this->createQueryBuilder('m')
+        ->select('COUNT(DISTINCT m.id)')
+        ->leftJoin('m.messageLus', 'ml')
+        ->andWhere('m.' . $role . ' = ' . $id_membre)
+        ->andWhere('(m.brouillon = ' . $brouillon . ' OR m.brouillon IS NULL)')
+        ->andWhere('(ml.corbeille = 0  OR ml.corbeille IS NULL)');
+        
+        if (! empty($search)) {
+            //$query->andWhere('(m.nom LIKE :search OR m.prenom LIKE :search OR m.username LIKE :search)');
+            //$query->setParameter('search', '%' . $search . '%');
+        }
+        
+        // Génération des paramètres SQL
+        $result = $query->getQuery()->getSingleScalarResult();
+        
+        if (($paginator->count() <= $firstResult) && $page != 1) {
+            throw new NotFoundHttpException('Page not found');
+        }
+        
+        return array(
+            'paginator' => $paginator,
+            'nb' => $result
+        );
     }
     
     /**
      *
      */
-    public function findCorbeilleByUser($id_membre)
+    public function findCorbeilleByUser($id_membre, int $page = 1, int $max = 10, $search = '')
     {
-        $return = $this->createQueryBuilder('m')
+        if (! is_numeric($page)) {
+            throw new \InvalidArgumentException('$page doit être un integer (' . gettype($page) . ' : ' . $page . ')');
+        }
+        
+        if (! is_numeric($max)) {
+            throw new \InvalidArgumentException('$max doit être un integer (' . gettype($max) . ' : ' . $max . ')');
+        }
+        
+        $firstResult = ($page - 1) * $max;
+        
+        $query = $this->createQueryBuilder('m')
+        ->setFirstResult($firstResult)
         ->join('m.messageLus', 'ml')
         ->andWhere('(m.expediteur = ' . $id_membre . ' OR m.destinataire = ' . $id_membre . ')')
         ->andWhere('ml.corbeille = 1')
-        ->getQuery()
-        ->getResult();
+        ->setMaxResults($max);
         
-        return $return;
+        if (! empty($search)) {
+            //$query->andWhere('(m.nom LIKE :search OR m.prenom LIKE :search OR m.username LIKE :search)');
+            //$query->setParameter('search', '%' . $search . '%');
+        }
+        
+        $paginator = new Paginator($query);
+        
+        $query = $this->createQueryBuilder('m')
+        ->select('COUNT(DISTINCT m.id)')
+        ->join('m.messageLus', 'ml')
+        ->andWhere('(m.expediteur = ' . $id_membre . ' OR m.destinataire = ' . $id_membre . ')')
+        ->andWhere('ml.corbeille = 1');
+        
+        if (! empty($search)) {
+            //$query->andWhere('(m.nom LIKE :search OR m.prenom LIKE :search OR m.username LIKE :search)');
+            //$query->setParameter('search', '%' . $search . '%');
+        }
+        
+        // Génération des paramètres SQL
+        $result = $query->getQuery()->getSingleScalarResult();
+        
+        if (($paginator->count() <= $firstResult) && $page != 1) {
+            throw new NotFoundHttpException('Page not found');
+        }
+        
+        return array(
+            'paginator' => $paginator,
+            'nb' => $result
+        );
     }
     
 //    /**
