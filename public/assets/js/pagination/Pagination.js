@@ -1,12 +1,7 @@
 //objet JS pour la pagination
 Pagination = {};
 
-Pagination.Launch = function(params) {
-
-	//url de la fiche de l'élément
-	Pagination.url_ajax_see = params.url_ajax_see;
-	//cible la div des familles du patient
-	Pagination.id_global = params.id_global;
+Pagination.Launch = function() {
 
 	/**
 	 * Méthode Ajax qui va charger l'element présent dans l'URL
@@ -25,12 +20,12 @@ Pagination.Launch = function(params) {
 	/**
 	 * chargement de la nouvelle page au click
 	 */
-	Pagination.EventChangePage = function(id)
+	Pagination.EventChangePage = function(id, id_done)
 	{
 		$(id).click(function(){
 			event.preventDefault();
 			
-			Pagination.Ajax($(this).attr('href'), Pagination.id_global);
+			Pagination.Ajax($(this).attr('href'), id_done);
 		});
 	}
 }

@@ -2,17 +2,17 @@
     <ul class="pagination justify-content-center">
    	    {% if pagination.pages_count > 0 %}
             {% if pagination.page>1 %}
-                <li class="page-item"><a id="page-first" class="page-link" href="{{ path(pagination.route, pagination.route_params|merge({'page': 1})) }}"><span class="oi oi-media-skip-backward"></span></a></li>
-                <li class="page-item"><a id="page-previous" class="page-link" href="{{ path(pagination.route, pagination.route_params|merge({'page': pagination.page-1})) }}"> <span class="oi oi-caret-left"></span> </a></li>
+                <li class="page-item"><a id="page-first-{{ pagination.route }}" class="page-link" href="{{ path(pagination.route, pagination.route_params|merge({'page': 1})) }}"><span class="oi oi-media-skip-backward"></span></a></li>
+                <li class="page-item"><a id="page-previous-{{ pagination.route }}" class="page-link" href="{{ path(pagination.route, pagination.route_params|merge({'page': pagination.page-1})) }}"> <span class="oi oi-caret-left"></span> </a></li>
             {% endif %}
             {#display p numbers only from p-4 to p+4 but don't go <1 or >pages_count#}
             {% for p in range(max(pagination.page-4, 1), 
                 min(pagination.page+4, pagination.pages_count)) %}
-                <li class="page-item {% if p == pagination.page %} active{% endif %}"><a id="page-{{ p }}" class="page-link"  href="{{ path(pagination.route, pagination.route_params|merge({'page': p})) }}">{{ p }}</a></li>
+                <li class="page-item {% if p == pagination.page %} active{% endif %}"><a id="page-{{ pagination.route }}-{{ p }}" class="page-link"  href="{{ path(pagination.route, pagination.route_params|merge({'page': p})) }}">{{ p }}</a></li>
             {% endfor %}
             {% if pagination.page<pagination.pages_count %}
-            	<li class="page-item"><a id="page-next" class="page-link" href="{{ path(pagination.route, pagination.route_params|merge({'page': pagination.page+1})) }}"><span class="oi oi-caret-right"></span></a></li>
-               	<li class="page-item"><a id="page-last" class="page-link" href="{{ path(pagination.route, pagination.route_params|merge({'page': pagination.pages_count})) }}"><span class="oi oi-media-skip-forward"></span></a></li>
+            	<li class="page-item"><a id="page-next-{{ pagination.route }}" class="page-link" href="{{ path(pagination.route, pagination.route_params|merge({'page': pagination.page+1})) }}"><span class="oi oi-caret-right"></span></a></li>
+               	<li class="page-item"><a id="page-last-{{ pagination.route }}" class="page-link" href="{{ path(pagination.route, pagination.route_params|merge({'page': pagination.pages_count})) }}"><span class="oi oi-media-skip-forward"></span></a></li>
             {% endif %}
         {% endif %}
     </ul>
@@ -20,21 +20,21 @@
 
 {% block javascripts %}
 	<script type="text/javascript">
-
+	
 	{% if pagination.pages_count > 0 %}
         {% if pagination.page>1 %}
-    		Pagination.EventChangePage('#page-first');
-    		Pagination.EventChangePage('#page-previous');
+    		Pagination.EventChangePage('#page-first-{{ pagination.route }}', '{{ id_div }}');
+    		Pagination.EventChangePage('#page-previous-{{ pagination.route }}', '{{ id_div }}');
         {% endif %}
 		
         {% for p in range(max(pagination.page-4, 1), min(pagination.page+4, pagination.pages_count)) %}
-            var id_btn_change_{{ p }} = '#page-' + {{ p }};
-    		Pagination.EventChangePage(id_btn_change_{{ p }});
+            var id_btn_change_{{ p }} = '#page-{{ pagination.route }}-' + {{ p }};
+    		Pagination.EventChangePage(id_btn_change_{{ p }}, '{{ id_div }}');
         {% endfor %}
         
         {% if pagination.page<pagination.pages_count %}
-    		Pagination.EventChangePage('#page-next');
-    		Pagination.EventChangePage('#page-last');
+    		Pagination.EventChangePage('#page-next-{{ pagination.route }}', '{{ id_div }}');
+    		Pagination.EventChangePage('#page-last-{{ pagination.route }}', '{{ id_div }}');
     		
         {% endif %}
     {% endif %}
