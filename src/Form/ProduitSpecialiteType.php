@@ -26,6 +26,7 @@ class ProduitSpecialiteType extends AbstractType
             'query_builder' => function (SpecialiteRepository $sr) {
                 return $sr->createQueryBuilder('s')
                     ->innerJoin('App:Etablissement', 'e', 'WITH', 's.etablissement = e.id')
+                    ->andWhere('s.disabled = 0')
                     ->orderBy('e.nom, s.service', 'ASC');
             },
             'group_by' => function (Specialite $specialite) {

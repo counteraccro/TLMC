@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use App\Controller\SpecialiteEvenementController;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use App\Repository\SpecialiteRepository;
 
 class SpecialiteEvenementType extends AbstractType
 {
@@ -23,6 +24,12 @@ class SpecialiteEvenementType extends AbstractType
             'class' => Specialite::class,
             'choice_label' => 'service',
             'disabled' => $options['disabled_specialite'],
+            'query_builder' => function (SpecialiteRepository $sr) {
+                return $sr->createQueryBuilder('s')
+                    ->innerJoin('App:Etablissement', 'e', 'WITH', 's.etablissement = e.id')
+                    ->andWhere('s.disabled = 0')
+                    ->orderBy('e.nom ASC, s.service', 'ASC');
+            },
             'group_by' => function (Specialite $specialite) {
                 return $specialite->getEtablissement()->getNom();
             }

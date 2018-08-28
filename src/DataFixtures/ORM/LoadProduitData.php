@@ -46,6 +46,7 @@ class LoadProduitData extends Fixture
                 'setTitre' => 'Crayon de couleur',
                 'setTexte' => 'Set de 24 crayons de couleur',
                 'setTrancheAge' => array(2, 3, 4),
+                'setImage' => 'Crayon de couleur_23082018085439.jpg',
                 'setGenre' => 0,
                 'setQuantite' => 50,
                 'setDateCreation' => '2018-07-17 19:00:00',

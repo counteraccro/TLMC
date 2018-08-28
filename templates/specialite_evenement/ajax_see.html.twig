@@ -26,7 +26,13 @@
                 {% for connexion in connexions %}	
                    	<tr>
                   	    {% if type == 'evenement' %}
-                	    	<td>{{ connexion.specialite.etablissement.nom }}</td>
+                	    	<td>{% if loop.index0 == 0 %}
+                	    			{{ connexion.specialite.etablissement.nom }}
+                	    		{% elseif element is defined and element.specialite.etablissement != connexion.specialite.etablissement %}
+                	    	        {{ connexion.specialite.etablissement.nom }}
+                	    	    {% endif %}
+                	    	    {% set element = connexion %}
+                	    	</td>
                 			<td>{{ connexion.specialite.service }}</td>
                 	    {% elseif type =='specialite' %}
                 	    	<td> {{ connexion.evenement.nom }} </td>

@@ -11,7 +11,12 @@
     <div class="card-body">
     	<div class="row align-items-center">
     		<div class="col-md-3">
-    		    {% if produit.image != null %}{{ image('produit', produit.image) | raw }}{% endif %}
+    		    {% if produit.image != null %}
+    		            {% if is_granted("ROLE_ADMIN") %}
+                            {{ deleteImage(path('image_delete', {'id': produit.id, 'type' : 'produit' }), 'btn-delete-image') | raw }}
+                        {% endif %}
+    			        {{ image('produit', produit.image) | raw }}
+    		    {% endif %}
     		</div>
 			<div class="col-md-9">
             	<table  class="table table-sm">
@@ -72,6 +77,9 @@
         
         var id_btn_delete_produit = '#btn-disabled-produit';
         Produit.EventDelete(id_btn_delete_produit);
+
+        var id_btn_delete_image = '#btn-delete-image';
+        Produit.EventDelete(id_btn_delete_image);
     });
     
     </script> 
