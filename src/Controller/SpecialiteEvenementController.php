@@ -51,11 +51,15 @@ class SpecialiteEvenementController extends AppController
         switch($type){
             case 'evenement':
                 $repository = $this->getDoctrine()->getRepository(Evenement::class);
-                $field = 'specialite.service';
+                $field = 'etablissement.nom ASC, specialite.service';
                 $jointure = array(
                     array(
                         'oldrepository' => 'SpecialiteEvenement',
                         'newrepository' => 'specialite'
+                    ),
+                    array(
+                        'oldrepository' => 'specialite',
+                        'newrepository' => 'etablissement'
                     )
                 );
                 break;

@@ -62,6 +62,10 @@ class ActionExtension extends AbstractExtension
                 $this,
                 'actionDeleteObjet'
             )),
+            new TwigFunction('deleteImage', array(
+                $this,
+                'actionDeleteImage'
+            )),
         );
     }
 
@@ -169,5 +173,16 @@ class ActionExtension extends AbstractExtension
         $return .= ' class="btn btn-secondary"><span class="oi ' . $icon . '"></span> '. $label . '</a>';
         
         return $return;
+    }
+    
+    /**
+     * Bouton pour supprimer une image
+     * 
+     * @param string $url_delete
+     * @param string $id
+     * return string
+     */
+    public function actionDeleteImage($url_delete, string $id = null){
+        return '<a href="' . $url_delete . '" ' . (is_null($id) ? '' :  'id="' . $id . '"') . ' class="float-right align-top" title="Supprimer l\'image"><span class="oi oi-circle-x"></span></a>';
     }
 }

@@ -7,6 +7,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Membre;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use App\Entity\Produit;
+use App\Entity\Evenement;
+use Doctrine\ORM\Mapping\Entity;
 
 class AppController extends Controller
 {
@@ -361,5 +364,54 @@ class AppController extends Controller
         $str = preg_replace("/\d/", '_', $str);
         
         return $str;
+    }
+    
+    /**
+     * Spurrimer une image
+     * 
+     * @Route("/utils/delete_image/{type}/{id}", name="image_delete")
+     * 
+     * @param Request $request
+     * @param string $type
+     * @param int $id
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function suppressionImage(Request $request, string $type, int $id){
+        switch ($type){
+            case 'produit':
+                $repository = $this->getDoctrine()->getRepository(Produit::class);
+                break;
+            case 'evenement':
+                $repository = $this->getDoctrine()->getRepository(Evenement::class);
+                break;
+        }
+        if(isset($repository)){
+            $objets = $repository->findById($id);
+            $objet = $objets[0];
+        }
+        
+        if(method_exists($objet, 'setImage')){
+            $image = $objet->getImage();
+            $directory = $this->getParameter('pictures_directory') . $type;
+            
+            $directory = str_replace("\\", "/", $directory);
+            
+            if(!preg_match("/^(http|https)/", $image) && file_exists($directory . '/'  . $image)){
+                unlink($directory . '/'  . $image);
+            }
+            $objet->setImage(NULL);
+            $entityManager = $this->getDoctrine()->getManager();
+            
+            $entityManager->persist($objet);
+            
+            $entityManager->flush();
+        }
+        
+        if ($request->isXmlHttpRequest()) {
+            return $this->json(array(
+                'statut' => true
+            ));
+        }
+        
     }
 }

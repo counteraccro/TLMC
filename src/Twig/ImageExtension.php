@@ -46,6 +46,6 @@ class ImageExtension extends AbstractExtension
         if (preg_match("/^(http|https)/", $image)) {
             return '<img src="' . $image . '" class="img-fluid" />';
         }
-        return '<img src="/img/' . $element . '/' . $image . '" class="img-fluid" />';
+        return '<img src="/img/' . $element . '/' . $image . '" class="img-fluid align-baseline" />';
     }
 }

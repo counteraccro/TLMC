@@ -12,7 +12,10 @@
 			<div class="row align-items-center">
     			<div class="col-md-3">
     			    {% if evenement.image != null %}
-    			        {{ image('evenement', evenement.image) | raw }}
+    			    	{% if is_granted("ROLE_ADMIN") %}
+    			    	    {{ deleteImage(path('image_delete', {'id': evenement.id, 'type' : 'evenement' }), 'btn-delete-image') | raw }}
+    			        {% endif %}
+    			    	{{ image('evenement', evenement.image) | raw }}
 					{% endif %}
     			</div>
 				<div class="col-md-9">
@@ -83,6 +86,9 @@
 
         var id_btn_delete_evenement = '#btn-disabled-evenement';
         Evenement.EventDelete(id_btn_delete_evenement);
+
+        var id_btn_delete_image = '#btn-delete-image';
+        Evenement.EventDelete(id_btn_delete_image);
     });
     
     </script> 

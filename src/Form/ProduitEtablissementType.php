@@ -26,6 +26,7 @@ class ProduitEtablissementType extends AbstractType
                     return $er->createQueryBuilder('e')
                         ->leftJoin('App:Specialite', 's', 'WITH', 's.etablissement = e.id')
                         ->andWhere('s.id IS NULL')
+                        ->andWhere('e.disabled = 0')
                         ->orderBy('e.nom', 'ASC');
                 },
                 'disabled' => $options['disabled_etablissement']
