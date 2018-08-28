@@ -62,6 +62,7 @@ class MessageRepository extends ServiceEntityRepository
         ->andWhere('m.' . $role . ' = ' . $id_membre )
         ->andWhere('(m.brouillon = ' . $brouillon . ' OR m.brouillon IS NULL)')
         ->andWhere('(ml.corbeille = 0  OR ml.corbeille IS NULL)')
+        ->orderBy('m.date_envoi', 'DESC')
         ->setMaxResults($max);
         
         if (! empty($search)) {

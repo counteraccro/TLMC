@@ -1,13 +1,12 @@
 <div id="ajax_messages_destinataire">
 	<div class="bloc_btn_messagerie">
-		<a href="#" class="btn btn-primary btn-sm">A</a>
-		<a href="#" class="btn btn-primary btn-sm">B</a>
-		<a href="#" class="btn btn-primary btn-sm">C</a>
-		<a href="#" class="btn btn-primary btn-sm">D</a>
+		<a href="#" id="select-all" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Tout selectionner"><span class="oi oi-arrow-thick-bottom"></span></a>
+		<a href="#" class="btn btn-primary btn-sm" data-placement="top" title="Supprimer"><span class="oi oi-trash" ></span></a>
+		<a href="#" class="btn btn-info btn-sm" data-toggle="tooltip" data-placement="top" title="Nouveau message"><span class="oi oi-envelope-closed"></span> + </a>
 	</div>
 	<div class="list-group">
 		{% for message in messages %}
-			{{ listingMessage(message, app.user.id) | raw }}
+			{{ listingMessage(message, app.user.id, path('message_ajax_view_message', {'id' : message.id})) | raw }}
 		{% endfor %}
     </div>
     
@@ -18,8 +17,20 @@
 	<script type="text/javascript">
 
 	$(document).ready(function() {
-		;
+		Messagerie.EventListeMessage('#ajax_messages_destinataire');
+
+		{% if messages is not empty %}
+			$('#ajax_messages_destinataire .list-group a.list-group-item').first().addClass("active");
+
+			{% set message = messages |first %}
+			Messagerie.LoadMessage('{{path('message_ajax_view_message', {'id' : message.id})}}');
+		{% endif %}
 	});
+
+	$('#messagerie-block a').tooltip();
+
+	if (event.keyCode == '37' && event.ctrlKey) {alert('interdit')}
+	
 		
     </script>
 {% endblock %}

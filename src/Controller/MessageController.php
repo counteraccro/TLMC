@@ -9,6 +9,8 @@ use App\Entity\Message;
 
 class MessageController extends AppController
 {
+    const MAX_NB_RESULT_MESSAGERIE = 50;
+    
 
     /**
      * Route de base nécessaire vers la messagerie (hors appels ajax)
@@ -50,12 +52,12 @@ class MessageController extends AppController
         
         $repository = $this->getDoctrine()->getRepository(Message::class);
         $result = $repository->findByUserByParameter($this->getUser()
-            ->getId(), 0, 'destinataire', $page, AppController::MAX_NB_RESULT, $search);
+            ->getId(), 0, 'destinataire', $page, self::MAX_NB_RESULT_MESSAGERIE, $search);
 
         $pagination = array(
             'page' => $page,
             'route' => 'message_ajax_messages_destinataire',
-            'pages_count' => ceil($result['nb'] / AppController::MAX_NB_RESULT),
+            'pages_count' => ceil($result['nb'] / self::MAX_NB_RESULT_MESSAGERIE),
             'nb_elements' => $result['nb'],
             'route_params' => array(),
             'id_div' => '#v-pills-reception'
@@ -80,12 +82,12 @@ class MessageController extends AppController
         
         $repository = $this->getDoctrine()->getRepository(Message::class);
         $result = $repository->findByUserByParameter($this->getUser()
-            ->getId(), 1, 'expediteur', $page, AppController::MAX_NB_RESULT, $search);
+            ->getId(), 1, 'expediteur', $page, self::MAX_NB_RESULT_MESSAGERIE, $search);
         
         $pagination = array(
             'page' => $page,
             'route' => 'message_ajax_messages_brouillons',
-            'pages_count' => ceil($result['nb'] / AppController::MAX_NB_RESULT),
+            'pages_count' => ceil($result['nb'] / self::MAX_NB_RESULT_MESSAGERIE),
             'nb_elements' => $result['nb'],
             'route_params' => array(),
             'id_div' => '#v-pills-brouillons'
@@ -111,12 +113,12 @@ class MessageController extends AppController
         $repository = $this->getDoctrine()->getRepository(Message::class);
 
         $result = $repository->findCorbeilleByUser($this->getUser()
-            ->getId(), $page, AppController::MAX_NB_RESULT, $search);
+            ->getId(), $page, self::MAX_NB_RESULT_MESSAGERIE, $search);
         
         $pagination = array(
             'page' => $page,
             'route' => 'message_ajax_messages_corbeille',
-            'pages_count' => ceil($result['nb'] / AppController::MAX_NB_RESULT),
+            'pages_count' => ceil($result['nb'] / self::MAX_NB_RESULT_MESSAGERIE),
             'nb_elements' => $result['nb'],
             'route_params' => array(),
             'id_div' => '#v-pills-corbeille'
@@ -142,12 +144,12 @@ class MessageController extends AppController
         $repository = $this->getDoctrine()->getRepository(Message::class);
         
         $result = $repository->findByUserByParameter($this->getUser()
-            ->getId(), 0, 'expediteur', $page, AppController::MAX_NB_RESULT, $search);
+            ->getId(), 0, 'expediteur', $page, self::MAX_NB_RESULT_MESSAGERIE, $search);
         
         $pagination = array(
             'page' => $page,
             'route' => 'message_ajax_messages_envoyes',
-            'pages_count' => ceil($result['nb'] / AppController::MAX_NB_RESULT),
+            'pages_count' => ceil($result['nb'] / self::MAX_NB_RESULT_MESSAGERIE),
             'nb_elements' => $result['nb'],
             'route_params' => array(),
             'id_div' => '#v-pills-envoyes'
@@ -157,6 +159,20 @@ class MessageController extends AppController
             'pagination' => $pagination,
             'search' => $search,
             'messages' => $result['paginator'],
+        ]);
+    }
+    
+    /**
+     * Affiche le message envoyé en id (visualisation du message selectionné)
+     *
+     * @Route("/messagerie/ajax/viewmessage/{id}", name="message_ajax_view_message")
+     * @ParamConverter("message", options={"mapping": {"id": "id"}})
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
+     */
+    public function ajaxViewMessage(Message $message)
+    {
+        return $this->render('message/ajax_view_message.html.twig', [
+            'message' => $message,
         ]);
     }
 }

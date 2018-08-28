@@ -6,18 +6,9 @@
 		<a href="#" class="btn btn-primary btn-sm">A</a>
 	</div>
 	<div class="list-group">
-			{% for message in messages %}
-			<a href="#" class="list-group-item list-group-item-action active">
-        		{{ message.titre }}
-      		</a>
+		{% for message in messages %}
+			{{ listingMessage(message, app.user.id, path('message_ajax_view_message', {'id' : message.id})) | raw }}
 		{% endfor %}
-    	<a href="#" class="list-group-item list-group-item-action active">
-        	Brouillons
-        </a>
-      	<a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
-      	<a href="#" class="list-group-item list-group-item-action">Morbi leo risus</a>
-      	<a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
-      	<a href="#" class="list-group-item list-group-item-action disabled">Vestibulum at eros</a>
     </div>
 
     {% include 'elements/ajax_pagination.html.twig' %}
@@ -27,7 +18,14 @@
 	<script type="text/javascript">
 
 	$(document).ready(function() {
-		;
+		Messagerie.EventListeMessage('#ajax_messages_brouillons');
+
+		{% if messages is not empty %}
+			$('#ajax_messages_destinataire .list-group a.list-group-item').first().addClass("active");
+
+			{% set message = messages |first %}
+			Messagerie.LoadMessage('{{path('message_ajax_view_message', {'id' : message.id})}}');
+		{% endif %}
 	});
 		
     </script>

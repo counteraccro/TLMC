@@ -571,6 +571,23 @@ a:hover {
 
 /********************************************
 *
+* SURCHARGE BORDERS-*
+*
+********************************************/
+
+.border-primary {
+  border-color: #d5488b !important;
+}
+
+
+/********************************************
+*
+* FIN SURCHARGE BORDERS-*
+*
+********************************************/
+
+/********************************************
+*
 * FOOTER
 *
 ********************************************/
@@ -727,6 +744,40 @@ footer h6, footer p {
 	font-size: 0.9em;
 }
 
+#messagerie-block #v-pills-tabContent .list-group-item div.float-right {
+	margin-top: -23px;
+	font-size: 0.9em;
+	font-style: italic;
+}
+
+#messagerie-block #v-pills-tabContent .list-group-item.no-read {
+	border-left: 5px solid #d5488b;
+}
+
+#messagerie-block #v-pills-tabContent .list-group-item.no-read div.small-head {
+	left: 40px;
+}
+
+#messagerie-block #v-pills-tabContent .list-group-item.no-read div.small-body {
+	left: 40px;
+	font-weight: bold;
+}
+
+#messagerie-block #v-pills-tabContent .list-group-item.no-read span.oi {
+	left: -5px;
+}
+
+#messagerie-block nav {
+	margin-top: 10px;
+}
+
+#messagerie-block nav a.page-link {
+	font-size: .875rem
+}
+
+#messagerie-block #ajax_messages_destinataire .bloc_btn_messagerie {
+	margin-left: -5px;
+}
 
 /********************************************
 *
