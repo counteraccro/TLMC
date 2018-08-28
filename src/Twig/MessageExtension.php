@@ -45,7 +45,7 @@ class MessageExtension extends AbstractExtension
             }
         }
         
-        $html .= '<a href="' . $path . '" class="list-group-item list-group-item-action ' . $isRead . '">';
+        $html .= '<a href="' . $path . '" class="list-group-item list-group-item-action ' . $isRead . '" data-id="' . $message->getId() . '" data-titre="' . $message->getTitre() . '">';
 
         $nomPrenom = '';
         if ($statut == 'destinataire') {

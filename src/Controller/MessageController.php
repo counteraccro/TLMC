@@ -6,6 +6,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use App\Entity\Message;
+use Symfony\Component\HttpFoundation\Request;
+use App\Entity\MessageLu;
 
 class MessageController extends AppController
 {
@@ -174,5 +176,69 @@ class MessageController extends AppController
         return $this->render('message/ajax_view_message.html.twig', [
             'message' => $message,
         ]);
+    }
+    
+    /**
+     * A écrire
+     *
+     * @Route("/messagerie/ajax/readnoread", name="message_ajax_read_no_read")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
+     */
+    public function ajaxMessageReadNoRead(Request $request)
+    {
+        $tab = $request->request->all();
+        
+        $repository = $this->getDoctrine()->getRepository(Message::class);
+        $result = $repository->findById($tab['data']);
+        
+        /* @var Message $message */
+        /* @var MessageLu $messageLu */
+        
+        $ok = false;
+        foreach ($result as &$message)
+        {
+            // Cas car les fixtures ne sont pas bonnes, en principe improbable
+            if($message->getMessageLus()->isEmpty())
+            {
+                $messageLu = new MessageLu();
+                $messageLu->setMembre($this->getMembre());
+                $messageLu->setLu($tab['isRead']);
+                $messageLu->setDate(new \DateTime());
+                $messageLu->setMessage($message);
+                $message->addMessageLus($messageLu);
+                $ok = true;
+            }
+            else
+            {
+                foreach($message->getMessageLus() as &$messageLu)
+                {
+                    if($messageLu->getMembre()->getId() == $this->getMembre()->getId())
+                    {
+                        $messageLu->setLu($tab['isRead']);
+                        $messageLu->setDate(new \DateTime());
+                        $ok = true;
+                    }
+                }
+            }
+            
+            // Cas car les fixtures ne sont pas bonnes, en principe improbable car soit pas de messageLu ou messageLu non 
+            // existant pour le membre courant
+            if(!$ok)
+            {
+                $messageLu = new MessageLu();
+                $messageLu->setMembre($this->getMembre());
+                $messageLu->setLu($tab['isRead']);
+                $messageLu->setDate(new \DateTime());
+                $messageLu->setMessage($message);
+                $message->addMessageLus($messageLu);
+            }
+            
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($messageLu);
+            $em->persist($message);
+        }
+        $em->flush();
+        
+        return $this->json(array('statut' => 1));
     }
 }

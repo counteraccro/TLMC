@@ -43,6 +43,13 @@ class MessageLu
      */
     private $date;
 
+    public function __construct()
+    {
+        $this->corbeille = 0;
+        $this->lu = 0;
+        $this->date = new \DateTime();
+    }
+    
     public function getId()
     {
         return $this->id;

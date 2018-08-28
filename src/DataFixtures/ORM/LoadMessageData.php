@@ -34,7 +34,7 @@ class LoadMessageData extends Fixture implements DependentFixtureInterface
                 'setGroupe' => 'Groupe-1',
                 'setCorps' => 'Coucou Eric, ça va très bien et toi ?',
                 'setTitre' => 'Re:Nouvelles',
-                'setDateEnvoi' => '2018-08-28 16:03:00',
+                'setDateEnvoi' => '2018-08-28 07:00:00',
                 'setDisabled' => 0,
                 'setBrouillon' => 0
             ],
@@ -44,7 +44,7 @@ class LoadMessageData extends Fixture implements DependentFixtureInterface
                 'setGroupe' => 'Groupe-2',
                 'setCorps' => 'Bonjour, as-tu validé l\'inscription de Mme Oréo ? Cordialement, Eric Fonzy',
                 'setTitre' => 'Inscription à l\'événement',
-                'setDateEnvoi' => '2018-03-05 12:12:00',
+                'setDateEnvoi' => '2018-08-23 12:12:00',
                 'setDisabled' => 0,
                 'setBrouillon' => 0
             ],

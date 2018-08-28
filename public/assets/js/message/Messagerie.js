@@ -36,11 +36,11 @@ Messagerie.Launch = function(params){
 
 		$(id_global + ' .list-group a.list-group-item').click(function() {
 
-		var lu = true;
-		if($(this).hasClass('no-read'))
-	    {
-			lu = false;
-	    }
+			var lu = true;
+			if($(this).hasClass('no-read'))
+			{
+				lu = false;
+			}
 			if(event.ctrlKey)
 			{
 				$(id_global + ' .list-group a.list-group-item').each(function() {
@@ -48,7 +48,7 @@ Messagerie.Launch = function(params){
 						$(this).children('span').removeClass().addClass('oi oi-check');
 					}
 				});
-				
+
 				if($(this).hasClass('active'))
 				{
 					$(this).removeClass('active');
@@ -64,40 +64,124 @@ Messagerie.Launch = function(params){
 				else
 				{
 					$(this).addClass('active');
-					if(lu)
-					{
-						$(this).children('span').removeClass('oi-envelope-open').addClass('oi-check');
-					}
-					else
-					{
-						$(this).children('span').removeClass('oi-envelope-closed').addClass('oi-check');
-					}
+					$(this).children('span').removeClass().addClass('oi oi-check');
 				}
+
+				$(id_global + ' #select-all').children('span').removeClass().addClass('oi oi-arrow-thick-top');
+				$(id_global + ' #select-all').tooltip('hide').attr('data-original-title', 'Tout désélectionner');
 			}
 			else
 			{
 				$(id_global + ' .list-group a.list-group-item').each(function() {
 					$(this).removeClass('active');
 					if($(this).hasClass('no-read'))
-				    {
+					{
 						$(this).children('span').removeClass('oi-check').addClass('oi-envelope-closed');
-				    }
+					}
 					else
 					{
 						$(this).children('span').removeClass('oi-check').addClass('oi-envelope-open');
 					}
-					
+
 				});
+
+				$(id_global + ' #select-all').children('span').removeClass().addClass('oi oi-arrow-thick-bottom');
+				$(id_global + ' #select-all').tooltip('hide').attr('data-original-title', 'Tout sélectionner');
 
 				$(this).addClass('active');
 				Messagerie.LoadMessage($(this).attr('href'));
 			}
-
 			return false;
+		});
+
+		/**
+		 * 
+		 **/
+		$(id_global + ' #select-all').click(function() {
+
+			$(id_global + ' .list-group a.list-group-item').each(function() {
+
+				var lu = true;
+				if($(this).hasClass('no-read'))
+				{
+					lu = false;
+				}
+
+				if ($(id_global + ' #select-all').children('span').hasClass('oi oi-arrow-thick-bottom'))  
+				{
+
+					$(this).addClass('active');
+					$(this).children('span').removeClass().addClass('oi oi-check');
+
+				}
+				else
+				{
+
+					$(this).removeClass('active');
+					if(lu)
+					{
+						$(this).children('span').removeClass('oi-check').addClass('oi-envelope-open');
+					}
+					else
+					{
+						$(this).children('span').removeClass('oi-check').addClass('oi-envelope-closed');
+					}
+				}
+
+			});
+
+			if ($(id_global + ' #select-all').children('span').hasClass('oi oi-arrow-thick-bottom'))  
+			{
+				$(id_global + ' #select-all').children('span').removeClass().addClass('oi oi-arrow-thick-top');
+				$(id_global + ' #select-all').tooltip('hide').attr('data-original-title', 'Tout désélectionner').tooltip('show');
+			}
+			else
+			{
+				$(id_global + ' #select-all').children('span').removeClass().addClass('oi oi-arrow-thick-bottom');
+				$(id_global + ' #select-all').tooltip('hide').attr('data-original-title', 'Tout sélectionner').tooltip('show');
+			}
 
 		});
-		
-		
+
+		/**
+		 * 
+		 */
+		$(id_global + ' .msg-read-no-read').click(function() {
+
+			var tabId = [];
+			role = $(this).data('role')
+			
+			$(id_global + ' .list-group a.list-group-item').each(function() {
+				if($(this).hasClass('active'))
+				{
+					tabId.push($(this).data('id'));
+				}
+			});
+			
+			var isRead = 0;
+			if($(this).attr('id') == 'message-read')
+		    {
+				isRead = 1;
+		    }
+			
+
+			Messagerie.globale_content_pills.showLoading();
+			$.ajax({
+				method: 'POST',
+				url: $(this).attr('href'),
+				data : {data : tabId, 'isRead' : isRead},
+			})
+			.done(function( json ) {
+				Messagerie.globale_content_pills.hideLoading();
+				if(json.statut == 1)
+				{
+					Messagerie.LoadElement(role);
+				}
+			});
+
+			return false
+
+		});
 	}
 
 	/**
@@ -128,7 +212,7 @@ Messagerie.Launch = function(params){
 
 
 		default:
-			alert('Element inconnu');
+			alert('Element inconnu ' + id);
 		return false;
 		break;
 		}
