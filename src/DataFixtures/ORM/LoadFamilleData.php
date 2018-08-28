@@ -34,7 +34,7 @@ class LoadFamilleData extends Fixture implements DependentFixtureInterface
                 'setNumeroTel' => '0381454546',
                 'setFamilleAdresse' => 'FamilleAdresse-2',
                 'setPatient' => 'Patient-2',
-                'setDisabled' => true
+                'setDisabled' => false
             ],
             'Famille-3' => [
                 'setNom' => 'Garcia',
@@ -45,7 +45,7 @@ class LoadFamilleData extends Fixture implements DependentFixtureInterface
                 'setNumeroTel' => '+33785924563',
                 'setFamilleAdresse' => 'FamilleAdresse-3',
                 'setPatient' => 'Patient-3',
-                'setDisabled' => false
+                'setDisabled' => true
             ],
             'Famille-4' => [
                 'setNom' => 'Garcia',
@@ -56,7 +56,7 @@ class LoadFamilleData extends Fixture implements DependentFixtureInterface
                 'setNumeroTel' => '+33685924563',
                 'setFamilleAdresse' => 'FamilleAdresse-3',
                 'setPatient' => 'Patient-3',
-                'setDisabled' => false
+                'setDisabled' => true
             ],
             'Famille-5' => [
                 'setNom' => 'Sasoeur',
@@ -166,6 +166,39 @@ class LoadFamilleData extends Fixture implements DependentFixtureInterface
                 'setNumeroTel' => '+33178797475',
                 'setFamilleAdresse' => 'FamilleAdresse-10',
                 'setPatient' => 'Patient-5',
+                'setDisabled' => false
+            ],
+            'Famille-15' => [
+                'setNom' => 'Jean-Jean',
+                'setPrenom' => 'Dimitri',
+                'setLienFamille' => 1,
+                'setEmail' => 'dimitri.jean.jean@gmail.com',
+                'setPmr' => false,
+                'setNumeroTel' => '+33121232425',
+                'setFamilleAdresse' => 'FamilleAdresse-11',
+                'setPatient' => 'Patient-6',
+                'setDisabled' => false
+            ],
+            'Famille-16' => [
+                'setNom' => 'Jean-Jean',
+                'setPrenom' => 'Hélène',
+                'setLienFamille' => 2,
+                'setEmail' => 'helene.jean.jean@gmail.com',
+                'setPmr' => false,
+                'setNumeroTel' => '+33178797475',
+                'setFamilleAdresse' => 'FamilleAdresse-12',
+                'setPatient' => 'Patient-6',
+                'setDisabled' => false
+            ],
+            'Famille-17' => [
+                'setNom' => 'Jean-Jean',
+                'setPrenom' => 'Thomas',
+                'setLienFamille' => 3,
+                'setEmail' => 'thomas.jean.jean@gmail.com',
+                'setPmr' => false,
+                'setNumeroTel' => '0608845692',
+                'setFamilleAdresse' => 'FamilleAdresse-13',
+                'setPatient' => 'Patient-6',
                 'setDisabled' => false
             ]
         ]

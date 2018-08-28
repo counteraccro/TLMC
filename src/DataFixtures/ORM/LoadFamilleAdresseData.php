@@ -81,6 +81,27 @@ class LoadFamilleAdresseData extends Fixture implements DependentFixtureInterfac
                 'setVille' => 'Paris',
                 'setCodePostal' => 75018,
                 'setDisabled' => false
+            ],
+            'FamilleAdresse-11' => [
+                'setNumeroVoie' => 15,
+                'setVoie' => 'rue des Abricots',
+                'setVille' => 'Le Mans',
+                'setCodePostal' => 72200,
+                'setDisabled' => false
+            ],
+            'FamilleAdresse-12' => [
+                'setNumeroVoie' => 15,
+                'setVoie' => 'rue des Abricots',
+                'setVille' => 'Le Mans',
+                'setCodePostal' => 72200,
+                'setDisabled' => false
+            ],
+            'FamilleAdresse-13' => [
+                'setNumeroVoie' => 75,
+                'setVoie' => 'Avenue Victor Hugo',
+                'setVille' => 'Le Mans',
+                'setCodePostal' => 72200,
+                'setDisabled' => false
             ]
         ]
     ];
