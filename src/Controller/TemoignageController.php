@@ -206,7 +206,7 @@ class TemoignageController extends AppController
         );
         
         if (! $this->isAdmin()) {
-            $params['condition'][] = $params['repository'] . 'disabled = 0';
+            $params['condition'][] = $params['repository'] . '.disabled = 0';
         }
         
         $repository = $this->getDoctrine()->getRepository($params['repositoryClass']);
@@ -305,10 +305,12 @@ class TemoignageController extends AppController
             
             //Pour associer la famille lors de l'ajout depuis une modale
             if ($request->isXmlHttpRequest()) {
-                $famille_id = $request->request->get('temoignage')['famille'];
-                $familles = $this->getDoctrine()->getRepository(Famille::class)->findById($famille_id);
-                $famille = $familles[0];
-                $temoignage->setFamille($famille);
+                if(isset($request->request->get('temoignage')['famille'])){
+                    $famille_id = $request->request->get('temoignage')['famille'];
+                    $familles = $this->getDoctrine()->getRepository(Famille::class)->findById($famille_id);
+                    $famille = $familles[0];
+                    $temoignage->setFamille($famille);
+                }
             }
             
             $temoignage->setMembre($membre);
