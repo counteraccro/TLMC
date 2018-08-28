@@ -73,8 +73,6 @@ class QuestionnaireType extends AbstractType
                 'disabled' => true
             ));
         }
-
-        // $builder->add('publication');
     }
 
     public function configureOptions(OptionsResolver $resolver)

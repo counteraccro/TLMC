@@ -41,7 +41,7 @@ class MessageRepository extends ServiceEntityRepository
     }
     
     /**
-     * 
+     * @Aymeric + todo recherche à faire
      */
     public function findByUserByParameter($id_membre, $brouillon = 0, $role = 'destinataire',  int $page = 1, int $max = 10, $search = '')
     {
@@ -97,7 +97,7 @@ class MessageRepository extends ServiceEntityRepository
     }
     
     /**
-     *
+     * @Aymeric
      */
     public function findCorbeilleByUser($id_membre, int $page = 1, int $max = 10, $search = '')
     {

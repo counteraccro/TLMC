@@ -211,7 +211,7 @@ class QuestionnaireController extends AppController
             }
         }
 
-        // Si appel Ajax, on renvoi sur la page ajax
+        // Si appel Ajax, on renvoie sur la page ajax
         if ($request->isXmlHttpRequest()) {
 
             return $this->render('questionnaire/ajax_edit.html.twig', [
@@ -613,6 +613,7 @@ class QuestionnaireController extends AppController
         }
     }
 
+    
     /**
      * Duplication questionnaire
      *
@@ -620,6 +621,11 @@ class QuestionnaireController extends AppController
      * @Route("/questionnaire/ajax/duplication/validation/{id}/{statut}/{page}", name="questionnaire_ajax_duplication_validation")
      * @ParamConverter("questionnaire", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
+     * @param Request $request
+     * @param Questionnaire $questionnaire
+     * @param number $statut
+     * @param int $page
+     * @return \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function duplicationAction(Request $request, Questionnaire $questionnaire, $statut = 0, $page)
     {

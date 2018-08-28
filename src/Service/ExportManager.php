@@ -78,6 +78,14 @@ class ExportManager extends AppService
         return $response;
     }
 
+    /** Fonction pour la génération du fichier téléchargé au format XML
+     * 
+     * @param string $fileName
+     * @param object $object
+     * @param array $attributes
+     * @param array $arrayCallback
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function generateXML($fileName, $object, $attributes = array(), $arrayCallback = array())
     {
         $fileName = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $fileName);

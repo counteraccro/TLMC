@@ -179,10 +179,12 @@ class MessageController extends AppController
     }
     
     /**
-     * A écrire
+     * Fonction permettant les changements au clic sur "Marquer comme Lu/ Marquer comme non-lu"
      *
      * @Route("/messagerie/ajax/readnoread", name="message_ajax_read_no_read")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function ajaxMessageReadNoRead(Request $request)
     {

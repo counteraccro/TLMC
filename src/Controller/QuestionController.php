@@ -168,7 +168,7 @@ class QuestionController extends AppController
             }
         }
 
-        // Si appel Ajax, on renvoi sur la page ajax
+        // Si appel Ajax, on renvoie sur la page ajax
         if ($request->isXmlHttpRequest()) {
 
             return $this->render('question/ajax_edit.html.twig', array(
