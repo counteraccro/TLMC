@@ -779,6 +779,14 @@ footer h6, footer p {
 	margin-left: -5px;
 }
 
+#messagerie-block #ajax_view_message .card {
+	margin-left: 5px;
+}
+
+#messagerie-block #ajax_view_message .bloc_btn_messagerie .float-right {
+	margin-right: 10px;
+}
+
 /********************************************
 *
 * fin Page templates/message/index.html.twig

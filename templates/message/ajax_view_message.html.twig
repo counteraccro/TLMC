@@ -1,10 +1,42 @@
-<div id="ajax_view_destinataire">
+<div id="ajax_view_message">
 	<div class="bloc_btn_messagerie">
-		<a href="#" class="btn btn-primary btn-sm">A</a>
-		<a href="#" class="btn btn-primary btn-sm">B</a>
-		<a href="#" class="btn btn-primary btn-sm">C</a>
-		<a href="#" class="btn btn-primary btn-sm">D</a>
+		<a href="#" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Répondre"><span class="oi oi-arrow-thick-left"></span></a>
+		<div class="btn-group" role="group">
+            <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            	<span class="oi oi-ellipses"></span>
+            </button>
+            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+            	<a class="dropdown-item msg-read-no-read" href="{{ path('message_ajax_read_no_read') }}" id="message-read" data-role="reception">Marquer comme lu</a>
+              	<a class="dropdown-item msg-read-no-read" href="{{ path('message_ajax_read_no_read') }}" id="message-no-read" data-role="reception">Marquer comme non lu</a>
+            </div>
+       	</div>
+       	<a href="#" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Corbeille"><span class="oi oi-trash"></span></a>
+       
+       	<div class="float-right">
+       		<i>Texte</i>
+       	</div>
+       
 	</div>
 	
-	<div>ID {{ message.titre }}</div>
+	<div class="card">
+  		<div class="card-header">
+    		{{ message.titre }}
+    		<div class="float-right">
+    			<i>Message envoyé par {{ message.expediteur.prenom }} {{ message.expediteur.nom }} {{ formatDateMessage(message.dateEnvoi) }}</i>
+    		</div>
+  		</div>
+  		<div class="card-body">
+    		{{ message.corps | nl2br }}
+  		</div>
+	</div>
 </div>
+
+{% block javascripts %}
+	<script type="text/javascript">
+
+	$(document).ready(function() {
+
+		$('#messagerie-block #ajax_view_message a').tooltip();	
+	});	
+    </script>
+{% endblock %}

@@ -41,6 +41,8 @@ Messagerie.Launch = function(params){
 			{
 				lu = false;
 			}
+			
+			// Touche ctrl apuyée
 			if(event.ctrlKey)
 			{
 				$(id_global + ' .list-group a.list-group-item').each(function() {
@@ -70,6 +72,7 @@ Messagerie.Launch = function(params){
 				$(id_global + ' #select-all').children('span').removeClass().addClass('oi oi-arrow-thick-top');
 				$(id_global + ' #select-all').tooltip('hide').attr('data-original-title', 'Tout désélectionner');
 			}
+			// Simple click
 			else
 			{
 				$(id_global + ' .list-group a.list-group-item').each(function() {
@@ -89,6 +92,9 @@ Messagerie.Launch = function(params){
 				$(id_global + ' #select-all').tooltip('hide').attr('data-original-title', 'Tout sélectionner');
 
 				$(this).addClass('active');
+				$(this).children('span').removeClass().addClass('oi oi-envelope-open');
+				$(this).children('div[class="small-body"]').css( "font-weight", "normal" );
+				$(this).removeClass('no-read');
 				Messagerie.LoadMessage($(this).attr('href'));
 			}
 			return false;

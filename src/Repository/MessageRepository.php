@@ -34,6 +34,8 @@ class MessageRepository extends ServiceEntityRepository
         ->join('m.messageLus', 'ml')
         ->andWhere('m.destinataire = ' . $id_membre)
         ->andWhere('ml.lu = 0')
+        ->andWhere('m.brouillon = 0')
+        ->andWhere('ml.corbeille = 0')
         ->getQuery()
         ->getArrayResult();
         

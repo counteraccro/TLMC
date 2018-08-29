@@ -173,6 +173,21 @@ class MessageController extends AppController
      */
     public function ajaxViewMessage(Message $message)
     {
+        
+        foreach($message->getMessageLus() as &$messageLu)
+        {
+            if($messageLu->getMembre()->getId() == $this->getUser()->getId())
+            {
+                $messageLu->setLu(1);
+                $messageLu->setDate(new \DateTime());
+            }
+        }
+        
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($message);
+        $em->persist($messageLu);
+        $em->flush();
+        
         return $this->render('message/ajax_view_message.html.twig', [
             'message' => $message,
         ]);
@@ -214,7 +229,7 @@ class MessageController extends AppController
             {
                 foreach($message->getMessageLus() as &$messageLu)
                 {
-                    if($messageLu->getMembre()->getId() == $this->getMembre()->getId())
+                    if($messageLu->getMembre()->getId() == $this->getUser()->getId())
                     {
                         $messageLu->setLu($tab['isRead']);
                         $messageLu->setDate(new \DateTime());
@@ -233,7 +248,7 @@ class MessageController extends AppController
                 $messageLu->setDate(new \DateTime());
                 $messageLu->setMessage($message);
                 $message->addMessageLus($messageLu);
-            }
+            } 
             
             $em = $this->getDoctrine()->getManager();
             $em->persist($messageLu);
