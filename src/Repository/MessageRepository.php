@@ -130,7 +130,7 @@ class MessageRepository extends ServiceEntityRepository
         
         $query = $this->createQueryBuilder('m')
         ->select('COUNT(DISTINCT m.id)')
-        ->join('m.messageLus', 'ml')
+        ->join('m.messageLus', 'ml', Expr\Join::WITH , 'ml.membre = ' . $id_membre)
         ->andWhere('(m.expediteur = ' . $id_membre . ' OR m.destinataire = ' . $id_membre . ')')
         ->andWhere('ml.corbeille = 1');
         

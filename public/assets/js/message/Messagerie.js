@@ -16,6 +16,7 @@ Messagerie.Launch = function(params){
 	Messagerie.element_navPills_content_envoyes = $('#messagerie-block #v-pills-envoyes');
 
 	Messagerie.global_content_bloc_message = $('#messagerie-block #bloc_view_message');
+	Messagerie.popin = $('#messagerie-block #modal_message_global #bloc_modal');
 
 
 	/**
@@ -25,8 +26,7 @@ Messagerie.Launch = function(params){
 
 		Messagerie.element_navPills.click(function() {
 			Messagerie.LoadElement($(this).attr('id'));
-		})
-
+		});
 	}
 
 	/**
@@ -220,6 +220,18 @@ Messagerie.Launch = function(params){
 				}
 			});
 
+			return false;
+		});
+		
+		$(id_global + ' #new-message').click(function() {	
+			$(this).tooltip('hide');
+			$.ajax({
+				method: 'GET',
+				url: $(this).attr('href'),
+			})
+			.done(function( html ) {
+				Messagerie.popin.html(html);
+			});
 			return false;
 		});
 

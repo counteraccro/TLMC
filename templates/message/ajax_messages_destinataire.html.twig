@@ -11,12 +11,16 @@
               	<a class="dropdown-item msg-read-no-read" href="{{ path('message_ajax_read_no_read') }}" id="message-no-read" data-role="reception">Marquer comme non lu</a>
             </div>
      	</div>
-		<a href="#" class="btn btn-info btn-sm" data-toggle="tooltip" data-placement="top" title="Nouveau message"><span class="oi oi-envelope-closed"></span> + </a>
+		<a href="{{ path('message_ajax_new_message') }}" class="btn btn-info btn-sm" id="new-message" data-toggle="tooltip" data-placement="top" title="Nouveau message"><span class="oi oi-envelope-closed"></span> + </a>
 	</div>
 	<div class="list-group">
-		{% for message in messages %}
-			{{ listingMessage(message, app.user.id, path('message_ajax_view_message', {'id' : message.id})) | raw }}
-		{% endfor %}
+		{% if messages is not empty %}
+		    {% for message in messages %}
+			    {{ listingMessage(message, app.user.id, path('message_ajax_view_message', {'id' : message.id})) | raw }}
+		    {% endfor %}
+		{% else %}
+			<div class="text text-info text-center"><i>Aucun message dans votre boite de reception</i></div>
+		{% endif %}
     </div>
     
     {% include 'elements/ajax_pagination.html.twig' %}
@@ -36,6 +40,8 @@
 
 			{% set message = messages |first %}
 			Messagerie.LoadMessage('{{path('message_ajax_view_message', {'id' : message.id})}}');
+		{% else %}
+		 	$('#messagerie-block #bloc_view_message').html('');
 		{% endif %}
 	});
 

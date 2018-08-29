@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use App\Entity\Message;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\MessageLu;
+use App\Form\MessageType;
 
 class MessageController extends AppController
 {
@@ -254,9 +255,8 @@ class MessageController extends AppController
             /*@ var MessageLu $messageLu */{
             foreach ($message->getMessageLus() as &$messageLu) {
                 if ($messageLu->getMembre()->getId() == $this->getUser()->getId()) {
-                    
+
                     $messageLu->setCorbeille($tab['corbeille']);
-                    
                 }
             }
             $em = $this->getDoctrine()->getManager();
@@ -268,5 +268,28 @@ class MessageController extends AppController
         return $this->json(array(
             'statut' => 1
         ));
+    }
+    
+    /**
+     * Fonction 
+     *
+     * @Route("/messagerie/ajax/newmessage", name="message_ajax_new_message")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
+     * @param Request $request
+     */
+    public function ajaxNewMessage(Request $request)
+    {
+        
+        $message = new Message();
+        $form = $this->createForm(MessageType::class, $message, array());
+        
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+        }
+        
+        return $this->render('message/ajax_new_message.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
 }
