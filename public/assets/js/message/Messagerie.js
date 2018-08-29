@@ -41,7 +41,7 @@ Messagerie.Launch = function(params){
 			{
 				lu = false;
 			}
-			
+
 			// Touche ctrl apuyée
 			if(event.ctrlKey)
 			{
@@ -101,7 +101,7 @@ Messagerie.Launch = function(params){
 		});
 
 		/**
-		 * 
+		 * Evenement au clic sur le bouton "tout selectionner/tout dé-selectionner
 		 **/
 		$(id_global + ' #select-all').click(function() {
 
@@ -156,20 +156,20 @@ Messagerie.Launch = function(params){
 
 			var tabId = [];
 			role = $(this).data('role')
-			
+
 			$(id_global + ' .list-group a.list-group-item').each(function() {
 				if($(this).hasClass('active'))
 				{
 					tabId.push($(this).data('id'));
 				}
 			});
-			
+
 			var isRead = 0;
 			if($(this).attr('id') == 'message-read')
-		    {
+			{
 				isRead = 1;
-		    }
-			
+			}
+
 
 			Messagerie.globale_content_pills.showLoading();
 			$.ajax({
@@ -185,9 +185,45 @@ Messagerie.Launch = function(params){
 				}
 			});
 
-			return false
+			return false;
 
 		});
+
+		/**
+		 * Evenement au clic sur le bouton "Corbeille"
+		 **/
+		$(id_global + ' #delete-all').click(function() {
+			
+			$(id_global + ' #delete-all').tooltip('hide')
+			
+			var tabId = [];
+			var role = $(this).data('role')
+			var corbeille = $(this).data('corbeille');
+
+			$(id_global + ' .list-group a.list-group-item').each(function() {
+				if($(this).hasClass('active'))
+				{
+					tabId.push($(this).data('id'));
+				}
+			});
+
+			$.ajax({
+				method: 'POST',
+				url: $(this).attr('href'),
+				data : {data : tabId, 'corbeille' : corbeille},
+			})
+			.done(function( json ) {
+				Messagerie.globale_content_pills.hideLoading();
+				if(json.statut == 1)
+				{
+					Messagerie.LoadElement(role);
+				}
+			});
+
+			return false;
+		});
+
+
 	}
 
 	/**

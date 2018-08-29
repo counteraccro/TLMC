@@ -11,11 +11,12 @@ use App\Entity\MessageLu;
 
 class MessageController extends AppController
 {
+
     const MAX_NB_RESULT_MESSAGERIE = 50;
-    
 
     /**
      * Route de base nécessaire vers la messagerie (hors appels ajax)
+     *
      * @Route("/messagerie", name="message")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      */
@@ -49,9 +50,8 @@ class MessageController extends AppController
      */
     public function ajaxMessagesDestinataire($page = 1)
     {
-        
         $search = '';
-        
+
         $repository = $this->getDoctrine()->getRepository(Message::class);
         $result = $repository->findByUserByParameter($this->getUser()
             ->getId(), 0, 'destinataire', $page, self::MAX_NB_RESULT_MESSAGERIE, $search);
@@ -64,11 +64,11 @@ class MessageController extends AppController
             'route_params' => array(),
             'id_div' => '#v-pills-reception'
         );
-        
+
         return $this->render('message/ajax_messages_destinataire.html.twig', [
             'pagination' => $pagination,
             'search' => $search,
-            'messages' => $result['paginator'],
+            'messages' => $result['paginator']
         ]);
     }
 
@@ -81,11 +81,11 @@ class MessageController extends AppController
     public function ajaxMessagesBrouillons($page = 1)
     {
         $search = '';
-        
+
         $repository = $this->getDoctrine()->getRepository(Message::class);
         $result = $repository->findByUserByParameter($this->getUser()
             ->getId(), 1, 'expediteur', $page, self::MAX_NB_RESULT_MESSAGERIE, $search);
-        
+
         $pagination = array(
             'page' => $page,
             'route' => 'message_ajax_messages_brouillons',
@@ -94,11 +94,11 @@ class MessageController extends AppController
             'route_params' => array(),
             'id_div' => '#v-pills-brouillons'
         );
-        
+
         return $this->render('message/ajax_messages_brouillons.html.twig', [
             'pagination' => $pagination,
             'search' => $search,
-            'messages' => $result['paginator'],
+            'messages' => $result['paginator']
         ]);
     }
 
@@ -111,12 +111,12 @@ class MessageController extends AppController
     public function ajaxMessagesCorbeille($page = 1)
     {
         $search = '';
-        
+
         $repository = $this->getDoctrine()->getRepository(Message::class);
 
         $result = $repository->findCorbeilleByUser($this->getUser()
             ->getId(), $page, self::MAX_NB_RESULT_MESSAGERIE, $search);
-        
+
         $pagination = array(
             'page' => $page,
             'route' => 'message_ajax_messages_corbeille',
@@ -129,10 +129,10 @@ class MessageController extends AppController
         return $this->render('message/ajax_messages_corbeille.html.twig', [
             'pagination' => $pagination,
             'search' => $search,
-            'messages' => $result['paginator'],
+            'messages' => $result['paginator']
         ]);
     }
-    
+
     /**
      * Affiche les messages envoyés par le user courant
      *
@@ -144,10 +144,10 @@ class MessageController extends AppController
         $search = '';
 
         $repository = $this->getDoctrine()->getRepository(Message::class);
-        
+
         $result = $repository->findByUserByParameter($this->getUser()
             ->getId(), 0, 'expediteur', $page, self::MAX_NB_RESULT_MESSAGERIE, $search);
-        
+
         $pagination = array(
             'page' => $page,
             'route' => 'message_ajax_messages_envoyes',
@@ -156,14 +156,14 @@ class MessageController extends AppController
             'route_params' => array(),
             'id_div' => '#v-pills-envoyes'
         );
-        
+
         return $this->render('message/ajax_messages_envoyes.html.twig', [
             'pagination' => $pagination,
             'search' => $search,
-            'messages' => $result['paginator'],
+            'messages' => $result['paginator']
         ]);
     }
-    
+
     /**
      * Affiche le message envoyé en id (visualisation du message selectionné)
      *
@@ -173,26 +173,23 @@ class MessageController extends AppController
      */
     public function ajaxViewMessage(Message $message)
     {
-        
-        foreach($message->getMessageLus() as &$messageLu)
-        {
-            if($messageLu->getMembre()->getId() == $this->getUser()->getId())
-            {
+        foreach ($message->getMessageLus() as &$messageLu) {
+            if ($messageLu->getMembre()->getId() == $this->getUser()->getId()) {
                 $messageLu->setLu(1);
                 $messageLu->setDate(new \DateTime());
             }
         }
-        
+
         $em = $this->getDoctrine()->getManager();
         $em->persist($message);
         $em->persist($messageLu);
         $em->flush();
-        
+
         return $this->render('message/ajax_view_message.html.twig', [
-            'message' => $message,
+            'message' => $message
         ]);
     }
-    
+
     /**
      * Fonction permettant les changements au clic sur "Marquer comme Lu/ Marquer comme non-lu"
      *
@@ -204,63 +201,72 @@ class MessageController extends AppController
     public function ajaxMessageReadNoRead(Request $request)
     {
         $tab = $request->request->all();
-        
-        if(empty($tab['data']))
-        {
-            return $this->json(array('statut' => 1));
+
+        if (empty($tab['data'])) {
+            return $this->json(array(
+                'statut' => 1
+            ));
         }
-        
+
         $repository = $this->getDoctrine()->getRepository(Message::class);
         $result = $repository->findById($tab['data']);
-        
-        /* @var Message $message */
-        /* @var MessageLu $messageLu */
-        
-        //$ok = false;
-        foreach ($result as &$message)
-        {
-            // Cas car les fixtures ne sont pas bonnes, en principe improbable
-            /*if($message->getMessageLus()->isEmpty())
-            {
-                $messageLu = new MessageLu();
-                $messageLu->setMembre($this->getMembre());
-                $messageLu->setLu($tab['isRead']);
-                $messageLu->setDate(new \DateTime());
-                $messageLu->setMessage($message);
-                $message->addMessageLus($messageLu);
-                $ok = true;
-            }
-            else
-            {*/
-                foreach($message->getMessageLus() as &$messageLu)
-                {
-                    if($messageLu->getMembre()->getId() == $this->getUser()->getId())
-                    {
-                        $messageLu->setLu($tab['isRead']);
-                        $messageLu->setDate(new \DateTime());
-                        //$ok = true;
-                    }
+
+        foreach ($result as &$message) {
+            foreach ($message->getMessageLus() as &$messageLu) {
+                if ($messageLu->getMembre()->getId() == $this->getUser()->getId()) {
+                    $messageLu->setLu($tab['isRead']);
+                    $messageLu->setDate(new \DateTime());
                 }
-           /* }
-            
-            // Cas car les fixtures ne sont pas bonnes, en principe improbable car soit pas de messageLu ou messageLu non 
-            // existant pour le membre courant
-            if(!$ok)
-            {
-                $messageLu = new MessageLu();
-                $messageLu->setMembre($this->getMembre());
-                $messageLu->setLu($tab['isRead']);
-                $messageLu->setDate(new \DateTime());
-                $messageLu->setMessage($message);
-                $message->addMessageLus($messageLu);
-            }*/ 
-            
+            }
             $em = $this->getDoctrine()->getManager();
             $em->persist($messageLu);
             $em->persist($message);
         }
         $em->flush();
-        
-        return $this->json(array('statut' => 1));
+
+        return $this->json(array(
+            'statut' => 1
+        ));
+    }
+
+    /**
+     * Fonction permettant l'envoi d'un ou plusieurs éléments en "Corbeille" (au clic sur bouton Corbeille)
+     *
+     * @Route("/messagerie/ajax/corbeille", name="message_ajax_corbeille")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function ajaxMessageCorbeille(Request $request)
+    {
+        $tab = $request->request->all();
+
+        if (empty($tab['data'])) {
+            return $this->json(array(
+                'statut' => 1
+            ));
+        }
+
+        $repository = $this->getDoctrine()->getRepository(Message::class);
+        $result = $repository->findById($tab['data']);
+
+        foreach ($result as &$message) 
+            /*@ var MessageLu $messageLu */{
+            foreach ($message->getMessageLus() as &$messageLu) {
+                if ($messageLu->getMembre()->getId() == $this->getUser()->getId()) {
+                    
+                    $messageLu->setCorbeille($tab['corbeille']);
+                    
+                }
+            }
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($messageLu);
+            $em->persist($message);
+        }
+        $em->flush();
+
+        return $this->json(array(
+            'statut' => 1
+        ));
     }
 }

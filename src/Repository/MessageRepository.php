@@ -115,9 +115,10 @@ class MessageRepository extends ServiceEntityRepository
         
         $query = $this->createQueryBuilder('m')
         ->setFirstResult($firstResult)
-        ->join('m.messageLus', 'ml')
+        ->join('m.messageLus', 'ml', Expr\Join::WITH , 'ml.membre = ' . $id_membre)
         ->andWhere('(m.expediteur = ' . $id_membre . ' OR m.destinataire = ' . $id_membre . ')')
         ->andWhere('ml.corbeille = 1')
+        ->orderBy('m.date_envoi', 'DESC')
         ->setMaxResults($max);
         
         if (! empty($search)) {

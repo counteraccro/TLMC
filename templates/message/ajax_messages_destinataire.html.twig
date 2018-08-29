@@ -1,7 +1,7 @@
 <div id="ajax_messages_destinataire">
 	<div class="bloc_btn_messagerie">
 		<a href="#" id="select-all" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Tout selectionner"><span class="oi oi-arrow-thick-bottom"></span></a>
-		<a href="#" class="btn btn-primary btn-sm" data-placement="top" title="Supprimer"><span class="oi oi-trash" ></span></a>
+		<a href="{{ path('message_ajax_corbeille') }}" id="delete-all" class="btn btn-primary btn-sm" data-corbeille="1" data-role="reception" data-placement="top" title="Supprimer"><span class="oi oi-trash" ></span></a>
 		<div class="btn-group" role="group">
             <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             	<span class="oi oi-ellipses"></span>
@@ -39,6 +39,6 @@
 		{% endif %}
 	});
 
-	$('#messagerie-block #ajax_messages_destinataire a').tooltip();		
+	$('#messagerie-block #ajax_messages_destinataire a').tooltip();
     </script>
 {% endblock %}
