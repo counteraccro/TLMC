@@ -50,7 +50,6 @@ class ProduitSpecialiteType extends AbstractType
             'label' => "Date",
             'widget' => 'choice',
             'date_format' => 'dd MM yyyy',
-            'years' => range(date('Y') - 1, date('Y') + 2),
             'data' => $options['date_valeur']
         ));
 

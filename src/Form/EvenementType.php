@@ -25,14 +25,12 @@ class EvenementType extends AbstractType
             ->add('date_debut', DateTimeType::class, array(
             'label' => "Date de début",
             'widget' => 'choice',
-            'years' => range(date('Y'), date('Y') + 10),
             'date_format' => 'dd MM yyyy'
         ))
             ->add('date_fin', DateTimeType::class, array(
             'label' => "Date de fin ",
             'widget' => 'choice',
             'date_format' => 'dd MM yyyy',
-            'years' => range(date('Y'), date('Y') + 10)
         ))
             ->add('nombre_max', IntegerType::class, array(
             'label' => 'Nombre maximum de participant'
@@ -68,7 +66,6 @@ class EvenementType extends AbstractType
             'label' => "Date de fin d'inscription",
             'widget' => 'choice',
             'date_format' => 'dd MM yyyy',
-            'years' => range(date('Y'), date('Y') + 2)
         ));
 
         if (! $options['ajax']) {
