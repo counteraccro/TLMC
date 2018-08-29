@@ -72,7 +72,7 @@ ProduitEtablissement.Launch = function(params) {
 
 			$('#ajax_produit_etablissement_add').showLoading();
 
-			$('#produit_etablissement_save').prop('disabled', true).html('loading...');
+			$('#produit_etablissement_save').prop('disabled', true).html('Chargement...');
 
 			event.preventDefault();
 
@@ -126,7 +126,7 @@ ProduitEtablissement.Launch = function(params) {
 			
 			$('#ajax_produit_etablissement_edit').showLoading();
 
-			$('#produit_etablissement_save').prop('disabled', true).html('loading...');
+			$('#produit_etablissement_save').prop('disabled', true).html('Chargement...');
 
 			event.preventDefault();
 

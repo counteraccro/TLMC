@@ -64,7 +64,7 @@ Temoignage.Launch = function(params) {
 			
 			$('#ajax_temoignage_add').showLoading();
 
-			$('#temoignage_save').prop('disabled', true).html('loading...');
+			$('#temoignage_save').prop('disabled', true).html('Chargement...');
 
 			event.preventDefault();
 
@@ -118,7 +118,7 @@ Temoignage.Launch = function(params) {
 			
 			$('#ajax_temoignage_edit').showLoading();
 
-			$('#temoignage_save').prop('disabled', true).html('loading...');
+			$('#temoignage_save').prop('disabled', true).html('Chargement...');
 
 			event.preventDefault();
 

@@ -71,7 +71,7 @@ ProduitSpecialite.Launch = function(params) {
 
 			$('#ajax_produit_specialite_add').showLoading();
 
-			$('#produit_specialite_save').prop('disabled', true).html('loading...');
+			$('#produit_specialite_save').prop('disabled', true).html('Chargement...');
 
 			event.preventDefault();
 

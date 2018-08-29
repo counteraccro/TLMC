@@ -15,6 +15,13 @@
     	</div>
     </div>
 
+	<div id="bloc_specialite_patient">
+    	<div class="row">
+    		<div class="col-md-4 offset-md-4">
+    		</div>
+    	</div>
+    </div>
+
 	<div id="bloc_specialite_produit">
     	<div class="row">
     		<div class="col-md-4 offset-md-4">
@@ -37,7 +44,6 @@
     </div>
     
     <div>Membre</div>
-    <div>Patients</div>
     
     <!-- Modal -->
     <div class="modal fade" id="modal_specialite_global" tabindex="-1" role="dialog">
@@ -53,6 +59,7 @@
 	<script src="{{ asset('assets/js/produit_specialite/ProduitSpecialite.js') }}?{{ date().timestamp }}"></script>
 	<script src="{{ asset('assets/js/specialite_evenement/SpecialiteEvenement.js') }}?{{ date().timestamp }}"></script>
 	<script src="{{ asset('assets/js/historique/Historique.js') }}?{{ date().timestamp }}"></script>
+	<script src="{{ asset('assets/js/patient/Patient.js') }}?{{ date().timestamp }}"></script>
 {% endblock %}
 
 {% block javascripts %}
@@ -71,6 +78,16 @@
         
     	Specialite.Launch(paramsS);
     	Specialite.LoadSpecialite();
+
+    	var paramsP = {
+				url_ajax_see : '{{path('patient_ajax_see_liste', {'id': specialite.id}) }}',
+				id_content_modal : '#bloc_modal',
+				id_modal : '#modal_specialite_global',
+				id_global : '#bloc_specialite_patient',
+		};
+        
+    	Patient.Launch(paramsP);
+    	Patient.LoadPatient();
     	
     	var paramsSE = {
 				url_ajax_see : '{{path('specialite_evenement_ajax_see', {'id': specialite.id, 'type': 'specialite'}) }}',

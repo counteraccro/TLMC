@@ -61,7 +61,7 @@ Etablissement.Launch = function(params){
 			
 			$('#ajax_etablissement_edit').showLoading();
 			
-			$('#etablissement_save').prop('disabled', true).html('loading...');
+			$('#etablissement_save').prop('disabled', true).html('Chargement...');
 			
 			event.preventDefault();
 

@@ -16,7 +16,7 @@
     	{{ form_row(form.nom) }}
     	{{ form_row(form.prenom) }}
     	{{ form_row(form.date_naissance) }}
-    	{% if etablissements is not empty %}
+    	{% if etablissements is not empty and type != 'specialite' %}
         	<div id="bloc_etablissement">
         	    <div class="form-group">
                 	<label for="patient_etablissement">Etablissement</label> 
@@ -53,18 +53,18 @@
     <script type="text/javascript">
     
     
-    	$('#modal_patient_global').modal({
+    	$('#modal_{{ type }}_global').modal({
  		   'show' : true,
  		   'backdrop' : 'static'
  		});
  	
-		var url = '{{path('patient_ajax_edit', {'id': patient.id }) }}';
+		var url = '{{path('patient_ajax_edit', {'id': patient.id, 'type':type, 'page': page }) }}';
 		
 		Patient.EventEditSubmit(url);
 
 	$(document).ready(function() {
 		var params_spec = {
-				url_ajax_see : '{{ path('specialite_ajax_edit_dropdown', {'id': patient.id, 'type':'patient'}) }}',
+				url_ajax_see : '{{ path('specialite_ajax_edit_dropdown', {'id': patient.id, 'type':type}) }}',
 				id_specialite : '#bloc_specialite',
 				id_bloc_etablissement : '#bloc_etablissement #patient_etablissement'
 		};

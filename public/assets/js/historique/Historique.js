@@ -61,7 +61,7 @@ Historique.Launch = function(params){
 			
 			$('#ajax_historique_add').showLoading();
 			
-			$('#historique_save').prop('disabled', true).html('loading...');
+			$('#historique_save').prop('disabled', true).html('Chargement...');
 			
 			event.preventDefault();
 
@@ -111,7 +111,7 @@ Historique.Launch = function(params){
 			
 			$('#ajax_historique_edit').showLoading();
 			
-			$('#historique_save').prop('disabled', true).html('loading...');
+			$('#historique_save').prop('disabled', true).html('Chargement...');
 			
 			event.preventDefault();
 

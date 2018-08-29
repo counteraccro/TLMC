@@ -62,7 +62,7 @@ SpecialiteEvenement.Launch = function(params) {
 
 			$('#ajax_specialite_evenement_add').showLoading();
 
-			$('#specialite_evenement_save').prop('disabled', true).html('loading...');
+			$('#specialite_evenement_save').prop('disabled', true).html('Chargement...');
 
 			event.preventDefault();
 
@@ -116,7 +116,7 @@ SpecialiteEvenement.Launch = function(params) {
 			
 			$('#ajax_specialite_evenement_edit').showLoading();
 
-			$('#specialite_evenement_save').prop('disabled', true).html('loading...');
+			$('#specialite_evenement_save').prop('disabled', true).html('Chargement...');
 
 			event.preventDefault();
 

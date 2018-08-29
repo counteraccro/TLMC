@@ -74,6 +74,62 @@ class LoadPatientData extends Fixture implements DependentFixtureInterface
                 'setPMR' => true,
                 'setSpecialite' => 'Specialite-5',
                 'setDisabled' => false
+            ],
+            'Patient-8' => [
+                'setNom' => 'Santos',
+                'setPrenom' => 'Carl',
+                'setDateNaissance' => '2012-12-12 12:12:12',
+                'setPMR' => true,
+                'setSpecialite' => 'Specialite-6',
+                'setDisabled' => false
+            ],
+            'Patient-9' => [
+                'setNom' => 'Fontaine',
+                'setPrenom' => 'Marc',
+                'setDateNaissance' => '1998-08-08 08:08:00',
+                'setPMR' => false,
+                'setSpecialite' => 'Specialite-6',
+                'setDisabled' => false
+            ],
+            'Patient-10' => [
+                'setNom' => 'Draveil',
+                'setPrenom' => 'John',
+                'setDateNaissance' => '1911-11-11 11:11:11',
+                'setPMR' => true,
+                'setSpecialite' => 'Specialite-1',
+                'setDisabled' => false
+            ],
+            'Patient-11' => [
+                'setNom' => 'Lafeuille',
+                'setPrenom' => 'Lisa',
+                'setDateNaissance' => '2010-05-05 05:05:05',
+                'setPMR' => true,
+                'setSpecialite' => 'Specialite-2',
+                'setDisabled' => false
+            ],
+            'Patient-12' => [
+                'setNom' => 'Duroc',
+                'setPrenom' => 'Rémi',
+                'setDateNaissance' => '1988-05-30 12:15:00',
+                'setPMR' => false,
+                'setSpecialite' => 'Specialite-3',
+                'setDisabled' => false
+            ],
+            'Patient-13' => [
+                'setNom' => 'Lanoix',
+                'setPrenom' => 'Christophe',
+                'setDateNaissance' => '2001-03-05 03:05:01',
+                'setPMR' => true,
+                'setSpecialite' => 'Specialite-4',
+                'setDisabled' => false
+            ],
+            'Patient-14' => [
+                'setNom' => 'Tandem',
+                'setPrenom' => 'Frédéric',
+                'setDateNaissance' => '1960-01-14 14:01:00',
+                'setPMR' => true,
+                'setSpecialite' => 'Specialite-7',
+                'setDisabled' => true
             ]
         ]
     ];

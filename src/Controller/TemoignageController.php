@@ -224,7 +224,7 @@ class TemoignageController extends AppController
             )
         );
 
-        return $this->render('temoignage/ajax_see_list.html.twig', array(
+        return $this->render('temoignage/ajax_see_liste.html.twig', array(
             'objet' => $objet,
             'type' => $type,
             'temoignages' => $result['paginator'],

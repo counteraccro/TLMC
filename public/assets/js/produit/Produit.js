@@ -61,7 +61,7 @@ Produit.Launch = function(params){
 			
 			$('#ajax_produit_edit').showLoading();
 			
-			$('#produit_save').prop('disabled', true).html('loading...');
+			$('#produit_save').prop('disabled', true).html('Chargement...');
 			
 			event.preventDefault();
 

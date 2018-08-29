@@ -90,7 +90,7 @@ class PatientController extends AppController
      * Fiche d'un patient
      *
      * @Route("/patient/see/{id}/{page}", name="patient_see")
-     * @Route("/patient/ajax/see/{id}", name="patient_ajax_see")
+     * @Route("/patient/ajax/see/{id}/{page}", name="patient_ajax_see")
      * @ParamConverter("patient", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      *
@@ -129,6 +129,58 @@ class PatientController extends AppController
         ));
     }
 
+    /**
+     * Bloc patient d'une spécialité
+     *
+     * @Route("/patient/ajax/listing/{id}/{page}", name="patient_ajax_see_liste")
+     * @ParamConverter("specialite", options={"mapping": {"id": "id"}})
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
+     *
+     * @param Specialite $specialite
+     * @param int $page
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function ajaxSeeAction(Specialite $specialite, int $page = 1)
+    {
+        $params = array(
+            'field' => 'nom ASC, Patient.prenom',
+            'order' => 'ASC',
+            'page' => $page,
+            'repositoryClass' => Patient::class,
+            'repository' => 'Patient',
+            'repositoryMethode' => 'findAllPatients',
+        );
+        
+        $params['condition'] = array(
+            $params['repository'] . '.specialite  = ' . $specialite->getId()
+        );
+        
+        if (! $this->isAdmin()) {
+            $params['condition'][] = $params['repository'] . '.disabled = 0';
+        }
+        
+        $repository = $this->getDoctrine()->getRepository($params['repositoryClass']);
+        $result = $repository->{$params['repositoryMethode']}($params['page'], self::MAX_NB_RESULT_AJAX, $params);
+        
+        $pagination = array(
+            'page' => $page,
+            'route' => 'patient_ajax_see_liste',
+            'pages_count' => ceil($result['nb'] / self::MAX_NB_RESULT_AJAX),
+            'nb_elements' => $result['nb'],
+            'id_div' => '#ajax_specialite_patient_see',
+            'route_params' => array(
+                'id' => $specialite->getId()
+            )
+        );
+        
+        return $this->render('patient/ajax_see_liste.html.twig', array(
+            'specialite' => $specialite,
+            'patients' => $result['paginator'],
+            'pagination' => $pagination, 
+            'type' => 'specialite'
+        ));
+    }
+    
     /**
      * Ajout d'un nouveau patient
      *
@@ -214,7 +266,7 @@ class PatientController extends AppController
      * Edition d'un patient
      *
      * @Route("/patient/edit/{id}/{page}", name="patient_edit")
-     * @Route("/patient/ajax/edit/{id}", name="patient_ajax_edit")
+     * @Route("/patient/ajax/edit/{id}/{type}/{page}", name="patient_ajax_edit")
      * @ParamConverter("patient", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      *
@@ -222,18 +274,22 @@ class PatientController extends AppController
      * @param Request $request
      * @param Patient $patient
      * @param int $page
+     * @param string $type
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function editAction(SessionInterface $session, Request $request, Patient $patient, int $page = 0)
+    public function editAction(SessionInterface $session, Request $request, Patient $patient, int $page = 1, string $type = 'patient')
     {
         $arrayFilters = $this->getDatasFilter($session);
 
+        $specialite = $patient->getSpecialite();
+        
         if ($this->isAdmin()) {
             $repositoryE = $this->getDoctrine()->getRepository(Etablissement::class);
             $etablissements = $repositoryE->findEtablissementAvecSpecialite();
 
             $form = $this->createForm(PatientType::class, $patient, array(
-                'add' => false
+                'add' => false,
+                'disabled_specialite' => ($type == 'specialite' ? true : false)
             ));
         } else {
             $etablissements = array();
@@ -243,17 +299,22 @@ class PatientController extends AppController
             ));
         }
 
+        
         $form->handleRequest($request);
+        
         if ($form->isSubmitted() && $form->isValid()) {
 
             $em = $this->getDoctrine()->getManager();
-
+            if(is_null($patient->getSpecialite())){
+                $patient->setSpecialite($specialite);
+            }
             $em->persist($patient);
             $em->flush();
 
             if ($request->isXmlHttpRequest()) {
                 return $this->json(array(
-                    'statut' => true
+                    'statut' => true,
+                    'page' => $page
                 ));
             }
 
@@ -270,7 +331,9 @@ class PatientController extends AppController
             return $this->render('patient/ajax_edit.html.twig', [
                 'patient' => $patient,
                 'form' => $form->createView(),
-                'etablissements' => $etablissements
+                'etablissements' => $etablissements,
+                'type' => $type,
+                'page' => $page
             ]);
         }
 
