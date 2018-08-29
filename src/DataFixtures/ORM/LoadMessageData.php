@@ -138,6 +138,36 @@ class LoadMessageData extends Fixture implements DependentFixtureInterface
                 'setDisabled' => 0,
                 'setBrouillon' => 0
             ],
+            'Message-13' => [
+                'setExpediteur' => 'Membre-7',
+                'setDestinataire' => 'Membre-1',
+                'setGroupe' => 'Groupe-5',
+                'setCorps' => 'Salut Eric, tu trouveras en PJ une photo de mon nouveau toutou. C\'est un Border Collie et il s\'appelle Tintamarre. A+ à la machine à café. Julie',
+                'setTitre' => 'Tu veux voir mon nouveau chien ?',
+                'setDateEnvoi' => '2018-08-29 13:54:08',
+                'setDisabled' => 0,
+                'setBrouillon' => 0
+            ],
+            'Message-14' => [
+                'setExpediteur' => 'Membre-1',
+                'setDestinataire' => 'Membre-7',
+                'setGroupe' => 'Groupe-5',
+                'setCorps' => 'Salut Julie, trop sympa ton chien, il faudra que je te présente mon labrador Galopin. See you, Eric',
+                'setTitre' => 'Re:Tu veux voir mon nouveau chien ?',
+                'setDateEnvoi' => '2018-08-29 15:00:02',
+                'setDisabled' => 0,
+                'setBrouillon' => 0
+            ],
+            'Message-15' => [
+                'setExpediteur' => 'Membre-14',
+                'setDestinataire' => 'Membre-1',
+                'setGroupe' => 'Groupe-6',
+                'setCorps' => 'Bonjour Michel, pouvez-vous je vous prie me renvoyer votre RIB ? Cdt, Kamila',
+                'setTitre' => 'Demande de RIB (service comptabilité)',
+                'setDateEnvoi' => '2018-08-29 14:06:02',
+                'setDisabled' => 0,
+                'setBrouillon' => 0
+            ],
         ]
     ];
 

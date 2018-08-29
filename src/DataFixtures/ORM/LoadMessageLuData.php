@@ -182,6 +182,48 @@ class LoadMessageLuData extends Fixture implements DependentFixtureInterface
                 'setLu' => '0',
                 'setDate' => '2018-12-01 10:30:08'
             ],
+            'MessageMembre-20' => [
+                'setMembre' => 'Membre-7',
+                'setMessage' => 'Message-13',
+                'setCorbeille' => '0',
+                'setLu' => '1',
+                'setDate' => '2018-08-29 13:54:08'
+            ],
+            'MessageMembre-21' => [
+                'setMembre' => 'Membre-1',
+                'setMessage' => 'Message-13',
+                'setCorbeille' => '0',
+                'setLu' => '1',
+                'setDate' => '2018-08-29 14:54:08'
+            ],
+            'MessageMembre-22' => [
+                'setMembre' => 'Membre-1',
+                'setMessage' => 'Message-14',
+                'setCorbeille' => '0',
+                'setLu' => '1',
+                'setDate' => '2018-08-29 15:00:02'
+            ],
+            'MessageMembre-23' => [
+                'setMembre' => 'Membre-7',
+                'setMessage' => 'Message-14',
+                'setCorbeille' => '0',
+                'setLu' => '0',
+                'setDate' => '2018-08-29 16:00:02'
+            ],
+            'MessageMembre-24' => [
+                'setMembre' => 'Membre-14',
+                'setMessage' => 'Message-15',
+                'setCorbeille' => '0',
+                'setLu' => '1',
+                'setDate' => ' 2018-08-29 14:06:02'
+            ],
+            'MessageMembre-25' => [
+                'setMembre' => 'Membre-1',
+                'setMessage' => 'Message-15',
+                'setCorbeille' => '0',
+                'setLu' => '0',
+                'setDate' => ' 2018-08-29 15:06:02'
+            ],           
         ]
     ];
 
