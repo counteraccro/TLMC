@@ -92,7 +92,7 @@ Famille.Launch = function(params) {
 
 			$('#ajax_famille_add').showLoading();
 
-			$('#famille_save').prop('disabled', true).html('loading...');
+			$('#famille_save').prop('disabled', true).html('Chargement...');
 
 			event.preventDefault();
 
@@ -199,7 +199,7 @@ Famille.Launch = function(params) {
 			
 			$('#ajax_famille_edit').showLoading();
 
-			$('#famille_save').prop('disabled', true).html('loading...');
+			$('#famille_save').prop('disabled', true).html('Chargement...');
 
 			event.preventDefault();
 
@@ -237,7 +237,7 @@ Famille.Launch = function(params) {
 
 			$('#ajax_famille_adresse_edit').showLoading();
 
-			$('#famille_save').prop('disabled', true).html('loading...');
+			$('#famille_save').prop('disabled', true).html('Chargement...');
 
 			event.preventDefault();
 

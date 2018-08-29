@@ -61,7 +61,7 @@ Evenement.Launch = function(params){
 			
 			$('#ajax_evenement_edit').showLoading();
 			
-			$('#evenement_save').prop('disabled', true).html('loading...');
+			$('#evenement_save').prop('disabled', true).html('Chargement...');
 			
 			event.preventDefault();
 

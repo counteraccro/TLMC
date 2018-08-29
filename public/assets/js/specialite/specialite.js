@@ -93,7 +93,7 @@ Specialite.Launch = function(params) {
 
 			$('#ajax_specialite_add').showLoading();
 
-			$('#specialite_save').prop('disabled', true).html('chargement...');
+			$('#specialite_save').prop('disabled', true).html('Chargement...');
 
 			event.preventDefault();
 
@@ -146,7 +146,7 @@ Specialite.Launch = function(params) {
 			
 			$('#ajax_specialite_edit').showLoading();
 
-			$('#specialite_save').prop('disabled', true).html('chargement...');
+			$('#specialite_save').prop('disabled', true).html('Chargement...');
 
 			event.preventDefault();
 

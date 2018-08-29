@@ -61,7 +61,7 @@ Membre.Launch = function(params){
 			
 			$('#ajax_membre_edit').showLoading();
 			
-			$('#membre_save').prop('disabled', true).html('loading...');
+			$('#membre_save').prop('disabled', true).html('Chargement...');
 			
 			event.preventDefault();
 
