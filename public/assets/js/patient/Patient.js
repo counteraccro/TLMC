@@ -18,6 +18,8 @@ Patient.Launch = function(params){
 	 */
 	Patient.LoadPatient = function()
 	{
+		console.log(Patient.url_ajax_see);
+		console.log(Patient.id_global);
 		Patient.Ajax(Patient.url_ajax_see, Patient.id_global);
 	}
 	
@@ -61,7 +63,7 @@ Patient.Launch = function(params){
 			
 			$('#ajax_patient_edit').showLoading();
 			
-			$('#patient_save').prop('disabled', true).html('loading...');
+			$('#patient_save').prop('disabled', true).html('Chargement...');
 			
 			event.preventDefault();
 
@@ -77,7 +79,7 @@ Patient.Launch = function(params){
 				if(reponse.statut === true)
 				{
 					$(Patient.id_modal).modal('hide');
-					Patient.Ajax(Patient.url_ajax_see, Patient.id_global);
+					Patient.Ajax(Patient.url_ajax_see + '/' + reponse.page, Patient.id_global);
 				}
 				else
 				{
@@ -106,7 +108,7 @@ Patient.Launch = function(params){
 				if(reponse.statut === true)
 				{
 					$(Patient.id_global).hideLoading();
-					Patient.Ajax(Patient.url_ajax_see, Patient.id_global);
+					Patient.Ajax(Patient.url_ajax_see + '/' + reponse.page, Patient.id_global);
 				}
 			});
 		});
