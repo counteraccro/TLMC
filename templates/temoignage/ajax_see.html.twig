@@ -18,12 +18,21 @@
         	<blockquote class="blockquote">
         		<p class="mb-0">{{ temoignage.corps }}</p>
                 <footer class="blockquote-footer">
-                   	à propos 
+                   	{% if temoignage.famille != null %}
+                   		{{ temoignage.famille.prenom }}, 
+                   		{{ temoignage.famille.lienFamille | lienParente }} de {{ temoignage.famille.patient.prenom }}, 
+                   		{{ temoignage.famille.patient.dateNaissance | age }} ans, 
+                   		{{ temoignage.famille.familleAdresse.ville }},
+                   		à propos de l'événement 
+                   	{% else %}
+                   		Témoignage concernant
+                   	{% endif %}
+                   	
         			{% if temoignage.evenement != null %}
-        				de l'événement 
-                    	<cite title="Evénement"> {{ temoignage.evenement.nom }} </cite>
+        				l'événement 
+        				<cite title="Evénement"> {{ temoignage.evenement.nom }} </cite>
             	    {% elseif temoignage.produit != null %}
-            	    	du produit
+            	    	le produit
                 		<cite title="Produit"> {{ temoignage.produit.titre }} </cite>
             	    {% endif %}
                 </footer>

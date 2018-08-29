@@ -46,7 +46,6 @@ class ProduitType extends AbstractType
             'label' => "Date d'envoi",
             'widget' => 'choice',
             'date_format' => 'dd MM yyyy',
-            'years' => range(date('Y'), date('Y') + 2)
         ));
 
         if (! $options['ajax']) {
