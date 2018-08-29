@@ -93,6 +93,7 @@ Produit.Launch = function(params){
 	Produit.EventDelete = function(id, url)
 	{
 		$(id).click(function(){
+			$(Produit.id_global).showLoading();
 			event.preventDefault();
 
 			//envoi d'une requête POST en AJAX
@@ -104,6 +105,7 @@ Produit.Launch = function(params){
 
 				if(reponse.statut === true)
 				{
+					$(Produit.id_global).hideLoading();
 					Produit.Ajax(Produit.url_ajax_see, Produit.id_global);
 				}
 			});

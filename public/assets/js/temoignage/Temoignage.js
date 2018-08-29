@@ -153,6 +153,7 @@ Temoignage.Launch = function(params) {
 	Temoignage.EventDelete = function(id, url)
 	{
 		$(id).click(function(){
+			$(Temoignage.id_global).showLoading();
 			event.preventDefault();
 
 			//envoi d'une requête POST en AJAX
@@ -165,6 +166,7 @@ Temoignage.Launch = function(params) {
 				if(reponse.statut === true)
 				{
 					Temoignage.Ajax(Temoignage.url_ajax_see + '/' + reponse.page, Temoignage.id_global);
+					$(Temoignage.id_global).hideLoading();
 				}
 			});
 		});

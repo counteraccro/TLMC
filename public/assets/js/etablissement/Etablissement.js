@@ -93,6 +93,7 @@ Etablissement.Launch = function(params){
 	Etablissement.EventDelete = function(id, url)
 	{
 		$(id).click(function(){
+			$(Etablissement.id_global).showLoading();
 			event.preventDefault();
 
 			//envoi d'une requête POST en AJAX
@@ -104,6 +105,7 @@ Etablissement.Launch = function(params){
 
 				if(reponse.statut === true)
 				{
+					$(Etablissement.id_global).hideLoading();
 					Etablissement.Ajax(Etablissement.url_ajax_see, Etablissement.id_global);
 				}
 			});

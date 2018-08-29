@@ -181,6 +181,7 @@ Specialite.Launch = function(params) {
 	Specialite.EventDelete = function(id, url)
 	{
 		$(id).click(function(){
+			$(Specialite.id_global).showLoading();
 			event.preventDefault();
 
 			//envoi d'une requête POST en AJAX
@@ -192,6 +193,7 @@ Specialite.Launch = function(params) {
 
 				if(reponse.statut === true)
 				{
+					$(Specialite.id_global).hideLoading();
 					Specialite.Ajax(Specialite.url_ajax_see, Specialite.id_global);
 				}
 			});

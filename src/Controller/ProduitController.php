@@ -10,6 +10,9 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Form\ProduitType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 class ProduitController extends AppController
 {
@@ -380,7 +383,7 @@ class ProduitController extends AppController
                 'page' => $page
             ));
         }
-        
+
         return $this->redirectToRoute('produit_listing', array(
             'page' => $page,
             'field' => $arrayFilters['field'],

@@ -94,6 +94,7 @@ Evenement.Launch = function(params){
 	Evenement.EventDelete = function(id, url)
 	{
 		$(id).click(function(){
+			$(Evenement.id_global).showLoading();
 			event.preventDefault();
 
 			//envoi d'une requête POST en AJAX
@@ -105,6 +106,7 @@ Evenement.Launch = function(params){
 
 				if(reponse.statut === true)
 				{
+					$(Evenement.id_global).hideLoading();
 					Evenement.Ajax(Evenement.url_ajax_see, Evenement.id_global);
 				}
 			});

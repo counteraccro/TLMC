@@ -93,6 +93,7 @@ Membre.Launch = function(params){
 	Membre.EventDelete = function(id, url)
 	{
 		$(id).click(function(){
+			$(Membre.id_global).showLoading();
 			event.preventDefault();
 
 			//envoi d'une requête POST en AJAX
@@ -104,6 +105,7 @@ Membre.Launch = function(params){
 
 				if(reponse.statut === true)
 				{
+					$(Membre.id_global).hideLoading();
 					Membre.Ajax(Membre.url_ajax_see, Membre.id_global);
 				}
 			});

@@ -272,6 +272,7 @@ Famille.Launch = function(params) {
 	Famille.EventDelete = function(id, url)
 	{
 		$(id).click(function(){
+			$(Famille.id_global).showLoading();
 			event.preventDefault();
 
 			//envoi d'une requête POST en AJAX
@@ -283,6 +284,7 @@ Famille.Launch = function(params) {
 
 				if(reponse.statut === true)
 				{
+					$(Famille.id_global).hideLoading();
 					Famille.Ajax(Famille.url_ajax_see + '/' + reponse.page, Famille.id_global);
 				}
 			});

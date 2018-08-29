@@ -93,6 +93,7 @@ Patient.Launch = function(params){
 	Patient.EventDelete = function(id, url)
 	{
 		$(id).click(function(){
+			$(Patient.id_global).showLoading();
 			event.preventDefault();
 
 			//envoi d'une requête POST en AJAX
@@ -104,6 +105,7 @@ Patient.Launch = function(params){
 
 				if(reponse.statut === true)
 				{
+					$(Patient.id_global).hideLoading();
 					Patient.Ajax(Patient.url_ajax_see, Patient.id_global);
 				}
 			});
