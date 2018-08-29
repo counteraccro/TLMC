@@ -50,15 +50,17 @@
 {% block javascripts %}
 	<script type="text/javascript">	
 
-    	var params = {
-    			url_ajax_see : '{{ path('famille_ajax_add_dropdown') }}',
-    			id_famille : '#bloc_famille',
-    			id_bloc_evenement : '#temoignage_evenement'
-    	};
-        
-    	Famille.Launch(params);
-    	Famille.LoadDropdownFamille();
-    	Famille.EventChange('#temoignage_save');
+		{% if type != 'produit' %}
+    		var params = {
+    				url_ajax_see : '{{ path('famille_ajax_add_dropdown') }}',
+    				id_famille : '#bloc_famille',
+    				id_bloc_evenement : '#temoignage_evenement'
+    		};
+        	
+    		Famille.Launch(params);
+    		Famille.LoadDropdownFamille();
+    		Famille.EventChange('#temoignage_save');
+		{% endif %}
 		
 		{% if type != 'evenement' and type != 'produit' %}
     		$('#temoignage_row_produit').hide();
@@ -78,8 +80,11 @@
                 }
             });
         {% elseif type == 'evenement' %}
+        	$('#temoignage_row_evenement #temoignage_evenement').attr('required', 'required');
+        	$('#temoignage_row_evenement #temoignage_famille').attr('required', 'required');
         	$('#temoignage_row_produit').hide();
 	    {% elseif type == 'produit' %}
+	   		$('#temoignage_row_produit #temoignage_produit').attr('required', 'required');
 	    	$('#temoignage_row_evenement').hide();
 	    {% endif %}
 	</script>
