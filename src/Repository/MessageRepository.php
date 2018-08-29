@@ -43,7 +43,7 @@ class MessageRepository extends ServiceEntityRepository
     }
     
     /**
-     * @Aymeric + todo recherche à faire
+     * Remonte les messages de l'utilisateur courant en fonction des paramètres envoyés + todo recherche à faire
      */
     public function findByUserByParameter($id_membre, $brouillon = 0, $role = 'destinataire',  int $page = 1, int $max = 10, $search = '')
     {
@@ -99,7 +99,7 @@ class MessageRepository extends ServiceEntityRepository
     }
     
     /**
-     * @Aymeric
+     * Remonte les messages corbeille de l'utilisateur courant
      */
     public function findCorbeilleByUser($id_membre, int $page = 1, int $max = 10, $search = '')
     {

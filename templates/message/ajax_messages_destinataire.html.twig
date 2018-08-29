@@ -1,7 +1,7 @@
 <div id="ajax_messages_destinataire">
 	<div class="bloc_btn_messagerie">
-		<a href="#" id="select-all" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Tout selectionner"><span class="oi oi-arrow-thick-bottom"></span></a>
-		<a href="{{ path('message_ajax_corbeille') }}" id="delete-all" class="btn btn-primary btn-sm" data-corbeille="1" data-role="reception" data-placement="top" title="Supprimer"><span class="oi oi-trash" ></span></a>
+		<a href="#" id="select-all" class="btn btn-dark btn-sm" data-toggle="tooltip" data-placement="top" title="Tout selectionner"><span class="oi oi-arrow-thick-bottom"></span></a>
+		<a href="{{ path('message_ajax_corbeille') }}" id="delete-all" class="btn btn-secondary btn-sm" data-corbeille="1" data-role="reception" data-placement="top" title="Supprimer"><span class="oi oi-trash" ></span></a>
 		<div class="btn-group" role="group">
             <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             	<span class="oi oi-ellipses"></span>
@@ -10,7 +10,7 @@
             	<a class="dropdown-item msg-read-no-read" href="{{ path('message_ajax_read_no_read') }}" id="message-read" data-role="reception">Marquer comme lu</a>
               	<a class="dropdown-item msg-read-no-read" href="{{ path('message_ajax_read_no_read') }}" id="message-no-read" data-role="reception">Marquer comme non lu</a>
             </div>
-      </div>
+     	</div>
 		<a href="#" class="btn btn-info btn-sm" data-toggle="tooltip" data-placement="top" title="Nouveau message"><span class="oi oi-envelope-closed"></span> + </a>
 	</div>
 	<div class="list-group">
