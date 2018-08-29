@@ -205,17 +205,22 @@ class MessageController extends AppController
     {
         $tab = $request->request->all();
         
+        if(empty($tab['data']))
+        {
+            return $this->json(array('statut' => 1));
+        }
+        
         $repository = $this->getDoctrine()->getRepository(Message::class);
         $result = $repository->findById($tab['data']);
         
         /* @var Message $message */
         /* @var MessageLu $messageLu */
         
-        $ok = false;
+        //$ok = false;
         foreach ($result as &$message)
         {
             // Cas car les fixtures ne sont pas bonnes, en principe improbable
-            if($message->getMessageLus()->isEmpty())
+            /*if($message->getMessageLus()->isEmpty())
             {
                 $messageLu = new MessageLu();
                 $messageLu->setMembre($this->getMembre());
@@ -226,17 +231,17 @@ class MessageController extends AppController
                 $ok = true;
             }
             else
-            {
+            {*/
                 foreach($message->getMessageLus() as &$messageLu)
                 {
                     if($messageLu->getMembre()->getId() == $this->getUser()->getId())
                     {
                         $messageLu->setLu($tab['isRead']);
                         $messageLu->setDate(new \DateTime());
-                        $ok = true;
+                        //$ok = true;
                     }
                 }
-            }
+           /* }
             
             // Cas car les fixtures ne sont pas bonnes, en principe improbable car soit pas de messageLu ou messageLu non 
             // existant pour le membre courant
@@ -248,7 +253,7 @@ class MessageController extends AppController
                 $messageLu->setDate(new \DateTime());
                 $messageLu->setMessage($message);
                 $message->addMessageLus($messageLu);
-            } 
+            }*/ 
             
             $em = $this->getDoctrine()->getManager();
             $em->persist($messageLu);
