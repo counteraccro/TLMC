@@ -61,14 +61,14 @@ class LoadMessageLuData extends Fixture implements DependentFixtureInterface
                 'setMessage' => 'Message-4',
                 'setCorbeille' => '0',
                 'setLu' => '1',
-                'setDate' => '2018-12-05 17:12:00'
+                'setDate' => '2018-07-05 17:12:00'
             ],
             'MessageMembre-8' => [
                 'setMembre' => 'Membre-1',
                 'setMessage' => 'Message-4',
                 'setCorbeille' => '0',
                 'setLu' => '0',
-                'setDate' => '2018-12-05 18:12:00'
+                'setDate' => '2018-07-05 18:12:00'
             ],
             'MessageMembre-9' => [
                 'setMembre' => 'Membre-17',
