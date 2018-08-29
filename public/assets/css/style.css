@@ -575,10 +575,53 @@ a:hover {
 *
 ********************************************/
 
+/** Debut border-primary **/
 .border-primary {
   border-color: #d5488b !important;
 }
+/** Fin border-primary **/
 
+/** Debut border-secondary **/
+.border-secondary {
+  border-color: #ACADB1 !important;
+}
+/** Fin border-secondary **/
+
+/** Debut border-success **/
+.border-success {
+  border-color: #85BD67 !important;
+}
+/** Fin border-success **/
+
+/** Debut border-info **/
+.border-info {
+  border-color: #578FAD !important;
+}
+/** Fin border-info **/
+
+/** Debut border-warning **/
+.border-warning {
+  border-color: #EFD330 !important;
+}
+/** Fin border-warning **/
+
+/** Debut border-danger **/
+.border-danger {
+  border-color: #991B1E !important;
+}
+/** Fin border-danger **/
+
+/** Debut border-dark **/
+.border-dark {
+  border-color: #000 !important;
+}
+/** Fin border-dark **/
+
+/** Debut border-light **/
+.border-light {
+  border-color: #f2f2f2 !important;
+}
+/** Fin border-light **/
 
 /********************************************
 *

@@ -278,8 +278,7 @@ class AppController extends Controller
     public function getMembre()
     {
         $repository = $this->getDoctrine()->getRepository(Membre::class);
-        $membres = $repository->findById($this->getUser()
-            ->getId());
+        $membres = $repository->findById($this->getUser()->getId());
         $membre = (isset($membres[0]) ? $membres[0] : new Membre());
 
         return $membre;

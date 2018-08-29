@@ -49,7 +49,7 @@ class MessageExtension extends AbstractExtension
 
         $nomPrenom = '';
         if ($statut == 'destinataire') {
-            $nomPrenom = '<div class="small-head">' . $message->getExpediteur()->getNom() . ' ' . $message->getExpediteur()->getPrenom() . '</div>';
+            $nomPrenom = '<div class="small-head">' . $message->getExpediteur()->getPrenom() . ' ' . $message->getExpediteur()->getNom() . '</div>';
         }
 
         $html .= $mslu . ' ' . $nomPrenom . '<br /><div class="small-body">' . $message->getTitre() . '</div>';
