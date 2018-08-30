@@ -61,8 +61,7 @@ class ProduitEtablissementController extends AppController
                 break;
         }
 
-        $objets = $repository->findById($id);
-        $objet = $objets[0];
+        $objet = $repository->findOneBy(array('id' =>$id));
 
         $params = array(
             'field' => $field,
@@ -131,8 +130,7 @@ class ProduitEtablissementController extends AppController
                 break;
         }
 
-        $objets = $repository->findById($id);
-        $objet = $objets[0];
+        $objet = $repository->findOneBy(array('id' =>$id));
 
         $produitEtablissement->{$methode}($objet);
 

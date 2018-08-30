@@ -95,23 +95,19 @@ class HistoriqueController extends AppController
         switch ($type) {
             case 'specialite':
                 $repository = $this->getDoctrine()->getRepository(Specialite::class);
-                $objets = $repository->findById($id);
-                $objet = $objets[0];
+                $objet = $repository->findOneBy(array('id' => $id));
                 break;
             case 'evenement':
                 $repository = $this->getDoctrine()->getRepository(Evenement::class);
-                $objets = $repository->findById($id);
-                $objet = $objets[0];
+                $objet = $repository->findOneBy(array('id' => $id));
                 break;
             case 'patient':
                 $repository = $this->getDoctrine()->getRepository(Patient::class);
-                $objets = $repository->findById($id);
-                $objet = $objets[0];
+                $objet = $repository->findOneBy(array('id' => $id));
                 break;
             case 'membre':
                 $repository = $this->getDoctrine()->getRepository(Membre::class);
-                $objets = $repository->findById($id);
-                $objet = $objets[0];
+                $objet = $repository->findOneBy(array('id' => $id));
                 break;
         }
         
@@ -182,8 +178,7 @@ class HistoriqueController extends AppController
             switch ($type) {
                 case 'specialite':
                     $repository = $this->getDoctrine()->getRepository(Specialite::class);
-                    $objets = $repository->findById($id);
-                    $objet = $objets[0];
+                    $objet = $repository->findOneBy(array('id' => $id));
 
                     $opt_form['disabled_specialite'] = true;
 
@@ -191,8 +186,7 @@ class HistoriqueController extends AppController
                     break;
                 case 'evenement':
                     $repository = $this->getDoctrine()->getRepository(Evenement::class);
-                    $objets = $repository->findById($id);
-                    $objet = $objets[0];
+                    $objet = $repository->findOneBy(array('id' => $id));
 
                     $opt_form['disabled_evenement'] = true;
 
@@ -200,8 +194,7 @@ class HistoriqueController extends AppController
                     break;
                 case 'patient':
                     $repository = $this->getDoctrine()->getRepository(Patient::class);
-                    $objets = $repository->findById($id);
-                    $objet = $objets[0];
+                    $objet = $repository->findOneBy(array('id' => $id));
 
                     $opt_form['disabled_patient'] = true;
 
@@ -287,22 +280,19 @@ class HistoriqueController extends AppController
             switch ($type) {
                 case 'evenement':
                     $repository = $this->getDoctrine()->getRepository(Evenement::class);
-                    $objets = $repository->findById($objet_id);
-                    $objet = $objets[0];
+                    $objet = $repository->findOneBy(array('id' => $objet_id));
 
                     $opt_form['disabled_evenement'] = true;
                     break;
                 case 'specialite':
                     $repository = $this->getDoctrine()->getRepository(Specialite::class);
-                    $objets = $repository->findById($objet_id);
-                    $objet = $objets[0];
+                    $objet = $repository->findOneBy(array('id' =>$objet_id));
 
                     $opt_form['disabled_specialite'] = true;
                     break;
                 case 'patient':
                     $repository = $this->getDoctrine()->getRepository(Patient::class);
-                    $objets = $repository->findById($objet_id);
-                    $objet = $objets[0];
+                    $objet = $repository->findOneBy(array('id' =>$objet_id));
 
                     $opt_form['disabled_patient'] = true;
                     break;

@@ -189,8 +189,7 @@ class TemoignageController extends AppController
                 break;
         }
 
-        $objets = $repository->findById($id);
-        $objet = $objets[0];
+        $objet = $repository->findOneBy(array('id' => $id));
 
         $params = array(
             'field' => 'date_creation',
@@ -265,8 +264,7 @@ class TemoignageController extends AppController
                 $repository = $this->getDoctrine()->getRepository(Evenement::class);
 
                 if ($request->isXmlHttpRequest()) {
-                    $objets = $repository->findById($id);
-                    $objet = $objets[0];
+                    $objet = $repository->findOneBy(array('id' => $id));
 
                     $opt_form['disabled_event'] = true;
                     $opt_form['required_event'] = true;
@@ -282,8 +280,7 @@ class TemoignageController extends AppController
                 $repository = $this->getDoctrine()->getRepository(Produit::class);
 
                 if ($request->isXmlHttpRequest()) {
-                    $objets = $repository->findById($id);
-                    $objet = $objets[0];
+                    $objet = $repository->findOneBy(array('id' => $id));
 
                     $opt_form['disabled_prod'] = true;
                     $opt_form['avec_event'] = false;
@@ -307,8 +304,7 @@ class TemoignageController extends AppController
             if ($request->isXmlHttpRequest()) {
                 if(isset($request->request->get('temoignage')['famille'])){
                     $famille_id = $request->request->get('temoignage')['famille'];
-                    $familles = $this->getDoctrine()->getRepository(Famille::class)->findById($famille_id);
-                    $famille = $familles[0];
+                    $famille = $this->getDoctrine()->getRepository(Famille::class)->findOneBy(array('id' =>$famille_id));
                     $temoignage->setFamille($famille);
                 }
             }

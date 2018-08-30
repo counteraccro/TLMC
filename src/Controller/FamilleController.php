@@ -210,8 +210,7 @@ class FamilleController extends AppController
 
         if ($request->isXmlHttpRequest()) {
             $repository = $this->getDoctrine()->getRepository(Patient::class);
-            $result = $repository->findById($id);
-            $patient = $result[0];
+            $patient = $repository->findOneBy(array('id' => $id));
             $famille->setPatient($patient);
 
             $form = $this->createForm(FamilleType::class, $famille, array(

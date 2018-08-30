@@ -75,8 +75,7 @@ class SpecialiteEvenementController extends AppController
                 break;
         }
         
-        $objets = $repository->findById($id);
-        $objet = $objets[0];
+        $objet = $repository->findOneBy(array('id' => $id));
         
         $params = array(
             'field' => $field,
@@ -145,8 +144,7 @@ class SpecialiteEvenementController extends AppController
                 break;
         }
         
-        $objets = $repository->findById($id);
-        $objet = $objets[0];
+        $objet = $repository->findOneBy(array('id' => $id));
         
         $specialiteEvenement->{$methode}($objet);
 

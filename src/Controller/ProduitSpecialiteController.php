@@ -59,8 +59,7 @@ class ProduitSpecialiteController extends AppController
                 break;
         }
         
-        $objets = $repository->findById($id);
-        $objet = $objets[0];
+        $objet = $repository->findOneBy(array('id' => $id));
         
         $params = array(
             'field' => $field,
@@ -129,8 +128,7 @@ class ProduitSpecialiteController extends AppController
                 break;
         }
         
-        $objets = $repository->findById($id);
-        $objet = $objets[0];
+        $objet = $repository->findOneBy(array('id' => $id));
         
         $produitSpecialite->{$methode}($objet);
 

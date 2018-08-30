@@ -134,8 +134,7 @@ class SpecialiteController extends AppController
 
         if ($request->isXmlHttpRequest()) {
             $repository = $this->getDoctrine()->getRepository(Etablissement::class);
-            $result = $repository->findById($id);
-            $etablissement = $result[0];
+            $etablissement = $repository->findOneBy(array('id' => $id));
             $specialite->setEtablissement($etablissement);
 
             $form = $this->createForm(SpecialiteType::class, $specialite, array(
@@ -394,16 +393,14 @@ class SpecialiteController extends AppController
         switch ($type) {
             case 'patient':
                 $repo_patient = $this->getDoctrine()->getRepository(Patient::class);
-                $objets = $repo_patient->findById($id);
-                $objet = $objets[0];
+                $objet = $repo_patient->findOneBy(array('id' => $id));
 
                 $etablissement = $objet->getSpecialite()->getEtablissement();
 
                 break;
             case 'membre':
                 $repo_membre = $this->getDoctrine()->getRepository(Membre::class);
-                $objets = $repo_membre->findById($id);
-                $objet = $objets[0];
+                $objet = $repo_membre->findOneBy(array('id' => $id));
 
                 $etablissement = $objet->getEtablissement();
                 break;
