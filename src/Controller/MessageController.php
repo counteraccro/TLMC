@@ -279,19 +279,27 @@ class MessageController extends AppController
      */
     public function ajaxNewMessage(Request $request)
     {
-        
         $message = new Message();
         $form = $this->createForm(MessageType::class, $message, array());
         
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+             
+            $destinataire = $request->request->all()['destinataire']['destinataire'];
             
-            echo 'Message ' . $message->getCorps();
+            //code à écrire
             
+            //$message->setDestinataire($destinataire);
+            
+            /*$em = $this->getDoctrine()->getManager();
+            $em->persist($message);
+            $em->flush();*/
         }
+        
         
         return $this->render('message/ajax_new_message.html.twig', [
             'form' => $form->createView()
         ]);
     }
+
 }

@@ -9,7 +9,8 @@
     <div class="modal-body">
     	<div class="form-group">
     		<label for="destinataire">Destinataires</label>
-    		<input type="text" class="form-control" id="destinataire" name="message[destinataire]" placeholder="Destinataire">
+    		<input type="hidden" id="destinataire_hidden" name="destinataire[destinataire]">
+    		<input type="text" class="form-control" id="destinataire" placeholder="Destinataire">
   		</div>
     	{{ form_row(form.titre) }}
     	{{ form_row(form.corps) }}

@@ -192,20 +192,22 @@ class MembreRepository extends ServiceEntityRepository
             'nb' => $result
         );
     }
-    
+
     /**
      * Fonction qui renvoie les membres présents dans l'annuaire dont le prénom ou nom contient le paramètre de la fonction
      * Permet de renvoyer des suggestions à l'autocomplete
+     *
      * @param string $term
      */
-    public function findByTerm($term){
+    public function findByTerm($term)
+    {
         $query = $this->createQueryBuilder('m')
-        ->andWhere('m.nom LIKE :term')
-        ->orWhere('m.prenom LIKE :term')
-        ->setParameter('term' , '%'.$term.'%')
-        ->orderby('m.nom', 'ASC');
+            ->andWhere('m.nom LIKE :term')
+            ->orWhere('m.prenom LIKE :term')
+            ->setParameter('term', '%' . $term . '%')
+            ->orderby('m.nom', 'ASC');
         $result = $query->getQuery()->getResult();
-        
+
         return $result;
     }
 

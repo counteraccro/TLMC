@@ -387,7 +387,7 @@ class MembreController extends AppController
         $json = array();
         
         foreach ($result as $membre) {
-            $json[] = $membre->getPrenom() . ' ' . $membre->getNom();
+            $json[$membre->getId()] = $membre->getPrenom() . ' ' . $membre->getNom();
         }
          return $this->json($json);
     }

@@ -17,7 +17,7 @@ Messagerie.Launch = function(params){
 
 	Messagerie.global_content_bloc_message = $('#messagerie-block #bloc_view_message');
 	Messagerie.popin = $('#messagerie-block #modal_message_global #bloc_modal');
-	
+
 
 
 	/**
@@ -194,9 +194,9 @@ Messagerie.Launch = function(params){
 		 * Evenement au clic sur le bouton "Corbeille"
 		 **/
 		$(id_global + ' #delete-all').click(function() {
-			
+
 			$(id_global + ' #delete-all').tooltip('hide')
-			
+
 			var tabId = [];
 			var role = $(this).data('role')
 			var corbeille = $(this).data('corbeille');
@@ -223,7 +223,7 @@ Messagerie.Launch = function(params){
 
 			return false;
 		});
-		
+
 		$(id_global + ' #new-message').click(function() {	
 			$(this).tooltip('hide');
 			$.ajax({
@@ -238,11 +238,11 @@ Messagerie.Launch = function(params){
 
 
 	}
-	
+
 	Messagerie.EventPopin = function()
 	{
 		$('#ajax_new_message #form_message').submit(function() {
-			
+
 
 			$.ajax({
 				method: 'POST',
@@ -250,17 +250,17 @@ Messagerie.Launch = function(params){
 				data : $(this).serialize(),
 			})
 			.done(function( html ) {
-				
+
 			});
-			
+
 			return false;
 		});
 	}
-	
+
 	Messagerie.AutoComplete = function(url_json)
 	{
 		url_json = url_json.substring(1,url_json.length);
-		
+
 		$( function() {
 			function split( val ) {
 				return val.split( /,\s*/ );
@@ -268,45 +268,97 @@ Messagerie.Launch = function(params){
 			function extractLast( term ) {
 				return split( term ).pop();
 			}
-		 
-		    $( "#destinataire")
-		      // don't navigate away from the field on tab when selecting an item
-		      .on( "keydown", function( event ) {
-		        if ( event.keyCode === $.ui.keyCode.TAB &&
-		            $( this ).autocomplete( "instance" ).menu.active ) {
-		          event.preventDefault();
-		        }
-		      })
-		      .autocomplete({
-		        source: function( request, response ) {
-		          $.getJSON( url_json, {
-		            term: extractLast( request.term )
-		          }, response );
-		        },
-		        search: function() {
-		          // custom minLength
-		          var term = extractLast( this.value );
-		          if ( term.length < 2 ) {
-		            return false;
-		          }
-		        },
-		        focus: function() {
-		          // prevent value inserted on focus
-		          return false;
-		        },
-		        select: function( event, ui ) {
-		          var terms = split( this.value );
-		          // remove the current input
-		          terms.pop();
-		          // add the selected item
-		          terms.push( ui.item.value );
-		          // add placeholder to get the comma-and-space at the end
-		          terms.push( "" );
-		          this.value = terms.join( ", " );
-		          return false;
-		        }
-		      });
-		  } );
+
+			var json = {};
+			var tabIdSet = [];
+
+			$( "#destinataire")
+			// don't navigate away from the field on tab when selecting an item
+			.on( "keydown", function( event ) {
+				if ( event.keyCode === $.ui.keyCode.TAB &&
+						$( this ).autocomplete( "instance" ).menu.active ) {
+					event.preventDefault();
+				}
+			})
+			.autocomplete({
+				source: function( request, response ) {
+
+					var j = $.getJSON( url_json, {
+						term: extractLast( request.term )
+					}, response )
+					.done(function(data) {
+						json = data;
+					});
+
+					console.log(j);
+				},
+				search: function() {
+					// custom minLength
+					var term = extractLast( this.value );
+					if ( term.length < 2 ) {
+						return false;
+					}
+				},
+				focus: function() {
+					// prevent value inserted on focus
+					return false;
+				},
+				select: function( event, ui ) {
+					var terms = split( this.value );	          
+					// remove the current input
+					terms.pop();
+
+					// add the selected item
+					terms.push(ui.item.value);
+
+					// add placeholder to get the comma-and-space at the end
+					terms.push( "" );
+
+					this.value = terms.join( ", " );
+
+					return false;
+				}
+			})
+			.change(function(event, ui) {
+				
+				var terms = split( this.value );
+				var tabId = [];
+				for (var id in json) 
+				{
+					//console.log(prop + ' ' + json[prop]);
+					for (var t in terms)
+					{
+						console.log(t + ' ' + terms[t]);
+						if(terms[t] == json[id])
+						{
+							tabId[id] = json[id];
+							tabIdSet[id] = json[id];
+							
+						}
+					}
+				}
+				
+				for (var id in tabIdSet) 
+				{
+					for (var t in terms)
+					{
+						console.log(t + ' ' + terms[t]);
+						if(terms[t] == tabIdSet[id])
+						{
+							tabId[id] = tabIdSet[id];
+						}
+					}
+				}
+				
+				var ids = '';
+				for (var id in tabId) 
+				{
+					ids += id + '-';
+				}
+				ids = ids.substring(0,ids.length-1);
+				$('#destinataire_hidden').val(ids);
+			})
+		} );
 	}
 
 	/**
