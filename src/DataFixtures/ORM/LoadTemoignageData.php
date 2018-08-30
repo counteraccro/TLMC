@@ -101,10 +101,10 @@ class LoadTemoignageData extends Fixture implements DependentFixtureInterface
             ],
             'Temoignage-10' => [
                 'setEvenement' => 'Evenement-3',
-                'setMembre' => 'Membre-19',
-                'setTitre' => "Première leçon d'équitation",
-                'setCorps' => "Ma fille a toujours voulu faire de l'équitation et grâce à TLMC, elle a pu réaliser son rêve et pour cela je suis très reconnaissant envers l'association.",
-                'setFamille' => 'Famille-14',
+                'setMembre' => 'Membre-2',
+                'setTitre' => 'Première leçon',
+                'setCorps' => "Pon fils a toujours voulu faire de l'équitation et grâce à TLMC, il a pu réaliser son rêve et pour cela je suis très reconnaissant envers l'association.",
+                'setFamille' => 'Famille-16',
                 'setDisabled' => 0,
                 'setDateCreation' => '2018-09-30 17:45:12'
             ],

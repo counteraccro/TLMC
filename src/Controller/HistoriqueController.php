@@ -125,7 +125,7 @@ class HistoriqueController extends AppController
             'condition' => array('Historique.' . $type . ' = ' . $id)
         );
         
-        if($type != 'specialite' && $this->isAdmin()){
+        if($type != 'specialite' && !$this->isAdmin()){
             $specialite = $this->getMembre()->getSpecialite();
             $params['condition'][] = 'Historique.specialite = ' . (is_null($specialite) ? 0 : $specialite->getId());
         }
