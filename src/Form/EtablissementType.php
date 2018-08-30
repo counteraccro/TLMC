@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use App\Controller\EtablissementController;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class EtablissementType extends AbstractType
 {
@@ -53,8 +54,24 @@ class EtablissementType extends AbstractType
         ))
             ->add('region', TextType::class, array(
             'label' => 'Région'
-        ))
-            ->add('save', SubmitType::class, array(
+        ));
+
+        if ($options['avec_specialites']) {
+            $builder->add('specialites', CollectionType::class, array(
+                'label' => 'Spécialités',
+                'entry_type' => SpecialiteType::class,
+                'entry_options' => array(
+                    'label' => ' ',
+                    'avec_bouton' => false,
+                    'avec_etablissement' => false
+                ),
+
+                'allow_add' => true,
+                'auto_initialize' => true
+            ));
+        }
+
+        $builder->add('save', SubmitType::class, array(
             'label' => $options['label_submit'],
             'attr' => array(
                 'class' => 'btn btn-primary'
@@ -67,6 +84,7 @@ class EtablissementType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Etablissement::class,
             'label_submit' => 'Valider',
+            'avec_specialites' => true,
             'statut_convention' => EtablissementController::STATUT_CONVENTION
         ]);
     }

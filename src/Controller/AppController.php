@@ -424,4 +424,24 @@ class AppController extends Controller
             ));
         }
     }
+    
+    /**
+     * Retourne le nombre total de produits envoyés dans les différents établissments et les spécialités
+     * 
+     * @param Produit $produit
+     * @return int
+     */
+    public function totalProduitsEnvoyes(Produit $produit){
+        $somme = 0;
+        
+        foreach ($produit->getProduitEtablissements() as $produitEtablissement) {
+            $somme += $produitEtablissement->getQuantite();
+        }
+        
+        foreach ($produit->getProduitSpecialites() as $produitSpecialite) {
+            $somme += $produitSpecialite->getQuantite();
+        }
+        
+        return $somme;
+    }
 }

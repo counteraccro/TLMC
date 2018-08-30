@@ -79,7 +79,7 @@ class Etablissement
     private $disabled;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Specialite", mappedBy="etablissement")
+     * @ORM\OneToMany(targetEntity="App\Entity\Specialite", mappedBy="etablissement", cascade={"persist"})
      */
     private $specialites;
 

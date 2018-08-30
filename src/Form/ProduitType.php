@@ -45,7 +45,7 @@ class ProduitType extends AbstractType
             ->add('date_envoi', DateTimeType::class, array(
             'label' => "Date d'envoi",
             'widget' => 'choice',
-            'date_format' => 'dd MM yyyy',
+            'date_format' => 'dd MM yyyy'
         ));
 
         if (! $options['ajax']) {
@@ -57,11 +57,8 @@ class ProduitType extends AbstractType
                 'attr' => array(
                     'placeholder' => 'Choisir une image'
                 )
-            ));
-        }
-
-        if ($options['add']) {
-            $builder->add('produitEtablissements', CollectionType::class, array(
+            ))
+                ->add('produitEtablissements', CollectionType::class, array(
                 'label' => "Etablissements dans lesquels le produit est envoyé",
                 'label_attr' => array(
                     'id' => 'label_collection_type'
@@ -74,7 +71,8 @@ class ProduitType extends AbstractType
                 ),
                 'allow_add' => true,
                 'auto_initialize' => true
-            ))->add('produitSpecialites', CollectionType::class, array(
+            ))
+                ->add('produitSpecialites', CollectionType::class, array(
                 'label' => "Spécialités dans lesquelles le produit est envoyé",
                 'label_attr' => array(
                     'id' => 'label_collection_type'

@@ -192,17 +192,7 @@ class ProduitController extends AppController
 
         // vérification que la quantité de produit est supérieur à la somme des quantités de produit dans les différentes spécialités
         if ($form->isSubmitted()) {
-            $quantiteS = 0;
-            $quantiteE = 0;
-            foreach ($produit->getProduitSpecialites() as $produitSpecialite) {
-                $quantiteS += $produitSpecialite->getQuantite();
-            }
-
-            foreach ($produit->getProduitEtablissements() as $produitEtablissement) {
-                $quantiteE += $produitEtablissement->getQuantite();
-            }
-
-            if ($quantiteS > $produit->getQuantite() || $quantiteE > $produit->getQuantite()) {
+            if ($this->totalProduitsEnvoyes($produit) > $produit->getQuantite()) {
                 $form->addError(new FormError('La somme des quantités de produits envoyés est supérieure à la quantité de produit'));
             }
 
@@ -281,6 +271,10 @@ class ProduitController extends AppController
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
+            if ($this->totalProduitsEnvoyes($produit) > $produit->getQuantite()) {
+                $form->addError(new FormError('La somme des quantités de produits envoyés est supérieure à la quantité de produit'));
+            }
+            
             if (! $request->isXmlHttpRequest()) {
                 if (is_null($produit->getImage()) && ! is_null($image)) {
                     $produit->setImage($image);
@@ -394,15 +388,16 @@ class ProduitController extends AppController
     /**
      * Edition d'un produit
      *
-     * @Route("/produit/lien/ajax/see/{id}", name="produit_lien_ajax_see")
+     * @Route("/produit/lien/ajax/see/{id}/{page}", name="produit_lien_ajax_see")
      * @ParamConverter("produit", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
      *
      * @param Request $request
      * @param Produit $produit
+     * @param int $page
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function seeLienAction(Request $request, Produit $produit)
+    public function seeLienAction(Request $request, Produit $produit, int $page = 1)
     {
         $repository = $this->getDoctrine()->getRepository(Produit::class);
         $connexions = $repository->findEtablissementAndSpecialite($produit->getId());

@@ -22,6 +22,13 @@
 	{{ form_row(form.date_envoi) }}
 	{{ form_row(form.image) }}
     
+    <div id="produit_row_etablissement" class="shadow-sm p-3 mb-5 bg-white rounded border">
+        {{ form_row(form.produitEtablissements) }}
+    </div>
+    <div id="produit_row_specialite" class="shadow-sm p-3 mb-5 bg-white rounded border">
+        {{ form_row(form.produitSpecialites) }}
+    </div>
+    
     {{ form_rest(form) }}
     {{ form_end(form) }}
     
@@ -38,6 +45,14 @@
     		var file = $(this)[0].files[0].name;
     		$('.custom-file label[for="'+ $(this).attr('id') +'"]').html(file);
     	});
+
+    	{% if produit.produitEtablissements is empty %}
+    		$('#produit_row_etablissement').hide();
+    	{% endif %}
+    	
+    	{% if produit.produitSpecialites is empty %}
+    		$('#produit_row_specialite').hide();
+    	{% endif %}
     });
     </script> 
 

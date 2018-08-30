@@ -14,6 +14,7 @@ class EtablissementController extends AppController
 
     /**
      * Statut de la convention s'il y en a une
+     *
      * @var array
      */
     const STATUT_CONVENTION = array(
@@ -21,7 +22,7 @@ class EtablissementController extends AppController
         1 => 'En cours',
         2 => 'Ok'
     );
-    
+
     /**
      * Listing des établissements
      *
@@ -86,7 +87,7 @@ class EtablissementController extends AppController
      * @Route("/etablissement/ajax/see/{id}", name="etablissement_ajax_see")
      * @ParamConverter("etablissement", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
-     * 
+     *
      * @param Request $request
      * @param SessionInterface $session
      * @param Etablissement $etablissement
@@ -99,12 +100,12 @@ class EtablissementController extends AppController
 
         // Si appel Ajax, on renvoi sur la page ajax
         if ($request->isXmlHttpRequest()) {
-            
+
             return $this->render('etablissement/ajax_see.html.twig', array(
-                'etablissement' => $etablissement,
+                'etablissement' => $etablissement
             ));
         }
-        
+
         return $this->render('etablissement/see.html.twig', array(
             'page' => $page,
             'etablissement' => $etablissement,
@@ -146,6 +147,10 @@ class EtablissementController extends AppController
 
             $em = $this->getDoctrine()->getManager();
 
+            foreach ($etablissement->getSpecialites() as $specialite) {
+                $specialite->setEtablissement($etablissement);
+                $specialite->setDisabled(0);
+            }
             $etablissement->setDisabled(0);
 
             $em->persist($etablissement);
@@ -189,7 +194,9 @@ class EtablissementController extends AppController
     {
         $arrayFilters = $this->getDatasFilter($session);
 
-        $form = $this->createForm(EtablissementType::class, $etablissement);
+        $form = $this->createForm(EtablissementType::class, $etablissement, array(
+            'avec_specialites' => ($request->isXmlHttpRequest() ? false : true)
+        ));
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -204,7 +211,7 @@ class EtablissementController extends AppController
                     'statut' => true
                 ));
             }
-            
+
             return $this->redirect($this->generateUrl('etablissement_listing', array(
                 'page' => $page,
                 'field' => $arrayFilters['field'],
@@ -214,13 +221,13 @@ class EtablissementController extends AppController
 
         // Si appel Ajax, on renvoi sur la page ajax
         if ($request->isXmlHttpRequest()) {
-            
+
             return $this->render('etablissement/ajax_edit.html.twig', [
                 'etablissement' => $etablissement,
                 'form' => $form->createView()
             ]);
         }
-        
+
         return $this->render('etablissement/edit.html.twig', array(
             'page' => $page,
             'form' => $form->createView(),
@@ -274,7 +281,7 @@ class EtablissementController extends AppController
                 'page' => $page
             ));
         }
-        
+
         return $this->redirectToRoute('etablissement_listing', array(
             'page' => $page,
             'field' => $arrayFilters['field'],
