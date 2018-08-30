@@ -41,7 +41,7 @@ class LoadPatientData extends Fixture implements DependentFixtureInterface
                 'setDateNaissance' => '1984-04-12 11:11:11',
                 'setPMR' => true,
                 'setSpecialite' => 'Specialite-1',
-                'setDisabled' => true
+                'setDisabled' => false
             ],
             'Patient-4' => [
                 'setNom' => 'Henri',

@@ -88,7 +88,7 @@ class LoadEvenementData extends Fixture
                 'setTrancheAge' => array(2, 3, 4),
                 'setStatut' => 3,
                 'setDateFinInscription' => '2018-10-14 12:00:00',
-                'setDisabled' => 1
+                'setDisabled' => 0
             ],
             'Evenement-5' => [
                 'setNom' => "Concert de Gospel",
@@ -104,9 +104,26 @@ class LoadEvenementData extends Fixture
                 'setVille' => 'Lardy',
                 'setCodePostal' => 91450,
                 'setTrancheAge' => array(0),
-                'setStatut' => 4,
+                'setStatut' => 1,
                 'setDateFinInscription' => '2018-03-01 12:00:00',
                 'setDisabled' => 0
+            ],
+            'Evenement-6' => [
+                'setNom' => "Feu d'artifice du 14 juillet",
+                'setDateDebut' => '2016-07-14 18:00:00',
+                'setDateFin' => '2016-07-14 23:00:00',
+                'setDescription' => "venez célébrez la fête nationale autour d'un barbecue suivi d'un feu d'artifice",
+                'setNombreMax' => 150,
+                'setType' => 5,
+                'setNomLieu' => 'Stade des cerisiers',
+                'setNumeroVoie' => 100,
+                'setVoie' => "route de corbeille",
+                'setVille' => 'Lardy',
+                'setCodePostal' => 91450,
+                'setTrancheAge' => array(0),
+                'setStatut' => 4,
+                'setDateFinInscription' => '2016-06-14 18:00:00',
+                'setDisabled' => 1
             ]
         ]
     ];

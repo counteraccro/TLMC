@@ -58,18 +58,18 @@ class LoadTemoignageData extends Fixture implements DependentFixtureInterface
             ],
             'Temoignage-5' => [
                 'setEvenement' => 'Evenement-2',
-                'setMembre' => 'Membre-3',
+                'setMembre' => 'Membre-11',
                 'setTitre' => 'Un magnifique moment entre frères et soeurs',
                 'setCorps' => "Un dernier petit mot sur ce qui nous est apparu comme essentiel : associer les frères et sœurs ; ils ont souffert ensemble, de manière différente certes, mais aujourd’hui vous leur permettez de rêver ensemble.",
-                'setFamille' => 'Famille-4',
+                'setFamille' => 'Famille-18',
                 'setDisabled' => 0,
-                'setDateCreation' => '2018-06-23 21:12:13'
+                'setDateCreation' => '2018-11-23 21:12:13'
             ],
             'Temoignage-6' => [
                 'setEvenement' => 'Evenement-5',
                 'setMembre' => 'Membre-18',
-                'setTitre' => 'Mon frère, ma fierté',
-                'setCorps' => "Mon frère est ma plus grande fierté… Je n’en ai parlé à personne depuis ce mail… C’est grâce à vous qu’aujourd’hui ça sort. Je m’en suis rendu compte lors, notamment, du discours de Nicolas au concert du samedi. Je me suis rendue compte que maintenant cette période est finie, que le mal est passé et surtout que je ne suis pas SEULE ! Même si je ne suis pas malade, vous m’avez soigné de cette maladie à travers mon frère ! C’est pour ça que, quand on vous dit ‘‘merci’’, ce n’est pas un mot envoyé en l’air, c’est un cri du cœur ! Vous vous rendez compte de ce que vous avez fait pour nous ?? C’est MAGNIFIQUE ",
+                'setTitre' => 'Ma fille, ma fierté',
+                'setCorps' => "Ma fille est ma plus grande fierté… Je n’en ai parlé à personne depuis ce mail… C’est grâce à vous qu’aujourd’hui ça sort. Je m’en suis rendu compte lors, notamment, du discours de Nicolas au concert du samedi. Je me suis rendu compte que maintenant cette période est finie, que le mal est passé et surtout que je ne suis pas SEUL ! Même si je ne suis pas malade, vous m’avez soigné de cette maladie à travers ma fille ! C’est pour ça que, quand on vous dit ‘‘merci’’, ce n’est pas un mot envoyé en l’air, c’est un cri du cœur ! Vous vous rendez compte de ce que vous avez fait pour nous ?? C’est MAGNIFIQUE ",
                 'setFamille' => 'Famille-1',
                 'setDisabled' => 0,
                 'setDateCreation' => '2018-06-23 21:12:13'
@@ -85,7 +85,7 @@ class LoadTemoignageData extends Fixture implements DependentFixtureInterface
             'Temoignage-8' => [
                 'setProduit' => 'Produit-2',
                 'setMembre' => 'Membre-9',
-                'setTitre' => 'Ca fait mal',
+                'setTitre' => 'Ca fait plaisir',
                 'setCorps' => "On y a joué toute l'après-midi tellement on aimait!!!",
                 'setDisabled' => 0,
                 'setDateCreation' => '2018-02-12 19:30:32'
@@ -122,7 +122,7 @@ class LoadTemoignageData extends Fixture implements DependentFixtureInterface
                 'setMembre' => 'Membre-21',
                 'setTitre' => 'La trouille',
                 'setCorps' => "Les bonbons étaient super bons et la déco étaient trop bien! Et les costumes et les maquillages étaient magnifiques: je ressemblais à une vraie fée! ",
-                'setFamille' => 'Famille-10',
+                'setFamille' => 'Famille-9',
                 'setDisabled' => 0,
                 'setDateCreation' => '2018-11-11 11:11:11'
             ]

@@ -202,7 +202,7 @@ class LoadMembreData extends Fixture implements DependentFixtureInterface
                 'setSignature' => 'Cordialement, Directrice Regina Roya',
                 'setDisabled' => 0,
                 'setEtablissement' => 'Etablissement-3',
-                'setSpecialite' => 'Specialite-5',
+                'setSpecialite' => 'Specialite-6',
                 'setSalt' => '1A2B3C4D5E6F7G890A',
                 'setRoles' => array('ROLE_BENEFICIAIRE_DIRECT')
             ],

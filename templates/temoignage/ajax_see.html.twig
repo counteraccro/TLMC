@@ -4,8 +4,8 @@
         	<b>Témoignage</b>
         	{% if is_granted("ROLE_ADMIN") %} 
         	     rédigé par {{ temoignage.membre.prenom }} {{ temoignage.membre.nom }}
+        	     <br><b>Actif :</b> {{ temoignage.disabled | actif }}
         	{% endif %}
-        	<br><b>Actif :</b> {{ temoignage.disabled | actif }}
         	<div class="float-right">
         		{{ editObjet(path('temoignage_ajax_edit', {'id': temoignage.id, 'type':'temoignage' }), "Editer le témoignage", "btn-edit-temoignage") | raw }}
         		{% if is_granted("ROLE_ADMIN") %}
