@@ -435,12 +435,17 @@ class FamilleController extends AppController
      * @param Evenement $evenement
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function addAjaxDropdownAction(Request $request, Evenement $evenement)
+    public function addAjaxDropdownAction(Request $request, Evenement $evenement = null)
     {
+        
         $repository = $this->getDoctrine()->getRepository(Famille::class);
         $specialite = $this->getMembre()->getSpecialite();
         $specialite_id = (is_null($specialite) ? 0 : $specialite->getId());
-        $resultats = $repository->getFamilles($evenement->getId(), $specialite_id, $this->isAdmin());
+        if(is_null($evenement)){
+            $resultats = $repository->getFamilles(0, $specialite_id, $this->isAdmin());
+        } else {
+            $resultats = $repository->getFamilles($evenement->getId(), $specialite_id, $this->isAdmin());
+        }
         
         $familles = array();
         foreach ($resultats as $resultat){
