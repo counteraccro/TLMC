@@ -116,6 +116,55 @@ class LoadFamilleAdresseData extends Fixture implements DependentFixtureInterfac
                 'setVille' => 'Paris',
                 'setCodePostal' => 75008,
                 'setDisabled' => false
+            ],
+            'FamilleAdresse-16' => [
+                'setNumeroVoie' => 16,
+                'setVoie' => 'Avenue des Orangeades',
+                'setVille' => 'Bordeaux',
+                'setCodePostal' => 33000,
+                'setDisabled' => false
+            ],
+            'FamilleAdresse-17' => [
+                'setNumeroVoie' => 17,
+                'setVoie' => 'Avenue Marie Currie',
+                'setVille' => 'Tarbes',
+                'setCodePostal' => 65000,
+                'setDisabled' => false
+            ],
+            'FamilleAdresse-18' => [
+                'setNumeroVoie' => 180,
+                'setVoie' => 'Boulevard des généraux',
+                'setVille' => 'Versailles',
+                'setCodePostal' => 78000,
+                'setDisabled' => false
+            ],
+            'FamilleAdresse-19' => [
+                'setNumeroVoie' => 50,
+                'setVoie' => 'Route de Garenne',
+                'setVille' => 'Clamart',
+                'setCodePostal' => 92140,
+                'setDisabled' => false
+            ],
+            'FamilleAdresse-20' => [
+                'setNumeroVoie' => 50,
+                'setVoie' => 'Route de Garenne',
+                'setVille' => 'Clamart',
+                'setCodePostal' => 92140,
+                'setDisabled' => false
+            ],
+            'FamilleAdresse-21' => [
+                'setNumeroVoie' => 180,
+                'setVoie' => 'Avenue de Lille',
+                'setVille' => 'Versailles',
+                'setCodePostal' => 78000,
+                'setDisabled' => false
+            ],
+            'FamilleAdresse-22' => [
+                'setNumeroVoie' => 180,
+                'setVoie' => 'Avenue de Lille',
+                'setVille' => 'Versailles',
+                'setCodePostal' => 78000,
+                'setDisabled' => false
             ]
         ]
     ];

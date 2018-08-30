@@ -139,6 +139,76 @@ class LoadParticipantData extends Fixture implements DependentFixtureInterface
                 'setPatient' => 'Patient-8',
                 'setStatut' => 1,
                 'setDate' => '2018-10-30 18:00:00'
+            ],
+            'Participant-18' => [
+                'setEvenement' => 'Evenement-3',
+                'setFamille' => 'Famille-20',
+                'setPatient' => 'Patient-9',
+                'setStatut' => 1,
+                'setDate' => '2018-09-22 08:30:00'
+            ],
+            'Participant-19' => [
+                'setEvenement' => 'Evenement-1',
+                'setFamille' => 'Famille-21',
+                'setPatient' => 'Patient-10',
+                'setStatut' => 1,
+                'setDate' => '2017-12-25 12:00:00'
+            ],
+            'Participant-20' => [
+                'setEvenement' => 'Evenement-1',
+                'setFamille' => 'Famille-22',
+                'setPatient' => 'Patient-10',
+                'setStatut' => 1,
+                'setDate' => '2017-12-25 12:00:00'
+            ],
+            'Participant-21' => [
+                'setEvenement' => 'Evenement-1',
+                'setFamille' => 'Famille-23',
+                'setPatient' => 'Patient-10',
+                'setStatut' => 1,
+                'setDate' => '2017-12-25 12:00:00'
+            ],
+            'Participant-22' => [
+                'setEvenement' => 'Evenement-1',
+                'setFamille' => 'Famille-24',
+                'setPatient' => 'Patient-10',
+                'setStatut' => 1,
+                'setDate' => '2017-12-25 12:00:00'
+            ],
+            'Participant-23' => [
+                'setEvenement' => 'Evenement-4',
+                'setFamille' => 'Famille-25',
+                'setPatient' => 'Patient-11',
+                'setStatut' => 1,
+                'setDate' => '2018-10-31 18:00:00'
+            ],
+            'Participant-24' => [
+                'setEvenement' => 'Evenement-3',
+                'setFamille' => 'Famille-26',
+                'setPatient' => 'Patient-12',
+                'setStatut' => 1,
+                'setDate' => '2018-09-22 08:30:00'
+            ],
+            'Participant-25' => [
+                'setEvenement' => 'Evenement-3',
+                'setFamille' => 'Famille-27',
+                'setPatient' => 'Patient-12',
+                'setStatut' => 1,
+                'setDate' => '2018-09-22 08:30:00'
+            ],
+            'Participant-26' => [
+                'setEvenement' => 'Evenement-5',
+                'setFamille' => 'Famille-28',
+                'setPatient' => 'Patient-13',
+                'setStatut' => 1,
+                'setDate' => '2018-03-14 19:00:00'
+            ],
+            'Participant-27' => [
+                'setEvenement' => 'Evenement-5',
+                'setFamille' => 'Famille-29',
+                'setPatient' => 'Patient-13',
+                'setStatut' => 1,
+                'setDate' => '2018-03-14 19:00:00'
             ]
         ]
     ];

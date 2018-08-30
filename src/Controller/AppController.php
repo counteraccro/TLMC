@@ -52,7 +52,8 @@ class AppController extends Controller
         9 => 'Conjoint',
         10 => 'Enfant',
         11 => 'Parrain',
-        12 => 'Marraine'
+        12 => 'Marraine',
+        13 => 'Petit-enfant'
     );
 
     const CHOICETYPE = 'ChoiceType';

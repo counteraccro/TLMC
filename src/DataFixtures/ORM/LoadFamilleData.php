@@ -222,6 +222,116 @@ class LoadFamilleData extends Fixture implements DependentFixtureInterface
                 'setFamilleAdresse' => 'FamilleAdresse-15',
                 'setPatient' => 'Patient-8',
                 'setDisabled' => false
+            ],
+            'Famille-20' => [
+                'setNom' => 'Fontaine',
+                'setPrenom' => 'Lydie',
+                'setLienFamille' => 4,
+                'setEmail' => 'lydie.fontaine@gmail.com',
+                'setPmr' => false,
+                'setNumeroTel' => '0777787975',
+                'setFamilleAdresse' => 'FamilleAdresse-16',
+                'setPatient' => 'Patient-9',
+                'setDisabled' => false
+            ],
+            'Famille-21' => [
+                'setNom' => 'Raymond',
+                'setPrenom' => 'Albert',
+                'setLienFamille' => 10,
+                'setEmail' => 'raymond.albert.65@gmail.com',
+                'setPmr' => false,
+                'setNumeroTel' => '0122564789',
+                'setFamilleAdresse' => 'FamilleAdresse-17',
+                'setPatient' => 'Patient-10',
+                'setDisabled' => false
+            ],
+            'Famille-22' => [
+                'setNom' => 'Raymond',
+                'setPrenom' => 'Sarah',
+                'setLienFamille' => 10,
+                'setEmail' => 'sarah.raymond@gmail.com',
+                'setPmr' => false,
+                'setNumeroTel' => '0122564789',
+                'setFamilleAdresse' => 'FamilleAdresse-17',
+                'setPatient' => 'Patient-10',
+                'setDisabled' => false
+            ],
+            'Famille-23' => [
+                'setNom' => 'Raymond',
+                'setPrenom' => 'Kelly',
+                'setLienFamille' => 13,
+                'setEmail' => 'sarah.raymond@gmail.com',
+                'setPmr' => false,
+                'setNumeroTel' => '0122564789',
+                'setFamilleAdresse' => 'FamilleAdresse-17',
+                'setPatient' => 'Patient-10',
+                'setDisabled' => false
+            ],
+            'Famille-24' => [
+                'setNom' => 'Raymond',
+                'setPrenom' => 'Kevin',
+                'setLienFamille' => 13,
+                'setEmail' => 'sarah.raymond@gmail.com',
+                'setPmr' => false,
+                'setNumeroTel' => '0122564789',
+                'setFamilleAdresse' => 'FamilleAdresse-17',
+                'setPatient' => 'Patient-10',
+                'setDisabled' => false
+            ],
+            'Famille-25' => [
+                'setNom' => 'Lafeuille',
+                'setPrenom' => 'Leni',
+                'setLienFamille' => 3,
+                'setEmail' => 'david.lafeuille@gmail.com',
+                'setPmr' => false,
+                'setNumeroTel' => '0122564789',
+                'setFamilleAdresse' => 'FamilleAdresse-18',
+                'setPatient' => 'Patient-11',
+                'setDisabled' => false
+            ],
+            'Famille-26' => [
+                'setNom' => 'Duroc',
+                'setPrenom' => 'Rachelle',
+                'setLienFamille' => 10,
+                'setEmail' => 'rachelle.duroc@gmail.com',
+                'setPmr' => false,
+                'setNumeroTel' => '0133564789',
+                'setFamilleAdresse' => 'FamilleAdresse-19',
+                'setPatient' => 'Patient-12',
+                'setDisabled' => false
+            ],
+            'Famille-27' => [
+                'setNom' => 'Duroc',
+                'setPrenom' => 'Maéva',
+                'setLienFamille' => 9,
+                'setEmail' => 'david.lafeuille@gmail.com',
+                'setPmr' => false,
+                'setNumeroTel' => '0133564789',
+                'setFamilleAdresse' => 'FamilleAdresse-20',
+                'setPatient' => 'Patient-12',
+                'setDisabled' => false
+            ],
+            'Famille-28' => [
+                'setNom' => 'Lanoix',
+                'setPrenom' => 'Christelle',
+                'setLienFamille' => 4,
+                'setEmail' => 'christelle.lanoix@gmail.com',
+                'setPmr' => false,
+                'setNumeroTel' => '0146454243',
+                'setFamilleAdresse' => 'FamilleAdresse-21',
+                'setPatient' => 'Patient-13',
+                'setDisabled' => false
+            ],
+            'Famille-29' => [
+                'setNom' => 'Lanoix',
+                'setPrenom' => 'Christian',
+                'setLienFamille' => 3,
+                'setEmail' => 'christian.lanoix@gmail.com',
+                'setPmr' => false,
+                'setNumeroTel' => '0146454243',
+                'setFamilleAdresse' => 'FamilleAdresse-22',
+                'setPatient' => 'Patient-13',
+                'setDisabled' => false
             ]
         ]
     ];
