@@ -1,5 +1,5 @@
 <div id="ajax_new_message">
-{{ form_start(form) }}
+{{ form_start(form, {'attr' : {'id' : 'form_message', 'action' : path('message_ajax_new_message')}}) }}
     <div class="modal-header">
     	<h5 class="modal-title">Rédigez votre nouveau message</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -7,6 +7,10 @@
         </button>
     </div>
     <div class="modal-body">
+    	<div class="form-group">
+    		<label for="destinataire">Destinataires</label>
+    		<input type="text" class="form-control" id="destinataire" name="message[destinataire]" placeholder="Destinataire">
+  		</div>
     	{{ form_row(form.titre) }}
     	{{ form_row(form.corps) }}
     	Enregistrer en tant que {{ form_row(form.brouillon) }}
@@ -25,16 +29,30 @@
 		   'show' : true,
 	   	'backdrop' : 'static'
 	});
+
+	$('#modal_message_global').on('hidden.bs.modal', function (e) {
+		tinymce.remove();
+		$('#messagerie-block #modal_message_global #bloc_modal').html('');
+	});
 	
 	$(document).ready(function() {
-		
+
+		// Prevent jQuery UI dialog from blocking focusin
+		$(document).on('focusin', function(e) {
+		    if ($(e.target).closest(".mce-window, .moxman-window").length) {
+		        e.stopImmediatePropagation();
+		    }
+		});
+
 		tinymce.init({
 		    selector: '#message_corps',
-		    plugins: "link",
-		    /*menubar: "insert",
-		    toolbar: "link",
-		    link_assume_external_targets: true*/
+		    height: 230,
+		    plugins: 'link image advlist lists help preview table wordcount searchreplace emoticons',
+		    language: 'fr_FR'
 		  });
+
+		Messagerie.EventPopin();
+		Messagerie.AutoComplete('{{path('membre_ajax_autocomplete')}}');
 	});
 </script>
 {% endblock %}

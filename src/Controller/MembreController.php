@@ -371,6 +371,28 @@ class MembreController extends AppController
     }
 
     /**
+     * Fonction
+     *
+     * @Route("/membre/ajax/autocomplete", name="membre_ajax_autocomplete")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
+     * @param Request $request
+     */
+    public function autoCompleteAction(Request $request)
+    {
+        $term = $request->get('term');
+     
+        $repository = $this->getDoctrine()->getRepository(Membre::class);
+        $result = $repository->findByTerm($term);
+      
+        $json = array();
+        
+        foreach ($result as $membre) {
+            $json[] = $membre->getPrenom() . ' ' . $membre->getNom();
+        }
+         return $this->json($json);
+    }
+
+    /**
      * Génération automatique de salt
      */
     public function generateSalt()

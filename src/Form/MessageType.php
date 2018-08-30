@@ -19,6 +19,7 @@ class MessageType extends AbstractType
         ))
             ->add('corps', TextareaType::class, array(
             'label' => 'Contenu de votre message',
+            'required' => false
         ))
             ->add('brouillon')
             ->

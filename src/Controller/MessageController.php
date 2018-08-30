@@ -286,6 +286,8 @@ class MessageController extends AppController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             
+            echo 'Message ' . $message->getCorps();
+            
         }
         
         return $this->render('message/ajax_new_message.html.twig', [
