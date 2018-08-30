@@ -10,6 +10,10 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use App\Entity\Produit;
 use App\Entity\Evenement;
 use Doctrine\ORM\Mapping\Entity;
+use App\Entity\Etablissement;
+use App\Entity\Specialite;
+use App\Entity\ProduitEtablissement;
+use App\Entity\ProduitSpecialite;
 
 class AppController extends Controller
 {
@@ -279,7 +283,8 @@ class AppController extends Controller
     public function getMembre()
     {
         $repository = $this->getDoctrine()->getRepository(Membre::class);
-        $membres = $repository->findById($this->getUser()->getId());
+        $membres = $repository->findById($this->getUser()
+            ->getId());
         $membre = (isset($membres[0]) ? $membres[0] : new Membre());
 
         return $membre;
@@ -397,7 +402,7 @@ class AppController extends Controller
                 $repository = $this->getDoctrine()->getRepository(Evenement::class);
                 break;
         }
-        
+
         if (isset($repository)) {
             $objets = $repository->findById($id);
             $objet = $objets[0];
@@ -424,24 +429,60 @@ class AppController extends Controller
             ));
         }
     }
-    
+
     /**
      * Retourne le nombre total de produits envoyés dans les différents établissments et les spécialités
-     * 
+     *
      * @param Produit $produit
      * @return int
      */
-    public function totalProduitsEnvoyes(Produit $produit){
+    public function totalProduitsEnvoyes(Produit $produit)
+    {
         $somme = 0;
-        
+
         foreach ($produit->getProduitEtablissements() as $produitEtablissement) {
             $somme += $produitEtablissement->getQuantite();
         }
-        
+
         foreach ($produit->getProduitSpecialites() as $produitSpecialite) {
             $somme += $produitSpecialite->getQuantite();
         }
-        
+
         return $somme;
+    }
+
+    /**
+     * 
+     * @param Produit $produit
+     * @param bool $admin
+     * @return array []
+     *          [date] => date du lien
+     *          [quantite] => nombre de produit
+     */
+    public function getInfoSupProduit(Produit $produit, bool $admin)
+    {
+        $membre = $this->getMembre();
+        $etablissement = $membre->getEtablissement();
+        $specialite = $membre->getSpecialite();
+        
+        if($admin){
+            return array(
+                'date' => new \DateTime(),
+                'quantite' => 0
+            );
+        }
+        
+        if (is_null($specialite)) {
+            $repository = $this->getDoctrine()->getRepository(ProduitEtablissement::class);
+            $lien = $repository->findOneBy(array('produit' => $produit, 'etablissement' => $etablissement));
+        } else {
+            $repository = $this->getDoctrine()->getRepository(ProduitSpecialite::class);
+            $lien = $repository->findOneBy(array('produit' => $produit, 'specialite' => $specialite));
+        }
+        
+        return array(
+            'date' => $lien->getDate(),
+            'quantite' => $lien->getQuantite()
+        );
     }
 }

@@ -176,6 +176,15 @@ ProduitSpecialite.LaunchAddCollection = function(params) {
 			e.preventDefault(); // évite qu'un # apparaisse dans l'URL
 			return false;
 		});
+		
+		if (ProduitSpecialite.index == 0) {
+			ProduitSpecialite.AddElement();
+		} else {
+			// S'il existe déjà des éléments, on ajoute un lien de suppression pour chacun d'entre eux
+			ProduitSpecialite.container.children('div').each(function() {
+				ProduitSpecialite.addDeleteLink($(this));
+			});
+		}
 	}
 
 	//ajout d'un élément dans le conteneur

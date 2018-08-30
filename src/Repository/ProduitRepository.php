@@ -143,7 +143,7 @@ class ProduitRepository extends ServiceEntityRepository
             ->leftjoin('App:Etablissement', 'E', 'WITH', 'PE.etablissement = E.id')
             ->andWhere('p.id = :idProduit')
             ->setParameter('idProduit', $id_produit)
-            ->orderBy('E.id')
+            ->orderBy('E.nom')
             ->getQuery()
             ->getResult();
 
@@ -154,7 +154,7 @@ class ProduitRepository extends ServiceEntityRepository
             ->leftjoin('App:Etablissement', 'E', 'WITH', 'S.etablissement = E.id')
             ->andWhere('p.id = :idProduit')
             ->setParameter('idProduit', $id_produit)
-            ->orderBy('E.id')
+            ->orderBy('E.nom ASC, S.service')
             ->getQuery()
             ->getResult();
 

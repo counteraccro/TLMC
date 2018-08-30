@@ -1,12 +1,13 @@
 <div class="card shadow-sm">
 	<div class="card-header bg-light">
-    	<b>Produit :</b> {{ produit.titre }}
-       	<div class="float-right"> 
-       		{% if is_granted("ROLE_ADMIN") %}
+    	<b>Produit :</b> {{ produit.titre }} 
+    	{% if is_granted("ROLE_ADMIN") %}
+    	    ({% if produit.disabled == 1 %} Inactif {% else %} Actif {% endif %})
+       		<div class="float-right">
        			{{ editObjet(path('produit_ajax_edit', {'id': produit.id }), "Editer le produit", "btn-edit-produit") | raw }}
        			{{ deleteObjet(produit.disabled, path('produit_delete', {'id': produit.id, 'page' : 1 }), 'btn-disabled-produit') | raw }}
-       		{% endif %}
-       	</div>
+       		</div>
+       	{% endif %}
     </div>
     <div class="card-body">
     	<div class="row align-items-center">
@@ -45,20 +46,23 @@
                 	</tr>
                 	<tr>
                 		<th scope="col"> Quantité </th>
-                		<td> {{ produit.quantite }} </td>
+                		<td> {% if admin == true %} {{ produit.quantite }} {% else %} {{ infoSup.quantite }} {% endif %}</td>
                 	</tr>
                 	<tr>
                 		<th scope="col">Date d'envoi </th>
                 		<td> {{ produit.dateEnvoi | date('d/m/Y H:i') }} </td>
                 	</tr>
-                	<tr>
-                		<th scope="col">Date de création </th>
-                		<td> {{ produit.dateCreation | date('d/m/Y H:i') }} </td>
-                	</tr>
-                	<tr>
-                		<th scope="col"> Actif </th>
-                		<td> {{ produit.disabled | actif }} </td>
-                	</tr>
+                	{% if admin == false %}
+                    	<tr>
+                    		<th scope="col"> Date de réception </th>
+                    		<td> {{ infoSup.date | date('d/m/Y H:i') }} </td>
+                    	</tr>
+                    {% else %}
+                    	<tr>
+                    		<th scope="col"> Date de création </th>
+                    		<td> {{ produit.dateCreation | date('d/m/Y H:i') }} </td>
+                    	</tr>
+                	{% endif %}
                 </table>
         	</div>
     	</div>

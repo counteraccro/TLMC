@@ -144,8 +144,17 @@ class ProduitController extends AppController
         // Si appel Ajax, on renvoi sur la page ajax
         if ($request->isXmlHttpRequest()) {
 
+           if($this->isAdmin()){
+                $admin = true;
+            } else {
+                $admin = false;
+            }
+            $infoSup = $this->getInfoSupProduit($produit, $admin);
+            
             return $this->render('produit/ajax_see.html.twig', array(
-                'produit' => $produit
+                'produit' => $produit,
+                'admin' => $admin,
+                'infoSup' => $infoSup
             ));
         }
 
