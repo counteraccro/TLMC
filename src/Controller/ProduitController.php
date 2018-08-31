@@ -280,9 +280,7 @@ class ProduitController extends AppController
         if ($form->isSubmitted()) {
             if ($this->totalProduitsEnvoyes($produit) > $produit->getQuantite()) {
                 $form->addError(new FormError('La somme des quantités de produits envoyés est supérieure à la quantité de produit'));
-            }
-
-            if (! $request->isXmlHttpRequest()) {
+            } elseif (! $request->isXmlHttpRequest()) {
                 if (is_null($produit->getImage()) && ! is_null($image)) {
                     $produit->setImage($image);
                 } else {
