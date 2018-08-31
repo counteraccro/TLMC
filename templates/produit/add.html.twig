@@ -39,15 +39,6 @@
     	
     	{{ form_row(form.image) }}
         
-        <div class="form-group">
-    		<label for="">Elément associé</label>
-    		<select id="produit_typelink" class="form-control">
-    			<option value="0"></option>
-    			<option value="1">Etablissement</option>
-    			<option value="2">Spécialité</option>
-    		</select>
-    	</div>
-        
         <div id="produit_row_etablissement" class="shadow-sm p-3 mb-5 bg-white rounded border">
             {{ form_row(form.produitEtablissements) }}
             <a href="#" id="add_etablissement" class="btn btn-primary btn-sm">Ajouter un établissement</a>
@@ -94,24 +85,6 @@
      		ProduitEtablissement.LaunchAddCollection(paramsE);
     		ProduitEtablissement.Event();
         	
-    		$('#produit_row_etablissement').hide();
-    		$('#produit_row_specialite').hide();
-
-    		
-            $('#produit_typelink').change(function(){
-            	
-            	if($(this).val() == 2){
-                	$('#produit_row_specialite').show();
-                	$('#produit_row_etablissement').hide();
-                	
-				} else if($(this).val() == 1) {
-        			$('#produit_row_etablissement').show();
-        			$('#produit_row_specialite').hide();
-    			} else {
-                	$('#produit_row_etablissement').hide();
-        			$('#produit_row_specialite').hide();
-                }
-            });
         });
     </script> 
 {% endblock %}

@@ -4,10 +4,10 @@
     		{{ pagination.nb_elements }} 
             {% if type == 'evenement' %}
             	Spécialité{% if pagination.nb_elements > 1 %}s{% endif %} {% if pagination.pages_count > 0 %} - Page {{ pagination.page }} / {{ pagination.pages_count }} {% endif %}
-            	<a href="{{ path('specialite_evenement_ajax_add', {'id' : objet.id, 'type':type}) }}" id="btn-add-specialite-event" class="float-right"><span class="oi oi-link-intact"></span> Nouveau lien avec une spécialité</a>
+            	<a href="{{ path('specialite_evenement_ajax_add', {'id' : objet.id, 'type':type}) }}" id="btn-add-specialite-event" class="float-right"><span class="oi oi-link-intact"></span> Proposer à une nouvelle spécialité</a>
             {% elseif type == 'specialite' %}
         		Evénement{% if pagination.nb_elements > 1 %}s{% endif %} {% if pagination.pages_count > 0 %} - Page {{ pagination.page }} / {{ pagination.pages_count }} {% endif %}
-            	<a href="{{ path('specialite_evenement_ajax_add', {'id' : objet.id, 'type':type}) }}" id="btn-add-specialite-event" class="float-right"><span class="oi oi-link-intact"></span> Nouveau lien avec un événement</a>
+            	<a href="{{ path('specialite_evenement_ajax_add', {'id' : objet.id, 'type':type}) }}" id="btn-add-specialite-event" class="float-right"><span class="oi oi-link-intact"></span> Proposer un événement</a>
             {% endif %}
         </div>
         <div class="card-body">
