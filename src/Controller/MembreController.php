@@ -380,16 +380,27 @@ class MembreController extends AppController
     public function autoCompleteAction(Request $request)
     {
         $term = $request->get('term');
-     
+
         $repository = $this->getDoctrine()->getRepository(Membre::class);
         $result = $repository->findByTerm($term);
-      
-        $json = array();
-        
+
+        // transformation de l'objet $result en array
+        $membres = array();
         foreach ($result as $membre) {
-            $json[$membre->getId()] = $membre->getPrenom() . ' ' . $membre->getNom();
+            $membres[] = $membre->getPrenom() . ' ' . $membre->getNom();
         }
-         return $this->json($json);
+
+        $json = array();
+
+        // renvoie les résultats à afficher
+        foreach ($result as $membre) {
+            if (array_count_values($membres)[$membre->getPrenom() . ' ' . $membre->getNom()] > 1) {
+                $json[$membre->getId()] = $membre->getPrenom() . ' ' . $membre->getNom() . ' (' . $membre->getFonction() . ')';
+            } else {
+                $json[$membre->getId()] = $membre->getPrenom() . ' ' . $membre->getNom();
+            }
+        }
+        return $this->json($json);
     }
 
     /**
