@@ -124,7 +124,7 @@ class FamilleController extends AppController
         );
 
         if (! $this->isAdmin()) {
-            $params['condition'][] = $params['repository'] . 'disabled = 0';
+            $params['condition'][] = $params['repository'] . '.disabled = 0';
         }
         
         $repository = $this->getDoctrine()->getRepository($params['repositoryClass']);

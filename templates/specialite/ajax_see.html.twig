@@ -2,10 +2,8 @@
 	<div class="card-header bg-light">
     	<b>Spécialité :</b> {{ specialite.service }}
        	<div class="float-right"> 
-       		{% if is_granted("ROLE_ADMIN") %}
-       			{{ editObjet(path('specialite_ajax_edit', {'id': specialite.id }), "Editer la spécialité", "btn-edit-specialite") | raw }}
-       			{{ deleteObjet(specialite.disabled, path('specialite_delete', {'id': specialite.id, 'page' : 1 }), 'btn-disabled-specialite') | raw }}
-       		{% endif %}
+       		{{ editObjet(path('specialite_ajax_edit', {'id': specialite.id }), "Editer la spécialité", "btn-edit-specialite") | raw }}
+       		{{ deleteObjet(specialite.disabled, path('specialite_delete', {'id': specialite.id, 'page' : 1 }), 'btn-disabled-specialite') | raw }}
        	</div>
     </div>
     <div class="card-body">

@@ -203,6 +203,7 @@ class EvenementController extends AppController
             }
 
             if ($form->isValid()) {
+                
                 $em = $this->getDoctrine()->getManager();
 
                 foreach ($evenement->getSpecialiteEvenements() as $specialiteEvenement) {

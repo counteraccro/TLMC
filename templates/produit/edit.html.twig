@@ -4,36 +4,57 @@
 
 {% block body %}
 
-<h1>Modification du produit #{{ produit.id }} - {{ produit.titre }}</h1>
-
-{% include 'elements/arborescence.html.twig' %}
-
-<div>
-    {{ form_start(form) }}
-    {{ form_errors(form) }}
+    <h1>Modification du produit #{{ produit.id }} - {{ produit.titre }}</h1>
     
-    {{ form_row(form.titre) }}
-	{{ form_row(form.type) }}
-	{{ form_row(form.genre) }}
-	{{ form_row(form.texte) }}
-	{{ form_row(form.texte_2) }}
-	{{ form_row(form.tranche_age) }}
-	{{ form_row(form.quantite) }}
-	{{ form_row(form.date_envoi) }}
-	{{ form_row(form.image) }}
+    {% include 'elements/arborescence.html.twig' %}
     
-    <div id="produit_row_etablissement" class="shadow-sm p-3 mb-5 bg-white rounded border">
-        {{ form_row(form.produitEtablissements) }}
+    <div>
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+        
+        {{ form_row(form.titre) }}
+    	<div class="row">
+        	<div class="col-md-6">
+        		{{ form_row(form.type) }}
+        	</div>
+        	<div class="col-md-6">
+        		{{ form_row(form.genre) }}
+        	</div>
+        </div>
+    	{{ form_row(form.texte) }}
+    	{{ form_row(form.texte_2) }}
+    	{{ form_row(form.tranche_age) }}
+    	
+    	<div class="row align-middle">
+    		<div class="col-md-6 align-middle">
+    			{{ form_row(form.quantite) }}
+    		</div>
+    		<div class="col-md-6 align-middle">
+    			{{ form_row(form.date_envoi) }}
+    		</div>
+    	</div>
+    	
+    	{{ form_row(form.image) }}
+        
+        <div id="produit_row_etablissement" class="shadow-sm p-3 mb-5 bg-white rounded border">
+            {{ form_row(form.produitEtablissements) }}
+            <a href="#" id="add_etablissement" class="btn btn-primary btn-sm">Ajouter un établissement</a>
+        </div>
+        <div id="produit_row_specialite" class="shadow-sm p-3 mb-5 bg-white rounded border">
+            {{ form_row(form.produitSpecialites) }}
+        	<a href="#" id="add_specialite" class="btn btn-primary btn-sm">Ajouter une spécialité </a>
+        </div>
+        
+        {{ form_rest(form) }}
+        {{ form_end(form) }}
+        
     </div>
-    <div id="produit_row_specialite" class="shadow-sm p-3 mb-5 bg-white rounded border">
-        {{ form_row(form.produitSpecialites) }}
-    </div>
-    
-    {{ form_rest(form) }}
-    {{ form_end(form) }}
-    
-</div>
 	  
+{% endblock %}
+
+{% block script %}
+ 	<script src="{{ asset('assets/js/produit_etablissement/ProduitEtablissement.js') }}?{{ date().timestamp }}"></script>
+ 	<script src="{{ asset('assets/js/produit_specialite/ProduitSpecialite.js') }}?{{ date().timestamp }}"></script>
 {% endblock %}
 
 {% block javascripts %}
@@ -46,13 +67,22 @@
     		$('.custom-file label[for="'+ $(this).attr('id') +'"]').html(file);
     	});
 
-    	{% if produit.produitEtablissements is empty %}
-    		$('#produit_row_etablissement').hide();
-    	{% endif %}
-    	
-    	{% if produit.produitSpecialites is empty %}
-    		$('#produit_row_specialite').hide();
-    	{% endif %}
+        var paramsS = {
+    			id_container : 'div#produit_produitSpecialites',
+    			id_btn_add : '#add_specialite',
+    			val_defaut : $('#produit_produitSpecialites_0_specialite').val()
+    	};
+    	ProduitSpecialite.LaunchAddCollection(paramsS);
+        ProduitSpecialite.Event();
+
+        var paramsE = {
+    			id_container : 'div#produit_produitEtablissements',
+    			id_btn_add : '#add_etablissement',
+    			val_defaut : $('#produit_produitEtablissements_0_etablissement').val()
+    	};
+ 		ProduitEtablissement.LaunchAddCollection(paramsE);
+		ProduitEtablissement.Event();
+
     });
     </script> 
 

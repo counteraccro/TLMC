@@ -1,12 +1,13 @@
 	<div class="card shadow-sm">
          <div class="card-header bg-light">
          	<b>Evénement :</b> {{ evenement.nom }}
-           	<div class="float-right"> 
-           	    {% if is_granted("ROLE_ADMIN") %}
-           			{{ editObjet(path('evenement_ajax_edit', {'id': evenement.id }), "Editer l'événement", "btn-edit-evenement") | raw }}
+         	{% if is_granted("ROLE_ADMIN") %}
+         		<br><b>Actif :</b> {{ evenement.disabled | actif }}
+           		<div class="float-right"> 
+           	    	{{ editObjet(path('evenement_ajax_edit', {'id': evenement.id }), "Editer l'événement", "btn-edit-evenement") | raw }}
            			{{ deleteObjet(evenement.disabled, path('evenement_delete', {'id': evenement.id, 'page' : 1 }), 'btn-disabled-evenement') | raw }}
-           	    {% endif %}
-           	</div>
+           	    </div>
+           	{% endif %}
          </div>
          <div class="card-body">
 			<div class="row align-items-center">
@@ -15,15 +16,11 @@
     			    	{% if is_granted("ROLE_ADMIN") %}
     			    	    {{ deleteImage(path('image_delete', {'id': evenement.id, 'type' : 'evenement' }), 'btn-delete-image') | raw }}
     			        {% endif %}
-    			    	    {{ image('evenement', evenement.image) | raw }}
+    			    	{{ image('evenement', evenement.image) | raw }}
     		        {% endif %}
     			</div>
 				<div class="col-md-9">
                 	<table  class="table table-sm">
-                    	<tr>
-                    		<th scope="col"> Actif </th>
-                    		<td> {{ evenement.disabled | actif }} </td>
-                    	</tr>
                     	<tr>
                     		<th scope="col"> Date</th>
                     		<td> {{ evenement.dateDebut | date('d/m/Y H:i') }} - {{ evenement.dateFin | date('d/m/Y H:i') }} </td>

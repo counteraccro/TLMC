@@ -9,10 +9,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Form\ProduitType;
 use Symfony\Component\Form\FormError;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 class ProduitController extends AppController
 {
@@ -144,13 +140,13 @@ class ProduitController extends AppController
         // Si appel Ajax, on renvoi sur la page ajax
         if ($request->isXmlHttpRequest()) {
 
-           if($this->isAdmin()){
+            if ($this->isAdmin()) {
                 $admin = true;
             } else {
                 $admin = false;
             }
             $infoSup = $this->getInfoSupProduit($produit, $admin);
-            
+
             return $this->render('produit/ajax_see.html.twig', array(
                 'produit' => $produit,
                 'admin' => $admin,
@@ -203,17 +199,19 @@ class ProduitController extends AppController
         if ($form->isSubmitted()) {
             if ($this->totalProduitsEnvoyes($produit) > $produit->getQuantite()) {
                 $form->addError(new FormError('La somme des quantités de produits envoyés est supérieure à la quantité de produit'));
-            }
+            } else {
 
-            $file = $form['image']->getData();
-            if (! is_null($file)) {
-                $fileName = $this->telechargerImage($file, 'produit', $produit->getTitre());
-                if ($fileName) {
-                    $produit->setImage($fileName);
-                } else {
-                    $form->addError(new FormError("Le fichier n'est pas au format autorisé (jpg, jpeg,png)."));
+                $file = $form['image']->getData();
+                if (! is_null($file)) {
+                    $fileName = $this->telechargerImage($file, 'produit', $produit->getTitre());
+                    if ($fileName) {
+                        $produit->setImage($fileName);
+                    } else {
+                        $form->addError(new FormError("Le fichier n'est pas au format autorisé (jpg, jpeg,png)."));
+                    }
                 }
             }
+            
             if ($form->isValid()) {
 
                 $em = $this->getDoctrine()->getManager();
@@ -282,9 +280,7 @@ class ProduitController extends AppController
         if ($form->isSubmitted()) {
             if ($this->totalProduitsEnvoyes($produit) > $produit->getQuantite()) {
                 $form->addError(new FormError('La somme des quantités de produits envoyés est supérieure à la quantité de produit'));
-            }
-            
-            if (! $request->isXmlHttpRequest()) {
+            } elseif (! $request->isXmlHttpRequest()) {
                 if (is_null($produit->getImage()) && ! is_null($image)) {
                     $produit->setImage($image);
                 } else {

@@ -4,10 +4,10 @@
     		{{ pagination.nb_elements }} 
         	{% if type == 'produit' %}
             	Spécialité{% if pagination.nb_elements > 1 %}s{% endif %} {% if pagination.pages_count > 0 %} - Page {{ pagination.page }} / {{ pagination.pages_count }} {% endif %}
-            	<a href="{{ path('produit_specialite_ajax_add', {'id' : objet.id, 'type': type}) }}" id="btn-add-produit-specialite" class="float-right"><span class="oi oi-link-intact"></span> Nouveau lien avec une spécialité</a>
+            	<a href="{{ path('produit_specialite_ajax_add', {'id' : objet.id, 'type': type}) }}" id="btn-add-produit-specialite" class="float-right"><span class="oi oi-link-intact"></span> Proposer à une nouvelle spécialité</a>
            	{% elseif type == 'specialite' %}
            		Produit{% if pagination.nb_elements > 1 %}s{% endif %} {% if pagination.pages_count > 0 %} - Page {{ pagination.page }} / {{ pagination.pages_count }} {% endif %}
-            	<a href="{{ path('produit_specialite_ajax_add', {'id' : objet.id, 'type': type}) }}" id="btn-add-produit-specialite" class="float-right"><span class="oi oi-link-intact"></span> Nouveau lien avec un produit</a>
+            	<a href="{{ path('produit_specialite_ajax_add', {'id' : objet.id, 'type': type}) }}" id="btn-add-produit-specialite" class="float-right"><span class="oi oi-link-intact"></span> Proposer un produit</a>
            	{% endif %}
        	</div>
         <div class="card-body">

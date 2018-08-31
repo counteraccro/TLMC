@@ -18,9 +18,9 @@
         </tr>
         <tr>
         	<th scope="col"> Etablissement </th>
-            <td> {{ membre.etablissement.nom }} </td>
+            <td> {{ membre.etablissement.nom }} {{ popup(infoEtablissement(membre.etablissement), membre.etablissement.nom) |raw }} </td>
             <th scope="col"> Spécialité </th>
-            <td> {% if membre.specialite != null %} {{ membre.specialite.service }} {% endif %} </td>
+            <td> {% if membre.specialite != null %} {{ membre.specialite.service }} {{ popup(infoSpecialite(membre.specialite), membre.specialite.service) |raw }} {% endif %} </td>
             <th scope="col"> Fonction </th>
             <td> {{ membre.fonction }} </td>
         </tr>
@@ -30,3 +30,20 @@
         </tr>
 	</table>
 </div>
+
+{% block javascripts %}
+    <script type="text/javascript">
+    	$(function () {
+    		$('[data-toggle="popover"]').popover()
+    	});
+    	
+    	$(function () {
+        	$('.example-popover').popover({
+        		container: 'body'
+        	})
+    	});
+        $('.popover-dismiss').popover({
+        	trigger: 'hover'
+        });
+    </script>
+{% endblock %}
