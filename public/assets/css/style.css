@@ -61,6 +61,15 @@ a:hover {
 	z-index: 100000000;
 }
 
+#temoignages_accueil {
+	
+    position: absolute;
+    bottom: 140px;
+    width: 100%;
+    height: auto;
+    background-color: #f5f5f5;
+}
+
 /********************************************
 *
 * SURCHARGE BOUTON BOOTSTRAP

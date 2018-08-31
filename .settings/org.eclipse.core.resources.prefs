@@ -52,6 +52,7 @@ encoding//templates/membre/ajax_see_fiche.html.twig=UTF-8
 encoding//templates/membre/edit.html.twig=UTF-8
 encoding//templates/membre/index.html.twig=UTF-8
 encoding//templates/membre/see.html.twig=UTF-8
+encoding//templates/membre/see_fiche.html.twig=UTF-8
 encoding//templates/message/ajax_messages_brouillons.html.twig=UTF-8
 encoding//templates/message/ajax_messages_corbeille.html.twig=UTF-8
 encoding//templates/message/ajax_messages_destinataire.html.twig=UTF-8

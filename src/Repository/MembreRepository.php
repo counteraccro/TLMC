@@ -192,7 +192,7 @@ class MembreRepository extends ServiceEntityRepository
             'nb' => $result
         );
     }
-
+    
     /**
      * Fonction qui renvoie les membres présents dans l'annuaire dont le prénom ou nom contient le paramètre de la fonction
      * Permet de renvoyer des suggestions à l'autocomplete

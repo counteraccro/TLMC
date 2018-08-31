@@ -23,6 +23,32 @@
       	</div>
     </div>
     
+        
+    	<div class="card">
+        	<div class="card-header float-left">
+            	Questionnaires auxquels vous avez répondu
+        	</div>
+        	<div class="card-body float-left">
+            	<table class="table">
+            	<th>Questionnaire</th>
+            	<th>Question</th>
+            	<th>Propositions</th>
+            	<th>Réponse</th>
+            	<th>Type</th>
+            	
+                {% for reponse in reponses %}
+                	<tr>
+                		<td>{{ reponse.titre }}</td>
+                		<td>{{ reponse.libelle }}</td>
+                		<td>{{ reponse.liste_valeur }}</td>
+                		<td>{{ reponse.valeur }}</td>
+                		<td>{{ reponse.type }}</td>
+                	</tr>
+                {% endfor %}
+    			</table>
+        	</div>
+      	</div>
+
     <!-- Modal -->
     <div class="modal fade" id="modal_membre_global" tabindex="-1" role="dialog">
     	<div class="modal-dialog modal-lg" role="document">

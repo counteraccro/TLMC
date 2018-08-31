@@ -243,6 +243,25 @@ class QuestionnaireRepository extends ServiceEntityRepository
         return true;
     }
     
+    /**
+     * Fonction qui retourne pour un membre donné les questionnaires répondus ainsi que les réponses associées
+     * @param int $membre_id
+     */
+    public function findQuestionnairesEtReponses($membre_id) {
+        $query = $this->createQueryBuilder('q')
+        ->select('q.titre, quest.libelle, quest.liste_valeur, quest.type, rep.valeur')
+        ->join('q.questions', 'quest')
+        ->join('quest.reponses', 'rep')
+        ->andWhere('rep.membre = :membre_id')
+        ->setParameter('membre_id', $membre_id)
+        ->addOrderBy('q.id', 'ASC')
+        ->getQuery()
+        ->getArrayResult();
+        
+        return $query;
+    }
+    
+    
     // /**
     // * @return Questionnaire[] Returns an array of Questionnaire objects
     // */

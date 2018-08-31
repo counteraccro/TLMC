@@ -29,7 +29,6 @@ class TemoignageRepository extends ServiceEntityRepository
      * @param int $max
      * @param array $params
      *            [order] => ordre de tri
-     *            [page] => page (pagination)
      *            [search] => tableau contenant les éléments de la recherche
      *            [repository] => repository (objet courant)
      *            [field] => champ de tri,
