@@ -1,6 +1,9 @@
 	<div class="card shadow-sm">
          <div class="card-header bg-light">
            	 <b>Patient :</b> {{ patient.prenom }} {{ patient.nom }}
+           	 {% if is_granted("ROLE_ADMIN") %}
+           		</br><b>Actif :</b> {{ patient.disabled | actif }}
+           	{% endif %}
            	<div class="float-right"> 
            	    {{ editObjet(path('patient_ajax_edit', {'id': patient.id }), "Editer le patient", "btn-edit-patient") | raw }}
            	    {% if is_granted("ROLE_ADMIN") %}
@@ -11,8 +14,7 @@
          <div class="card-body">
           	<b>Date naissance :</b> {{ patient.dateNaissance | date('d/m/Y') }} </br>
           	<b>Personne à mobilité réduite :</b> {{ patient.pmr | bool }}<br>
-           	<b> Spécialité :</b> {{ patient.specialite.service }} ({{ patient.specialite.etablissement.nom }})</br>
-           	<b>Actif :</b> {{ patient.disabled | actif }}
+           	<b> Spécialité :</b> {{ patient.specialite.service }} ({{ patient.specialite.etablissement.nom }})
          </div>
     </div>
     

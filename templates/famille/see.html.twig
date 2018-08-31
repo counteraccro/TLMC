@@ -11,10 +11,17 @@
     <div id="bloc_famille" class="card shadow-sm">
          <div class="card-header bg-light">
            	 <b>Famille :</b> {{ famille.prenom }} {{ famille.nom }}
-           	<div class="float-right"> 
-           	    {{ editObjet(path('famille_ajax_edit', {'id': famille.id }), "Editer la famille", "btn-edit-famille") | raw }}
-           	    {{ deleteObjet(famille.disabled, path('famille_delete', {'id': famille.id, 'page' : 1 }), 'btn-disabled-famille') | raw }}
-           	</div>
+           	{% if is_granted("ROLE_ADMIN") %}
+           		<br><b>Actif :</b> {{ famille.disabled | actif }}
+           		<div class="float-right"> 
+               	    {{ editObjet(path('famille_ajax_edit', {'id': famille.id }), "Editer la famille", "btn-edit-famille") | raw }}
+               	    {{ deleteObjet(famille.disabled, path('famille_delete', {'id': famille.id, 'page' : 1 }), 'btn-disabled-famille') | raw }}
+               	</div>
+           	{% else %}
+           		<div class="float-right"> 
+               	    {{ editObjet(path('famille_ajax_edit', {'id': famille.id }), "Editer la famille", "btn-edit-famille") | raw }}
+               	</div>
+           	{% endif %}
          </div>
          <div class="card-body">
           	<b>Patient :</b> {{ famille.patient.prenom }} {{ famille.patient.nom }} </br>

@@ -2,10 +2,8 @@
     <div class="card">
         <div class="card-header">
         	<b>Adresse</b>
-        	{% if adresse.disabled %}
-        		(Inactive)
-        	{% else %}
-        		(Active)
+        	{% if is_granted("ROLE_ADMIN") %}
+				({% if adresse.disabled == 1 %}inactive{% else %}active{% endif %})
         	{% endif %}
         	<div class="float-right">
         		{{ editObjet(path('famille_adresse_ajax_edit', {'id': adresse.id }), "Editer l'adresse", "btn-edit-adresse") | raw }}
