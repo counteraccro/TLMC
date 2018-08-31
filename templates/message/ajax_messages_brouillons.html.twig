@@ -33,7 +33,10 @@
 		Messagerie.EventListeMessage('#ajax_messages_brouillons');
 
 		{% if messages is not empty %}
-			$('#ajax_messages_destinataire .list-group a.list-group-item').first().addClass("active");
+			$('#ajax_messages_brouillons .list-group a.list-group-item').first().addClass("active");
+			$('#ajax_messages_brouillons .list-group a.list-group-item').first().children('span').removeClass().addClass('oi oi-envelope-open');
+			$('#ajax_messages_brouillons .list-group a.list-group-item').first().children('div[class="small-body"]').css( "font-weight", "normal" );
+			$('#ajax_messages_brouillons .list-group a.list-group-item').first().removeClass('no-read');
 
 			{% set message = messages |first %}
 			Messagerie.LoadMessage('{{path('message_ajax_view_message', {'id' : message.id})}}');
