@@ -3,12 +3,24 @@
 Installation du projet
 Le projet fonctionne avec les versions suivantes :
 
-Version de PHP : 7.1
+Version de PHP : 7.1 
 Mysql : 5.0.12
 Apache : 2.4.33
 
-Jquery 3.3.1
+Javascript/Jquery 3.3.1
 Bootstrap 4.1.2
+TinyMCE 4.8.2
+
+Icônes 'Iconic' 
+(https://useiconic.com/)
+
+
+Données
+------------
+Attention, ce projet est fourni avec des jeux de données (Data-fixtures) dont certaines sont essentielles lors de la bascule en Production :
+- Informations liées au compte ADMIN
+- Groupe global de membres 'GLOBAL' obligatoire
+
 
 Installation
 ------------

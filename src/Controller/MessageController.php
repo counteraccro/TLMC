@@ -9,6 +9,7 @@ use App\Entity\Message;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\MessageLu;
 use App\Form\MessageType;
+use App\Entity\Groupe;
 
 class MessageController extends AppController
 {
@@ -271,7 +272,7 @@ class MessageController extends AppController
     }
     
     /**
-     * Fonction 
+     * Fonction permettant d'écrire un nouveau message ou brouillon
      *
      * @Route("/messagerie/ajax/newmessage", name="message_ajax_new_message")
      * @Route("/messagerie/ajax/editmessage/{id}/{brouillon}", name="message_ajax_edit_message")
@@ -280,25 +281,28 @@ class MessageController extends AppController
      */
     public function ajaxFormMessage(Request $request, $id = 0, $brouillon = 1)
     {
-//         $currentRoute = $request->attributes->get('_route');
-//         $em = $this->getDoctrine()->getManager();
+        $currentRoute = $request->attributes->get('_route');
+        $em = $this->getDoctrine()->getManager();
         
-//         //
-//         if ($currentRoute == 'message_ajax_new_message') {
+        //lors de la création d'un nouveau message, enregistrement automatique ne tant que brouillon (sauvegarde des données)
+        if ($currentRoute == 'message_ajax_new_message') {
             
-//             $membre = $this->getMembre();
-//             $message = new Message();
-//             $message->setExpediteur($membre);
-//             $message->setDestinataire($membre);
-//             $message->setBrouillon($brouillon);
-//             $message->setTitre('');
-//             $message->setCorps('');
-//             $message->setDateEnvoi(new \DateTime());
-//             $message->setDisabled(0);
-//             $em->persist($message);
-//             $em->flush();
+            $groupeRepository = $this->getDoctrine()->getRepository(Groupe::class);
             
-//         }
+            $membre = $this->getMembre();
+            $message = new Message();
+            $message->setGroupe($groupeRepository->findByNom(AppController::GROUPE_GLOBAL)[0]);
+            $message->setExpediteur($membre);
+            $message->setDestinataire($membre);
+            $message->setBrouillon($brouillon);
+            $message->setTitre('');
+            $message->setCorps('');
+            $message->setDateEnvoi(new \DateTime());
+            $message->setDisabled(0);
+            $em->persist($message);
+            $em->flush();
+            
+        }
         
         $form = $this->createForm(MessageType::class, $message, array());
         
