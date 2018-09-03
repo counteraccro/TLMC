@@ -247,7 +247,7 @@ class QuestionnaireRepository extends ServiceEntityRepository
      * Fonction qui retourne pour un membre donné les questionnaires répondus ainsi que les réponses associées
      * @param int $membre_id
      */
-    public function findQuestionnairesEtReponses($membre_id) {
+    public function findByMembreReponses($membre_id) {
         $query = $this->createQueryBuilder('q')
         ->select('q.titre, quest.libelle, quest.liste_valeur, quest.type, rep.valeur')
         ->join('q.questions', 'quest')

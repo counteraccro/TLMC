@@ -136,7 +136,7 @@ class MembreController extends AppController
         }
 
         $repository = $this->getDoctrine()->getRepository(Questionnaire::class);
-        $reponses = $repository->findQuestionnairesEtReponses($membre->getId());
+        $reponses = $repository->findByMembreReponses($membre->getId());
         
         return $this->render('membre/see_fiche.html.twig', array(
             'membre' => $membre,
