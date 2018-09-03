@@ -1,5 +1,5 @@
 <div id="ajax_new_message">
-{{ form_start(form, {'attr' : {'id' : 'form_message', 'action' : path('message_ajax_new_message')}}) }}
+{{ form_start(form, {'attr' : {'id' : 'form_message', 'action' : path('message_ajax_edit_message', {id : message.id})}}) }}
     <div class="modal-header">
     	<h5 class="modal-title">Rédigez votre nouveau message</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -14,7 +14,9 @@
   		</div>
     	{{ form_row(form.titre) }}
     	{{ form_row(form.corps) }}
-    	Enregistrer en tant que {{ form_row(form.brouillon) }}
+    	
+    	<div class="float-left text-success" id="info-save-brouillon"></div>
+    	<br />
     </div>
     <div class="modal-footer">
     	{{ form_row(form.submit) }}
@@ -54,6 +56,8 @@
 
 		Messagerie.EventPopin();
 		Messagerie.AutoComplete('{{path('membre_ajax_autocomplete')}}');
+
+		setInterval(function() { clearInterval(Messagerie.SaveBrouillon()); }, 20000); 
 	});
 </script>
 {% endblock %}

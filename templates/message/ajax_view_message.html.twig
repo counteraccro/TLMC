@@ -26,6 +26,8 @@
     		</div>
   		</div>
   		<div class="card-body">
+  			Destinataire : {{ message.destinataire.prenom }} {{ message.destinataire.nom }}
+  			<br />
     		{{ message.corps | nl2br }}
   		</div>
 	</div>

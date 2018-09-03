@@ -243,10 +243,11 @@ Messagerie.Launch = function(params){
 	{
 		$('#ajax_new_message #form_message').submit(function() {
 
+			var url = $(this).attr('action') + '/0';
 
 			$.ajax({
 				method: 'POST',
-				url: $(this).attr('action'),
+				url: url,
 				data : $(this).serialize(),
 			})
 			.done(function( html ) {
@@ -325,10 +326,8 @@ Messagerie.Launch = function(params){
 				var tabId = [];
 				for (var id in json) 
 				{
-					//console.log(prop + ' ' + json[prop]);
 					for (var t in terms)
 					{
-						console.log(t + ' ' + terms[t]);
 						if(terms[t] == json[id])
 						{
 							tabId[id] = json[id];
@@ -342,7 +341,6 @@ Messagerie.Launch = function(params){
 				{
 					for (var t in terms)
 					{
-						console.log(t + ' ' + terms[t]);
 						if(terms[t] == tabIdSet[id])
 						{
 							tabId[id] = tabIdSet[id];
@@ -359,6 +357,31 @@ Messagerie.Launch = function(params){
 				$('#destinataire_hidden').val(ids);
 			})
 		} );
+	}
+	
+	/**
+	 * 
+	 */
+	Messagerie.SaveBrouillon = function()
+	{
+		if($('#message_titre').val() == '')
+		{
+			$('#message_titre').val('[Brouillon] Sans titre');
+		}
+		
+		if($('#message_corps').val() == '')
+		{
+			$('#message_corps').val('-');
+		}
+		
+		$.ajax({
+			method: 'POST',
+			url: $('#form_message').attr('action'),
+			data : $('#form_message').serialize(),
+		})
+		.done(function( html ) {
+			$('#info-save-brouillon').html('<i>Brouillon enregistré avec succès</i>').fadeIn(1000).delay(5000).fadeOut(1000);
+		});
 	}
 
 	/**

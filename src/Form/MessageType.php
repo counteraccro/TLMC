@@ -21,12 +21,12 @@ class MessageType extends AbstractType
             'label' => 'Contenu de votre message',
             'required' => false
         ))
-            ->add('brouillon')
-            ->
+            //->add('brouillon')
+            //->
         // ->add('destinataire')
         // ->add('expediteur')
         // ->add('message');
-        add('submit', SubmitType::class, array(
+        ->add('submit', SubmitType::class, array(
             'label' => 'Envoyer',
             'attr' => array(
                 'class' => 'btn btn-primary'
