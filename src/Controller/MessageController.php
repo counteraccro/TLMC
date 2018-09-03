@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Entity\MessageLu;
 use App\Form\MessageType;
 use App\Entity\Groupe;
+use App\Entity\Membre;
 
 class MessageController extends AppController
 {
@@ -276,20 +277,21 @@ class MessageController extends AppController
      *
      * @Route("/messagerie/ajax/newmessage", name="message_ajax_new_message")
      * @Route("/messagerie/ajax/editmessage/{id}/{brouillon}", name="message_ajax_edit_message")
+     * @ParamConverter("message", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      * @param Request $request
      */
-    public function ajaxFormMessage(Request $request, $id = 0, $brouillon = 1)
+    public function ajaxFormMessage(Request $request, Message $message = null, $brouillon = 1)
     {
         $currentRoute = $request->attributes->get('_route');
+        $membre = $this->getMembre();
         $em = $this->getDoctrine()->getManager();
         
-        //lors de la création d'un nouveau message, enregistrement automatique ne tant que brouillon (sauvegarde des données)
+        //lors de la création d'un nouveau message, enregistrement automatique en tant que brouillon (sauvegarde des données)
         if ($currentRoute == 'message_ajax_new_message') {
             
             $groupeRepository = $this->getDoctrine()->getRepository(Groupe::class);
             
-            $membre = $this->getMembre();
             $message = new Message();
             $message->setGroupe($groupeRepository->findByNom(AppController::GROUPE_GLOBAL)[0]);
             $message->setExpediteur($membre);
@@ -299,9 +301,17 @@ class MessageController extends AppController
             $message->setCorps('');
             $message->setDateEnvoi(new \DateTime());
             $message->setDisabled(0);
+            
+            $messageLu = new MessageLu();
+            $messageLu->setLu(0);
+            $messageLu->setMembre($membre);
+            $messageLu->setMessage($message);
+            
+            $message->addMessageLus($messageLu);
+            
+            $em->persist($messageLu);
             $em->persist($message);
             $em->flush();
-            
         }
         
         $form = $this->createForm(MessageType::class, $message, array());
@@ -309,20 +319,27 @@ class MessageController extends AppController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
              
-            $destinataire = $request->request->all()['destinataire']['destinataire'];
+            $destinataires = explode('-', $request->request->all()['destinataire']['destinataire']);
             
-            //code à écrire
+            $this->pre($destinataires);
             
-            //$message->setDestinataire($destinataire);
+            $destinataire = $membre;
+            if($destinataires[0] != "")
+            {
+                $membreRepository = $this->getDoctrine()->getRepository(Membre::class);
+                $destinataire = $membreRepository->findById($destinataires[0])[0];
+            }
+            $message->setDestinataire($destinataire);
             
-            /*$em = $this->getDoctrine()->getManager();
+            //$em->persist($messageLu);
             $em->persist($message);
-            $em->flush();*/
+            $em->flush();
         }
         
         
         return $this->render('message/ajax_form_message.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'message' => $message
         ]);
     }
 
