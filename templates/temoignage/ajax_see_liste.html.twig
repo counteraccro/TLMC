@@ -18,7 +18,6 @@
                 		<th>Lien de parenté avec le patient</th>
                 		<th>Ville</th>
                 	{% endif %}
-               		<th> Date de création </th>
                		{% if type == 'membre' %}
                    		<th> Evénement </th>
                    		<th> Produit </th>
@@ -46,7 +45,6 @@
                     			<td></td>
                     		{% endif %}
                 		{% endif %}
-                		<td>{{ temoignage.dateCreation | date('d/m/Y H:i') }}</td>
                 		{% if type == 'membre' %}
                     		<td>{% if temoignage.evenement != null %} {{ temoignage.evenement.nom }} {% endif %}</td>
                     		<td>{% if temoignage.produit != null %} {{ temoignage.produit.titre }} {% endif %}</td>

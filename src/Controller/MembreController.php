@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Form\MembreType;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Entity\Questionnaire;
+use App\Entity\Groupe;
+use App\Entity\GroupeMembre;
 
 class MembreController extends AppController
 {
@@ -173,6 +175,14 @@ class MembreController extends AppController
 
             $em = $this->getDoctrine()->getManager();
 
+            $groupe = $this->getDoctrine()->getRepository(Groupe::class)->findOneBy(array('nom' => self::GROUPE_GLOBAL));
+            
+            $groupe_membre = new GroupeMembre();
+            $groupe_membre->setDate(new \DateTime());
+            $groupe_membre->setGroupe($groupe);
+            $groupe_membre->setMembre($membre);
+            $em->persist($groupe_membre);
+            
             $membre->setDisabled(0);
             $membre->setSalt($this->generateSalt());
 
