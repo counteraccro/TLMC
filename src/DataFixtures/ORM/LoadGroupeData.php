@@ -5,6 +5,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use App\Entity\Groupe;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use App\Controller\AppController;
 
 class LoadGroupeData extends Fixture
 {
@@ -18,7 +19,7 @@ class LoadGroupeData extends Fixture
     private $tabGroupes = [
         'Groupe' => [
             'Groupe-0' => [
-                'setNom' => 'GLOBAL',
+                'setNom' => AppController::GROUPE_GLOBAL,
                 'setDate' => '2018-02-23 17:53:00',
                 'setDisabled' => '1'
             ],
