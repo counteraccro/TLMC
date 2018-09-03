@@ -13,6 +13,7 @@ use App\Controller\AppController;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Entity\Patient;
+use App\Repository\PatientRepository;
 
 class FamilleType extends AbstractType
 {
@@ -26,6 +27,17 @@ class FamilleType extends AbstractType
                 'choice_label' => function (Patient $patient) {
                     return $patient->getPrenom() . ' ' . $patient->getNom() . ' (' . $patient->getDateNaissance()
                         ->format('d/m/Y') . ')';
+                },
+                'query_builder' => function(PatientRepository $pr){
+                  return $pr->createQueryBuilder('p')
+                    ->join('p.specialite', 'spe')
+                    ->andWhere('p.disabled = 0')
+                    ->orderBy('spe.service')
+                    ->addOrderBy('p.nom')
+                    ->addOrderBy('p.prenom');
+                },
+                'group_by' => function (Patient $patient){
+                    return $patient->getSpecialite()->getService() . ' (' . $patient->getSpecialite()->getEtablissement()->getNom() . ')';
                 }
             ));
         }

@@ -37,7 +37,7 @@ class PatientController extends AppController
         if (is_null($order)) {
             $order = 'DESC';
         }
-        
+
         $can_add = true;
 
         $params = array(
@@ -56,7 +56,7 @@ class PatientController extends AppController
                 $params['repository'] . '.disabled = 0',
                 $params['repository'] . '.specialite = ' . $id_specialite
             );
-            
+
             $can_add = (! is_null($membre->getSpecialite()) ? true : false);
         }
 
@@ -148,20 +148,20 @@ class PatientController extends AppController
             'page' => $page,
             'repositoryClass' => Patient::class,
             'repository' => 'Patient',
-            'repositoryMethode' => 'findAllPatients',
+            'repositoryMethode' => 'findAllPatients'
         );
-        
+
         $params['condition'] = array(
             $params['repository'] . '.specialite  = ' . $specialite->getId()
         );
-        
+
         if (! $this->isAdmin()) {
             $params['condition'][] = $params['repository'] . '.disabled = 0';
         }
-        
+
         $repository = $this->getDoctrine()->getRepository($params['repositoryClass']);
         $result = $repository->{$params['repositoryMethode']}($params['page'], self::MAX_NB_RESULT_AJAX, $params);
-        
+
         $pagination = array(
             'page' => $page,
             'route' => 'patient_ajax_see_liste',
@@ -172,15 +172,15 @@ class PatientController extends AppController
                 'id' => $specialite->getId()
             )
         );
-        
+
         return $this->render('patient/ajax_see_liste.html.twig', array(
             'specialite' => $specialite,
             'patients' => $result['paginator'],
-            'pagination' => $pagination, 
+            'pagination' => $pagination,
             'type' => 'specialite'
         ));
     }
-    
+
     /**
      * Ajout d'un nouveau patient
      *
@@ -199,31 +199,25 @@ class PatientController extends AppController
         $patient = new Patient();
 
         // requête pour le champ spécialité
+        $specialite = $membre->getSpecialite();
         $sr = $this->getDoctrine()->getRepository(Specialite::class);
+
         $query = $sr->createQueryBuilder('specialite')->innerJoin('specialite.etablissement', 'etablissement');
-        if ($membre->getSpecialite()) {
-            $query->andWhere("etablissement.id = " . $membre->getEtablissement()
-                ->getId());
-        }
-        $query->orderBy('etablissement.nom', 'ASC');
 
-        if (! $this->isAdmin()) {
-            if (! is_null($membre->getSpecialite())) {
+        $disabled = false;
+        if (! $this->isAdmin() && ! is_null($specialite)) {
                 $patient->setSpecialite($membre->getSpecialite());
-
-                $form = $this->createForm(PatientType::class, $patient, array(
-                    'disabled_specialite' => true,
-                    'query_specialite' => $query
-                ));
-            } else {
-
-                $form = $this->createForm(PatientType::class, $patient, array(
-                    'query_specialite' => $query
-                ));
-            }
-        } else {
-            $form = $this->createForm(PatientType::class, $patient);
+                $query->andWhere("specialite.id = " . $specialite->getId());
+                $disabled = true;
         }
+
+        $query->andWhere('specialite.disabled = 0');
+        $query->orderBy('etablissement.nom', 'ASC')->addOrderBy('specialite.service', 'ASC');
+
+        $form = $this->createForm(PatientType::class, $patient, array(
+            'disabled_specialite' => $disabled,
+            'query_specialite' => $query
+        ));
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -282,7 +276,7 @@ class PatientController extends AppController
         $arrayFilters = $this->getDatasFilter($session);
 
         $specialite = $patient->getSpecialite();
-        
+
         if ($this->isAdmin()) {
             $repositoryE = $this->getDoctrine()->getRepository(Etablissement::class);
             $etablissements = $repositoryE->findEtablissementAvecSpecialite();
@@ -299,13 +293,12 @@ class PatientController extends AppController
             ));
         }
 
-        
         $form->handleRequest($request);
-        
+
         if ($form->isSubmitted() && $form->isValid()) {
 
             $em = $this->getDoctrine()->getManager();
-            if(is_null($patient->getSpecialite())){
+            if (is_null($patient->getSpecialite())) {
                 $patient->setSpecialite($specialite);
             }
             $em->persist($patient);
@@ -391,7 +384,7 @@ class PatientController extends AppController
                 'page' => $page
             ));
         }
-        
+
         return $this->redirectToRoute('patient_listing', array(
             'page' => $page,
             'field' => $arrayFilters['field'],

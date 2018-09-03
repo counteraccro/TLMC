@@ -52,7 +52,6 @@ class TemoignageController extends AppController
         if (! $this->isAdmin()) {
             $membre = $this->getMembre();
             $params['condition'] = array(
-                $params['repository'] . '.membre = ' . $membre->getId(),
                 $params['repository'] . '.disabled = 0'
             );
 
