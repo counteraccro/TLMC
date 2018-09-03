@@ -10,6 +10,7 @@ use App\Entity\Etablissement;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use App\Repository\EtablissementRepository;
 
 class SpecialiteType extends AbstractType
 {
@@ -20,10 +21,15 @@ class SpecialiteType extends AbstractType
             $builder->add('etablissement', EntityType::class, array(
                 'class' => Etablissement::class,
                 'choice_label' => 'nom',
+                'query_builder' => function (EtablissementRepository $er) {
+                    return $er->createQueryBuilder('e')
+                        ->andWhere('e.disabled = 0')
+                        ->orderBy('e.nom', 'ASC');
+                },
                 'disabled' => $options['disabled_etablissement']
             ));
         }
-        
+
         $builder->add('service', TextType::class, array(
             'label' => 'Nom du service'
         ))
