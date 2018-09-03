@@ -13,7 +13,6 @@
        			<th>Etablissement</th>
        			<th>Spécialité</th>
        			<th>Quantité</th>
-       			<th>Date</th>
        			<th></th>
        		</tr>
        	    {% for connexion in connexions %}
@@ -22,7 +21,6 @@
            		        <td>{% if loop.index0 == 0 %}{{ lien.etablissement }}{% endif %}</td>
            				<td>{{ lien.specialite }}</td>
            				<td>{{ lien.quantite }}</td>
-           				<td>{{ lien.date | date('d/m/Y H:i') }}</td>
            				<td>
            				    {% if is_granted("ROLE_ADMIN") %}
                    				{% if lien.specialite %}

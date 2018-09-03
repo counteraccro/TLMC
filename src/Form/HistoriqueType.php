@@ -17,8 +17,6 @@ class HistoriqueType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('date', DateTimeType::class);
-
         if ($options['avec_patient']) {
             $builder->add('patient', EntityType::class, array(
                 'class' => Patient::class,

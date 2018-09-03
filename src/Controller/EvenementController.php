@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Form\EvenementType;
 use App\Entity\Specialite;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Form\FormError;
 
 class EvenementController extends AppController
@@ -208,6 +207,7 @@ class EvenementController extends AppController
 
                 foreach ($evenement->getSpecialiteEvenements() as $specialiteEvenement) {
                     $specialiteEvenement->setEvenement($evenement);
+                    $specialiteEvenement->setDate(new \DateTime());
                 }
 
                 $evenement->setDisabled(0);

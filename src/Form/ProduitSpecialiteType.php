@@ -46,11 +46,6 @@ class ProduitSpecialiteType extends AbstractType
         }
         $builder->add('quantite', IntegerType::class, array(
             'label' => 'Quantité'
-        ))->add('date', DateTimeType::class, array(
-            'label' => "Date",
-            'widget' => 'choice',
-            'date_format' => 'dd MM yyyy',
-            'data' => $options['date_valeur']
         ));
 
         if ($options['avec_bouton']) {
@@ -68,7 +63,6 @@ class ProduitSpecialiteType extends AbstractType
         $resolver->setDefaults([
             'data_class' => ProduitSpecialite::class,
             'label_submit' => 'Valider',
-            'date_valeur' => new \DateTime(),
             'avec_bouton' => true,
             'avec_specialite' => true,
             'avec_produit' => true,

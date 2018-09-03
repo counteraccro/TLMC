@@ -215,6 +215,7 @@ class HistoriqueController extends AppController
 
             $em = $this->getDoctrine()->getManager();
 
+            $historique->setDate(new \DateTime());
             $em->persist($historique);
             $em->flush();
 

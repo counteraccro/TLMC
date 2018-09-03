@@ -158,6 +158,7 @@ class SpecialiteEvenementController extends AppController
 
             $em = $this->getDoctrine()->getManager();
 
+            $specialiteEvenement->setDate(new \DateTime());
             $em->persist($specialiteEvenement);
             $em->flush();
 

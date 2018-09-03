@@ -142,6 +142,7 @@ class ProduitSpecialiteController extends AppController
 
             $em = $this->getDoctrine()->getManager();
 
+            $produitSpecialite->setDate(new \DateTime());
             $em->persist($produitSpecialite);
             $em->flush();
 

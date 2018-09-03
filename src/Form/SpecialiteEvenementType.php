@@ -51,10 +51,6 @@ class SpecialiteEvenementType extends AbstractType
         }
         $builder->add('statut', ChoiceType::class, array(
             'choices' => array_flip($options['statut'])
-        ))->add('date', DateTimeType::class, array(
-            'label' => "Date",
-            'widget' => 'choice',
-            'date_format' => 'dd MM yyyy',
         ));
 
         if ($options['avec_bouton']) {

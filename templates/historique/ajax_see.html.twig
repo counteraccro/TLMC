@@ -16,7 +16,6 @@
                     {% if type != 'evenement' %}
                     	<th> Evénement </th>
                     {% endif %}
-                    <th> Date </th>
                     {% if type != 'patient' %}
                     	<th> Patient </th>
                     {% endif %}
@@ -34,7 +33,6 @@
                         {% if type != 'evenement' %}
                         	<td>{{ historique.evenement.nom }}</td>
                        	{% endif %}
-                        <td>{{ historique.date | date('d/m/Y H:i') }}</td>
                         {% if type != 'patient' %}
                         	<td>{{ historique.patient.prenom }} {{ historique.patient.nom }}</td>
                         {% endif %}
@@ -43,7 +41,7 @@
                         		{% if participant.evenement.id == historique.evenement.id %}
                         			{{ participant.famille.prenom }} {{ participant.famille.nom }},
                         			<span class="font-italic">{{ participant.famille.lienFamille | lienParente }}</span>,  
-                        			({{ participant.date | date('d/m/Y') }} : {{ participant.statut | statutParticipant }})<br>
+                        			({{ participant.statut | statutParticipant }})<br>
                         		{% endif %}
                         	{% endfor %}
                         </td>

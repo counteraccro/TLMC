@@ -218,10 +218,12 @@ class ProduitController extends AppController
 
                 foreach ($produit->getProduitEtablissements() as $produitEtablissement) {
                     $produitEtablissement->setProduit($produit);
+                    $produitEtablissement->setDate(new \DateTime());
                 }
 
                 foreach ($produit->getProduitSpecialites() as $produitSpecialite) {
                     $produitSpecialite->setProduit($produit);
+                    $produitSpecialite->setDate(new \DateTime());
                 }
 
                 $produit->setDateCreation(new \DateTime());

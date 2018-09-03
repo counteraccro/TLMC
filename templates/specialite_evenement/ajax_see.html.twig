@@ -20,7 +20,6 @@
                    		<th> Evénement </th>
                		{% endif %}
                		<th> Statut </th>
-               		<th> Date </th>
                		<th></th>
                	</tr>
                 {% for connexion in connexions %}	
@@ -38,7 +37,6 @@
                 	    	<td> {{ connexion.evenement.nom }} </td>
                 	    {% endif %}
                 		<td>{{ connexion.statut | statutSpeEvent }}</td>
-                		<td>{{ connexion.date | date('d/m/Y H:i') }}</td>
                 		<td>
                 		    {% if is_granted("ROLE_ADMIN") %}
                                	<a href="{{ path('specialite_evenement_ajax_edit', {'id' : connexion.id, 'type': type, 'page': pagination.page}) }}" id="btn-edit-specialite-event-{{ connexion.id }}" title="Editer la fiche"><span class="oi oi-pencil"></span></a>

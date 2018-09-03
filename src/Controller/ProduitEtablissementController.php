@@ -145,6 +145,7 @@ class ProduitEtablissementController extends AppController
 
             $em = $this->getDoctrine()->getManager();
 
+            $produitEtablissement->setDate(new \DateTime());
             $em->persist($produitEtablissement);
             $em->flush();
 

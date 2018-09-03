@@ -20,7 +20,6 @@
         	   			<th> Produit </th>
                		{% endif %}
                		<th> Quantité </th>
-               		<th> Date </th>
                		<th></th>
                	</tr>
                	{% for produitEtablissement in produitEtablissements %}
@@ -31,7 +30,6 @@
             	   			<td> {{ produitEtablissement.produit.titre }} </td>
                    		{% endif %}
                    		<td> {{ produitEtablissement.quantite }} </td>
-                   		<td> {{ produitEtablissement.date | date('d/m/Y H:i')}} </td>
                   		<td>
                   			{{ actionEdit(path('produit_etablissement_ajax_edit', {'id' : produitEtablissement.id, 'type':type, 'page': pagination.page}), 'btn-edit-produit-etablissement-'~ produitEtablissement.id ) | raw }}
                   		</td>
