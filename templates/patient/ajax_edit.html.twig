@@ -16,21 +16,7 @@
     	{{ form_row(form.nom) }}
     	{{ form_row(form.prenom) }}
     	{{ form_row(form.date_naissance) }}
-    	{% if etablissements is not empty and type != 'specialite' %}
-        	<div id="bloc_etablissement">
-        	    <div class="form-group">
-                	<label for="patient_etablissement">Etablissement</label> 
-                    <select id="patient_etablissement" name="patient[etablissement]" class="form-control">
-                        {%  for etablissement in etablissements %}
-                    		<option {% if etablissement.id == patient.specialite.etablissement.id %} selected {% endif %} value="{{ etablissement.id }}">{{ etablissement.nom }}</option>
-                    	{% endfor %}
-                    </select>
-            	</div>
-        	</div>
-    	{% endif %}
-    	<div id="bloc_specialite">
-    	    {{ form_row(form.specialite) }}
-    	</div>
+    	{{ form_row(form.specialite) }}
     	{{ form_row(form.PMR) }}    
     </div>
     
@@ -61,17 +47,6 @@
 		var url = '{{path('patient_ajax_edit', {'id': patient.id, 'type':type, 'page': page }) }}';
 		
 		Patient.EventEditSubmit(url);
-
-	$(document).ready(function() {
-		var params_spec = {
-				url_ajax_see : '{{ path('specialite_ajax_edit_dropdown', {'id': patient.id, 'type':type}) }}',
-				id_specialite : '#bloc_specialite',
-				id_bloc_etablissement : '#bloc_etablissement #patient_etablissement'
-		};
-        
-    	Specialite.Launch(params_spec);
-		Specialite.EventChange('#patient_save');
-    });
     
     </script> 
 

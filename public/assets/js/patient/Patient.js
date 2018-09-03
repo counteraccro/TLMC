@@ -18,8 +18,6 @@ Patient.Launch = function(params){
 	 */
 	Patient.LoadPatient = function()
 	{
-		console.log(Patient.url_ajax_see);
-		console.log(Patient.id_global);
 		Patient.Ajax(Patient.url_ajax_see, Patient.id_global);
 	}
 	
