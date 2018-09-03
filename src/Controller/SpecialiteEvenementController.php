@@ -191,7 +191,6 @@ class SpecialiteEvenementController extends AppController
     {
         $form = $this->createForm(SpecialiteEvenementType::class, $specialiteEvenement, array(
             'label_submit' => 'Modifier',
-            'date_valeur' => $specialiteEvenement->getDate(),
             'disabled_event' => true,
             'disabled_specialite' => true
         ));

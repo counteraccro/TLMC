@@ -174,7 +174,6 @@ class ProduitSpecialiteController extends AppController
     {
         $form = $this->createForm(ProduitSpecialiteType::class, $produitSpecialite, array(
             'label_submit' => 'Modifier',
-            'date_valeur' => $produitSpecialite->getDate(),
             'disabled_produit' => true,
             'disabled_specialite' => true
         ));
