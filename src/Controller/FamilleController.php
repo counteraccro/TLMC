@@ -208,8 +208,10 @@ class FamilleController extends AppController
 
         $famille = new Famille();
 
+        $repository = $this->getDoctrine()->getRepository(Patient::class);
+        
         if ($request->isXmlHttpRequest()) {
-            $repository = $this->getDoctrine()->getRepository(Patient::class);
+            
             $patient = $repository->findOneBy(array('id' => $id));
             $famille->setPatient($patient);
 
@@ -222,7 +224,8 @@ class FamilleController extends AppController
         } else {
 
             $form = $this->createForm(FamilleType::class, $famille, array(
-                'label_submit' => 'Ajouter'
+                'label_submit' => 'Ajouter',
+                'query_patient' => $repository->getPatientForOneSpecialite($this->getMembre()->getSpecialite(), $this->isAdmin())
             ));
         }
         $form->handleRequest($request);
