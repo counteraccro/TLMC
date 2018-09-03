@@ -1,5 +1,5 @@
 <div id="ajax_new_message">
-{{ form_start(form, {'attr' : {'id' : 'form_message', 'action' : path('message_ajax_edit_message', {id : message.id})}}) }}
+{{ form_start(form, {'attr' : {'id' : 'form_message', 'action' : path('message_ajax_edit_message', {id : message.id, brouillon : 1, page : page}), 'data-page' : page}}) }}
     <div class="modal-header">
     	<h5 class="modal-title">Rédigez votre nouveau message</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -28,16 +28,7 @@
 {% block javascripts %}
 <script type="text/javascript">
 
-	$('#modal_message_global').modal({
-		   'show' : true,
-	   	'backdrop' : 'static'
-	});
-
-	$('#modal_message_global').on('hidden.bs.modal', function (e) {
-		tinymce.remove();
-		$('#messagerie-block #modal_message_global #bloc_modal').html('');
-	});
-	
+	var interval;
 	$(document).ready(function() {
 
 		// Prevent jQuery UI dialog from blocking focusin
@@ -57,7 +48,19 @@
 		Messagerie.EventPopin();
 		Messagerie.AutoComplete('{{path('membre_ajax_autocomplete')}}');
 
-		setInterval(function() { clearInterval(Messagerie.SaveBrouillon()); }, 20000); 
+		interval = setInterval(function() { clearInterval(Messagerie.SaveBrouillon()); }, 5000); 
 	});
+
+	$('#modal_message_global').modal({
+		   'show' : true,
+	   	'backdrop' : 'static'
+	});
+
+	$('#modal_message_global').on('hidden.bs.modal', function (e) {
+		clearInterval(interval);
+		tinymce.remove();
+		$('#messagerie-block #modal_message_global #bloc_modal').html('');
+	});
+	
 </script>
 {% endblock %}

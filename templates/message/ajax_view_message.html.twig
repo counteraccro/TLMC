@@ -11,9 +11,10 @@
             </div>
        	</div>
        	<a href="#" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="top" title="Corbeille"><span class="oi oi-trash"></span></a>
+       	<a href="{{ path('message_ajax_edit_message', {'id' : message.id, 'brouillon' : 1, 'page' : page}) }}" class="btn btn-info btn-sm" id="new-message" data-toggle="tooltip" data-placement="top" title="Editer le brouillon"><span class="oi oi-pencil"></span></a>
        
        	<div class="float-right">
-       		<i>Texte</i>
+       		<i>Texte {{ page }}</i>
        	</div>
        
 	</div>
@@ -28,7 +29,7 @@
   		<div class="card-body">
   			Destinataire : {{ message.destinataire.prenom }} {{ message.destinataire.nom }}
   			<br />
-    		{{ message.corps | nl2br }}
+    		{{ message.corps | raw | nl2br }}
   		</div>
 	</div>
 </div>
@@ -38,7 +39,8 @@
 
 	$(document).ready(function() {
 
-		$('#messagerie-block #ajax_view_message a').tooltip();	
+		$('#messagerie-block #ajax_view_message a').tooltip();
+		Messagerie.EventListeMessage('#ajax_view_message');
 	});	
     </script>
 {% endblock %}

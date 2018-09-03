@@ -16,13 +16,12 @@
 	<div class="list-group">
         {% if messages is not empty %}
 		    {% for message in messages %}
-			   {{ listingMessage(message, app.user.id, path('message_ajax_view_message', {'id' : message.id})) | raw }}
+			   {{ listingMessage(message, app.user.id, path('message_ajax_view_message', {'id' : message.id, 'page' : page})) | raw }}
 		    {% endfor %}
 		{% else %}
 			<div class="text text-info text-center"><i>Aucun brouillon enregistré</i></div>
 		{% endif %}
     </div>
-
     {% include 'elements/ajax_pagination.html.twig' %}
 </div>
 
@@ -32,14 +31,38 @@
 	$(document).ready(function() {
 		Messagerie.EventListeMessage('#ajax_messages_brouillons');
 
+		
+		
 		{% if messages is not empty %}
-			$('#ajax_messages_brouillons .list-group a.list-group-item').first().addClass("active");
-			$('#ajax_messages_brouillons .list-group a.list-group-item').first().children('span').removeClass().addClass('oi oi-envelope-open');
-			$('#ajax_messages_brouillons .list-group a.list-group-item').first().children('div[class="small-body"]').css( "font-weight", "normal" );
-			$('#ajax_messages_brouillons .list-group a.list-group-item').first().removeClass('no-read');
 
-			{% set message = messages |first %}
-			Messagerie.LoadMessage('{{path('message_ajax_view_message', {'id' : message.id})}}');
+			{% if currentBrouillon == 0 %}
+    			$('#ajax_messages_brouillons .list-group a.list-group-item').first().addClass("active");
+    			$('#ajax_messages_brouillons .list-group a.list-group-item').first().children('span').removeClass().addClass('oi oi-envelope-open');
+    			$('#ajax_messages_brouillons .list-group a.list-group-item').first().children('div[class="small-body"]').css( "font-weight", "normal" );
+    			$('#ajax_messages_brouillons .list-group a.list-group-item').first().removeClass('no-read');
+    
+    			{% set message = messages |first %}
+    			Messagerie.LoadMessage('{{path('message_ajax_view_message', {'id' : message.id, 'page' : page})}}');
+    		{% else %}
+    			$('#ajax_messages_brouillons .list-group a.list-group-item').each(function() {
+        			if($(this).data('id') == {{ currentBrouillon }})
+            		{
+        				$(this).addClass("active");
+        				$(this).children('span').removeClass().addClass('oi oi-envelope-open');
+        				$(this).children('div[class="small-body"]').css( "font-weight", "normal" );
+        				$(this).removeClass('no-read');
+
+
+        				$('#v-pills-messagerie a').each(function() {
+        					if($(this).hasClass('active') && $(this).attr('id') == 'brouillon')
+        					{
+        						Messagerie.LoadMessage('{{path('message_ajax_view_message', {'id' : currentBrouillon, 'page' : page})}}', false);
+        					}
+        					
+        				});
+                	}
+        		})
+    		{% endif %}
         {% else %}
 		 	$('#messagerie-block #bloc_view_message').html('');
 		{% endif %}

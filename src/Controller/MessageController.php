@@ -11,11 +11,13 @@ use App\Entity\MessageLu;
 use App\Form\MessageType;
 use App\Entity\Groupe;
 use App\Entity\Membre;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class MessageController extends AppController
 {
 
-    const MAX_NB_RESULT_MESSAGERIE = 50;
+    const MAX_NB_RESULT_MESSAGERIE = 25;
 
     /**
      * Route de base nécessaire vers la messagerie (hors appels ajax)
@@ -71,7 +73,8 @@ class MessageController extends AppController
         return $this->render('message/ajax_messages_destinataire.html.twig', [
             'pagination' => $pagination,
             'search' => $search,
-            'messages' => $result['paginator']
+            'messages' => $result['paginator'],
+            'page' => $page
         ]);
     }
 
@@ -81,7 +84,7 @@ class MessageController extends AppController
      * @Route("/messagerie/ajax/messagesbrouillons/{page}", name="message_ajax_messages_brouillons")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      */
-    public function ajaxMessagesBrouillons($page = 1)
+    public function ajaxMessagesBrouillons(SessionInterface $session, $page = 1)
     {
         $search = '';
 
@@ -97,11 +100,17 @@ class MessageController extends AppController
             'route_params' => array(),
             'id_div' => '#v-pills-brouillons'
         );
+        
+        // Utilisé quand on met à jour un brouillon pour le charger correctement dans la vue
+        $currentBrouillon = $session->get('Message.brouillon.id', 0);
+        $session->remove('Message.brouillon.id');
 
         return $this->render('message/ajax_messages_brouillons.html.twig', [
             'pagination' => $pagination,
             'search' => $search,
-            'messages' => $result['paginator']
+            'messages' => $result['paginator'],
+            'currentBrouillon' => $currentBrouillon,
+            'page' => $page
         ]);
     }
 
@@ -170,11 +179,11 @@ class MessageController extends AppController
     /**
      * Affiche le message envoyé en id (visualisation du message selectionné)
      *
-     * @Route("/messagerie/ajax/viewmessage/{id}", name="message_ajax_view_message")
+     * @Route("/messagerie/ajax/viewmessage/{id}/{page}", name="message_ajax_view_message")
      * @ParamConverter("message", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      */
-    public function ajaxViewMessage(Message $message)
+    public function ajaxViewMessage(Message $message, $page = 1)
     {
         foreach ($message->getMessageLus() as &$messageLu) {
             if ($messageLu->getMembre()->getId() == $this->getUser()->getId()) {
@@ -189,7 +198,8 @@ class MessageController extends AppController
         $em->flush();
 
         return $this->render('message/ajax_view_message.html.twig', [
-            'message' => $message
+            'message' => $message,
+            'page' => $page
         ]);
     }
 
@@ -275,13 +285,13 @@ class MessageController extends AppController
     /**
      * Fonction permettant d'écrire un nouveau message ou brouillon
      *
-     * @Route("/messagerie/ajax/newmessage", name="message_ajax_new_message")
-     * @Route("/messagerie/ajax/editmessage/{id}/{brouillon}", name="message_ajax_edit_message")
+     * @Route("/messagerie/ajax/newmessage/{page}", name="message_ajax_new_message")
+     * @Route("/messagerie/ajax/editmessage/{id}/{brouillon}/{page}", name="message_ajax_edit_message")
      * @ParamConverter("message", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      * @param Request $request
      */
-    public function ajaxFormMessage(Request $request, Message $message = null, $brouillon = 1)
+    public function ajaxFormMessage(SessionInterface $session, Request $request, Message $message = null, $brouillon = 1, $page = 1)
     {
         $currentRoute = $request->attributes->get('_route');
         $membre = $this->getMembre();
@@ -336,10 +346,12 @@ class MessageController extends AppController
             $em->flush();
         }
         
+        $session->set('Message.brouillon.id', $message->getId());
         
         return $this->render('message/ajax_form_message.html.twig', [
             'form' => $form->createView(),
-            'message' => $message
+            'message' => $message,
+            'page' => $page
         ]);
     }
 

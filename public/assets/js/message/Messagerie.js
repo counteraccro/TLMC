@@ -321,7 +321,7 @@ Messagerie.Launch = function(params){
 				}
 			})
 			.change(function(event, ui) {
-				
+
 				var terms = split( this.value );
 				var tabId = [];
 				for (var id in json) 
@@ -332,11 +332,11 @@ Messagerie.Launch = function(params){
 						{
 							tabId[id] = json[id];
 							tabIdSet[id] = json[id];
-							
+
 						}
 					}
 				}
-				
+
 				for (var id in tabIdSet) 
 				{
 					for (var t in terms)
@@ -347,7 +347,7 @@ Messagerie.Launch = function(params){
 						}
 					}
 				}
-				
+
 				var ids = '';
 				for (var id in tabId) 
 				{
@@ -358,7 +358,7 @@ Messagerie.Launch = function(params){
 			})
 		} );
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -368,12 +368,14 @@ Messagerie.Launch = function(params){
 		{
 			$('#message_titre').val('[Brouillon] Sans titre');
 		}
-		
+
+		$('#message_corps').val(tinyMCE.activeEditor.getContent());
 		if($('#message_corps').val() == '')
 		{
 			$('#message_corps').val('-');
 		}
-		
+
+
 		$.ajax({
 			method: 'POST',
 			url: $('#form_message').attr('action'),
@@ -381,6 +383,14 @@ Messagerie.Launch = function(params){
 		})
 		.done(function( html ) {
 			$('#info-save-brouillon').html('<i>Brouillon enregistré avec succès</i>').fadeIn(1000).delay(5000).fadeOut(1000);
+
+			$.ajax({
+				method: 'GET',
+				url: Messagerie.urlBrouillons + '/' + $('#form_message').data('page'),
+			})
+			.done(function( html ) {
+				Messagerie.element_navPills_content_brouillons.html(html);				
+			});
 		});
 	}
 
@@ -419,6 +429,7 @@ Messagerie.Launch = function(params){
 
 		Messagerie.globale_content_pills.showLoading();
 
+
 		$.ajax({
 			method: 'GET',
 			url: url,
@@ -426,15 +437,20 @@ Messagerie.Launch = function(params){
 		.done(function( html ) {
 			content.html(html);
 			Messagerie.globale_content_pills.hideLoading();
+
 		});
 	}
 
 	/**
 	 * Appel ajax du message selectionné (ouverture et fermeture pop-in)
 	 */
-	Messagerie.LoadMessage = function(url)
+	Messagerie.LoadMessage = function(url, loader = true)
 	{
-		Messagerie.global_content_bloc_message.showLoading();
+		if(loader)
+		{
+			Messagerie.global_content_bloc_message.showLoading();
+		}
+
 
 		$.ajax({
 			method: 'GET',
@@ -442,7 +458,10 @@ Messagerie.Launch = function(params){
 		})
 		.done(function( html ) {
 			Messagerie.global_content_bloc_message.html(html);
-			Messagerie.global_content_bloc_message.hideLoading();
+			if(loader)
+			{
+				Messagerie.global_content_bloc_message.hideLoading();
+			}
 		});
 	}
 }
