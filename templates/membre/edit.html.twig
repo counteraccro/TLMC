@@ -4,36 +4,36 @@
 
 {% block body %}
 
-<h1>Modification du membre #{{ membre.id }} - {{ membre.prenom }} {{ membre.nom }}</h1>
-
-{% include 'elements/arborescence.html.twig' %}
-
-<div>
-    {{ form_start(form) }}
-	{{ form_row(form.nom) }}
-	{{ form_row(form.prenom) }}
-	{{ form_row(form.username) }}
-	<div class="shadow-sm p-3 mb-5 bg-white rounded border">
-        {{ form_row(form.password) }}
-	</div>
-	{{ form_row(form.email) }}
-	{{ form_row(form.numero_tel) }}
-	{{ form_row(form.fonction) }}
-	{{ form_row(form.signature) }}
-	{{ form_row(form.decideur) }}
-	{{ form_row(form.annuaire) }}
-	{{ form_row(form.roles) }}
-	
-	{{ form_row(form.etablissement) }}
-	<div id="bloc_specialite">
-		{{ form_row(form.specialite) }}
-	</div>
+    <h1>Modification du membre #{{ membre.id }} - {{ membre.prenom }} {{ membre.nom }}</h1>
     
-    {{ form_rest(form) }}
-    {{ form_errors(form) }}
-    {{ form_end(form) }}
+    {% include 'elements/arborescence.html.twig' %}
     
-</div>
+    <div>
+        {{ form_start(form) }}
+    	{{ form_row(form.nom) }}
+    	{{ form_row(form.prenom) }}
+    	{{ form_row(form.username) }}
+    	<div class="shadow-sm p-3 mb-5 bg-white rounded border">
+            {{ form_row(form.password) }}
+    	</div>
+    	{{ form_row(form.email) }}
+    	{{ form_row(form.numero_tel) }}
+    	{{ form_row(form.fonction) }}
+    	{{ form_row(form.signature) }}
+    	{{ form_row(form.decideur) }}
+    	{{ form_row(form.annuaire) }}
+    	{{ form_row(form.roles) }}
+    	
+    	{{ form_row(form.etablissement) }}
+    	<div id="bloc_specialite">
+    		{{ form_row(form.specialite) }}
+    	</div>
+        
+        {{ form_rest(form) }}
+        {{ form_errors(form) }}
+        {{ form_end(form) }}
+        
+    </div>
 	  
 {% endblock %}
 
@@ -53,7 +53,7 @@
 		};
         
     	Specialite.Launch(params);
-    	Specialite.LoadSpecialite();
+    	Specialite.LoadDropdownSpecialite();
     	Specialite.EventChange('#membre_save');
 		
     });

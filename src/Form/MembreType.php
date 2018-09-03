@@ -17,6 +17,7 @@ use App\Entity\Etablissement;
 use App\Entity\Specialite;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use App\Controller\AppController;
+use App\Repository\EtablissementRepository;
 
 class MembreType extends AbstractType
 {
@@ -69,6 +70,11 @@ class MembreType extends AbstractType
             ->add('etablissement', EntityType::class, array(
             'class' => Etablissement::class,
             'disabled' => $options['disabled_etablissement'],
+                'query_builder' => function (EtablissementRepository $er) {
+                return $er->createQueryBuilder('e')
+                ->andWhere('e.disabled = 0')
+                ->orderBy('e.nom', 'ASC');
+                },
             'choice_label' => 'nom'
         ))
             ->add('specialite', EntityType::class, array(

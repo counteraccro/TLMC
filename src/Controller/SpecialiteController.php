@@ -366,7 +366,7 @@ class SpecialiteController extends AppController
      */
     public function addAjaxDropdownAction(Request $request, Etablissement $etablissement, string $type)
     {
-        $specialites = $this->getElementsLiesActifs($etablissement, 'getSpecialites');
+        $specialites = $this->getDoctrine()->getRepository(Specialite::class)->getSpecialitesByEtablissement($etablissement);
 
         return $this->render('specialite/ajax_dropdown.html.twig', array(
             'specialites' => $specialites,
@@ -391,13 +391,6 @@ class SpecialiteController extends AppController
     {
         // récupération de l'objet
         switch ($type) {
-            case 'patient':
-                $repo_patient = $this->getDoctrine()->getRepository(Patient::class);
-                $objet = $repo_patient->findOneBy(array('id' => $id));
-
-                $etablissement = $objet->getSpecialite()->getEtablissement();
-
-                break;
             case 'membre':
                 $repo_membre = $this->getDoctrine()->getRepository(Membre::class);
                 $objet = $repo_membre->findOneBy(array('id' => $id));
@@ -408,16 +401,12 @@ class SpecialiteController extends AppController
 
         $select_specialite = (! is_null($objet->getSpecialite()) ? $objet->getSpecialite()->getId() : 0);
 
-        $repository = $this->getDoctrine()->getRepository(Specialite::class);
         if ($etablissement_id) {
-            $specialites = $repository->findByEtablissement($etablissement_id);
-        } else {
-            if (count($etablissement->getSpecialites())) {
-                $specialites = $etablissement->getSpecialites();
-            } else {
-                $specialites = $repository->findAll();
-            }
+            $etablissement = $this->getDoctrine()->getRepository(Etablissement::class)->findOneBy(array('id' => $etablissement_id));
         }
+        
+        $repository = $this->getDoctrine()->getRepository(Specialite::class);
+        $specialites = $repository->getSpecialitesByEtablissement($etablissement);
 
         return $this->render('specialite/ajax_dropdown.html.twig', array(
             'specialites' => $specialites,

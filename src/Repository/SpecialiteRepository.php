@@ -7,6 +7,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use App\Entity\Etablissement;
 
 /**
  *
@@ -119,14 +120,29 @@ class SpecialiteRepository extends ServiceEntityRepository
                 $query->join($jointure['oldrepository'] . '.' . $jointure['newrepository'], $jointure['newrepository']);
             }
         }
-        
-        if(isset($params['condition'])){
-            foreach ($params['condition'] as $condition){
+
+        if (isset($params['condition'])) {
+            foreach ($params['condition'] as $condition) {
                 $query->andWhere($condition);
             }
         }
-        
+
         return $query;
+    }
+
+    /**
+     *
+     * @param Etablissement $etablissement
+     */
+    public function getSpecialitesByEtablissement(Etablissement $etablissement)
+    {
+        $return = $this->createQueryBuilder('s')
+            ->andWhere('s.etablissement = ' . $etablissement->getId())
+            ->andWhere('s.disabled = 0')
+            ->orderBy('s.service', 'ASC')
+            ->getQuery()
+            ->getResult();
+        return $return;
     }
 
     // /**
