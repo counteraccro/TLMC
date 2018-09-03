@@ -64,26 +64,176 @@ class LoadGroupeMembreData extends Fixture implements DependentFixtureInterface
                 'setGroupe' => 'Groupe-5',
                 'setDate' => '2018-08-29 13:50:08'
             ],
-            'GroupeMembre-10' => [
+            'GroupeMembre-11' => [
                 'setMembre' => 'Membre-1',
                 'setGroupe' => 'Groupe-6',
                 'setDate' => '2018-08-29 14:04:17'
             ],
-            'GroupeMembre-10' => [
+            'GroupeMembre-12' => [
                 'setMembre' => 'Membre-14',
                 'setGroupe' => 'Groupe-6',
                 'setDate' => '2018-08-29 14:04:17'
             ],
-            'GroupeMembre-11' => [
+            'GroupeMembre-13' => [
                 'setMembre' => 'Membre-13',
                 'setGroupe' => 'Groupe-6',
                 'setDate' => '2018-08-31 11:39:12'
             ],
-            'GroupeMembre-12' => [
+            'GroupeMembre-14' => [
                 'setMembre' => 'Membre-13',
                 'setGroupe' => 'Groupe-6',
                 'setDate' => '2018-08-31 11:39:12'
             ],
+            'GroupeMembre-15' => [
+                'setMembre' => 'Membre-1',
+                'setGroupe' => 'Groupe-0',
+                'setDate' => '2018-02-23 17:53:00'
+            ],
+            'GroupeMembre-16' => [
+                'setMembre' => 'Membre-2',
+                'setGroupe' => 'Groupe-0',
+                'setDate' => '2018-02-23 17:53:00'
+            ],
+            'GroupeMembre-17' => [
+                'setMembre' => 'Membre-3',
+                'setGroupe' => 'Groupe-0',
+                'setDate' => '2018-02-23 17:53:00'
+            ],
+            'GroupeMembre-18' => [
+                'setMembre' => 'Membre-4',
+                'setGroupe' => 'Groupe-0',
+                'setDate' => '2018-02-23 17:53:00'
+            ],
+            'GroupeMembre-19' => [
+                'setMembre' => 'Membre-5',
+                'setGroupe' => 'Groupe-0',
+                'setDate' => '2018-02-23 17:53:00'
+            ],
+            'GroupeMembre-20' => [
+                'setMembre' => 'Membre-6',
+                'setGroupe' => 'Groupe-0',
+                'setDate' => '2018-02-23 17:53:00'
+            ],
+            'GroupeMembre-21' => [
+                'setMembre' => 'Membre-7',
+                'setGroupe' => 'Groupe-0',
+                'setDate' => '2018-02-23 17:53:00'
+            ],
+            'GroupeMembre-22' => [
+                'setMembre' => 'Membre-8',
+                'setGroupe' => 'Groupe-0',
+                'setDate' => '2018-02-23 17:53:00'
+            ],
+            'GroupeMembre-23' => [
+                'setMembre' => 'Membre-9',
+                'setGroupe' => 'Groupe-0',
+                'setDate' => '2018-02-23 17:53:00'
+            ],
+            'GroupeMembre-24' => [
+                'setMembre' => 'Membre-10',
+                'setGroupe' => 'Groupe-0',
+                'setDate' => '2018-02-23 17:53:00'
+            ],
+            'GroupeMembre-25' => [
+                'setMembre' => 'Membre-11',
+                'setGroupe' => 'Groupe-0',
+                'setDate' => '2018-02-23 17:53:00'
+            ],
+            'GroupeMembre-26' => [
+                'setMembre' => 'Membre-12',
+                'setGroupe' => 'Groupe-0',
+                'setDate' => '2018-02-23 17:53:00'
+            ],
+            'GroupeMembre-27' => [
+                'setMembre' => 'Membre-13',
+                'setGroupe' => 'Groupe-0',
+                'setDate' => '2018-02-23 17:53:00'
+            ],
+            'GroupeMembre-28' => [
+                'setMembre' => 'Membre-14',
+                'setGroupe' => 'Groupe-0',
+                'setDate' => '2018-02-23 17:53:00'
+            ],
+            'GroupeMembre-29' => [
+                'setMembre' => 'Membre-15',
+                'setGroupe' => 'Groupe-0',
+                'setDate' => '2018-02-23 17:53:00'
+            ],
+            'GroupeMembre-30' => [
+                'setMembre' => 'Membre-16',
+                'setGroupe' => 'Groupe-0',
+                'setDate' => '2018-02-23 17:53:00'
+            ],
+            'GroupeMembre-31' => [
+                'setMembre' => 'Membre-17',
+                'setGroupe' => 'Groupe-0',
+                'setDate' => '2018-02-23 17:53:00'
+            ],
+            'GroupeMembre-32' => [
+                'setMembre' => 'Membre-18',
+                'setGroupe' => 'Groupe-0',
+                'setDate' => '2018-02-23 17:53:00'
+            ],
+            'GroupeMembre-33' => [
+                'setMembre' => 'Membre-19',
+                'setGroupe' => 'Groupe-0',
+                'setDate' => '2018-02-23 17:53:00'
+            ],
+            'GroupeMembre-34' => [
+                'setMembre' => 'Membre-20',
+                'setGroupe' => 'Groupe-0',
+                'setDate' => '2018-02-23 17:53:00'
+            ],
+            'GroupeMembre-35' => [
+                'setMembre' => 'Membre-21',
+                'setGroupe' => 'Groupe-0',
+                'setDate' => '2018-02-23 17:53:00'
+            ],
+            'GroupeMembre-36' => [
+                'setMembre' => 'Membre-22',
+                'setGroupe' => 'Groupe-0',
+                'setDate' => '2018-02-23 17:53:00'
+            ],
+            'GroupeMembre-37' => [
+                'setMembre' => 'Membre-23',
+                'setGroupe' => 'Groupe-0',
+                'setDate' => '2018-02-23 17:53:00'
+            ],
+            'GroupeMembre-38' => [
+                'setMembre' => 'Membre-24',
+                'setGroupe' => 'Groupe-0',
+                'setDate' => '2018-02-23 17:53:00'
+            ],
+            'GroupeMembre-39' => [
+                'setMembre' => 'Membre-25',
+                'setGroupe' => 'Groupe-0',
+                'setDate' => '2018-02-23 17:53:00'
+            ],
+            'GroupeMembre-40' => [
+                'setMembre' => 'Membre-26',
+                'setGroupe' => 'Groupe-0',
+                'setDate' => '2018-02-23 17:53:00'
+            ],
+            'GroupeMembre-41' => [
+                'setMembre' => 'Membre-27',
+                'setGroupe' => 'Groupe-0',
+                'setDate' => '2018-02-23 17:53:00'
+            ],
+            'GroupeMembre-42' => [
+                'setMembre' => 'Membre-28',
+                'setGroupe' => 'Groupe-0',
+                'setDate' => '2018-02-23 17:53:00'
+            ],
+            'GroupeMembre-43' => [
+                'setMembre' => 'Membre-29',
+                'setGroupe' => 'Groupe-0',
+                'setDate' => '2018-02-23 17:53:00'
+            ],
+            'GroupeMembre-44' => [
+                'setMembre' => 'Membre-30',
+                'setGroupe' => 'Groupe-0',
+                'setDate' => '2018-02-23 17:53:00'
+            ],      
         ]
     ];
 
@@ -103,10 +253,8 @@ class LoadGroupeMembreData extends Fixture implements DependentFixtureInterface
 
             foreach ($value as $key => $val) {
                 if ($key == 'setDate') {
-                    $val = new \DateTime($val);
-                }
-
-                if ($key == 'setMembre') {
+                    $groupeMembre->{$key}(new \DateTime());
+                } else if ($key == 'setMembre') {
                     $membre = $this->getReference($val);
                     $groupeMembre->{$key}($membre);
                 } elseif ($key == 'setGroupe') {

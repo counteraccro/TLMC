@@ -274,12 +274,32 @@ class MessageController extends AppController
      * Fonction 
      *
      * @Route("/messagerie/ajax/newmessage", name="message_ajax_new_message")
+     * @Route("/messagerie/ajax/editmessage/{id}/{brouillon}", name="message_ajax_edit_message")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      * @param Request $request
      */
-    public function ajaxNewMessage(Request $request)
+    public function ajaxFormMessage(Request $request, $id = 0, $brouillon = 1)
     {
-        $message = new Message();
+//         $currentRoute = $request->attributes->get('_route');
+//         $em = $this->getDoctrine()->getManager();
+        
+//         //
+//         if ($currentRoute == 'message_ajax_new_message') {
+            
+//             $membre = $this->getMembre();
+//             $message = new Message();
+//             $message->setExpediteur($membre);
+//             $message->setDestinataire($membre);
+//             $message->setBrouillon($brouillon);
+//             $message->setTitre('');
+//             $message->setCorps('');
+//             $message->setDateEnvoi(new \DateTime());
+//             $message->setDisabled(0);
+//             $em->persist($message);
+//             $em->flush();
+            
+//         }
+        
         $form = $this->createForm(MessageType::class, $message, array());
         
         $form->handleRequest($request);
@@ -297,7 +317,7 @@ class MessageController extends AppController
         }
         
         
-        return $this->render('message/ajax_new_message.html.twig', [
+        return $this->render('message/ajax_form_message.html.twig', [
             'form' => $form->createView()
         ]);
     }

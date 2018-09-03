@@ -17,6 +17,11 @@ class LoadGroupeData extends Fixture
 
     private $tabGroupes = [
         'Groupe' => [
+            'Groupe-0' => [
+                'setNom' => 'GLOBAL',
+                'setDate' => '2018-02-23 17:53:00',
+                'setDisabled' => '1'
+            ],
             'Groupe-1' => [
                 'setNom' => 'Nouvelles',
                 'setDate' => '2018-02-23 17:53:00',
@@ -68,7 +73,7 @@ class LoadGroupeData extends Fixture
                 
                 if($key == 'setDate')
                 {
-                    $val = new \DateTime($val);
+                    $val = new \DateTime();
                 }
                 
                 $groupe->{$key}($val);
