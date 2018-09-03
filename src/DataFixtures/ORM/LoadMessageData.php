@@ -168,6 +168,16 @@ class LoadMessageData extends Fixture implements DependentFixtureInterface
                 'setDisabled' => 0,
                 'setBrouillon' => 0
             ],
+            'Message-16' => [
+                'setExpediteur' => 'Membre-10',
+                'setDestinataire' => 'Membre-1',
+                'setGroupe' => 'Groupe-0',
+                'setCorps' => 'Bonjour Eric, ça te dit que l\'on déjeune ensemble ce midi pour débriefer de l\'animation Food Trucks ? Cdt, Gaëtan',
+                'setTitre' => 'Suivi animation Food Trucks',
+                'setDateEnvoi' => '2018-08-29 14:06:02',
+                'setDisabled' => 0,
+                'setBrouillon' => 0
+            ],
         ]
     ];
 

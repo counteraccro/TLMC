@@ -78,7 +78,7 @@ class LoadTemoignageData extends Fixture implements DependentFixtureInterface
                 'setProduit' => 'Produit-3',
                 'setMembre' => 'Membre-7',
                 'setTitre' => 'Super',
-                'setCorps' => "Les crayons de couleurs sont trop beau, j'ai pu faire pleins de dessins avec.",
+                'setCorps' => "Les crayons de couleurs sont trop beaux, j'ai pu faire plein de dessins avec.",
                 'setDisabled' => 0,
                 'setDateCreation' => '2018-01-24 17:17:17'
             ],
@@ -103,7 +103,7 @@ class LoadTemoignageData extends Fixture implements DependentFixtureInterface
                 'setEvenement' => 'Evenement-3',
                 'setMembre' => 'Membre-2',
                 'setTitre' => 'Première leçon',
-                'setCorps' => "Pon fils a toujours voulu faire de l'équitation et grâce à TLMC, il a pu réaliser son rêve et pour cela je suis très reconnaissant envers l'association.",
+                'setCorps' => "Mon fils a toujours voulu faire de l'équitation et grâce à TLMC, il a pu réaliser son rêve et pour cela je suis très reconnaissant envers l'association.",
                 'setFamille' => 'Famille-16',
                 'setDisabled' => 0,
                 'setDateCreation' => '2018-09-30 17:45:12'
@@ -121,7 +121,7 @@ class LoadTemoignageData extends Fixture implements DependentFixtureInterface
                 'setEvenement' => 'Evenement-4',
                 'setMembre' => 'Membre-21',
                 'setTitre' => 'La trouille',
-                'setCorps' => "Les bonbons étaient super bons et la déco étaient trop bien! Et les costumes et les maquillages étaient magnifiques: je ressemblais à une vraie fée! ",
+                'setCorps' => "Les bonbons étaient super bons et la déco était trop bien! Et les costumes et les maquillages étaient magnifiques: je ressemblais à une vraie fée! ",
                 'setFamille' => 'Famille-9',
                 'setDisabled' => 0,
                 'setDateCreation' => '2018-11-11 11:11:11'
