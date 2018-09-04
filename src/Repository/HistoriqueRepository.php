@@ -60,7 +60,7 @@ class HistoriqueRepository extends ServiceEntityRepository
         // Génération des paramètres SQL
         $query = $this->generateParamsSql($query, $params);
         
-        $query->orderBy($params['repository'] . '.' . $params['field'], $params['order'])->setMaxResults($max);
+        $query->orderBy($params['field'], $params['order'])->setMaxResults($max);
         $paginator = new Paginator($query);
         
         // Nombre total d'historique
@@ -96,6 +96,7 @@ class HistoriqueRepository extends ServiceEntityRepository
     private function generateParamsSql(QueryBuilder $query, array $params)
     {
         $index = 1;
+        
         if (isset($params['search'])) {
             foreach ($params['search'] as $searchKey => $valueKey) {
                 

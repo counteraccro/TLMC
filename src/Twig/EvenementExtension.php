@@ -23,9 +23,9 @@ class EvenementExtension extends AbstractExtension
 
     public function getFunctions(): array
     {
-        return [
-            new TwigFunction('function_name', [$this, 'doSomething']),
-        ];
+        return array(
+            new TwigFunction('horaire', array($this, 'getHoraireEvent')),
+        );
     }
 
     /**
@@ -59,5 +59,19 @@ class EvenementExtension extends AbstractExtension
     public function getStatutSpecialiteEvenement(int $key)
     {
         return (isset(SpecialiteEvenementController::STATUT[$key]) ? SpecialiteEvenementController::STATUT[$key] : $key);
+    }
+    
+    /**
+     * Affichage des horraires d'un événement
+     *
+     * @param \DateTime $date_naissance
+     * @return number
+     */
+    public function getHoraireEvent(\DateTime $date_debut, \DateTime $date_fin)
+    {
+        if($date_debut->format('z') == $date_fin->format('z')){
+            return $date_debut->format('d/m/Y'). ' de ' . $date_debut->format('H:i') . ' à ' . $date_fin->format('H:i');
+        }
+        return $date_debut->format('d/m/Y H:i') . ' - ' . $date_fin->format('d/m/Y H:i');
     }
 }

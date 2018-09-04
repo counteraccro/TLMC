@@ -7,6 +7,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Doctrine\ORM\QueryBuilder;
+use App\Entity\Specialite;
 
 /**
  *
@@ -114,19 +115,34 @@ class PatientRepository extends ServiceEntityRepository
                 $index ++;
             }
         }
-        
+
         if (isset($params['jointure'])) {
             foreach ($params['jointure'] as $jointure) {
                 $query->join($jointure['oldrepository'] . '.' . $jointure['newrepository'], $jointure['newrepository']);
             }
         }
-        
-        if(isset($params['condition'])){
-            foreach ($params['condition'] as $condition){
+
+        if (isset($params['condition'])) {
+            foreach ($params['condition'] as $condition) {
                 $query->andWhere($condition);
             }
         }
-        
+
+        return $query;
+    }
+
+    public function getPatientForOneSpecialite(Specialite $specialite, $admin = false)
+    {
+        $query = $this->createQueryBuilder('p')
+            ->join('p.specialite', 'spe')
+            ->andWhere('p.disabled = 0');
+        if (! $admin && ! is_null($specialite)) {
+            $query->andWhere('spe.id = :specialite')->setParameter('specialite', $specialite->getId());
+        }
+        $query->orderBy('spe.service')
+            ->addOrderBy('p.nom')
+            ->addOrderBy('p.prenom');
+
         return $query;
     }
 

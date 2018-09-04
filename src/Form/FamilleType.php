@@ -28,14 +28,7 @@ class FamilleType extends AbstractType
                     return $patient->getPrenom() . ' ' . $patient->getNom() . ' (' . $patient->getDateNaissance()
                         ->format('d/m/Y') . ')';
                 },
-                'query_builder' => function(PatientRepository $pr){
-                  return $pr->createQueryBuilder('p')
-                    ->join('p.specialite', 'spe')
-                    ->andWhere('p.disabled = 0')
-                    ->orderBy('spe.service')
-                    ->addOrderBy('p.nom')
-                    ->addOrderBy('p.prenom');
-                },
+                'query_builder' => $options['query_patient'],
                 'group_by' => function (Patient $patient){
                     return $patient->getSpecialite()->getService() . ' (' . $patient->getSpecialite()->getEtablissement()->getNom() . ')';
                 }
@@ -87,6 +80,14 @@ class FamilleType extends AbstractType
             'label_submit' => 'Valider',
             'avec_bouton' => true,
             'avec_patient' => true,
+            'query_patient' => function(PatientRepository $pr){
+            return $pr->createQueryBuilder('p')
+            ->join('p.specialite', 'spe')
+            ->andWhere('p.disabled = 0')
+            ->orderBy('spe.service')
+            ->addOrderBy('p.nom')
+            ->addOrderBy('p.prenom');
+            },
             'disabled_patient' => false,
             'label_adresse' => 'Adresse'
         ]);
