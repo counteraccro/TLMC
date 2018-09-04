@@ -202,7 +202,7 @@ class EvenementController extends AppController
             }
 
             if ($form->isValid()) {
-                
+
                 $em = $this->getDoctrine()->getManager();
 
                 foreach ($evenement->getSpecialiteEvenements() as $specialiteEvenement) {
@@ -363,7 +363,7 @@ class EvenementController extends AppController
                 'page' => $page
             ));
         }
-        
+
         return $this->redirectToRoute('evenement_listing', array(
             'page' => $page,
             'field' => $arrayFilters['field'],

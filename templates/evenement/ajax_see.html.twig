@@ -1,99 +1,99 @@
-	<div class="card shadow-sm">
-         <div class="card-header bg-light">
-         	<b>Evénement :</b> {{ evenement.nom }}
-         	{% if is_granted("ROLE_ADMIN") %}
-         		<br><b>Actif :</b> {{ evenement.disabled | actif }}
-           		<div class="float-right"> 
-           	    	{{ editObjet(path('evenement_ajax_edit', {'id': evenement.id }), "Editer l'événement", "btn-edit-evenement") | raw }}
-           			{{ deleteObjet(evenement.disabled, path('evenement_delete', {'id': evenement.id, 'page' : 1 }), 'btn-disabled-evenement') | raw }}
-           	    </div>
-           	{% endif %}
-         </div>
-         <div class="card-body">
-			<div class="row align-items-center">
-    			<div class="col-md-3">
-    			    {% if evenement.image != null %}
-    			    	{% if is_granted("ROLE_ADMIN") %}
-    			    	    {{ deleteImage(path('image_delete', {'id': evenement.id, 'type' : 'evenement' }), 'btn-delete-image') | raw }}
-    			        {% endif %}
-    			    	{{ image('evenement', evenement.image) | raw }}
+<div class="card shadow-sm">
+	<div class="card-header bg-light">
+      	<b>Evénement :</b> {{ evenement.nom }}
+       	{% if is_granted("ROLE_ADMIN") %}
+       		<br><b>Actif :</b> {{ evenement.disabled | actif }}
+       		<div class="float-right"> 
+       	    	{{ editObjet(path('evenement_ajax_edit', {'id': evenement.id }), "Editer l'événement", "btn-edit-evenement") | raw }}
+       			{{ deleteObjet(evenement.disabled, path('evenement_delete', {'id': evenement.id, 'page' : 1 }), 'btn-disabled-evenement') | raw }}
+       	    </div>
+       	{% endif %}
+    </div>
+    <div class="card-body">
+		<div class="row align-items-center">
+    		<div class="col-md-3">
+    		    {% if evenement.image != null %}
+    		    	{% if is_granted("ROLE_ADMIN") %}
+    		    	    {{ deleteImage(path('image_delete', {'id': evenement.id, 'type' : 'evenement' }), 'btn-delete-image') | raw }}
     		        {% endif %}
-    			</div>
-				<div class="col-md-9">
-                	<table  class="table table-sm">
-                    	<tr>
-                    		<th scope="col"> Date</th>
-                    		<td> {{ horaire(evenement.dateDebut, evenement.dateFin) }} </td>
-                    	</tr>
-                    	<tr>
-                    		<th scope="col"> Description </th>
-                    		<td> {{ evenement.description }} </td>
-                    	</tr>
-                    	<tr>
-                    		<th scope="col"> Type </th>
-                    		<td> {{ evenement.type |typeEvent }} </td>
-                    	</tr>
-                    	<tr>
-                    		<th scope="col"> Nombre maximum de participants </th>
-                    		<td> {{ evenement.nombreMax }} </td>
-                    	</tr>
-                    	<tr>
-                    		<th scope="col"> Tranche d'âge </th>
-                    		<td>
-                    			{% for tranche in evenement.trancheAge %} 
-                    		        {{ tranche | trancheAge }}<br />
-                    		    {% endfor %}
-                    		</td>
-                    	</tr>
-                    	<tr>
-                    		<th scope="col"> Date limite d'inscription </th>
-                    		<td> {{ evenement.dateFinInscription | date('d/m/Y H:i') }} </td>
-                    	</tr>
-                    	<tr>
-                    		<th scope="col"> Informations complémentaires </th>
-                    		<td> {{ evenement.informationComplementaire }} </td>
-                    	</tr>
-                    	<tr>
-                    		<th scope="col"> Statut </th>
-                    		<td> {{ evenement.statut | statutEvent }} </td>
-                    	</tr>
-                    	<tr>
-                    		<th scope="col"> Lieu </th>
-                    		<td>
-                    			{{ evenement.nomLieu }}<br />
-                    		    {{ evenement.numeroVoie }}, {{ evenement.voie }} <br />
-                    			{{ evenement.codePostal }} {{ evenement.ville }} <br />
-                    		</td>
-                    	</tr>
-                    </table>
-                </div>
+    		    	{{ image('evenement', evenement.image) | raw }}
+    	        {% endif %}
+    		</div>
+			<div class="col-md-9">
+               	<table  class="table table-sm">
+                   	<tr>
+                   		<th scope="col"> Date</th>
+                   		<td> {{ horaire(evenement.dateDebut, evenement.dateFin) }} </td>
+                   	</tr>
+                   	<tr>
+                   		<th scope="col"> Description </th>
+                   		<td> {{ evenement.description }} </td>
+                   	</tr>
+                   	<tr>
+                   		<th scope="col"> Type </th>
+                   		<td> {{ evenement.type |typeEvent }} </td>
+                   	</tr>
+                   	<tr>
+                   		<th scope="col"> Nombre maximum de participants </th>
+                   		<td> {{ evenement.nombreMax }} </td>
+                   	</tr>
+                   	<tr>
+                   		<th scope="col"> Tranche d'âge </th>
+                   		<td>
+                   			{% for tranche in evenement.trancheAge %} 
+                   		        {{ tranche | trancheAge }}<br />
+                   		    {% endfor %}
+                   		</td>
+                   	</tr>
+                   	<tr>
+                   		<th scope="col"> Date limite d'inscription </th>
+                   		<td> {{ evenement.dateFinInscription | date('d/m/Y H:i') }} </td>
+                   	</tr>
+                   	{% if evenement.informationComplementaire %}
+                       	<tr>
+                       		<th scope="col"> Informations complémentaires </th>
+                       		<td> {{ evenement.informationComplementaire }} </td>
+                       	</tr>
+                   	{% endif %}
+                   	<tr>
+                   		<th scope="col"> Statut </th>
+                   		<td> {{ evenement.statut | statutEvent }} </td>
+                   	</tr>
+                   	<tr>
+                   		<th scope="col"> Lieu </th>
+                   		<td>
+              			    {{ evenement.nomLieu }}<br />
+                 		    {{ evenement.numeroVoie }}, {{ evenement.voie }} <br />
+                    		{{ evenement.codePostal }} {{ evenement.ville }} <br />
+                    	</td>
+                    </tr>
+                </table>
             </div>
-    	</div>
-	</div>
-    
-    <hr>
+        </div>
+    </div>
+</div>
+
+<hr>
 	
 {% block javascripts %}
 
     <script type="text/javascript">
-
-    $(document).ready(function() {
-
-    	$('#form_image').change(function() {
-    		var file = $(this)[0].files[0].name;
-    		$('.custom-file label[for="'+ $(this).attr('id') +'"]').html(file);
-    	});
-        
-    	var id_btn_evenement = '#btn-edit-evenement';
-        Evenement.EventEdit(id_btn_evenement);
-
-        var id_btn_delete_evenement = '#btn-disabled-evenement';
-        Evenement.EventDelete(id_btn_delete_evenement);
-
-        var id_btn_delete_image = '#btn-delete-image';
-        Evenement.EventDelete(id_btn_delete_image);
-    });
+        $(document).ready(function() {
     
+        	$('#form_image').change(function() {
+        		var file = $(this)[0].files[0].name;
+        		$('.custom-file label[for="'+ $(this).attr('id') +'"]').html(file);
+        	});
+            
+        	var id_btn_evenement = '#btn-edit-evenement';
+            Evenement.EventEdit(id_btn_evenement);
+    
+            var id_btn_delete_evenement = '#btn-disabled-evenement';
+            Evenement.EventDelete(id_btn_delete_evenement);
+    
+            var id_btn_delete_image = '#btn-delete-image';
+            Evenement.EventDelete(id_btn_delete_image);
+        });
     </script> 
 
 {% endblock %}

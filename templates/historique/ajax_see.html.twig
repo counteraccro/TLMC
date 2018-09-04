@@ -2,18 +2,21 @@
     <div class="card">
         <div class="card-header">
         	Historique
+        	<div class="float-right"> 
+        		{% if (is_granted("ROLE_ADMIN") or is_granted("ROLE_BENEFICIAIRE_DIRECT") or is_granted("ROLE_BENEFICIAIRE")) and type == 'evenement' %}
+           	   		<a href="{{ path('historique_ajax_add', {'id' : objet.id, 'type': type}) }}" id="btn-add-historique" class="float-right"><span class="oi oi-people"></span> Ajouter des participants</a>
+           	   	{% endif %}
+           	</div>
         </div>
         
         <div class="card-body">
         	<table class="table table-sm table-striped">
             	<tr>
-            		{% if type != 'membre' %}
-                		<th> Membre </th>
-                	{% endif %}
-                	{% if type != 'specialite' %}
+            		{% if type != 'specialite' %}
                     	<th> Spécialité </th>
                     {% endif %}
                     {% if type != 'evenement' %}
+                    	<th>Date</th>
                     	<th> Evénement </th>
                     {% endif %}
                     {% if type != 'patient' %}
@@ -24,13 +27,11 @@
                 
                 {% for historique in historiques %}
                 	<tr>
-                		{% if type != 'membre' %}
-                    		<td>{{ historique.membre.prenom }} {{ historique.membre.nom }} </td>
-                    	{% endif %}
-                    	{% if type != 'specialite' %}
+                        {% if type != 'specialite' %}
                         	<td>{{ historique.specialite.service }} ({{ historique.specialite.etablissement.nom }})</td>
                         {% endif %}
                         {% if type != 'evenement' %}
+                        	<td>{{ horaire(historique.evenement.dateDebut, historique.evenement.dateFin) }}</td>
                         	<td>{{ historique.evenement.nom }}</td>
                        	{% endif %}
                         {% if type != 'patient' %}
@@ -68,4 +69,15 @@
       		{% include 'elements/ajax_pagination.html.twig' %}
       	</div>
     </div>
+    
+    {% block javascripts %}
+        <script type="text/javascript">
+
+            var id_btn_add = '#btn-add-historique';
+        	Historique.EventAdd(id_btn_add);
+			
+        </script>
+    {% endblock %}
+    
 </div>
+
