@@ -256,6 +256,6 @@ tinymce.addI18n('fr_FR',{
 "Format": "Format",
 "Table": "Tableau",
 "Tools": "Outils",
-"Powered by {0}": "Propuls\u00e9 par {0}",
+"Powered by {0}": "",
 "Rich Text Area. Press ALT-F9 for menu. Press ALT-F10 for toolbar. Press ALT-0 for help": "Zone Texte Riche. Appuyer sur ALT-F9 pour le menu. Appuyer sur ALT-F10 pour la barre d'outils. Appuyer sur ALT-0 pour de l'aide."
 });

@@ -331,8 +331,6 @@ class MessageController extends AppController
              
             $destinataires = explode('-', $request->request->all()['destinataire']['destinataire']);
             
-            $this->pre($destinataires);
-            
             $destinataire = $membre;
             if($destinataires[0] != "")
             {
@@ -340,18 +338,31 @@ class MessageController extends AppController
                 $destinataire = $membreRepository->findById($destinataires[0])[0];
             }
             $message->setDestinataire($destinataire);
+            $message->setDateEnvoi(new \DateTime());
+            $message->setBrouillon($brouillon);
             
             //$em->persist($messageLu);
             $em->persist($message);
             $em->flush();
+            
         }
         
         $session->set('Message.brouillon.id', $message->getId());
         
+        $destinataire_input = '';
+        $destinataire_input_id = '';
+        if($message->getDestinataire()->getId() != $this->getUser()->getId())
+        {
+            $destinataire_input = $message->getDestinataire()->getPrenom() . ' ' . $message->getDestinataire()->getNom();
+            $destinataire_input_id = $message->getDestinataire()->getId();
+        }
+        
         return $this->render('message/ajax_form_message.html.twig', [
             'form' => $form->createView(),
             'message' => $message,
-            'page' => $page
+            'page' => $page,
+            'destinataire' => $destinataire_input,
+            'destinataire_id' => $destinataire_input_id
         ]);
     }
 

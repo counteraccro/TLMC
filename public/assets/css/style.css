@@ -65,7 +65,7 @@ a:hover {
 	
     position: absolute;
     bottom: 140px;
-    width: 100%;
+    width: 99.5%;
     height: auto;
     background-color: #f5f5f5;
 }
@@ -777,7 +777,7 @@ footer h6, footer p {
 
 #messagerie-block .list-group-item {
 	padding: .5rem 1rem;
-	height: 40px;
+	height: 40.5px;
 }
 
 #messagerie-block .bloc_btn_messagerie {
@@ -788,7 +788,7 @@ footer h6, footer p {
 }
 
 #messagerie-block #bloc_search {
-	padding-left: 5px;
+	padding-left: 10px;
 	padding-right: 10px;
 }
 
@@ -849,6 +849,10 @@ footer h6, footer p {
 
 #messagerie-block #ajax_view_message .bloc_btn_messagerie .float-right {
 	margin-right: 10px;
+}
+
+#ajax_view_message .message-view {
+	height: 39px;
 }
 
 /********************************************

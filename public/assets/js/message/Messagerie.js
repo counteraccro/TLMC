@@ -157,13 +157,20 @@ Messagerie.Launch = function(params){
 
 			var tabId = [];
 			role = $(this).data('role')
-
-			$(id_global + ' .list-group a.list-group-item').each(function() {
-				if($(this).hasClass('active'))
-				{
-					tabId.push($(this).data('id'));
-				}
-			});
+			
+			if (typeof $(this).data('id') !== 'undefined') {
+				tabId.push($(this).data('id'));
+			}
+			else
+			{
+				$(id_global + ' .list-group a.list-group-item').each(function() {
+					if($(this).hasClass('active'))
+					{
+						tabId.push($(this).data('id'));
+					}
+				});
+			}
+			
 
 			var isRead = 0;
 			if($(this).attr('id') == 'message-read')
@@ -224,7 +231,10 @@ Messagerie.Launch = function(params){
 			return false;
 		});
 
-		$(id_global + ' #new-message').click(function() {	
+		$(id_global + ' #new-message').click(function() {
+			
+			Messagerie.popin.html('');
+			
 			$(this).tooltip('hide');
 			$.ajax({
 				method: 'GET',
@@ -362,14 +372,14 @@ Messagerie.Launch = function(params){
 	/**
 	 * 
 	 */
-	Messagerie.SaveBrouillon = function()
+	Messagerie.SaveBrouillon = function(corps, page = 0)
 	{
 		if($('#message_titre').val() == '')
 		{
 			$('#message_titre').val('[Brouillon] Sans titre');
 		}
 
-		$('#message_corps').val(tinyMCE.activeEditor.getContent());
+		$('#message_corps').val(corps);
 		if($('#message_corps').val() == '')
 		{
 			$('#message_corps').val('-');
@@ -382,11 +392,16 @@ Messagerie.Launch = function(params){
 			data : $('#form_message').serialize(),
 		})
 		.done(function( html ) {
-			$('#info-save-brouillon').html('<i>Brouillon enregistré avec succès</i>').fadeIn(1000).delay(5000).fadeOut(1000);
+			$('#info-save-brouillon').html('<span class="oi oi-timer"></span> <i>Brouillon enregistré avec succès</i>').fadeIn(1000).delay(5000).fadeOut(1000);
 
+			if(page == 0)
+			{
+				page = $('#form_message').data('page');
+			}
+			
 			$.ajax({
 				method: 'GET',
-				url: Messagerie.urlBrouillons + '/' + $('#form_message').data('page'),
+				url: Messagerie.urlBrouillons + '/' + page,
 			})
 			.done(function( html ) {
 				Messagerie.element_navPills_content_brouillons.html(html);				

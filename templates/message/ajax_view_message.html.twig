@@ -1,18 +1,36 @@
+{% set role = 'reception' %}
+{% if message.brouillon == 1 %}
+    {% set role = 'brouillons' %}
+{% elseif message.expediteur.id == app.user.id %}
+    {% set role = 'envoyes' %}
+{% endif %}
+            	
+{% for messageLu in message.messageLus  %}
+    {% if(messageLu.membre.id == app.user.id) %}
+        {% if(messageLu.corbeille == 1) %}
+            {% set role = 'corbeille' %}
+        {% endif %}
+    {% endif %}
+{% endfor %}
+
 <div id="ajax_view_message">
 	<div class="bloc_btn_messagerie">
-		<a href="#" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Répondre"><span class="oi oi-arrow-thick-left"></span></a>
+		{% if role == 'reception' %}
+			<a href="{{ path('message_ajax_edit_message', {'id' : message.id, 'brouillon' : 1, 'page' : page}) }}" id="new-message" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Répondre"><span class="oi oi-arrow-thick-left"></span></a>
+		{% endif %}
+		{% if role == 'brouillons' %}
+       		<a href="{{ path('message_ajax_edit_message', {'id' : message.id, 'brouillon' : 1, 'page' : page}) }}" class="btn btn-info btn-sm" id="new-message" data-toggle="tooltip" data-placement="top" title="Editer le brouillon"><span class="oi oi-pencil"></span></a>
+       	{% endif %}
 		<div class="btn-group" role="group">
             <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             	<span class="oi oi-ellipses"></span>
             </button>
-            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-            	<a class="dropdown-item msg-read-no-read" href="{{ path('message_ajax_read_no_read') }}" id="message-read" data-role="reception">Marquer comme lu</a>
-              	<a class="dropdown-item msg-read-no-read" href="{{ path('message_ajax_read_no_read') }}" id="message-no-read" data-role="reception">Marquer comme non lu</a>
+            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">       	
+            	<a class="dropdown-item msg-read-no-read" href="{{ path('message_ajax_read_no_read') }}" id="message-read" data-role="{{ role }}" data-id="{{ message.id }}">Marquer comme lu</a>
+              	<a class="dropdown-item msg-read-no-read" href="{{ path('message_ajax_read_no_read') }}" id="message-no-read" data-role="{{ role }}" data-id="{{ message.id }}">Marquer comme non lu</a>
             </div>
        	</div>
        	<a href="#" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="top" title="Corbeille"><span class="oi oi-trash"></span></a>
-       	<a href="{{ path('message_ajax_edit_message', {'id' : message.id, 'brouillon' : 1, 'page' : page}) }}" class="btn btn-info btn-sm" id="new-message" data-toggle="tooltip" data-placement="top" title="Editer le brouillon"><span class="oi oi-pencil"></span></a>
-       
        	<div class="float-right">
        		<i>Texte {{ page }}</i>
        	</div>
@@ -20,7 +38,7 @@
 	</div>
 	
 	<div class="card">
-  		<div class="card-header">
+  		<div class="card-header message-view bg-light">
     		{{ message.titre }}
     		<div class="float-right">
     			<i>Message envoyé par {{ message.expediteur.prenom }} {{ message.expediteur.nom }} {{ formatDateMessage(message.dateEnvoi) }}</i>

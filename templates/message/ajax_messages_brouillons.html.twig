@@ -16,7 +16,7 @@
 	<div class="list-group">
         {% if messages is not empty %}
 		    {% for message in messages %}
-			   {{ listingMessage(message, app.user.id, path('message_ajax_view_message', {'id' : message.id, 'page' : page})) | raw }}
+			   {{ listingMessage(message, app.user.id, path('message_ajax_view_message', {'id' : message.id, 'page' : page}), 'brouillon') | raw }}
 		    {% endfor %}
 		{% else %}
 			<div class="text text-info text-center"><i>Aucun brouillon enregistré</i></div>

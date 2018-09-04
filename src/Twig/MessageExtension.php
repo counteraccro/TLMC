@@ -44,17 +44,26 @@ class MessageExtension extends AbstractExtension
                 }
             }
         }
-        
+
         $html .= '<a href="' . $path . '" class="list-group-item list-group-item-action ' . $isRead . '" data-id="' . $message->getId() . '" data-titre="' . $message->getTitre() . '">';
 
         $nomPrenom = '';
         if ($statut == 'destinataire') {
             $nomPrenom = '<div class="small-head">' . $message->getExpediteur()->getPrenom() . ' ' . $message->getExpediteur()->getNom() . '</div>';
+        } else if ($statut == 'brouillon') {
+            if($message->getDestinataire()->getId() == $membre_id)
+            {
+                $nomPrenom = '<div class="small-head">[Brouillon] Sans destinataire</div>';
+            }
+            else {
+                $nomPrenom = '<div class="small-head">' . $message->getDestinataire()->getPrenom() . ' ' . $message->getDestinataire()->getNom() . '</div>';
+            }
         }
 
         $html .= $mslu . ' ' . $nomPrenom . '<br /><div class="small-body">' . $message->getTitre() . '</div>';
-        $html .= '<div class="float-right">' . $this->formatDate($message->getDateEnvoi()->getTimestamp()) . '</div>';
-        
+        $html .= '<div class="float-right">' . $this->formatDate($message->getDateEnvoi()
+            ->getTimestamp()) . '</div>';
+
         $html .= '</a>';
 
         return $html;
@@ -62,7 +71,9 @@ class MessageExtension extends AbstractExtension
 
     /**
      * Formate une date (affichage différent : Aujourd'hui, hier, il y a une heure...)
-     * @param int $date au format timestamp
+     *
+     * @param int $date
+     *            au format timestamp
      * @return string
      */
     function formatDate($date)
@@ -87,12 +98,9 @@ class MessageExtension extends AbstractExtension
             }
         } else if (date('Ymd', $date) == date('Ymd', strtotime('- 1 DAY'))) {
             return 'Hier à ' . date('H:i:s', $date);
-        }
-        else if (date('Ymd', $date) == date('Ymd', strtotime('- 2 DAY'))) {
+        } else if (date('Ymd', $date) == date('Ymd', strtotime('- 2 DAY'))) {
             return 'Il y a 2 jours à ' . date('H:i:s', $date);
-        }
-        else
-        {
+        } else {
             return 'Le ' . date('d/m/Y à H:i:s', $date);
         }
     }

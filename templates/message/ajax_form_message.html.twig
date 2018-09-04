@@ -2,21 +2,21 @@
 {{ form_start(form, {'attr' : {'id' : 'form_message', 'action' : path('message_ajax_edit_message', {id : message.id, brouillon : 1, page : page}), 'data-page' : page}}) }}
     <div class="modal-header">
     	<h5 class="modal-title">Rédigez votre nouveau message</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="form-message-btn-close">
         	<span aria-hidden="true">&times;</span>
         </button>
     </div>
     <div class="modal-body">
     	<div class="form-group">
     		<label for="destinataire">Destinataires</label>
-    		<input type="hidden" id="destinataire_hidden" name="destinataire[destinataire]">
-    		<input type="text" class="form-control" id="destinataire" placeholder="Destinataire">
+    		<input type="hidden" id="destinataire_hidden" name="destinataire[destinataire]" value="{{ destinataire_id }}">
+    		<input type="text" class="form-control" id="destinataire" placeholder="Destinataire" value="{{ destinataire }}">
   		</div>
     	{{ form_row(form.titre) }}
     	{{ form_row(form.corps) }}
     	
-    	<div class="float-left text-success" id="info-save-brouillon"></div>
-    	<br />
+    	<div class="float-right text-success" id="info-save-brouillon"></div>
+    	<div class="text-info" id="info-brouillon-info"><i><span class="oi oi-info"></span> Votre message est automatiquement enregistré toutes les 20 secondes en brouillon</i></div>
     </div>
     <div class="modal-footer">
     	{{ form_row(form.submit) }}
@@ -48,7 +48,7 @@
 		Messagerie.EventPopin();
 		Messagerie.AutoComplete('{{path('membre_ajax_autocomplete')}}');
 
-		interval = setInterval(function() { clearInterval(Messagerie.SaveBrouillon()); }, 5000); 
+		interval = setInterval(function() {clearInterval(Messagerie.SaveBrouillon(tinymce.activeEditor.getContent()))}, 20000); 
 	});
 
 	$('#modal_message_global').modal({
@@ -56,10 +56,15 @@
 	   	'backdrop' : 'static'
 	});
 
+	//
+	$('#form-message-btn-close').click(function() {
+		Messagerie.SaveBrouillon(tinymce.activeEditor.getContent(),{{page}});
+	})
+	
+	//
 	$('#modal_message_global').on('hidden.bs.modal', function (e) {
 		clearInterval(interval);
-		tinymce.remove();
-		$('#messagerie-block #modal_message_global #bloc_modal').html('');
+		setTimeout(function() {tinymce.remove()}, 100);
 	});
 	
 </script>
