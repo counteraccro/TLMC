@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 class MessageController extends AppController
 {
 
-    const MAX_NB_RESULT_MESSAGERIE = 25;
+    const MAX_NB_RESULT_MESSAGERIE = 16;
 
     /**
      * Route de base nécessaire vers la messagerie (hors appels ajax)

@@ -40,14 +40,33 @@
 	<div class="card">
   		<div class="card-header message-view bg-light">
     		{{ message.titre }}
-    		<div class="float-right">
-    			<i>Message envoyé par {{ message.expediteur.prenom }} {{ message.expediteur.nom }} {{ formatDateMessage(message.dateEnvoi) }}</i>
+    		<div class="float-right center">
+    			{% if role == 'brouillons' or (role == 'corbeille' and message.brouillon == 1) %}
+    				<i>Brouillon enregistré {{ formatDateMessage(message.dateEnvoi) }}</i>
+    			{% elseif role == 'envoyes' or (role == 'corbeille' and message.expediteur.id == app.user.id) %}
+    				<i>Message envoyé à {{ message.destinataire.prenom }} {{ message.destinataire.nom }} {{ formatDateMessage(message.dateEnvoi) }}</i>
+    			{% else %}
+    				<i>Message envoyé par {{ message.expediteur.prenom }} {{ message.expediteur.nom }} {{ formatDateMessage(message.dateEnvoi) }}</i>
+    			{% endif  %}
     		</div>
   		</div>
   		<div class="card-body">
-  			Destinataire : {{ message.destinataire.prenom }} {{ message.destinataire.nom }}
-  			<br />
-    		{{ message.corps | raw | nl2br }}
+  			<div>
+  				<img src="/img/user_default_picture.gif" class="img-fluid float-left" />
+  				{% if message.expediteur.id == app.user.id %}
+  					De <i>[Brouillon]</i><br />
+  				{% else  %}
+  					De {{ message.expediteur.prenom }} {{ message.expediteur.nom }} &lsaquo;{{ message.expediteur.email }}&rsaquo; <br />
+  				{% endif %}
+  				<i>{{ message.titre }}</i> <br />
+  				<small>A {{ message.destinataire.prenom }} {{ message.destinataire.nom }} &lsaquo;{{ message.destinataire.email }}&rsaquo;</small>
+  			</div>
+  			<div class="clearfix"></div>
+  			Pièces-jointes : <a href="#"><span class="oi oi-paperclip"></span>Questionnaire-demo.xml</a> | <a href="#"><span class="oi oi-paperclip"></span>Questionnaire-demo.csv</a>
+  			<hr />
+  			<div class="corps">
+    		    {{ message.corps | raw }}
+    		</div>
   		</div>
 	</div>
 </div>

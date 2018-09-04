@@ -18,8 +18,8 @@ Icônes 'Iconic'
 Données
 ------------
 Attention, ce projet est fourni avec des jeux de données (Data-fixtures) dont certaines sont essentielles lors de la bascule en Production :
-- Informations liées au compte ADMIN
-- Groupe global de membres 'GLOBAL' obligatoire
+- Conserver le compte 'admin'
+- Conserver le groupe 'GLOBAL' dans la table groupe 
 
 
 Installation
