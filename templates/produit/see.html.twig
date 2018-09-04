@@ -22,12 +22,17 @@
     	</div>
     </div>
 
-	<div id="bloc_produit_lien">
-    	<div class="row">
-    		<div class="col-md-4 offset-md-4">
-    		</div>
-    	</div>
-    </div>
+	{% if is_granted("ROLE_ADMIN") %}
+    	<div id="bloc_produit_lien">
+        	<div class="row">
+        		<div class="col-md-4 offset-md-4">
+        		</div>
+        	</div>
+        </div>
+        
+        <div>extension de formulaire</div>
+        <div>questionnaire</div>
+    {% endif %}
     
     <!-- Modal -->
     <div class="modal fade" id="modal_produit_global" tabindex="-1" role="dialog">
@@ -35,9 +40,6 @@
     		<div class="modal-content" id="bloc_modal"></div>
     	</div>
     </div>
-    
-    <div>extension de formulaire</div>
-    <div>questionnaire</div>
 
 {% endblock %}
 
@@ -50,8 +52,11 @@
 
 {% block javascripts %}
     <script type="text/javascript">
-		
-    	$('#bloc_produit_lien').showLoading();
+        {% if is_granted("ROLE_ADMIN") %}
+        	$('#bloc_produit_lien').showLoading();
+        {% else %}
+        	$('#bloc_produit_temoignage').showLoading();
+        {% endif %}
     
         $(document).ready(function() {
     

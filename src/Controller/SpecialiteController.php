@@ -353,7 +353,7 @@ class SpecialiteController extends AppController
     }
 
     /**
-     * Mise à jour du dropdown Spécialité lorsque l'établissement change dans le formulaire d'ajout d'un membre ou d'un patient
+     * Mise à jour du dropdown Spécialité lorsque l'établissement change dans le formulaire d'ajout d'un membre
      *
      * @Route("/specialite/ajax/add/dropdown/{type}/{id}", name="specialite_ajax_add_dropdown", defaults={"id" = 0})
      * @ParamConverter("etablissement", options={"mapping": {"id": "id"}})

@@ -15,7 +15,7 @@ class EvenementController extends AppController
 {
 
     /**
-     * Tableau de types
+     * Tableau de types d'événements
      *
      * @var array
      */
@@ -28,7 +28,7 @@ class EvenementController extends AppController
     );
 
     /**
-     * Tableau de statuts
+     * Tableau de statuts d'événements
      *
      * @var array
      */
@@ -202,7 +202,7 @@ class EvenementController extends AppController
             }
 
             if ($form->isValid()) {
-                
+
                 $em = $this->getDoctrine()->getManager();
 
                 foreach ($evenement->getSpecialiteEvenements() as $specialiteEvenement) {
@@ -363,7 +363,7 @@ class EvenementController extends AppController
                 'page' => $page
             ));
         }
-        
+
         return $this->redirectToRoute('evenement_listing', array(
             'page' => $page,
             'field' => $arrayFilters['field'],

@@ -1,9 +1,7 @@
 	<div class="card shadow-sm">
          <div class="card-header bg-light">
            	<b>Etablissement :</b> {{ etablissement.nom }}
-           	{% if is_granted("ROLE_ADMIN") %}
-           		<br><b>Actif :</b> {{ etablissement.disabled | actif }}
-           	{% endif %}
+           	<br><b>Actif :</b> {{ etablissement.disabled | actif }}
            	<div class="float-right"> 
            	    {{ editObjet(path('etablissement_ajax_edit', {'id': etablissement.id }), "Editer l'établissement", "btn-edit-etablissement") | raw }}
            	    {{ deleteObjet(etablissement.disabled, path('etablissement_delete', {'id': etablissement.id, 'page' : 1 }), 'btn-disabled-etablissement') | raw }}

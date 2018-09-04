@@ -7,6 +7,7 @@
     <h1>Fiche de l'événement #{{ evenement.id }} - {{ evenement.nom }}</h1>
     
     {% include 'elements/arborescence.html.twig' %}
+    
     <div id="bloc_evenement">
     	<div class="row">
     		<div class="col-md-4 offset-md-4">
@@ -28,25 +29,24 @@
         		</div>
         	</div>
         </div>
-        
-    {% endif %}
+    	
+        <div id="bloc_evenement_historique">
+        	<div class="row">
+        		<div class="col-md-4 offset-md-4">
+        		</div>
+        	</div>
+        </div>
     
-    <div id="bloc_evenement_historique">
-    	<div class="row">
-    		<div class="col-md-4 offset-md-4">
-    		</div>
-    	</div>
-    </div>
+        <div>extension de formulaire</div>
+        <div>questionnaire</div>
+    {% endif %}
     
     <!-- Modal -->
     <div class="modal fade" id="modal_evenement_global" tabindex="-1" role="dialog">
-    	<div class="modal-dialog modal-lg" role="document">
+     	<div class="modal-dialog modal-lg" role="document">
     		<div class="modal-content" id="bloc_modal"></div>
     	</div>
     </div>
-    
-    <div>extension de formulaire</div>
-    <div>questionnaire</div>
 
 {% endblock %}
 
@@ -60,7 +60,11 @@
 {% block javascripts %}
     <script type="text/javascript">
 
-    $('#bloc_evenement_historique').showLoading();
+    {% if is_granted("ROLE_ADMIN") %}
+    	$('#bloc_evenement_historique').showLoading();
+    {% else %}
+    	$('#bloc_evenement_temoignage').showLoading();
+    {% endif %}
     
     $(document).ready(function() {
 
@@ -94,17 +98,17 @@
         
         	SpecialiteEvenement.Launch(paramsSE);
         	SpecialiteEvenement.LoadSpecialiteEvenement();
-    	{% endif %}
     	
-    	var paramsH = {
-				url_ajax_see : '{{path('historique_ajax_see', {'id': evenement.id, 'type': 'evenement'}) }}',
-				id_content_modal : '#bloc_modal',
-				id_modal : '#modal_evenement_global',
-				id_global : '#bloc_evenement_historique',
-		};
-        
-		Historique.Launch(paramsH);
-		Historique.LoadHistorique();
+        	var paramsH = {
+    				url_ajax_see : '{{path('historique_ajax_see', {'id': evenement.id, 'type': 'evenement'}) }}',
+    				id_content_modal : '#bloc_modal',
+    				id_modal : '#modal_evenement_global',
+    				id_global : '#bloc_evenement_historique',
+    		};
+            
+    		Historique.Launch(paramsH);
+    		Historique.LoadHistorique();
+		{% endif %}
     });
     
     </script>
