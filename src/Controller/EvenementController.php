@@ -15,7 +15,7 @@ class EvenementController extends AppController
 {
 
     /**
-     * Tableau de types
+     * Tableau de types d'événements
      *
      * @var array
      */
@@ -28,7 +28,7 @@ class EvenementController extends AppController
     );
 
     /**
-     * Tableau de statuts
+     * Tableau de statuts d'événements
      *
      * @var array
      */

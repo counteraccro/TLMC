@@ -97,7 +97,7 @@
         			</td>
         			<td>
         			    {{ actionSee(path('temoignage_see', {'id' : temoignage.id, 'page' : pagination.page, 'type': type})) | raw }}
-        				{% if is_granted("ROLE_ADMIN") or is_granted("ROLE_BENEFICIAIRE_DIRECT") or is_granted("ROLE_BENEFICIAIRE") %}
+        				{% if is_granted("ROLE_ADMIN") %}
         					{{ actionEdit(path('temoignage_edit', {'id' : temoignage.id, 'page' : pagination.page, 'type': type})) | raw }}
             				{{ actionDelete(temoignage.disabled, path('temoignage_delete', {'id' : temoignage.id, 'page' : pagination.page, 'type': type})) | raw }}
             			{% endif %}
