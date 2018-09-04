@@ -23,7 +23,7 @@
                 	<table  class="table table-sm">
                     	<tr>
                     		<th scope="col"> Date</th>
-                    		<td> {{ evenement.dateDebut | date('d/m/Y H:i') }} - {{ evenement.dateFin | date('d/m/Y H:i') }} </td>
+                    		<td> {{ horaire(evenement.dateDebut, evenement.dateFin) }} </td>
                     	</tr>
                     	<tr>
                     		<th scope="col"> Description </th>
