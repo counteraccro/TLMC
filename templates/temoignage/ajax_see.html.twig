@@ -1,41 +1,39 @@
 <div id="ajax_temoignage_see">
     <div class="card">
         <div class="card-header">
-        	<b>Témoignage</b>
+        	<b>
+        	    {% if temoignage.evenement != null %}
+            		{{ temoignage.evenement.nom }}
+            	{% elseif temoignage.produit != null %}
+            	    {{ temoignage.produit.titre }}
+            	{% endif %}
+           	</b> : {{ temoignage.titre }}
         	{% if is_granted("ROLE_ADMIN") %} 
         	     rédigé par {{ temoignage.membre.prenom }} {{ temoignage.membre.nom }}
         	     <br><b>Actif :</b> {{ temoignage.disabled | actif }}
         	{% endif %}
-        	<div class="float-right">
-        		{{ editObjet(path('temoignage_ajax_edit', {'id': temoignage.id, 'type':'temoignage' }), "Editer le témoignage", "btn-edit-temoignage") | raw }}
-        		{% if is_granted("ROLE_ADMIN") %}
-        		    {{ deleteObjet(temoignage.disabled, path('temoignage_delete', {'id': temoignage.id, 'page' : 1 }), 'btn-disabled-temoignage') | raw }}
-        		{% endif %}
-        	</div>
+        	
+        	{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')%}
+            	<div class="float-right">
+            		{{ editObjet(path('temoignage_ajax_edit', {'id': temoignage.id, 'type':'temoignage' }), "Editer le témoignage", "btn-edit-temoignage") | raw }}
+            		{% if is_granted("ROLE_ADMIN") %}
+            		    {{ deleteObjet(temoignage.disabled, path('temoignage_delete', {'id': temoignage.id, 'page' : 1 }), 'btn-disabled-temoignage') | raw }}
+            		{% endif %}
+        		</div>
+        	{% endif %}
         </div>
         
         <div class="card-body">
         	<blockquote class="blockquote">
         		<p class="mb-0">{{ temoignage.corps }}</p>
-                <footer class="blockquote-footer">
-                   	{% if temoignage.famille != null %}
+        		{% if temoignage.famille != null %}
+                	<p class="blockquote-footer">
                    		{{ temoignage.famille.prenom }}, 
                    		{{ temoignage.famille.lienFamille | lienParente }} de {{ temoignage.famille.patient.prenom }}, 
                    		{{ temoignage.famille.patient.dateNaissance | age }} ans, 
-                   		{{ temoignage.famille.familleAdresse.ville }},
-                   		à propos de l'événement 
-                   	{% else %}
-                   		Témoignage concernant
-                   	{% endif %}
-                   	
-        			{% if temoignage.evenement != null %}
-        				l'événement 
-        				<cite title="Evénement"> {{ temoignage.evenement.nom }} </cite>
-            	    {% elseif temoignage.produit != null %}
-            	    	le produit
-                		<cite title="Produit"> {{ temoignage.produit.titre }} </cite>
-            	    {% endif %}
-                </footer>
+                   		{{ temoignage.famille.familleAdresse.ville }}
+                	</p>
+                {% endif %}
         	</blockquote>
      	</div>
     </div>
