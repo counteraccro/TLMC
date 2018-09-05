@@ -1,6 +1,6 @@
 <div id="ajax_historique_patient">
 	<div class="form-group">
-    	<label for="historique_patient">Témoin</label> 
+    	<label for="historique_patient">Patient</label> 
         <select id="historique_patient" name="historique[patient]" class="form-control">
             {%  for patient in patients %}
             	<option value="{{ patient.id }}">{{ patient.prenom }} {{ patient.nom }}</option>
