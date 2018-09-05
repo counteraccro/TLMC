@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controller;
 
 use Symfony\Component\Routing\Annotation\Route;
@@ -10,22 +9,24 @@ use App\Entity\Groupe;
 
 class GroupeController extends AppController
 {
+
     /**
+     *
      * @Route("/groupe", name="groupe")
      */
     public function index()
     {
         $repository = $this->getDoctrine()->getRepository(Groupe::class);
-        
+
         $groupes = $repository->findAll();
-        
+
         return $this->render('groupe/index.html.twig', [
             'controller_name' => 'GroupeController',
             'groupes' => $groupes
         ]);
     }
-    
-     /**
+
+    /**
      * Récupère la liste des groupes de l'utilisateur courant
      *
      * @Route("/groupe/ajax/listegroupes", name="groupe_ajax_listegroupes")
@@ -33,12 +34,7 @@ class GroupeController extends AppController
      */
     public function ajaxListeGroupesAction()
     {
-        $repository = $this->getDoctrine()->getRepository(Groupe::class);
-        $listeGroupes = $repository->findByUser($this->getUser()->getId());
-        
-        return $this->json(array(
-            'listeGroupes' => $listeGroupes
-        ));
+        return $this->render('groupe/ajax_listegroupes.html.twig', []);
     }
 }
    
