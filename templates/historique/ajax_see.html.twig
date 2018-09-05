@@ -3,7 +3,7 @@
         <div class="card-header">
         	Historique
         	<div class="float-right"> 
-        		{% if (is_granted("ROLE_ADMIN") or is_granted("ROLE_BENEFICIAIRE_DIRECT") or is_granted("ROLE_BENEFICIAIRE")) and type == 'evenement' %}
+        		{% if (is_granted("ROLE_ADMIN") or is_granted("ROLE_BENEFICIAIRE_DIRECT")) and (type == 'evenement' or type == 'patient' or type == 'specialite') %}
            	   		<a href="{{ path('historique_ajax_add', {'id' : objet.id, 'type': type}) }}" id="btn-add-historique" class="float-right"><span class="oi oi-people"></span> Ajouter des participants</a>
            	   	{% endif %}
            	</div>

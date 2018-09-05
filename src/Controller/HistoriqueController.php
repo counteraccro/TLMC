@@ -88,8 +88,7 @@ class HistoriqueController extends AppController
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      *
      * @param int $id
-     * @param
-     *            string type
+     * @param string type
      * @param int $page
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -177,8 +176,7 @@ class HistoriqueController extends AppController
      *
      * @param SessionInterface $session
      * @param Request $request
-     * @param
-     *            int page
+     * @param int page
      * @param int $id
      * @param string $type
      * @return \Symfony\Component\HttpFoundation\Response
@@ -201,6 +199,16 @@ class HistoriqueController extends AppController
                         'id' => $id
                     ));
 
+                    //sélection uniquement des événements proposés à la spécialité
+                    $opt_form['query_evenement'] = $this->getDoctrine()
+                    ->getRepository(Evenement::class)
+                    ->createQueryBuilder('event')
+                    ->join('event.specialiteEvenements', 'SE')
+                    ->andWhere('SE.specialite = :specialite')
+                    ->setParameter('specialite', $id)
+                    ->andWhere('event.disabled = 0')
+                    ->orderBy('event.nom', 'ASC');
+                    
                     $opt_form['disabled_specialite'] = true;
 
                     $historique->setSpecialite($objet);
@@ -233,9 +241,21 @@ class HistoriqueController extends AppController
                         'id' => $id
                     ));
 
+                    //sélection uniquement des événements proposés à la spécialité
+                    $opt_form['query_evenement'] = $this->getDoctrine()
+                    ->getRepository(Evenement::class)
+                    ->createQueryBuilder('event')
+                    ->join('event.specialiteEvenements', 'SE')
+                    ->andWhere('SE.specialite = :specialite')
+                    ->setParameter('specialite', $objet->getSpecialite())
+                    ->andWhere('event.disabled = 0')
+                    ->orderBy('event.nom', 'ASC');
+                    
+                    $opt_form['disabled_specialite'] = true;
                     $opt_form['disabled_patient'] = true;
 
                     $historique->setPatient($objet);
+                    $historique->setSpecialite($objet->getSpecialite());
                     break;
                 case 'membre':
                     $objet = $this->getMembre();
