@@ -2,19 +2,19 @@ Etablissement = {};
 
 Etablissement.Launch = function(params){
 
-	//url de la fiche questionnaire
+	//url de la fiche établissement
 	Etablissement.url_ajax_see = params.url_ajax_see;
-	//cible la div '#bloc_questionnaire'
+	//cible la div où est affiché les infos de l'établissement
 	Etablissement.id_global = params.id_global;
 	//cible la div '#bloc_modal'
 	Etablissement.id_modal = params.id_modal;
-	
+	//cible la div avec le contenu de la modale
 	Etablissement.id_content_modal = params.id_content_modal;
 	
 	Etablissement.id_container_global = '#container-global';
 
 	/**
-	 * fonction prévue pour le chargement des familles du etablissement, paramètres url et id
+	 * fonction prévue pour le chargement des informations de l'etablissement, paramètres url et id
 	 */
 	Etablissement.LoadEtablissement = function()
 	{
@@ -38,7 +38,7 @@ Etablissement.Launch = function(params){
 	}
 
 	/**
-	 * Etablissement global
+	 * Action effectuée lorsque le bouton id est utilisé
 	 */
 	Etablissement.EventEdit = function(id)
 	{

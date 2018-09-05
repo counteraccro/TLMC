@@ -3,9 +3,9 @@ Temoignage = {};
 
 Temoignage.Launch = function(params) {
 	
-	//url de la fiche membre
+	//url de la fiche des infos du témoignage ou de la liste des témoignages
 	Temoignage.url_ajax_see = params.url_ajax_see;
-	//cible la div '#bloc_membre_temoignage'
+	//cible la div où sont donnés les informations sur le témoignages ou la liste des témoignages d'un produit ou d'un événement
 	Temoignage.id_global = params.id_global;
 	//cible la div '#bloc_modal'
 	Temoignage.id_modal = params.id_modal;
@@ -32,7 +32,7 @@ Temoignage.Launch = function(params) {
 	}
 	
 	/**
-	 * Fonction prévue pour le chargement des témoignages du membre, paramètres url et id
+	 * Fonction prévue pour le chargement des témoignages du membre, d'un produit ou d'un événement, paramètres url et id
 	 */
 	Temoignage.LoadTemoignage = function()
 	{
@@ -40,7 +40,7 @@ Temoignage.Launch = function(params) {
 	}
 	
 	/**
-	 * Evenement ajout d'un témoignage
+	 * Evénement ajout d'un témoignage
 	 */
 	Temoignage.EventAdd = function(id)
 	{

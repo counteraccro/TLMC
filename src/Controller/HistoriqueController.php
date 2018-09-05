@@ -4,16 +4,16 @@ namespace App\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Historique;
 use App\Entity\Specialite;
 use App\Entity\Evenement;
 use App\Entity\Patient;
-use App\Form\HistoriqueType;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Entity\Membre;
 use App\Entity\Participant;
 use App\Entity\Famille;
+use App\Form\HistoriqueType;
 
 class HistoriqueController extends AppController
 {
@@ -42,7 +42,7 @@ class HistoriqueController extends AppController
         }
 
         $params = array(
-            'field' => 'Historique' . $field,
+            'field' => $field,
             'order' => $order,
             'page' => $page,
             'repositoryClass' => Historique::class,

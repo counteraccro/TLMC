@@ -2,19 +2,19 @@ Evenement = {};
 
 Evenement.Launch = function(params){
 
-	//url de la fiche questionnaire
+	//url de la fiche événement
 	Evenement.url_ajax_see = params.url_ajax_see;
-	//cible la div '#bloc_questionnaire'
+	//cible la div donnant les informations de l'événement
 	Evenement.id_global = params.id_global;
 	//cible la div '#bloc_modal'
 	Evenement.id_modal = params.id_modal;
-	
+	// cible la div avec le contenu de la modale
 	Evenement.id_content_modal = params.id_content_modal;
 	
 	Evenement.id_container_global = '#container-global';
 
 	/**
-	 * fonction prévue pour le chargement des familles du evenement, paramètres url et id
+	 * fonction prévue pour le chargement des infos de l'evenement, paramètres url et id
 	 */
 	Evenement.LoadEvenement = function()
 	{
@@ -38,11 +38,11 @@ Evenement.Launch = function(params){
 	}
 
 	/**
-	 * Evenement global
+	 * Action effectuée lorsque le bouton id est utilisé
 	 */
 	Evenement.EventEdit = function(id)
 	{
-		// Event sur le bouton edit d'un Evenement
+		// Event sur le bouton edit d'un Evénement
 		$(id).click(function() {
 			//on passe l'url et l'id_done
 			
@@ -76,7 +76,6 @@ Evenement.Launch = function(params){
 				
 				if(reponse.statut === true)
 				{
-					console.log('DAC');
 					$(Evenement.id_modal).modal('hide');
 					Evenement.Ajax(Evenement.url_ajax_see, Evenement.id_global);
 				}

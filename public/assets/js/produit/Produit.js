@@ -2,19 +2,19 @@ Produit = {};
 
 Produit.Launch = function(params){
 
-	//url de la fiche questionnaire
+	//url de la fiche produit
 	Produit.url_ajax_see = params.url_ajax_see;
-	//cible la div '#bloc_questionnaire'
+	//cible la div donnant les informations du produit
 	Produit.id_global = params.id_global;
 	//cible la div '#bloc_modal'
 	Produit.id_modal = params.id_modal;
-	
+	//cible la div avec le contenu de la modale
 	Produit.id_content_modal = params.id_content_modal;
 	
 	Produit.id_container_global = '#container-global';
 
 	/**
-	 * fonction prévue pour le chargement des familles du Produit, paramètres url et id
+	 * fonction prévue pour le chargement des infos du Produit, paramètres url et id
 	 */
 	Produit.LoadProduit = function()
 	{
@@ -38,7 +38,7 @@ Produit.Launch = function(params){
 	}
 
 	/**
-	 * Evenement global
+	 * Action effectuée lorsque le bouton id est utilisé
 	 */
 	Produit.EventEdit = function(id)
 	{
@@ -88,7 +88,7 @@ Produit.Launch = function(params){
 	}
 	
 	/**
-	 * désactivation d'un produit au click
+	 * désactivation d'un produit au click ou suppression de l'image
 	 */
 	Produit.EventDelete = function(id, url)
 	{

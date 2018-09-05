@@ -3,15 +3,15 @@ Famille = {};
 
 Famille.Launch = function(params) {
 
-	//url de la fiche patient
+	//url de la fiche patient, de la famille ou 
 	Famille.url_ajax_see = params.url_ajax_see;
-	//cible la div '#bloc_patient_famille'
+	//cible la div où sont affichés la listes des familles ou les informations de la famille
 	Famille.id_global = params.id_global;
 	//cible la div '#bloc_modal'
 	Famille.id_modal = params.id_modal;
 	//cible la div '#id_famille'
 	Famille.id_famille = params.id_famille;
-	//cible la div '#temoignage_evenement'
+	//cible le select patient ou événement qui permait de filtrer la liste des familles
 	Famille.id_dropdown = params.id_dropdown;
 
 	Famille.id_content_modal = params.id_content_modal;
@@ -52,7 +52,7 @@ Famille.Launch = function(params) {
 	}
 	
 	/**
-	 * Evénement changement du select établissement ou du sélect patient
+	 * Evénement changement du select établissement ou du select patient
 	 */
 	Famille.EventChange = function(id)
 	{

@@ -1,3 +1,4 @@
+//objet JS pour les historiques
 Historique = {};
 
 Historique.Launch = function(params){
@@ -53,7 +54,7 @@ Historique.Launch = function(params){
 	}
 	
 	/**
-	 * Fonction intervenant au moment de la soumission du formulaire Ajax d'édition
+	 * Fonction intervenant au moment de la soumission du formulaire Ajax d'ajout
 	 */
 	Historique.EventAddSubmit = function(url)
 	{
