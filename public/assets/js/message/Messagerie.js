@@ -47,7 +47,7 @@ Messagerie.Launch = function(params){
 				lu = false;
 			}
 
-			// Touche ctrl apuyée
+			// Touche ctrl appuyée
 			if(event.ctrlKey)
 			{
 				$(id_global + ' .list-group a.list-group-item').each(function() {
@@ -77,7 +77,7 @@ Messagerie.Launch = function(params){
 				$(id_global + ' #select-all').children('span').removeClass().addClass('oi oi-arrow-thick-top');
 				$(id_global + ' #select-all').tooltip('hide').attr('data-original-title', 'Tout désélectionner');
 			}
-			// Simple click
+			// Simple clic
 			else
 			{
 				$(id_global + ' .list-group a.list-group-item').each(function() {
@@ -235,6 +235,9 @@ Messagerie.Launch = function(params){
 			return false;
 		});
 
+		/**
+		 * Evenement au clic sur nouveau message/brouillon
+		 */
 		$(id_global + ' #new-message').click(function() {
 			
 			Messagerie.popin.html('');
@@ -296,6 +299,9 @@ Messagerie.Launch = function(params){
 		});
 	}
 
+	/**
+	 * Fonction permettant les suggestions par autocomplétion (destinataires d'un message)
+	 */
 	Messagerie.AutoComplete = function(url_json)
 	{
 		url_json = url_json.substring(1,url_json.length);
@@ -398,7 +404,7 @@ Messagerie.Launch = function(params){
 	}
 
 	/**
-	 * 
+	 * fonction relative à l'enregistrement du nouveau message à son initialisation puis toutes les 20secondes
 	 */
 	Messagerie.SaveBrouillon = function(corps, page = 0)
 	{

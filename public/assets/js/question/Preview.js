@@ -59,7 +59,7 @@ Preview.Launch = function(params) {
 
 			for (var i in Preview.json_liste_val)
 			{
-				// Cercher meilleur moyens de trouver la dernière clée en JSON
+				// Chercher meilleur moyens de trouver la dernière clée en JSON
 			}
 
 			if (isNaN(i))

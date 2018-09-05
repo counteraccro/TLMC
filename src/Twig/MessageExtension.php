@@ -72,8 +72,7 @@ class MessageExtension extends AbstractExtension
     /**
      * Formate une date (affichage différent : Aujourd'hui, hier, il y a une heure...)
      *
-     * @param int $date
-     *            au format timestamp
+     * @param int $date au format timestamp
      * @return string
      */
     function formatDate($date)

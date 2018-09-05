@@ -234,7 +234,7 @@ Questionnaire.Launch = function(params) {
 			
 	    }
 
-		//Gestion des accents (exporter dans AppController ?)
+		//Gestion des accents
 		String.prototype.sansAccent = function(){
 			var accent = [
 				/[\300-\306]/g, /[\340-\346]/g, // A, a
@@ -299,6 +299,9 @@ Questionnaire.Launch = function(params) {
 		});
 	}
 
+	/**
+	 * action activation/désactivation d'un questionnaire (bouton sur fiche questionnaire)
+	 */
 	Questionnaire.EventDisabled = function(id)
 	{
 		$(id).click(function(event) 

@@ -230,7 +230,7 @@ class MembreController extends AppController
     }
 
     /**
-     * Edition d'un membre
+     * Edition de la fiche d'un membre
      *
      * @Route("/membre/ajax/edit_fiche/{id}", name="membre_ajax_edit_fiche")
      * @ParamConverter("membre", options={"mapping": {"id": "id"}})
@@ -423,7 +423,8 @@ class MembreController extends AppController
     }
 
     /**
-     * Fonction
+     * Fonction permettant la suggestion de destinataires d'un message (autocomplétion)
+     * Gestion de l'homonymie (récupération des IDs plutôt que des prénoms/noms) et affichage de la fonction du membre si homonymes existants 
      *
      * @Route("/membre/ajax/autocomplete", name="membre_ajax_autocomplete")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
