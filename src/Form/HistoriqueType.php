@@ -87,7 +87,7 @@ class HistoriqueType extends AbstractType
                     ->join('s.etablissement', 'e')
                     ->andWhere('s.disabled = 0')
                     ->orderBy('e.nom', 'ASC')
-                    ->addOrderBy('s.service');
+                    ->addOrderBy('s.service', 'ASC');
             },
             'avec_patient' => true,
             'disabled_patient' => false,

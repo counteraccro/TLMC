@@ -12,10 +12,6 @@ use App\Entity\Patient;
 use App\Form\HistoriqueType;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Entity\Membre;
-use Symfony\Component\Serializer\Encoder\XmlEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Serializer;
 use App\Entity\Participant;
 use App\Entity\Famille;
 
@@ -46,7 +42,7 @@ class HistoriqueController extends AppController
         }
 
         $params = array(
-            'field' => 'Historique'.$field,
+            'field' => 'Historique' . $field,
             'order' => $order,
             'page' => $page,
             'repositoryClass' => Historique::class,
@@ -215,6 +211,18 @@ class HistoriqueController extends AppController
                         'id' => $id
                     ));
 
+                    //sélection uniquement des spécialité dans lesquelles l'événement est proposé
+                    $opt_form['query_specialite'] = $this->getDoctrine()
+                        ->getRepository(Specialite::class)
+                        ->createQueryBuilder('s')
+                        ->join('s.etablissement', 'e')
+                        ->join('s.specialiteEvenements', 'SE')
+                        ->andWhere('SE.evenement = :evenement')
+                        ->setParameter('evenement', $id)
+                        ->andWhere('s.disabled = 0')
+                        ->orderBy('e.nom', 'ASC')
+                        ->addOrderBy('s.service', 'ASC');
+
                     $opt_form['disabled_evenement'] = true;
 
                     $historique->setEvenement($objet);
@@ -241,23 +249,48 @@ class HistoriqueController extends AppController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            
+
             $em = $this->getDoctrine()->getManager();
 
-            foreach ($request->request->get('familles') as $famille_id){
+            foreach ($request->request->get('familles') as $famille_id) {
                 $participant = new Participant();
-                $famille = $this->getDoctrine()->getRepository(Famille::class)->findOneBy(array('id' => $famille_id));
-                
+                $famille = $this->getDoctrine()
+                    ->getRepository(Famille::class)
+                    ->findOneBy(array(
+                    'id' => $famille_id
+                ));
+
                 $participant->setDate(new \DateTime());
-                $participant->setEvenement($historique->getEvenement());
-                $participant->setPatient($historique->getPatient());
-                $participant->setFamille($famille);
-                $participant->setStatut(1);
-                $em->persist($participant);
+
+                $participants = $this->getDoctrine()
+                    ->getRepository(Participant::class)
+                    ->findBy(array(
+                    'famille' => $famille,
+                    'evenement' => $historique->getEvenement()
+                ));
+
+                if (count($participants) == 0) {
+                    $participant->setEvenement($historique->getEvenement());
+                    $participant->setPatient($historique->getPatient());
+                    $participant->setFamille($famille);
+                    $participant->setStatut(1);
+                    $em->persist($participant);
+                }
             }
-            
-            $historique->setDate(new \DateTime());
-            $em->persist($historique);
+
+            $historiques = $this->getDoctrine()
+                ->getRepository(Historique::class)
+                ->findBy(array(
+                'patient' => $historique->getPatient(),
+                'evenement' => $historique->getEvenement(),
+                'specialite' => $historique->getSpecialite()
+            ));
+
+            if (count($historiques) == 0) {
+                $historique->setDate(new \DateTime());
+                $em->persist($historique);
+            }
+
             $em->flush();
 
             if ($request->isXmlHttpRequest()) {
@@ -270,7 +303,7 @@ class HistoriqueController extends AppController
         }
 
         if ($request->isXmlHttpRequest()) {
-            
+
             return $this->render('historique/ajax_add.html.twig', array(
                 'form' => $form->createView(),
                 'objet' => $objet,
@@ -296,7 +329,7 @@ class HistoriqueController extends AppController
     }
 
     /**
-     * Edition d'un témoignage
+     * Edition d'un historique
      *
      * @Route("/historique/edit/{id}/{page}", name="historique_edit")
      * @Route("/historique/ajax/edit/{id}/{objet_id}/{type}", name="historique_ajax_edit")
@@ -326,7 +359,7 @@ class HistoriqueController extends AppController
                     $objet = $repository->findOneBy(array(
                         'id' => $objet_id
                     ));
-
+                    
                     $opt_form['disabled_evenement'] = true;
                     break;
                 case 'specialite':

@@ -8,6 +8,10 @@ Patient.Launch = function(params){
 	Patient.id_global = params.id_global;
 	//cible la div '#bloc_modal'
 	Patient.id_modal = params.id_modal;
+	//cible la div '#id_famille'
+	Patient.id_patient = params.id_patient;
+	//cible la div '#temoignage_evenement'
+	Patient.id_dropdown = params.id_dropdown;
 	
 	Patient.id_content_modal = params.id_content_modal;
 	
@@ -33,10 +37,36 @@ Patient.Launch = function(params){
 		.done(function( html ) {
 			$(id_done).html(html)
 			$(Patient.id_container_global).hideLoading();
+			$(Patient.id_patient).hideLoading();
 		});
 		
 	}
 
+	/**
+	 * fonction prévue pour le chargement d'un dropdown des patients d'une spécialité
+	 */
+	Patient.LoadPatientOnChange = function()
+	{
+		Patient.Ajax(Patient.url_ajax_see + '/' + $(Patient.id_dropdown).val(), Patient.id_patient);
+	}
+	
+	/**
+	 * Evénement changement du select établissement ou du sélect patient
+	 */
+	Patient.EventChange = function(id)
+	{
+		$(Patient.id_dropdown).change(function(){
+			event.preventDefault();
+			//désactivation du bouton de sauvegarde pour éviter les erreurs
+			$(id).prop('disabled', true);
+			//affichage du loader
+			$(Patient.id_patient).showLoading();
+			//chargement du dropdown
+			Patient.LoadPatientOnChange();
+			
+		});
+	}
+	
 	/**
 	 * Evenement global
 	 */

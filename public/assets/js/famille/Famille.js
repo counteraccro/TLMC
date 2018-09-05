@@ -12,7 +12,7 @@ Famille.Launch = function(params) {
 	//cible la div '#id_famille'
 	Famille.id_famille = params.id_famille;
 	//cible la div '#temoignage_evenement'
-	Famille.id_bloc_evenement = params.id_bloc_evenement;
+	Famille.id_dropdown = params.id_dropdown;
 
 	Famille.id_content_modal = params.id_content_modal;
 
@@ -44,19 +44,19 @@ Famille.Launch = function(params) {
 	}
 
 	/**
-	 * fonction prévue pour le chargement d'un dropdown des spécialités d'un établissement
+	 * fonction prévue pour le chargement d'un dropdown des familles paarticipant à un événement ou de l'affichage des familles d'un patient
 	 */
 	Famille.LoadFamilleOnChange = function()
 	{
-		Famille.Ajax(Famille.url_ajax_see + '/' + $(Famille.id_bloc_evenement).val(), Famille.id_famille);
+		Famille.Ajax(Famille.url_ajax_see + '/' + $(Famille.id_dropdown).val(), Famille.id_famille);
 	}
 	
 	/**
-	 * Evénement changement du select établissement
+	 * Evénement changement du select établissement ou du sélect patient
 	 */
 	Famille.EventChange = function(id)
 	{
-		$(Famille.id_bloc_evenement).change(function(){
+		$(Famille.id_dropdown).change(function(){
 			event.preventDefault();
 			//désactivation du bouton de sauvegarde pour éviter les erreurs
 			$(id).prop('disabled', true);

@@ -1,0 +1,28 @@
+<div id="ajax_historique_patient">
+	<div class="form-group">
+    	<label for="historique_patient">Témoin</label> 
+        <select id="historique_patient" name="historique[patient]" class="form-control">
+            {%  for patient in patients %}
+            	<option value="{{ patient.id }}">{{ patient.prenom }} {{ patient.nom }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
+
+{% block javascripts %}
+    <script type="text/javascript">
+
+        var paramsF = {
+    			url_ajax_see : '{{ path('famille_ajax_liste') }}',
+    			id_famille : '#bloc_familles',
+    			id_dropdown : '#historique_patient'
+    	};
+    	
+    	Famille.Launch(paramsF);
+    	$('#bloc_familles').showLoading();
+    	Famille.LoadFamilleOnChange();
+    	Famille.EventChange('#historique_save');
+    	
+    	$('#historique_save').prop('disabled', false);
+    </script>
+{% endblock %}

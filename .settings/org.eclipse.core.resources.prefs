@@ -66,6 +66,7 @@ encoding//templates/message/index.html.twig=UTF-8
 encoding//templates/message_lu/index.html.twig=UTF-8
 encoding//templates/patient=UTF-8
 encoding//templates/patient/add.html.twig=UTF-8
+encoding//templates/patient/ajax_dropdown.html.twig=UTF-8
 encoding//templates/patient/ajax_edit.html.twig=UTF-8
 encoding//templates/patient/ajax_see.html.twig=UTF-8
 encoding//templates/patient/ajax_see_liste.html.twig=UTF-8

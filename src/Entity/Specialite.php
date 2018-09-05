@@ -56,6 +56,7 @@ class Specialite
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Patient", mappedBy="specialite")
+     * @ORM\OrderBy({"nom" = "ASC", "prenom" = "ASC"})
      */
     private $patients;
     

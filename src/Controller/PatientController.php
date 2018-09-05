@@ -391,4 +391,25 @@ class PatientController extends AppController
             'order' => $arrayFilters['order']
         ));
     }
+    
+    /**
+     * Mise à jour du dropdown Patient lorsque la spécialité change dans le formulaire d'ajout d'un historique
+     *
+     * @Route("/patient/ajax/add/dropdown/{id}", name="patient_ajax_add_dropdown", defaults={"id" = 0})
+     * @ParamConverter("specialite", options={"mapping": {"id": "id"}})
+     * Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
+     *
+     * @param Request $request
+     * @param Specialite $specialite
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function addAjaxDropdownAction(Request $request, Specialite $specialite = null)
+    {
+        
+        $patients = $specialite->getPatients();
+        
+        return $this->render('patient/ajax_dropdown.html.twig', array(
+            'patients' => $patients
+        ));
+    }
 }
