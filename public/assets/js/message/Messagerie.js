@@ -7,6 +7,8 @@ Messagerie.Launch = function(params){
 	Messagerie.urlBrouillons = params.urlBrouillons;
 	Messagerie.urlCorbeille = params.urlCorbeille;
 	Messagerie.urlEnvoyes = params.urlEnvoyes;
+	Messagerie.urlGroupes = params.urlGroupes;
+	
 
 	Messagerie.element_navPills = $('#messagerie-block #v-pills-messagerie .nav-link');
 	Messagerie.globale_content_pills = $('#messagerie-block #v-pills-tabContent');
@@ -14,6 +16,7 @@ Messagerie.Launch = function(params){
 	Messagerie.element_navPills_content_brouillons = $('#messagerie-block #v-pills-brouillons');
 	Messagerie.element_navPills_content_corbeille = $('#messagerie-block #v-pills-corbeille');
 	Messagerie.element_navPills_content_envoyes = $('#messagerie-block #v-pills-envoyes');
+	Messagerie.element_navPills_content_groupes = $('#messagerie-block #v-pills-groupes');
 
 	Messagerie.global_content_bloc_message = $('#messagerie-block #bloc_view_message');
 	Messagerie.popin = $('#messagerie-block #modal_message_global #bloc_modal');
@@ -433,6 +436,10 @@ Messagerie.Launch = function(params){
 		case 'envoyes':
 			url = Messagerie.urlEnvoyes;
 			content = Messagerie.element_navPills_content_envoyes;
+			break;
+		case 'groupes':
+			url = Messagerie.urlGroupes;
+			content = Messagerie.element_navPills_content_groupes;
 			break;
 
 

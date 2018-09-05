@@ -37,6 +37,7 @@ encoding//templates/famille_adresse/ajax_see.html.twig=UTF-8
 encoding//templates/famille_adresse/edit.html.twig=UTF-8
 encoding//templates/famille_adresse/index.html.twig=UTF-8
 encoding//templates/famille_adresse/see.html.twig=UTF-8
+encoding//templates/groupe/ajax_listegroupes.html.twig=UTF-8
 encoding//templates/groupe/index.html.twig=UTF-8
 encoding//templates/historique/add.html.twig=UTF-8
 encoding//templates/historique/ajax_add.html.twig=UTF-8
