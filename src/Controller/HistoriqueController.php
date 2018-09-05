@@ -199,16 +199,16 @@ class HistoriqueController extends AppController
                         'id' => $id
                     ));
 
-                    //sélection uniquement des événements proposés à la spécialité
+                    // sélection uniquement des événements proposés à la spécialité
                     $opt_form['query_evenement'] = $this->getDoctrine()
-                    ->getRepository(Evenement::class)
-                    ->createQueryBuilder('event')
-                    ->join('event.specialiteEvenements', 'SE')
-                    ->andWhere('SE.specialite = :specialite')
-                    ->setParameter('specialite', $id)
-                    ->andWhere('event.disabled = 0')
-                    ->orderBy('event.nom', 'ASC');
-                    
+                        ->getRepository(Evenement::class)
+                        ->createQueryBuilder('event')
+                        ->join('event.specialiteEvenements', 'SE')
+                        ->andWhere('SE.specialite = :specialite')
+                        ->setParameter('specialite', $id)
+                        ->andWhere('event.disabled = 0')
+                        ->orderBy('event.nom', 'ASC');
+
                     $opt_form['disabled_specialite'] = true;
 
                     $historique->setSpecialite($objet);
@@ -219,7 +219,7 @@ class HistoriqueController extends AppController
                         'id' => $id
                     ));
 
-                    //sélection uniquement des spécialité dans lesquelles l'événement est proposé
+                    // sélection uniquement des spécialité dans lesquelles l'événement est proposé
                     $opt_form['query_specialite'] = $this->getDoctrine()
                         ->getRepository(Specialite::class)
                         ->createQueryBuilder('s')
@@ -241,16 +241,16 @@ class HistoriqueController extends AppController
                         'id' => $id
                     ));
 
-                    //sélection uniquement des événements proposés à la spécialité
+                    // sélection uniquement des événements proposés à la spécialité
                     $opt_form['query_evenement'] = $this->getDoctrine()
-                    ->getRepository(Evenement::class)
-                    ->createQueryBuilder('event')
-                    ->join('event.specialiteEvenements', 'SE')
-                    ->andWhere('SE.specialite = :specialite')
-                    ->setParameter('specialite', $objet->getSpecialite())
-                    ->andWhere('event.disabled = 0')
-                    ->orderBy('event.nom', 'ASC');
-                    
+                        ->getRepository(Evenement::class)
+                        ->createQueryBuilder('event')
+                        ->join('event.specialiteEvenements', 'SE')
+                        ->andWhere('SE.specialite = :specialite')
+                        ->setParameter('specialite', $objet->getSpecialite())
+                        ->andWhere('event.disabled = 0')
+                        ->orderBy('event.nom', 'ASC');
+
                     $opt_form['disabled_specialite'] = true;
                     $opt_form['disabled_patient'] = true;
 
@@ -272,29 +272,33 @@ class HistoriqueController extends AppController
 
             $em = $this->getDoctrine()->getManager();
 
-            foreach ($request->request->get('familles') as $famille_id) {
-                $participant = new Participant();
-                $famille = $this->getDoctrine()
+            $familles = $request->request->get('familles');
+            
+            if(is_array($familles)){
+                foreach ($familles as $famille_id) {
+                    $participant = new Participant();
+                    $famille = $this->getDoctrine()
                     ->getRepository(Famille::class)
                     ->findOneBy(array(
-                    'id' => $famille_id
-                ));
-
-                $participant->setDate(new \DateTime());
-
-                $participants = $this->getDoctrine()
+                        'id' => $famille_id
+                    ));
+                    
+                    $participant->setDate(new \DateTime());
+                    
+                    $participants = $this->getDoctrine()
                     ->getRepository(Participant::class)
                     ->findBy(array(
-                    'famille' => $famille,
-                    'evenement' => $historique->getEvenement()
-                ));
-
-                if (count($participants) == 0) {
-                    $participant->setEvenement($historique->getEvenement());
-                    $participant->setPatient($historique->getPatient());
-                    $participant->setFamille($famille);
-                    $participant->setStatut(1);
-                    $em->persist($participant);
+                        'famille' => $famille,
+                        'evenement' => $historique->getEvenement()
+                    ));
+                    
+                    if (count($participants) == 0) {
+                        $participant->setEvenement($historique->getEvenement());
+                        $participant->setPatient($historique->getPatient());
+                        $participant->setFamille($famille);
+                        $participant->setStatut(1);
+                        $em->persist($participant);
+                    }
                 }
             }
 
@@ -379,7 +383,7 @@ class HistoriqueController extends AppController
                     $objet = $repository->findOneBy(array(
                         'id' => $objet_id
                     ));
-                    
+
                     $opt_form['disabled_evenement'] = true;
                     break;
                 case 'specialite':

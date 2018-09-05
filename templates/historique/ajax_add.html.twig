@@ -50,15 +50,27 @@
 		var url = '{{path('historique_ajax_add', {'id': objet.id, 'type':type }) }}';
 		Historique.EventAddSubmit(url);
 
-		var paramsP = {
-				url_ajax_see : '{{ path('patient_ajax_add_dropdown') }}',
-				id_patient : '#bloc_patients',
-				id_dropdown : '#historique_specialite'
-		};
-    	
-		Patient.Launch(paramsP);
-		Patient.LoadPatientOnChange();
-		Patient.EventChange('#historique_save');
+		{% if type != 'patient' %}
+    		var paramsP = {
+    				url_ajax_see : '{{ path('patient_ajax_add_dropdown') }}',
+    				id_patient : '#bloc_patients',
+    				id_dropdown : '#historique_specialite'
+    		};
+        	
+    		Patient.Launch(paramsP);
+    		Patient.LoadPatientOnChange();
+    		Patient.EventChange('#historique_save');
+    	{% else %}
+        	var paramsF = {
+        			url_ajax_see : '{{ path('famille_ajax_liste') }}',
+        			id_famille : '#bloc_familles',
+        			id_dropdown : '#historique_patient'
+        	};
+        	
+        	Famille.Launch(paramsF);
+        	$('#bloc_familles').showLoading();
+        	Famille.LoadFamilleOnChange();
+		{% endif %}
 		
 	</script>
 {% endblock %}
