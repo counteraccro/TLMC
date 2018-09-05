@@ -89,7 +89,7 @@ Evenement.Launch = function(params){
 	}
 	
 	/**
-	 * désactivation d'un événement au click
+	 * désactivation d'un événement au click ou suppression de l'image
 	 */
 	Evenement.EventDelete = function(id, url)
 	{

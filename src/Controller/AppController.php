@@ -389,7 +389,7 @@ class AppController extends Controller
     }
 
     /**
-     * Spurrimer une image
+     * Supprimer une image
      *
      * @Route("/utils/delete_image/{type}/{id}", name="image_delete")
      *
@@ -403,17 +403,25 @@ class AppController extends Controller
         switch ($type) {
             case 'produit':
                 $repository = $this->getDoctrine()->getRepository(Produit::class);
+                $methodeGet = 'getImage';
+                $methodeSet = 'setImage';
                 break;
             case 'evenement':
                 $repository = $this->getDoctrine()->getRepository(Evenement::class);
+                $methodeGet = 'getImage';
+                $methodeSet = 'setImage';
+                break;
+            case 'membre':
+                $repository = $this->getDoctrine()->getRepository(Membre::class);
+                $methodeGet = 'getAvatar';
+                $methodeSet = 'setAvatar';
                 break;
         }
 
         if (isset($repository)) {
-            $objets = $repository->findById($id);
-            $objet = $objets[0];
+            $objet = $repository->findOneBy(array('id' => $id));
 
-            $image = $objet->getImage();
+            $image = $objet->{$methodeGet}();
             $directory = $this->getParameter('pictures_directory') . $type;
 
             $directory = str_replace("\\", "/", $directory);
@@ -421,7 +429,7 @@ class AppController extends Controller
             if (! preg_match("/^(http|https)/", $image) && file_exists($directory . '/' . $image)) {
                 unlink($directory . '/' . $image);
             }
-            $objet->setImage(NULL);
+            $objet->{$methodeSet}(NULL);
             $entityManager = $this->getDoctrine()->getManager();
 
             $entityManager->persist($objet);

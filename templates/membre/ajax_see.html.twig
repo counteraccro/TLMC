@@ -10,6 +10,7 @@
          <div class="card-body">
          	<div class="row align-items-center">
              	<div class="col-md-2">
+             	    {{ deleteImage(path('image_delete', {'id': membre.id, 'type' : 'membre' }), 'btn-delete-avatar') | raw }}
     	            {{ image('membre', membre.avatar) | raw }}
     	        </div>
 				<div class="col-md-10">
@@ -70,6 +71,9 @@
 
         var id_btn_delete_membre = '#btn-disabled-membre';
         Membre.EventDelete(id_btn_delete_membre);
+
+        var id_btn_delete_avatar = '#btn-delete-avatar';
+        Evenement.EventDelete(id_btn_delete_avatar);
     });
     
     </script> 
