@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * Définition des filtres et fonctions en rapport avec la spécialité
+ */
 namespace App\Twig;
 
 use Twig\Extension\AbstractExtension;
@@ -29,6 +31,12 @@ class SpecialiteExtension extends AbstractExtension
         );
     }
 
+    /**
+     * Renvoie les informations d'une spécialité sous la forme d'une chaine de caractères
+     * 
+     * @param Specialite $specialite
+     * @return string
+     */
     public function getInfoSpecialitePopUp(Specialite $specialite)
     {
         $return = '';

@@ -1,6 +1,6 @@
 <?php
 /**
- * Création de filtre pour les données d'un événement
+ * Création de filtres pour les données d'un produit
  */
 namespace App\Twig;
 
@@ -21,9 +21,9 @@ class ProduitExtension extends AbstractExtension
     
     public function getFunctions(): array
     {
-        return [
-            new TwigFunction('function_name', [$this, 'doSomething']),
-        ];
+        return array(
+            new TwigFunction('function_name', array($this, 'doSomething')),
+        );
     }
     
     /**

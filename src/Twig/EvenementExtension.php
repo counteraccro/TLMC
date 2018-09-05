@@ -62,7 +62,7 @@ class EvenementExtension extends AbstractExtension
     }
     
     /**
-     * Affichage des horraires d'un événement
+     * Affichage des horaires d'un événement
      *
      * @param \DateTime $date_naissance
      * @return number

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Affichage d'une popup
+ */
 namespace App\Twig;
 
 use Twig\Extension\AbstractExtension;
@@ -27,7 +30,14 @@ class PopupExtension extends AbstractExtension
             ))
         );
     }
-
+    
+    /**
+     * Affichage d'une popup (l'ajout de javascript est nécessaire)
+     * 
+     * @param string $texte
+     * @param string $titre
+     * @return string
+     */
     public function getPopup(string $texte, string $titre = null)
     {
         $return = '<a tabindex="0" role="button" data-toggle="popover" data-html="true" data-trigger="hover" ' . (!is_null($titre) ? 'title="' . $titre . '"' : '') .' data-content="' . $texte . '"><span class="oi oi-info"></span></a>';
