@@ -1,10 +1,25 @@
 <div id="ajax_historique_see">
     <div class="card">
         <div class="card-header">
-        	Historique
+        	{% if type == 'evenement' %}
+        		Participants
+        	{% elseif type == 'membre' %}	
+        		Historiques des participations aux événements des patients
+        	{% elseif type == 'specialite' %}
+        		Historique des événements et des participations
+        	{% elseif type == 'patient' %}
+        		Evénements auxquels le patient a participé
+        	{% endif %}
         	<div class="float-right"> 
-        		{% if (is_granted("ROLE_ADMIN") or is_granted("ROLE_BENEFICIAIRE_DIRECT")) and (type == 'evenement' or type == 'patient' or type == 'specialite') %}
-           	   		<a href="{{ path('historique_ajax_add', {'id' : objet.id, 'type': type}) }}" id="btn-add-historique" class="float-right"><span class="oi oi-people"></span> Ajouter des participants</a>
+        		{% if is_granted("ROLE_ADMIN") or is_granted("ROLE_BENEFICIAIRE_DIRECT")%}
+           	   		
+           	   		{% if type == 'evenement' %}
+           	   			<a href="{{ path('historique_ajax_add', {'id' : objet.id, 'type': type}) }}" id="btn-add-historique" class="float-right"><span class="oi oi-people"></span> Ajouter des participants</a>
+           	   		{% elseif type == 'patient' %}
+           	   			<a href="{{ path('historique_ajax_add', {'id' : objet.id, 'type': type}) }}" id="btn-add-historique" class="float-right"><span class="oi oi-calendar"></span> Ajouter des événements</a>
+           	   		{% elseif type == 'specialite' %}
+           	   			<a href="{{ path('historique_ajax_add', {'id' : objet.id, 'type': type}) }}" id="btn-add-historique" class="float-right"><span class="oi oi-people"></span> Ajouter la participation d'un patient à un événement</a>
+           	   		{% endif %}
            	   	{% endif %}
            	</div>
         </div>
@@ -52,16 +67,15 @@
         	</table>
         	
         	{% if historiques is empty %}
-            	<p class="text-info text-center">Il  n'y a aucun historique pour 
-            	
-        	    {% if type == 'membre' or type == 'patient' %}
-            		ce {{ type }}.</p>
-            	{% elseif type == 'specialite' %}
-            		pour cette spécialité.</p>
-            	{% elseif type == 'evenement' %}
-            		pour cet événement.</p>
-            	{% endif %}
-            	
+            	<p class="text-info text-center">
+                	{% if type == 'membre' or type == 'patient' %}
+                		Il  n'y a aucun historique pour ce {{ type }}.
+                	{% elseif type == 'specialite' %}
+                		Il  n'y a aucun historique pour cette spécialité.
+                	{% elseif type == 'evenement' %}
+                		il n'y a aucun participant pour cet événement.
+                	{% endif %}
+            	</p>
             {% endif %}
      	</div>
      	

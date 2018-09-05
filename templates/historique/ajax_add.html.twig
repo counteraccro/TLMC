@@ -2,13 +2,12 @@
 	{{ form_start(form) }}
 	<div class="modal-header">
 		<h5 class="modal-title">
-			Ajout d'un historique pour 
 			{% if type == 'evenement' %}
-				l'événement {{ objet.nom }}
+				Ajouter des participants l'événement {{ objet.nom }}
 			{% elseif type == 'specialite' %}
-				la spécialité {{ objet.service }}
-			{% elseif type == 'patient' or type == 'membre' %}
-				le {{ type }} #{{ objet.id  }} {{ objet.prenom }} {{ objet.nom }}
+				Ajouter la participation d'un patient à un événement pour la spécialité {{ objet.service }}
+			{% elseif type == 'patient' %}
+				Ajouter des événements le {{ type }} #{{ objet.id  }} {{ objet.prenom }} {{ objet.nom }}
 			{% endif %}
 		</h5>
 		<button type="button" class="close" data-dismiss="modal"
