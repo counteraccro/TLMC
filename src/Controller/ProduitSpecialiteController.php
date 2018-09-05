@@ -24,7 +24,7 @@ class ProduitSpecialiteController extends AppController
     }
 
     /**
-     * Bloc produit - spécialité dans la vue d'un produit
+     * Bloc produit - spécialité dans la vue d'un produit ou d'une spécialité
      *
      * @Route("/produit_specialite/ajax/see/{id}/{type}/{page}", name="produit_specialite_ajax_see")
      * @Security("is_granted('ROLE_ADMIN')")

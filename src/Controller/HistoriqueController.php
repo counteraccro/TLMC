@@ -82,7 +82,7 @@ class HistoriqueController extends AppController
     }
 
     /**
-     * Bloc historique
+     * Bloc historique d'une spécialité / d'un membre / d'un événement / d'un patient
      *
      * @Route("/historique/ajax/see/{id}/{type}/{page}", name="historique_ajax_see")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
@@ -168,7 +168,7 @@ class HistoriqueController extends AppController
     }
 
     /**
-     * Ajout d'une nouvel historique
+     * Ajout d'une nouvel historique + de participants
      *
      * @Route("/historique/add/{id}/{page}", name="historique_add")
      * @Route("/historique/ajax/add/{id}/{type}", name="historique_ajax_add")
@@ -275,6 +275,7 @@ class HistoriqueController extends AppController
             $familles = $request->request->get('familles');
             
             if(is_array($familles)){
+                //ajout de données dans la table participant
                 foreach ($familles as $famille_id) {
                     $participant = new Participant();
                     $famille = $this->getDoctrine()
@@ -285,6 +286,7 @@ class HistoriqueController extends AppController
                     
                     $participant->setDate(new \DateTime());
                     
+                    //vérification pour éviter les doublons dans la table participant
                     $participants = $this->getDoctrine()
                     ->getRepository(Participant::class)
                     ->findBy(array(
@@ -302,6 +304,7 @@ class HistoriqueController extends AppController
                 }
             }
 
+            //vérification pour éviter les doublons dans la table historique
             $historiques = $this->getDoctrine()
                 ->getRepository(Historique::class)
                 ->findBy(array(

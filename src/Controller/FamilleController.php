@@ -200,6 +200,7 @@ class FamilleController extends AppController
      * @param SessionInterface $session
      * @param Request $request
      * @param int $page
+     * @param int $id
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function addAction(SessionInterface $session, Request $request, int $page = 1, int $id = null)
@@ -391,6 +392,7 @@ class FamilleController extends AppController
      * @ParamConverter("famille", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
      *
+     * @param Request $request
      * @param SessionInterface $session
      * @param Famille $famille
      * @param int $page
@@ -433,11 +435,10 @@ class FamilleController extends AppController
      * @ParamConverter("evenement", options={"mapping": {"id": "id"}})
      * Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      *
-     * @param Request $request
      * @param Evenement $evenement
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function addAjaxDropdownAction(Request $request, Evenement $evenement = null)
+    public function addAjaxDropdownAction(Evenement $evenement = null)
     {
         
         $repository = $this->getDoctrine()->getRepository(Famille::class);

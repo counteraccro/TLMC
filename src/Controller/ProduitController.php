@@ -9,12 +9,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Form\ProduitType;
 use Symfony\Component\Form\FormError;
+use App\Entity\ProduitEtablissement;
+use App\Entity\ProduitSpecialite;
 
 class ProduitController extends AppController
 {
 
     /**
-     * Tableau de types
+     * Tableau de types de produit
      *
      * @var array
      */
@@ -24,7 +26,7 @@ class ProduitController extends AppController
     );
 
     /**
-     * Tableau de genre
+     * Tableau de genre du produit
      *
      * @var array
      */
@@ -35,7 +37,8 @@ class ProduitController extends AppController
     );
 
     /**
-     * Listing des produits
+     * Listing des produits. Pour un membre non administrateur, 
+     * seul les produits actifs liés à l'établissement ou à la spécialité du membre sont affichés
      *
      * @Route("/produit/listing/{page}/{field}/{order}", name="produit_listing", defaults={"page" = 1, "field"= null, "order"= null})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')  or is_granted('ROLE_BENEVOLE')")
@@ -140,17 +143,29 @@ class ProduitController extends AppController
         // Si appel Ajax, on renvoi sur la page ajax
         if ($request->isXmlHttpRequest()) {
 
+            //si le membre n'est pas admin, on affiche le nombre de produit disponible dans sa spécialité
             if ($this->isAdmin()) {
                 $admin = true;
             } else {
                 $admin = false;
+                
+                $membre = $this->getMembre();
+                $etablissement = $membre->getEtablissement();
+                $specialite = $membre->getSpecialite();
+                
+                if (is_null($specialite)) {
+                    $repository = $this->getDoctrine()->getRepository(ProduitEtablissement::class);
+                    $lien = $repository->findOneBy(array('produit' => $produit, 'etablissement' => $etablissement));
+                } else {
+                    $repository = $this->getDoctrine()->getRepository(ProduitSpecialite::class);
+                    $lien = $repository->findOneBy(array('produit' => $produit, 'specialite' => $specialite));
+                }
             }
-            $infoSup = $this->getInfoSupProduit($produit, $admin);
 
             return $this->render('produit/ajax_see.html.twig', array(
                 'produit' => $produit,
                 'admin' => $admin,
-                'infoSup' => $infoSup
+                'quantite' => ($admin ? 0 : $lien->getQuantite())
             ));
         }
 
@@ -201,6 +216,7 @@ class ProduitController extends AppController
                 $form->addError(new FormError('La somme des quantités de produits envoyés est supérieure à la quantité de produit'));
             } else {
 
+                //traitement de l'image
                 $file = $form['image']->getData();
                 if (! is_null($file)) {
                     $fileName = $this->telechargerImage($file, 'produit', $produit->getTitre());
@@ -280,9 +296,11 @@ class ProduitController extends AppController
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
+            //vérification du nombre de produits
             if ($this->totalProduitsEnvoyes($produit) > $produit->getQuantite()) {
                 $form->addError(new FormError('La somme des quantités de produits envoyés est supérieure à la quantité de produit'));
             } elseif (! $request->isXmlHttpRequest()) {
+                //traitement de l'image
                 if (is_null($produit->getImage()) && ! is_null($image)) {
                     $produit->setImage($image);
                 } else {
@@ -393,7 +411,7 @@ class ProduitController extends AppController
     }
 
     /**
-     * Edition d'un produit
+     * Affichage des établissements et des spécialités dans lesquels sont proposés le produit
      *
      * @Route("/produit/lien/ajax/see/{id}/{page}", name="produit_lien_ajax_see")
      * @ParamConverter("produit", options={"mapping": {"id": "id"}})

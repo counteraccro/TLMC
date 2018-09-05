@@ -130,7 +130,7 @@ class TemoignageController extends AppController
      * @param SessionInterface $session
      * @param Temoignage $temoignage
      * @param int $page
-     *
+     * @param string $type
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function seeAction(Request $request, SessionInterface $session, Temoignage $temoignage, int $page = 1, string $type = 'tous')
