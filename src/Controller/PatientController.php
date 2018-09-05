@@ -16,7 +16,8 @@ class PatientController extends AppController
 {
 
     /**
-     * Listing des patients
+     * Listing des patients. Pour les membres non admins,
+     * les patients affichés sont les patients de la spécialité du membre connecté
      *
      * @Route("/patient/listing/{page}/{field}/{order}", name="patient_listing", defaults={"page" = 1, "field"= null, "order"= null})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")

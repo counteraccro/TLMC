@@ -18,7 +18,7 @@ Patient.Launch = function(params){
 	Patient.id_container_global = '#container-global';
 
 	/**
-	 * fonction prévue pour le chargement des familles du patient, paramètres url et id
+	 * fonction prévue pour le chargement des infos du patient, paramètres url et id
 	 */
 	Patient.LoadPatient = function()
 	{
@@ -51,7 +51,7 @@ Patient.Launch = function(params){
 	}
 	
 	/**
-	 * Evénement changement du select établissement ou du sélect patient
+	 * Evénement changement du select spécialité 
 	 */
 	Patient.EventChange = function(id)
 	{
@@ -68,7 +68,7 @@ Patient.Launch = function(params){
 	}
 	
 	/**
-	 * Evenement global
+	 * Evenement sur le bouton édition d'un patient (id)
 	 */
 	Patient.EventEdit = function(id)
 	{

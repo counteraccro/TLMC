@@ -14,7 +14,7 @@ class SpecialiteEvenementController extends AppController
 {
 
     /**
-     * Tableau de statut
+     * Tableau de statut des liens spécialité-événement
      *
      * @var array
      */
@@ -25,7 +25,7 @@ class SpecialiteEvenementController extends AppController
     );
 
     /**
-     *
+     * 
      * @Route("/specialite_evenement", name="specialite_evenement")
      */
     public function index()
@@ -36,7 +36,7 @@ class SpecialiteEvenementController extends AppController
     }
 
     /**
-     * Bloc spécialité - événement dans la vue d'un événement
+     * Bloc spécialité dans la vue d'un événement ou Bloc événement dans la vue d'une spécialité
      *
      * @Route("/specialite_evenement/ajax/see/{id}/{type}/{page}", name="specialite_evenement_ajax_see")
      * @Security("is_granted('ROLE_ADMIN')")

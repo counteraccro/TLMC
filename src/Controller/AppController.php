@@ -112,6 +112,10 @@ class AppController extends Controller
         'ROLE_BENEVOLE' => 'Bénévole'
     );
 
+    /**
+     * Tableau des différentes tranche d'âge
+     * @var array
+     */
     const TRANCHE_AGE = array(
         0 => 'Tout âge',
         1 => '0-3 ans',
@@ -204,7 +208,9 @@ class AppController extends Controller
      *            [repositoryClass] => repository (classe) concerné
      *            [repositoryMethode] => méthode à utiliser dans le repository
      *            [page] => indication pour la pagination
+     *            [jointure] => tableau des jointures supplémentaires à faire
      *            [condition] => tableau contenant les filtres supplémentaires
+     *            [ajax] => booléen, pour savoir si la requête est une requête ajax
      * @return array @return liste des résultats de la recherche
      */
     public function genericSearch(Request $request, SessionInterface $session, array $params)
@@ -297,36 +303,6 @@ class AppController extends Controller
     }
 
     /**
-     * Récupération des éléments liés et actifs pour un objet
-     *
-     * @param
-     *            $objet
-     * @param string $methode
-     * @return array
-     */
-    public function getElementsLiesActifs($objet, $methode)
-    {
-        $admin = $this->isAdmin();
-
-        if (method_exists($objet, $methode)) {
-
-            if (! $admin) {
-                $elements = array();
-                foreach ($objet->{$methode}() as $element) {
-                    if ($element->getDisabled() == 0) {
-                        $elements[] = $element;
-                    }
-                }
-            } else {
-                $elements = $objet->{$methode}();
-            }
-        } else {
-            $elements = array();
-        }
-        return $elements;
-    }
-
-    /**
      * Télécharge une image et retourne le nom de l'image téléchargée
      *
      * @param UploadedFile $file
@@ -389,7 +365,7 @@ class AppController extends Controller
     }
 
     /**
-     * Supprimer une image
+     * Supprime une image
      *
      * @Route("/utils/delete_image/{type}/{id}", name="image_delete")
      *
@@ -445,7 +421,7 @@ class AppController extends Controller
     }
 
     /**
-     * Retourne le nombre total de produits envoyés dans les différents établissments et les spécialités
+     * Retourne le nombre total de produits envoyés dans les différents établissements et les spécialités
      *
      * @param Produit $produit
      * @return int
@@ -463,40 +439,5 @@ class AppController extends Controller
         }
 
         return $somme;
-    }
-
-    /**
-     * 
-     * @param Produit $produit
-     * @param bool $admin
-     * @return array []
-     *          [date] => date du lien
-     *          [quantite] => nombre de produit
-     */
-    public function getInfoSupProduit(Produit $produit, bool $admin)
-    {
-        $membre = $this->getMembre();
-        $etablissement = $membre->getEtablissement();
-        $specialite = $membre->getSpecialite();
-        
-        if($admin){
-            return array(
-                'date' => new \DateTime(),
-                'quantite' => 0
-            );
-        }
-        
-        if (is_null($specialite)) {
-            $repository = $this->getDoctrine()->getRepository(ProduitEtablissement::class);
-            $lien = $repository->findOneBy(array('produit' => $produit, 'etablissement' => $etablissement));
-        } else {
-            $repository = $this->getDoctrine()->getRepository(ProduitSpecialite::class);
-            $lien = $repository->findOneBy(array('produit' => $produit, 'specialite' => $specialite));
-        }
-        
-        return array(
-            'date' => $lien->getDate(),
-            'quantite' => $lien->getQuantite()
-        );
     }
 }

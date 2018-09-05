@@ -124,6 +124,7 @@ class SpecialiteController extends AppController
      * @param SessionInterface $session
      * @param Request $request
      * @param int $page
+     * @param int $id
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function addAction(SessionInterface $session, Request $request, int $page = 1, int $id = null)
@@ -205,6 +206,7 @@ class SpecialiteController extends AppController
      * @param Request $request
      * @param Specialite $specialite
      * @param int $page
+     * @param string $type
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function editAction(SessionInterface $session, Request $request, Specialite $specialite, int $page = 1, string $type = null)
@@ -272,6 +274,7 @@ class SpecialiteController extends AppController
      * @ParamConverter("specialite", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
      *
+     * @param Request $request
      * @param SessionInterface $session
      * @param Specialite $specialite
      * @param int $page

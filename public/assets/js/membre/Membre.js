@@ -14,7 +14,7 @@ Membre.Launch = function(params){
 	Membre.id_container_global = '#container-global';
 
 	/**
-	 * fonction prévue pour le chargement des familles du membre, paramètres url et id
+	 * fonction prévue pour le chargement des infos du membre, paramètres url et id
 	 */
 	Membre.LoadMembre = function()
 	{
@@ -38,7 +38,7 @@ Membre.Launch = function(params){
 	}
 
 	/**
-	 * Evenement global
+	 * Action effectuée lorsque le bouton id est utilisé
 	 */
 	Membre.EventEdit = function(id)
 	{
@@ -88,7 +88,7 @@ Membre.Launch = function(params){
 	}
 	
 	/**
-	 * désactivation d'un membre au click
+	 * désactivation d'un membre au click ou suppression de l'avatar
 	 */
 	Membre.EventDelete = function(id, url)
 	{

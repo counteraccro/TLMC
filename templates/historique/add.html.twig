@@ -13,11 +13,34 @@
         
         {{ form_row(form.evenement) }}
 	    {{ form_row(form.specialite) }}
-		{{ form_row(form.patient) }}
+		<div id="bloc_patients">{{ form_row(form.patient) }}</div>
+		
+		<div id="bloc_familles"></div>
         
         {{ form_rest(form) }}
         {{ form_errors(form) }}
         {{ form_end(form) }}
     </div>
 	  
+{% endblock %}
+
+{% block script %}
+	<script src="{{ asset('assets/js/famille/Famille.js') }}?{{ date().timestamp }}"></script>
+ 	<script src="{{ asset('assets/js/patient/Patient.js') }}?{{ date().timestamp }}"></script>
+{% endblock %}
+
+{% block javascripts %}
+	<script type="text/javascript">
+
+		var paramsP = {
+    			url_ajax_see : '{{ path('patient_ajax_add_dropdown') }}',
+    			id_patient : '#bloc_patients',
+    			id_dropdown : '#historique_specialite'
+    	};
+
+		Patient.Launch(paramsP);
+    	Patient.LoadPatientOnChange();
+    	Patient.EventChange('#historique_save');
+		
+	</script>
 {% endblock %}

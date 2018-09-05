@@ -17,7 +17,8 @@ class TemoignageController extends AppController
 {
 
     /**
-     * Listing des témoiganges
+     * Listing des témoignages. Pour un membre non administrateur, 
+     * seul les témoignages actifs concernant des produits ou des événements liés à l'établissement ou à la spécialité du membre sont affichés
      *
      * @Route("/temoignage/listing/{type}/{page}/{field}/{order}", name="temoignage_listing", defaults={"page" = 1, "type"="tous", "field"= null, "order"= null})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT') or is_granted('ROLE_BENEVOLE')")
@@ -129,7 +130,7 @@ class TemoignageController extends AppController
      * @param SessionInterface $session
      * @param Temoignage $temoignage
      * @param int $page
-     *
+     * @param string $type
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function seeAction(Request $request, SessionInterface $session, Temoignage $temoignage, int $page = 1, string $type = 'tous')
@@ -164,7 +165,7 @@ class TemoignageController extends AppController
     }
 
     /**
-     * Bloc témoignage d'un membre / d'un événement / d'un produit
+     * Bloc témoignage d'un membre ou d'un événement ou d'un produit, pour les non admins, affichage des témoignages actifs
      *
      * @Route("/temoignage/ajax/see/listing/{id}/{type}/{page}", name="temoignage_ajax_see_liste")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT') or is_granted('ROLE_BENEVOLE')")
@@ -231,7 +232,7 @@ class TemoignageController extends AppController
     }
 
     /**
-     * Ajout d'une nouveau témoignage
+     * Ajout d'une nouveau témoignage depuis la liste des témoignages ou la fiche d'un produit ou d'un événement
      *
      * @Route("/temoignage/add/{page}/{type}", name="temoignage_add")
      * @Route("/temoignage/ajax/add/{id}/{type}", name="temoignage_ajax_add")
@@ -500,7 +501,7 @@ class TemoignageController extends AppController
         if ($request->isXmlHttpRequest()) {
             return $this->json(array(
                 'statut' => true,
-                'page' => $page
+                'page' => $page 
             ));
         }
 

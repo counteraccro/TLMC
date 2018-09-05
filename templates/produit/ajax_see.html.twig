@@ -46,18 +46,13 @@
                 	</tr>
                 	<tr>
                 		<th scope="col"> Quantité </th>
-                		<td> {% if admin == true %} {{ produit.quantite }} {% else %} {{ infoSup.quantite }} {% endif %}</td>
+                		<td> {% if admin == true %} {{ produit.quantite }} {% else %} {{ quantite }} {% endif %}</td>
                 	</tr>
                 	<tr>
                 		<th scope="col">Date d'envoi </th>
                 		<td> {{ produit.dateEnvoi | date('d/m/Y H:i') }} </td>
                 	</tr>
-                	{% if admin == false %}
-                    	<tr>
-                    		<th scope="col"> Date de réception </th>
-                    		<td> {{ infoSup.date | date('d/m/Y H:i') }} </td>
-                    	</tr>
-                    {% else %}
+                	{% if admin == true %}
                     	<tr>
                     		<th scope="col"> Date de création </th>
                     		<td> {{ produit.dateCreation | date('d/m/Y H:i') }} </td>

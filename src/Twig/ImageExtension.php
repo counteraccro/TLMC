@@ -31,7 +31,7 @@ class ImageExtension extends AbstractExtension
     }
 
     /**
-     * Affichage d'une image pour un événement ou un produit ou un membre
+     * Affichage d'une image pour un événement, un produit ou un membre
      *
      * @param string $element
      * @param string $image

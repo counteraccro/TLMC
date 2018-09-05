@@ -3,9 +3,9 @@ SpecialiteEvenement = {};
 
 SpecialiteEvenement.Launch = function(params) {
 
-	//url de la fiche événement
+	//url de la fiche événement ou spécialité
 	SpecialiteEvenement.url_ajax_see = params.url_ajax_see;
-	//cible la div '#bloc_evenement_specialite'
+	//cible la div '#bloc_evenement_specialite' ou '#bloc_specialite_evenement'
 	SpecialiteEvenement.id_global = params.id_global;
 	//cible la div '#bloc_evenement_global'
 	SpecialiteEvenement.id_modal = params.id_modal;

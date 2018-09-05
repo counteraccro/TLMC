@@ -8,7 +8,7 @@ use App\Entity\Participant;
 class ParticipantController extends AppController
 {
     /**
-     * Tableau des statuts
+     * Tableau des statuts des participants
      *
      * @var array
      */

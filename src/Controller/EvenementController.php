@@ -40,7 +40,8 @@ class EvenementController extends AppController
     );
 
     /**
-     * Listing des événements
+     * Listing des événements. Pour un membre non administrateur, 
+     * seul les événements actifs liés à la spécialité du membre sont affichés
      *
      * @Route("/evenement/listing/{page}/{field}/{order}", name="evenement_listing", defaults={"page" = 1, "field"= null, "order"= null})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT') or is_granted('ROLE_BENEVOLE')")
@@ -191,6 +192,7 @@ class EvenementController extends AppController
 
         if ($form->isSubmitted()) {
 
+            //téléchargement de l'image
             $file = $form['image']->getData();
             if (! is_null($file)) {
                 $fileName = $this->telechargerImage($file, 'evenement', $evenement->getNom());
@@ -262,6 +264,7 @@ class EvenementController extends AppController
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
+            //traitement de l'image
             if (! $request->isXmlHttpRequest()) {
                 if (is_null($evenement->getImage()) && ! is_null($image)) {
                     $evenement->setImage($image);

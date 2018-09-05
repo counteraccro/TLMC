@@ -34,6 +34,7 @@ class MembreExtension extends AbstractExtension
 
     /**
      * Donne les droits correspondants
+     * 
      * @param int $key
      * @return int|string
      */
