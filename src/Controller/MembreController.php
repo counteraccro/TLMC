@@ -12,6 +12,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Entity\Questionnaire;
 use App\Entity\Groupe;
 use App\Entity\GroupeMembre;
+use Symfony\Component\Form\FormError;
 
 class MembreController extends AppController
 {
@@ -139,7 +140,7 @@ class MembreController extends AppController
 
         $repository = $this->getDoctrine()->getRepository(Questionnaire::class);
         $reponses = $repository->findByMembreReponses($membre->getId());
-        
+
         return $this->render('membre/see_fiche.html.twig', array(
             'membre' => $membre,
             'paths' => array(
@@ -171,27 +172,44 @@ class MembreController extends AppController
         $form = $this->createForm(MembreType::class, $membre);
 
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted()) {
 
-            $em = $this->getDoctrine()->getManager();
+            $file = $form['avatar']->getData();
+            if (! is_null($file)) {
+                $fileName = $this->telechargerImage($file, 'membre', $membre->getPrenom() . '-' . $membre->getNom());
+                if ($fileName) {
+                    $membre->setAvatar($fileName);
+                } else {
+                    $form->addError(new FormError("Le fichier n'est pas au format autorisé (jpg, jpeg,png)."));
+                }
+            }
 
-            $groupe = $this->getDoctrine()->getRepository(Groupe::class)->findOneBy(array('nom' => self::GROUPE_GLOBAL));
-            
-            $groupe_membre = new GroupeMembre();
-            $groupe_membre->setDate(new \DateTime());
-            $groupe_membre->setGroupe($groupe);
-            $groupe_membre->setMembre($membre);
-            $em->persist($groupe_membre);
-            
-            $membre->setDisabled(0);
-            $membre->setSalt($this->generateSalt());
+            if ($form->isValid()) {
 
-            $encodePassword = $encoder->encodePassword($membre, $membre->getPassword());
-            $membre->setPassword($encodePassword);
-            $em->persist($membre);
-            $em->flush();
+                $em = $this->getDoctrine()->getManager();
 
-            return $this->redirect($this->generateUrl('membre_listing'));
+                $groupe = $this->getDoctrine()
+                    ->getRepository(Groupe::class)
+                    ->findOneBy(array(
+                    'nom' => self::GROUPE_GLOBAL
+                ));
+
+                $groupe_membre = new GroupeMembre();
+                $groupe_membre->setDate(new \DateTime());
+                $groupe_membre->setGroupe($groupe);
+                $groupe_membre->setMembre($membre);
+                $em->persist($groupe_membre);
+
+                $membre->setDisabled(0);
+                $membre->setSalt($this->generateSalt());
+
+                $encodePassword = $encoder->encodePassword($membre, $membre->getPassword());
+                $membre->setPassword($encodePassword);
+                $em->persist($membre);
+                $em->flush();
+
+                return $this->redirect($this->generateUrl('membre_listing'));
+            }
         }
 
         return $this->render('membre/add.html.twig', array(
@@ -280,38 +298,57 @@ class MembreController extends AppController
     {
         $arrayFilters = $this->getDatasFilter($session);
 
+        $avatar = $membre->getAvatar();
+
         $form = $this->createForm(MembreType::class, $membre, array(
-            'edit' => true
+            'edit' => true,
+            'ajax' => ($request->isXmlHttpRequest() ? true : false)
         ));
         $password = $membre->getPassword();
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $em = $this->getDoctrine()->getManager();
-
-            if ($membre->getPassword() == 'password') {
-                $membre->setPassword($password);
-            } else {
-                $encodePassword = $encoder->encodePassword($membre, $membre->getPassword());
-                $membre->setPassword($encodePassword);
+        if ($form->isSubmitted()) {
+            if (! $request->isXmlHttpRequest()) {
+                if (is_null($membre->getAvatar()) && ! is_null($avatar)) {
+                    $membre->setAvatar($avatar);
+                } else {
+                    $file = $request->files->get('membre')['avatar'];
+                    $fileName = $this->telechargerImage($file, 'membre', $membre->getPrenom() . '-' . $membre->getNom(), $avatar);
+                    if ($fileName) {
+                        $membre->setAvatar($fileName);
+                    } else {
+                        $form->addError(new FormError("Le fichier n'est pas au format autorisé (jpg, jpeg,png)."));
+                    }
+                }
             }
 
-            $em->persist($membre);
-            $em->flush();
+            if ($form->isValid()) {
 
-            if ($request->isXmlHttpRequest()) {
-                return $this->json(array(
-                    'statut' => true
-                ));
+                $em = $this->getDoctrine()->getManager();
+
+                if ($membre->getPassword() == 'password') {
+                    $membre->setPassword($password);
+                } else {
+                    $encodePassword = $encoder->encodePassword($membre, $membre->getPassword());
+                    $membre->setPassword($encodePassword);
+                }
+
+                $em->persist($membre);
+                $em->flush();
+
+                if ($request->isXmlHttpRequest()) {
+                    return $this->json(array(
+                        'statut' => true
+                    ));
+                }
+
+                return $this->redirect($this->generateUrl('membre_listing', array(
+                    'page' => $page,
+                    'field' => $arrayFilters['field'],
+                    'order' => $arrayFilters['order']
+                )));
             }
-
-            return $this->redirect($this->generateUrl('membre_listing', array(
-                'page' => $page,
-                'field' => $arrayFilters['field'],
-                'order' => $arrayFilters['order']
-            )));
         }
 
         // Si appel Ajax, on renvoi sur la page ajax

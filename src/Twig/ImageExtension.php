@@ -31,7 +31,7 @@ class ImageExtension extends AbstractExtension
     }
 
     /**
-     * Affichage d'une image pour un événement ou un produit
+     * Affichage d'une image pour un événement ou un produit ou un membre
      *
      * @param string $element
      * @param string $image
@@ -40,7 +40,7 @@ class ImageExtension extends AbstractExtension
     public function afficherImage(string $element, string $image)
     {
         $element = strtolower($element);
-        if ($element != 'produit' && $element != 'evenement') {
+        if ($element != 'produit' && $element != 'evenement' && $element != 'membre') {
             return false;
         }
         if (preg_match("/^(http|https)/", $image)) {

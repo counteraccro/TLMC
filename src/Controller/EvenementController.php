@@ -193,7 +193,7 @@ class EvenementController extends AppController
 
             $file = $form['image']->getData();
             if (! is_null($file)) {
-                $fileName = $this->telechargerImage($file, 'evenement', $evenement->getTitre());
+                $fileName = $this->telechargerImage($file, 'evenement', $evenement->getNom());
                 if ($fileName) {
                     $evenement->setImage($fileName);
                 } else {

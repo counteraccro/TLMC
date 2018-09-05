@@ -2,6 +2,7 @@ Messagerie = {};
 
 Messagerie.Launch = function(params){
 
+	//définition des URLs (cf. index vue associée)
 	Messagerie.urlRef = params.urlRef;
 	Messagerie.urlReception = params.urlReception;
 	Messagerie.urlBrouillons = params.urlBrouillons;
@@ -9,7 +10,7 @@ Messagerie.Launch = function(params){
 	Messagerie.urlEnvoyes = params.urlEnvoyes;
 	Messagerie.urlGroupes = params.urlGroupes;
 	
-
+	//onglets Messagerie (réception, brouillon, envoyés, corbeille)
 	Messagerie.element_navPills = $('#messagerie-block #v-pills-messagerie .nav-link');
 	Messagerie.globale_content_pills = $('#messagerie-block #v-pills-tabContent');
 	Messagerie.element_navPills_content_reception = $('#messagerie-block #v-pills-reception');
@@ -154,7 +155,7 @@ Messagerie.Launch = function(params){
 		});
 
 		/**
-		 * 
+		 * action marquer comme lu/non-lu et modifications css associées
 		 */
 		$(id_global + ' .msg-read-no-read').click(function() {
 

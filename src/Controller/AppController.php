@@ -339,7 +339,7 @@ class AppController extends Controller
     {
         $type = strtolower($type);
 
-        $extension = $file->getClientOriginalExtension();
+        $extension = strtolower($file->getClientOriginalExtension());
         if ($extension != 'jpeg' && $extension != 'jpg' && $extension != 'png') {
             return false;
         }

@@ -18,6 +18,7 @@ use App\Entity\Specialite;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use App\Controller\AppController;
 use App\Repository\EtablissementRepository;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class MembreType extends AbstractType
 {
@@ -95,6 +96,18 @@ class MembreType extends AbstractType
                 'multiple' => true
             ));
         }
+        
+        if (! $options['ajax']) {
+            $builder->add('avatar', FileType::class, array(
+                'label' => 'Avatar',
+                'data_class' => null,
+                'required' => false,
+                'help' => ($options['edit'] ? 'Ne pas remplir si vous souhaitez conserver le même avatar' : ''),
+                'attr' => array(
+                    'placeholder' => 'Choisir un avatar'
+                )
+            ));
+        }
 
         $builder->add('save', SubmitType::class, array(
             'label' => $options['label_submit'],
@@ -113,7 +126,8 @@ class MembreType extends AbstractType
             'roles' => AppController::DROITS,
             'disabled_etablissement' => false,
             'disabled_specialite' => false,
-            'admin' => true
+            'admin' => true,
+            'ajax' => false
         ]);
     }
 }

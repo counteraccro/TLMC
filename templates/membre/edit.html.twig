@@ -45,6 +45,10 @@
     <script type="text/javascript">
     
     $(document).ready(function() {
+    	$('#membre_avatar').change(function() {
+    		var file = $(this)[0].files[0].name;
+    		$('.custom-file label[for="'+ $(this).attr('id') +'"]').html(file);
+    	});
     	
 		var params = {
 				url_ajax_see : '{{ path('specialite_ajax_edit_dropdown', {'id': membre.id, 'type': 'membre'}) }}',
