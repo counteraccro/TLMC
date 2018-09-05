@@ -21,8 +21,10 @@
 	    {{ form_row(form.evenement) }}
 	    {{ form_row(form.specialite) }}
 		{{ form_row(form.patient) }}
+		<div id="bloc_familles"></div>
+	</div>
 		
-		<div class="modal-footer">
+	<div class="modal-footer">
 		{{ form_widget(form.save) }}
 	</div>
 	{{ form_rest(form) }}
@@ -30,7 +32,12 @@
 	{{ form_end(form) }}
 </div>
 
-	{% block javascripts %}
+
+{% block script %}
+ 	<script src="{{ asset('assets/js/famille/Famille.js') }}?{{ date().timestamp }}"></script>
+{% endblock %}
+
+{% block javascripts %}
 	<script type="text/javascript">
     
     	$('#modal_{{ type }}_global').modal({
@@ -40,5 +47,16 @@
     	
 		var url = '{{path('historique_ajax_add', {'id': objet.id, 'type':type }) }}';
 		Historique.EventAddSubmit(url);
-	    </script>
-	{% endblock %}
+
+		var params = {
+				url_ajax_see : '{{ path('famille_ajax_liste') }}',
+				id_famille : '#bloc_familles',
+				id_bloc_evenement : '#historique_patient'
+		};
+    	
+		Famille.Launch(params);
+		Famille.LoadFamilleOnChange();
+		Famille.EventChange('#historique_save');
+		
+	</script>
+{% endblock %}

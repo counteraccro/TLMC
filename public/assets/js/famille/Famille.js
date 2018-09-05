@@ -46,7 +46,7 @@ Famille.Launch = function(params) {
 	/**
 	 * fonction prévue pour le chargement d'un dropdown des spécialités d'un établissement
 	 */
-	Famille.LoadDropdownFamille = function()
+	Famille.LoadFamilleOnChange = function()
 	{
 		Famille.Ajax(Famille.url_ajax_see + '/' + $(Famille.id_bloc_evenement).val(), Famille.id_famille);
 	}
@@ -63,7 +63,7 @@ Famille.Launch = function(params) {
 			//affichage du loader
 			$(Famille.id_famille).showLoading();
 			//chargement du dropdown
-			Famille.LoadDropdownFamille();
+			Famille.LoadFamilleOnChange();
 			
 		});
 	}

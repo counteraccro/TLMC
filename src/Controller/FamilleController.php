@@ -462,4 +462,22 @@ class FamilleController extends AppController
             'familles' => $familles
         ));
     }
+    
+    /**
+     * Mise à jour de la liste de familles d'un patient pour l'ajout d'un historique
+     * 
+     * @Route("/famille/ajax/liste/{id}", name="famille_ajax_liste", defaults={"id" = 0})
+     * @ParamConverter("patient", options={"mapping": {"id": "id"}})
+     * Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
+     * 
+     * @param Patient $patient
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function addAjaxListeAction(Patient $patient = null){
+        $familles = $patient->getFamilles();
+        
+        return $this->render('famille/ajax_liste.html.twig', array(
+            'familles' => $familles
+        ));
+    }
 }

@@ -10,6 +10,9 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Entity\Patient;
 use App\Entity\Specialite;
 use App\Entity\Evenement;
+use App\Repository\EvenementRepository;
+use App\Repository\SpecialiteRepository;
+use App\Repository\PatientRepository;
 
 class HistoriqueType extends AbstractType
 {
@@ -23,6 +26,12 @@ class HistoriqueType extends AbstractType
                     return $patient->getPrenom() . ' ' . $patient->getNom() . ' (' . $patient->getDateNaissance()
                         ->format('d/m/Y') . ')';
                 },
+                'group_by' => function (Patient $patient) {
+                    return $patient->getSpecialite()
+                        ->getService() . ' (' . $patient->getSpecialite()
+                        ->getEtablissement()->getNom() . ')';
+                },
+                'query_builder' => $options['query_patient'],
                 'disabled' => $options['disabled_patient']
             ));
         }
@@ -36,6 +45,7 @@ class HistoriqueType extends AbstractType
                     return $specialite->getEtablissement()
                         ->getNom();
                 },
+                'query_builder' => $options['query_specialite'],
                 'disabled' => $options['disabled_specialite']
             ));
         }
@@ -45,6 +55,7 @@ class HistoriqueType extends AbstractType
                 'label' => 'Evénement',
                 'class' => Evenement::class,
                 'choice_label' => 'nom',
+                'query_builder' => $options['query_evenement'],
                 'disabled' => $options['disabled_evenement']
             ));
         }
@@ -64,10 +75,28 @@ class HistoriqueType extends AbstractType
             'label_submit' => 'Valider',
             'avec_evenement' => true,
             'disabled_evenement' => false,
+            'query_evenement' => function (EvenementRepository $er) {
+                return $er->createQueryBuilder('event')
+                    ->andWhere('event.disabled = 0')
+                    ->orderBy('event.nom', 'ASC');
+            },
             'avec_specialite' => true,
             'disabled_specialite' => false,
+            'query_specialite' => function (SpecialiteRepository $sr) {
+                return $sr->createQueryBuilder('s')
+                    ->join('s.etablissement', 'e')
+                    ->andWhere('s.disabled = 0')
+                    ->orderBy('e.nom', 'ASC')
+                    ->addOrderBy('s.service');
+            },
             'avec_patient' => true,
-            'disabled_patient' => false
+            'disabled_patient' => false,
+            'query_patient' => function (PatientRepository $pr) {
+                return $pr->createQueryBuilder('p')
+                    ->andWhere('p.disabled = 0')
+                    ->orderBy('p.nom', 'ASC')
+                    ->addOrderBy('p.prenom', 'ASC');
+            }
         ));
     }
 }

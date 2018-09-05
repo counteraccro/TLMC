@@ -1,0 +1,20 @@
+<div id="ajax_historique_famille">
+	<div class="form-group"> 
+    	<div class="form-group">
+    		<label for="q-361">Familles</label>
+    		<div class="form-check">
+    		{% for famille in familles %}
+            	<input class="form-check-input " type="checkbox" value="{{ famille.id }}" id="famille-{{ famille.id }}" name="familles[{{ famille.id }}]">
+            	<label for="famille-{{ famille.id }}">{{ famille.prenom }} {{ famille.nom }}</label>
+            	<br>
+        	{% endfor %}
+        	</div>
+        </div>
+    </div>
+</div>
+
+{% block javascripts %}
+    <script type="text/javascript">
+    	$('#historique_save').prop('disabled', false);
+    </script>
+{% endblock %}

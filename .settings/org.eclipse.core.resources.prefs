@@ -26,6 +26,7 @@ encoding//templates/famille/add.html.twig=UTF-8
 encoding//templates/famille/ajax_add.html.twig=UTF-8
 encoding//templates/famille/ajax_dropdown.html.twig=UTF-8
 encoding//templates/famille/ajax_edit.html.twig=UTF-8
+encoding//templates/famille/ajax_liste.html.twig=UTF-8
 encoding//templates/famille/ajax_see.html.twig=UTF-8
 encoding//templates/famille/ajax_see_liste.html.twig=UTF-8
 encoding//templates/famille/edit.html.twig=UTF-8

@@ -12,6 +12,12 @@ use App\Entity\Patient;
 use App\Form\HistoriqueType;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Entity\Membre;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Serializer;
+use App\Entity\Participant;
+use App\Entity\Famille;
 
 class HistoriqueController extends AppController
 {
@@ -235,9 +241,21 @@ class HistoriqueController extends AppController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
+            
             $em = $this->getDoctrine()->getManager();
 
+            foreach ($request->request->get('familles') as $famille_id){
+                $participant = new Participant();
+                $famille = $this->getDoctrine()->getRepository(Famille::class)->findOneBy(array('id' => $famille_id));
+                
+                $participant->setDate(new \DateTime());
+                $participant->setEvenement($historique->getEvenement());
+                $participant->setPatient($historique->getPatient());
+                $participant->setFamille($famille);
+                $participant->setStatut(1);
+                $em->persist($participant);
+            }
+            
             $historique->setDate(new \DateTime());
             $em->persist($historique);
             $em->flush();
@@ -252,6 +270,7 @@ class HistoriqueController extends AppController
         }
 
         if ($request->isXmlHttpRequest()) {
+            
             return $this->render('historique/ajax_add.html.twig', array(
                 'form' => $form->createView(),
                 'objet' => $objet,
