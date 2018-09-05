@@ -10,9 +10,10 @@
     
     <div id="accordionMembre">
     	<div class="card">
-        	<div class="card-header float-left" id="headingMembre" data-toggle="collapse" data-target="#collapseMembre" aria-expanded="true" aria-controls="collapseMembre">
+        	<div class="card-header float-left" id="headingMembre" data-toggle="collapse" data-target="#collapseMembre2" aria-expanded="true" aria-controls="collapseMembre">
             	Informations personnelles
-            	<div class="float-right"> 
+            	<div class="float-right">
+            	    {{ editObjet(path('membre_edit_avatar', {'id': membre.id }), "Modifier mon avatar", "") | raw }}
             		{{ editObjet(path('membre_ajax_edit_fiche', {'id': membre.id }), "Modifier mes informations", "btn-edit-membre") | raw }}
             	</div>
         	</div>

@@ -13,6 +13,7 @@ use App\Entity\Questionnaire;
 use App\Entity\Groupe;
 use App\Entity\GroupeMembre;
 use Symfony\Component\Form\FormError;
+use App\Form\ImageType;
 
 class MembreController extends AppController
 {
@@ -120,16 +121,17 @@ class MembreController extends AppController
     /**
      * Page "Mon compte"
      *
-     * @Route("/membre/see_fiche/{id}", name="membre_see_fiche")
-     * @Route("/membre/ajax/see_fiche/{id}", name="membre_ajax_see_fiche")
-     * @ParamConverter("membre", options={"mapping": {"id": "id"}})
+     * @Route("/membre/see_fiche", name="membre_see_fiche")
+     * @Route("/membre/ajax/see_fiche", name="membre_ajax_see_fiche")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE_DIRECT') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEVOLE')")
      *
      * @param Membre $membre
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function seeFicheAction(Request $request, Membre $membre)
+    public function seeFicheAction(Request $request)
     {
+        $membre = $this->getMembre();
+
         // Si appel Ajax, on renvoi sur la page ajax
         if ($request->isXmlHttpRequest()) {
 
@@ -280,6 +282,52 @@ class MembreController extends AppController
     }
 
     /**
+     * Edition de l'avatar d'un membre
+     *
+     * @Route("/membre/edit_avatar/", name="membre_edit_avatar")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE_DIRECT') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEVOLE')")
+     */
+    public function editAvatarAction(Request $request, int $page = 1)
+    {
+        $membre = $this->getMembre();
+        $form = $this->createForm(ImageType::class);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            $file = $form['image']->getData();
+            if (! is_null($file)) {
+                $fileName = $this->telechargerImage($file, 'membre', $membre->getPrenom() . '-' . $membre->getNom());
+                if ($fileName) {
+                    $membre->setAvatar($fileName);
+                } else {
+                    $form->addError(new FormError("Le fichier n'est pas au format autorisé (jpg, jpeg,png)."));
+                }
+            }
+            if ($form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($membre);
+                $em->flush();
+                
+                return $this->redirect($this->generateUrl('membre_see_fiche', array('id' => $membre->getId())));
+            }
+        }
+        $membre = $this->getMembre();
+        return $this->render('membre/edit_avatar.html.twig', [
+            'membre' => $membre,
+            'form' => $form->createView(),
+            'paths' => array(
+                'home' => $this->indexUrlProject(),
+                'urls' => array(
+                    $this->generateUrl('membre_see_fiche', array(
+                        'id' => $membre->getId()
+                    )) => 'Mon compte'
+                ),
+                'active' => 'Modification avatar'
+            )
+        ]);
+    }
+
+    /**
      * Edition d'un membre
      *
      * @Route("/membre/edit/{id}/{page}", name="membre_edit")
@@ -424,7 +472,7 @@ class MembreController extends AppController
 
     /**
      * Fonction permettant la suggestion de destinataires d'un message (autocomplétion)
-     * Gestion de l'homonymie (récupération des IDs plutôt que des prénoms/noms) et affichage de la fonction du membre si homonymes existants 
+     * Gestion de l'homonymie (récupération des IDs plutôt que des prénoms/noms) et affichage de la fonction du membre si homonymes existants
      *
      * @Route("/membre/ajax/autocomplete", name="membre_ajax_autocomplete")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")

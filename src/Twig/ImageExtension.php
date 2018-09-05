@@ -37,7 +37,7 @@ class ImageExtension extends AbstractExtension
      * @param string $image
      * @return boolean|string
      */
-    public function afficherImage(string $element, string $image)
+    public function afficherImage(string $element, string $image, string $classe = null)
     {
         if(is_null($image)){
             return false;
@@ -46,9 +46,14 @@ class ImageExtension extends AbstractExtension
         if ($element != 'produit' && $element != 'evenement' && $element != 'membre') {
             return false;
         }
-        if (preg_match("/^(http|https)/", $image)) {
-            return '<img src="' . $image . '" class="img-fluid" />';
+        
+        if(is_null($classe)){
+            $classe = "img-fluid";
         }
-        return '<img src="/img/' . $element . '/' . $image . '" class="img-fluid align-baseline" />';
+        
+        if (preg_match("/^(http|https)/", $image)) {
+            return '<img src="' . $image . '" class="' . $classe . '" />';
+        }
+        return '<img src="/img/' . $element . '/' . $image . '" class="' . $classe . '" />';
     }
 }

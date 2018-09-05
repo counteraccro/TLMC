@@ -54,9 +54,9 @@
   			<div>
   	
   			    {% if message.expediteur.avatar %}
-  				<img src="{{ message.expediteur.avatar }}" class="img-fluid float-left shadow-sm" />
+  			    {{ image('membre', message.expediteur.avatar, 'img-fluid float-left shadow-sm') | raw }}
   				{% else %}
-  				<img src="/img/user_default_picture.gif" class="img-fluid float-left shadow-sm" />
+  				{{ image('membre', 'user_default_picture.gif', 'img-fluid float-left shadow-sm') | raw }}
   				{% endif %}
   				
   				{% if message.expediteur.id == app.user.id %}
