@@ -327,6 +327,10 @@ class MessageController extends AppController
         $form = $this->createForm(MessageType::class, $message, array());
         
         $form->handleRequest($request);
+        
+        $erreur = false;
+        $str_erreur_destinataire = '';
+        $str_erreur_corps = '';
         if ($form->isSubmitted() && $form->isValid()) {
              
             $destinataires = explode('-', $request->request->all()['destinataire']['destinataire']);
@@ -337,13 +341,31 @@ class MessageController extends AppController
                 $membreRepository = $this->getDoctrine()->getRepository(Membre::class);
                 $destinataire = $membreRepository->findById($destinataires[0])[0];
             }
+            
+            if($brouillon == 0)
+            {
+                
+                if($destinataire->getId() == $membre->getId())
+                {
+                    $erreur = true;
+                    $str_erreur_destinataire = 'Vous devez saisir au moins un destinataire avant l\'envoi';
+                }
+                
+                if((is_null($message->getCorps()) || $message->getCorps() == "" || $message->getCorps() == "-"))
+                {
+                    $erreur = true;
+                    $str_erreur_corps = 'Vous devez saisir le corps du message avant l\'envoi';
+                }
+                
+            }
+            
             $message->setDestinataire($destinataire);
             $message->setDateEnvoi(new \DateTime());
             $message->setBrouillon($brouillon);
             
             //$em->persist($messageLu);
-            $em->persist($message);
-            $em->flush();
+            //$em->persist($message);
+            //$em->flush();
             
         }
         
@@ -362,7 +384,10 @@ class MessageController extends AppController
             'message' => $message,
             'page' => $page,
             'destinataire' => $destinataire_input,
-            'destinataire_id' => $destinataire_input_id
+            'destinataire_id' => $destinataire_input_id,
+            'membre' => $membre,
+            'str_erreur_destinataire' => $str_erreur_destinataire,
+            'str_erreur_corps' => $str_erreur_corps
         ]);
     }
 

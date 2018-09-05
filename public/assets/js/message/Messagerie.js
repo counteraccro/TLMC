@@ -252,8 +252,12 @@ Messagerie.Launch = function(params){
 
 	}
 
+	/**
+	 * Evènements liés à la pop-in
+	 **/
 	Messagerie.EventPopin = function()
 	{
+		//A l'évènement submit de la pop-in
 		$('#ajax_new_message #form_message').submit(function() {
 
 			var url = $(this).attr('action') + '/0';
@@ -264,9 +268,29 @@ Messagerie.Launch = function(params){
 				data : $(this).serialize(),
 			})
 			.done(function( html ) {
-
+				tinymce.remove()
+				Messagerie.popin.html(html);
 			});
 
+			return false;
+		});
+		
+		 //A l'évènement clic sur la checkbox signature
+		$('#ajax_new_message #checkbox-signature').change(function() {
+			
+			var signature = $('#ajax_new_message #membre-signature').val();
+			var contenu = tinymce.activeEditor.getContent();
+			
+			if($(this).is(':checked')) 
+			{
+				contenu = contenu + '<br /><hr id="tiny-mb-sig-hr"><p id="tiny-mb-sig-p">' + signature + '</p>';
+				$(this).prop( "disabled", true );
+				$('#ajax_new_message #label-checkbox-signature').html('Signature ajoutée avec succès');
+			}
+			
+			tinymce.activeEditor.setContent(contenu);
+			
+			
 			return false;
 		});
 	}

@@ -52,7 +52,13 @@
   		</div>
   		<div class="card-body">
   			<div>
-  				<img src="/img/user_default_picture.gif" class="img-fluid float-left" />
+  	
+  			    {% if message.expediteur.avatar %}
+  				<img src="{{ message.expediteur.avatar }}" class="img-fluid float-left shadow-sm" />
+  				{% else %}
+  				<img src="/img/user_default_picture.gif" class="img-fluid float-left shadow-sm" />
+  				{% endif %}
+  				
   				{% if message.expediteur.id == app.user.id %}
   					De <i>[Brouillon]</i><br />
   				{% else  %}

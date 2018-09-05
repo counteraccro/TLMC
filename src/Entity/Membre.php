@@ -135,6 +135,11 @@ class Membre implements AdvancedUserInterface
      */
     private $salt;
     
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $avatar;
+    
     public function __construct()
     {
         $this->historiques = new ArrayCollection();
@@ -573,6 +578,18 @@ class Membre implements AdvancedUserInterface
     public function setAnnuaire(bool $annuaire): self
     {
         $this->annuaire = $annuaire;
+
+        return $this;
+    }
+
+    public function getAvatar(): ?string
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?string $avatar): self
+    {
+        $this->avatar = $avatar;
 
         return $this;
     }

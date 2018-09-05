@@ -36,6 +36,7 @@ class LoadMembreData extends Fixture implements DependentFixtureInterface
                 'setEtablissement' => 'Etablissement-1',
                 'setSpecialite' => 'Specialite-1',
                 'setSalt' => '1A2B3C4D5E6F7G890',
+                'setAvatar' => 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Eric_Judor_Cabourg_2018.jpg/220px-Eric_Judor_Cabourg_2018.jpg',
                 'setRoles' => array('ROLE_ADMIN')
             ],
             'Membre-2' => [
@@ -53,6 +54,7 @@ class LoadMembreData extends Fixture implements DependentFixtureInterface
                 'setEtablissement' => 'Etablissement-3',
                 'setSpecialite' => 'Specialite-4',
                 'setSalt' => '1A2B3C4D5E6F7G8901',
+                'setAvatar' => 'https://cdn.radiofrance.fr/s3/cruiser-production/2018/01/6df83e55-aa49-40c1-b078-b79568f61c55/738_felicite_herzog.jpg',
                 'setRoles' => array('ROLE_BENEFICIAIRE')
             ],
             'Membre-3' => [
@@ -103,6 +105,7 @@ class LoadMembreData extends Fixture implements DependentFixtureInterface
                 'setDisabled' => 0,
                 'setEtablissement' => 'Etablissement-2',
                 'setSalt' => '1A2B3C4D5E6F7G8905',
+                'setAvatar' => 'https://www.tuxboard.com/photos/2015/04/Femme-la-plus-sexy-Michelle-Keegan-720x643.jpg',
                 'setRoles' => array('ROLE_BENEFICIAIRE')
             ],
             'Membre-6' => [
@@ -187,6 +190,7 @@ class LoadMembreData extends Fixture implements DependentFixtureInterface
                 'setDisabled' => 0,
                 'setEtablissement' => 'Etablissement-2',
                 'setSalt' => '1A2B3C4D5E6F7G8901',
+                'setAvatar' => 'https://d29dpxox3qezd.cloudfront.net/uploads/user/avatar/5a1beaba1e39013b29a0e2f0/avatar.jpeg?v=1529928395',
                 'setRoles' => array('ROLE_BENEFICIAIRE')
             ],
             'Membre-11' => [
@@ -221,6 +225,7 @@ class LoadMembreData extends Fixture implements DependentFixtureInterface
                 'setEtablissement' => 'Etablissement-3',
                 'setSpecialite' => 'Specialite-5',
                 'setSalt' => '1A2B3C4D5E6F7G8905',
+                'setAvatar' => 'http://www.gestiss-photo.com/wp-content/uploads/2017/03/5D4_8839.jpg',
                 'setRoles' => array('ROLE_BENEVOLE')
             ],
             'Membre-13' => [
@@ -254,6 +259,7 @@ class LoadMembreData extends Fixture implements DependentFixtureInterface
                 'setDisabled' => 0,
                 'setEtablissement' => 'Etablissement-4',
                 'setSalt' => '1A2B3C4D5E6F7G890A',
+                'setAvatar' => 'http://static1.purepeople.com/articles/1/16/99/71/@/2026201-camelia-jordana-lors-du-30eme-950x0-1.jpg',
                 'setRoles' => array('ROLE_BENEFICIAIRE_DIRECT')
             ],
             'Membre-15' => [
@@ -304,6 +310,7 @@ class LoadMembreData extends Fixture implements DependentFixtureInterface
                 'setEtablissement' => 'Etablissement-3',
                 'setSpecialite' => 'Specialite-5',
                 'setSalt' => '1A2B3C4D5E6F7G890A',
+                'setAvatar' => 'http://creativewomen.co/wp-content/uploads/2018/03/Olga-photo-2018.jpg',
                 'setRoles' => array('ROLE_BENEFICIAIRE_DIRECT')
             ],
             'Membre-18' => [

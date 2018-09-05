@@ -24,7 +24,7 @@ class Message
     private $titre;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $corps;
 
@@ -89,7 +89,7 @@ class Message
         $this->children = new ArrayCollection();
     }
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -111,7 +111,7 @@ class Message
         return $this->corps;
     }
 
-    public function setCorps(string $corps): self
+    public function setCorps(?string $corps): self
     {
         $this->corps = $corps;
 
@@ -126,6 +126,30 @@ class Message
     public function setDateEnvoi(\DateTimeInterface $date_envoi): self
     {
         $this->date_envoi = $date_envoi;
+
+        return $this;
+    }
+
+    public function getDisabled(): ?int
+    {
+        return $this->disabled;
+    }
+
+    public function setDisabled(int $disabled): self
+    {
+        $this->disabled = $disabled;
+
+        return $this;
+    }
+
+    public function getBrouillon(): ?bool
+    {
+        return $this->brouillon;
+    }
+
+    public function setBrouillon(bool $brouillon): self
+    {
+        $this->brouillon = $brouillon;
 
         return $this;
     }
@@ -240,7 +264,7 @@ class Message
     {
         if (!$this->children->contains($child)) {
             $this->children[] = $child;
-            $child->setParent($this);
+            $child->setMessage($this);
         }
 
         return $this;
@@ -251,8 +275,8 @@ class Message
         if ($this->children->contains($child)) {
             $this->children->removeElement($child);
             // set the owning side to null (unless already changed)
-            if ($child->getParent() === $this) {
-                $child->setParent(null);
+            if ($child->getMessage() === $this) {
+                $child->setMessage(null);
             }
         }
 
@@ -271,27 +295,5 @@ class Message
         return $this;
     }
 
-    public function getDisabled(): ?int
-    {
-        return $this->disabled;
-    }
-
-    public function setDisabled(int $disabled): self
-    {
-        $this->disabled = $disabled;
-
-        return $this;
-    }
-
-    public function getBrouillon(): ?bool
-    {
-        return $this->brouillon;
-    }
-
-    public function setBrouillon(bool $brouillon): self
-    {
-        $this->brouillon = $brouillon;
-
-        return $this;
-    }
+    
 }

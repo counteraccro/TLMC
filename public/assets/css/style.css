@@ -909,6 +909,14 @@ footer h6, footer p {
 	text-align: justify;
 }
 
+#messagerie-block #tiny-mb-sig-hr {
+	margin: 0px;
+}
+#messagerie-block #tiny-mb-sig-p {
+	font-style: italic;
+	color: #88898E;
+}
+
 /********************************************
 *
 * fin Page templates/message/index.html.twig
