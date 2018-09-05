@@ -39,6 +39,9 @@ class ImageExtension extends AbstractExtension
      */
     public function afficherImage(string $element, string $image)
     {
+        if(is_null($image)){
+            return false;
+        }
         $element = strtolower($element);
         if ($element != 'produit' && $element != 'evenement' && $element != 'membre') {
             return false;
