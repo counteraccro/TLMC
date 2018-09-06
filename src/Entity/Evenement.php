@@ -119,7 +119,7 @@ class Evenement
     private $temoignages;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ExtensionFormulaire", mappedBy="evenement")
+     * @ORM\OneToMany(targetEntity="App\Entity\ExtensionFormulaire", mappedBy="evenement", cascade={"persist"})
      * @ORM\OrderBy({"ordre" = "ASC"})
      */
     private $extensionFormulaires;

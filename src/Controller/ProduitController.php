@@ -241,6 +241,11 @@ class ProduitController extends AppController
                     $produitSpecialite->setProduit($produit);
                     $produitSpecialite->setDate(new \DateTime());
                 }
+                
+                foreach ($produit->getExtensionFormulaires() as $extension) {
+                    $extension->setDisabled(0);
+                    $extension->setProduit($produit);
+                }
 
                 $produit->setDateCreation(new \DateTime());
                 $produit->setDisabled(0);

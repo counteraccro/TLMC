@@ -211,6 +211,11 @@ class EvenementController extends AppController
                     $specialiteEvenement->setEvenement($evenement);
                     $specialiteEvenement->setDate(new \DateTime());
                 }
+                
+                foreach ($evenement->getExtensionFormulaires() as $extension) {
+                    $extension->setDisabled(0);
+                    $extension->setEvenement($evenement);
+                }
 
                 $evenement->setDisabled(0);
 

@@ -38,9 +38,9 @@ class PopupExtension extends AbstractExtension
      * @param string $titre
      * @return string
      */
-    public function getPopup(string $texte, string $titre = null)
+    public function getPopup(string $texte, string $titre = null, $label = '<span class="oi oi-info"></span>')
     {
-        $return = '<a tabindex="0" role="button" data-toggle="popover" data-html="true" data-trigger="hover" ' . (!is_null($titre) ? 'title="' . $titre . '"' : '') .' data-content="' . $texte . '"><span class="oi oi-info"></span></a>';
+        $return = '<a tabindex="0" role="button" data-toggle="popover" data-html="true" data-trigger="hover" ' . (!is_null($titre) ? 'title="' . $titre . '"' : '') .' data-content="' . $texte . '">' . $label . '</a>';
         return $return;
     }
 }

@@ -29,6 +29,14 @@
                    		<th scope="col"> Description </th>
                    		<td> {{ evenement.description }} </td>
                    	</tr>
+                   	{% for extension in evenement.extensionFormulaires %}
+                   		{% if extension.disabled == 0 %}
+                    		<tr>
+                    			<th scope="col">{{ extension.libelle }}</th>
+                    			<td>{{ extension.valeur }}</td>
+                    		</tr>
+                		{% endif %}
+                	{% endfor %}
                    	<tr>
                    		<th scope="col"> Type </th>
                    		<td> {{ evenement.type |typeEvent }} </td>

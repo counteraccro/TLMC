@@ -87,6 +87,21 @@ class ProduitType extends AbstractType
                 'auto_initialize' => true
             ));
         }
+
+        $builder->add('extension_formulaires', CollectionType::class, array(
+            'label' => 'Champs supplémentaires',
+            'label_attr' => array(
+                'id' => 'label_collection_type'
+            ),
+            'entry_type' => ExtensionFormulaireType::class,
+            'entry_options' => array(
+                'label' => ' '
+            ),
+
+            'allow_add' => true,
+            'auto_initialize' => true
+        ));
+
         $builder->add('save', SubmitType::class, array(
             'label' => $options['label_submit'],
             'attr' => array(

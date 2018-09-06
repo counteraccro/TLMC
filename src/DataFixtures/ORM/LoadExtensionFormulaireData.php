@@ -21,28 +21,25 @@ class LoadExtensionFormulaireData extends Fixture implements DependentFixtureInt
     private $tabExtensionFormulaires = [
         'ExtensionFormulaire' => [
             'ExtensionFormulaire-1' => [
-                'setEvenement' => 'Evenement-1',
-                'setCle' => '64f48f45sef8f4e',
-                'setValeur' => 'joji',
-                'setType' => 'input',
-                'setValeurDefaut' => 'Joji123',
-                'setListeValeur' => '{"coucou","c\'est","moi"}',
-                'setObligatoire' => true,
-                'setDisabled' => 1,
+                'setEvenement' => 'Evenement-3',
+                'setLibelle' => 'Matériel nécessaire',
+                'setValeur' => 'Chaussures de sport et des vêtements chauds',
                 'setOrdre' => 1,
-                'setRegles' => '{"voila"}'
+                'setDisabled' => 0
             ],
             'ExtensionFormulaire-2' => [
-                'setProduit' => 'Produit-1',
-                'setCle' => '948drg4t4h9rt4h',
-                'setValeur' => '456',
-                'setType' => 'Textarea',
-                'setValeurDefaut' => '2',
-                'setListeValeur' => 'Paris',
-                'setObligatoire' => false,
-                'setDisabled' => 0,
+                'setProduit' => 'Produit-6',
+                'setLibelle' => 'Couleur',
+                'setValeur' => 'Marron, Noir',
                 'setOrdre' => 1,
-                'setRegles' => '{"voici"}'
+                'setDisabled' => 0
+            ],
+            'ExtensionFormulaire-3' => [
+                'setProduit' => 'Produit-6',
+                'setLibelle' => 'Matière',
+                'setValeur' => 'Plastique ou bois',
+                'setOrdre' => 2,
+                'setDisabled' => 0
             ]
         ]
     ];

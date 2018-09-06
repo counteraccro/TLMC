@@ -32,6 +32,14 @@
                 		    {{ produit.texte2 }} 
                 		</td>
                 	</tr>
+                	{% for extension in produit.extensionFormulaires %}
+                	    {% if extension.disabled == 0 %}
+                    		<tr>
+                    			<th scope="col">{{ extension.libelle }}</th>
+                    			<td>{{ extension.valeur }}</td>
+                    		</tr>
+                		{% endif %}
+                	{% endfor %}
                 	<tr>
                 		<th scope="col"> Tranche d'âge </th>
                 		<td> 

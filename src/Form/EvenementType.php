@@ -30,7 +30,7 @@ class EvenementType extends AbstractType
             ->add('date_fin', DateTimeType::class, array(
             'label' => "Date de fin ",
             'widget' => 'choice',
-            'date_format' => 'dd MM yyyy',
+            'date_format' => 'dd MM yyyy'
         ))
             ->add('nombre_max', IntegerType::class, array(
             'label' => 'Nombre maximum de participant'
@@ -65,7 +65,7 @@ class EvenementType extends AbstractType
             ->add('date_fin_inscription', DateTimeType::class, array(
             'label' => "Date de fin d'inscription",
             'widget' => 'choice',
-            'date_format' => 'dd MM yyyy',
+            'date_format' => 'dd MM yyyy'
         ));
 
         if (! $options['ajax']) {
@@ -79,7 +79,21 @@ class EvenementType extends AbstractType
                 )
             ));
         }
-        
+
+        $builder->add('extension_formulaires', CollectionType::class, array(
+            'label' => 'Champs supplémentaires',
+            'label_attr' => array(
+                'id' => 'label_collection_type'
+            ),
+            'entry_type' => ExtensionFormulaireType::class,
+            'entry_options' => array(
+                'label' => ' '
+            ),
+
+            'allow_add' => true,
+            'auto_initialize' => true
+        ));
+
         if ($options['add']) {
             $builder->add('specialite_evenements', CollectionType::class, array(
                 'label' => "Spécialités auxquelles l'événement est proposé",

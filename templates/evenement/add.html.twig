@@ -43,6 +43,11 @@
 	{{ form_row(form.image) }}
     
     <div class="shadow-sm p-3 mb-5 bg-white rounded border">
+        {{ form_row(form.extension_formulaires) }}
+      		<a href="#" id="add_extension" class="btn btn-primary btn-sm">Ajouter un champ</a>
+  	</div>
+    
+    <div class="shadow-sm p-3 mb-5 bg-white rounded border">
         {{ form_row(form.specialite_evenements) }}
       		<a href="#" id="add_specialite" class="btn btn-primary btn-sm">Ajouter une spécialité</a>
   	</div>
@@ -57,6 +62,7 @@
 
 {% block script %}
 	<script src="{{ asset('assets/js/utils/FormAddCollection.js') }}?{{ date().timestamp }}"></script>
+	<script src="{{ asset('assets/js/extension_formulaire/ExtensionFormulaire.js') }}?{{ date().timestamp }}"></script>
 {% endblock %}
 
 {% block javascripts %}
@@ -78,6 +84,16 @@
         
     	FormAddCollection.Launch(params);
 		FormAddCollection.Event();
+
+		var paramsEF = {
+				id_container : 'div#evenement_extension_formulaires',
+				id_btn_add : '#add_extension',
+				id_label_fieldset : '#label_collection_types',
+				btn_delete : '<a href="#" class="btn btn-danger btn-sm">Supprimer</a>',
+		};
+        
+    	ExtensionFormulaire.Launch(paramsEF);
+    	ExtensionFormulaire.Event();
     });
     
     </script> 

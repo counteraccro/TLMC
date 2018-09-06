@@ -24,12 +24,16 @@
 	{{ form_row(form.date_fin_inscription) }}
 	{{ form_row(form.information_complementaire) }}
 	
+	<div class="shadow-sm p-3 mb-5 bg-white rounded border">
+        {{ form_row(form.extension_formulaires) }}
+      	<a href="#" id="add_extension" class="btn btn-primary btn-sm">Ajouter un champ</a>
+  	</div>
+	
 	{{ form_row(form.nom_lieu) }}
 	{{ form_row(form.numero_voie) }}
 	{{ form_row(form.voie) }}
 	{{ form_row(form.ville) }}
 	{{ form_row(form.code_postal) }}
-	{{ form_row(form.nom_lieu) }}
 	
 	{{ form_row(form.statut) }}
 	{{ form_row(form.image) }}
@@ -41,6 +45,10 @@
 	  
 {% endblock %}
 
+{% block script %}
+ 	<script src="{{ asset('assets/js/extension_formulaire/ExtensionFormulaire.js') }}?{{ date().timestamp }}"></script>
+{% endblock %}
+
 {% block javascripts %}
 
     <script type="text/javascript">
@@ -50,6 +58,16 @@
     		var file = $(this)[0].files[0].name;
     		$('.custom-file label[for="'+ $(this).attr('id') +'"]').html(file);
     	});
+
+        var paramsEF = {
+				id_container : 'div#produit_extension_formulaires',
+				id_btn_add : '#add_extension',
+				id_label_fieldset : '#label_collection_types',
+				btn_delete : '<a href="#" class="btn btn-danger btn-sm">Supprimer</a>',
+		};
+        
+    	ExtensionFormulaire.Launch(paramsEF);
+    	ExtensionFormulaire.Event();
     });
     </script> 
 

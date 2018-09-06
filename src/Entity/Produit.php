@@ -79,7 +79,7 @@ class Produit
     private $temoignages;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ExtensionFormulaire", mappedBy="produit")
+     * @ORM\OneToMany(targetEntity="App\Entity\ExtensionFormulaire", mappedBy="produit", cascade={"persist"})
      * @ORM\OrderBy({"ordre" = "ASC"})
      */
     private $extensionFormulaires;
