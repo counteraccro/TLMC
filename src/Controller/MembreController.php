@@ -249,7 +249,8 @@ class MembreController extends AppController
             'edit' => true,
             'disabled_etablissement' => true,
             'disabled_specialite' => true,
-            'admin' => false
+            'admin' => false,
+            'ajax' => ($request->isXmlHttpRequest() ? true : false)
         ));
         $password = $membre->getPassword();
 

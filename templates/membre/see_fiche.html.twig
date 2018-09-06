@@ -31,12 +31,13 @@
         	</div>
         	<div class="card-body float-left">
             	<table class="table">
-            	<th>Questionnaire</th>
-            	<th>Question</th>
-            	<th>Propositions</th>
-            	<th>Réponse</th>
-            	<th>Type</th>
-            	
+            	<tr>
+                	<th>Questionnaire</th>
+                	<th>Question</th>
+                	<th>Propositions</th>
+                	<th>Réponse</th>
+                	<th>Type</th>
+            	</tr>
                 {% for reponse in reponses %}
                 	<tr>
                 		<td>{{ reponse.titre }}</td>

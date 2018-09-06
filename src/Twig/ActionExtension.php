@@ -141,7 +141,7 @@ class ActionExtension extends AbstractExtension
     public function actionEditObjet(string $url, string $label, string $id = null){
         $return = '<a href="' . $url . '"';
         if(!is_null($id)){
-            $return .= 'id="' . $id . '"';
+            $return .= ' id="' . $id . '"';
         }
         $return .= ' class="btn btn-dark"><span class="oi oi-pencil"></span> ' . $label . '</a>';
         
