@@ -35,9 +35,10 @@ class ImageExtension extends AbstractExtension
      *
      * @param string $element
      * @param string $image
+     * @param string $classe
      * @return boolean|string
      */
-    public function afficherImage(string $element, string $image, string $classe = null)
+    public function afficherImage(string $element, string $image, string $classe = "img-fluid")
     {
         if(is_null($image)){
             return false;
@@ -45,10 +46,6 @@ class ImageExtension extends AbstractExtension
         $element = strtolower($element);
         if ($element != 'produit' && $element != 'evenement' && $element != 'membre') {
             return false;
-        }
-        
-        if(is_null($classe)){
-            $classe = "img-fluid";
         }
         
         if (preg_match("/^(http|https)/", $image)) {

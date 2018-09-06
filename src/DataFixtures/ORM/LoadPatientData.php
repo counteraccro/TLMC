@@ -20,7 +20,7 @@ class LoadPatientData extends Fixture implements DependentFixtureInterface
     private $tabPatient = [
         'Patient' => [
             'Patient-1' => [
-                'setNom' => 'Oréo',
+                'setNom' => 'Dupont',
                 'setPrenom' => 'Ingrid',
                 'setDateNaissance' => '1991-09-30 11:29:00',
                 'setPMR' => false,
@@ -28,7 +28,7 @@ class LoadPatientData extends Fixture implements DependentFixtureInterface
                 'setDisabled' => false
             ],
             'Patient-2' => [
-                'setNom' => 'Lagarde',
+                'setNom' => 'Martin',
                 'setPrenom' => 'Christine',
                 'setDateNaissance' => '1993-08-23 17:55:00',
                 'setPMR' => false,
@@ -36,7 +36,7 @@ class LoadPatientData extends Fixture implements DependentFixtureInterface
                 'setDisabled' => false
             ],
             'Patient-3' => [
-                'setNom' => 'LeChef',
+                'setNom' => 'Garcia',
                 'setPrenom' => 'Aymeric',
                 'setDateNaissance' => '1984-04-12 11:11:11',
                 'setPMR' => true,

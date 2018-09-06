@@ -23,7 +23,7 @@ class LoadEvenementData extends Fixture
                 'setDateFin' => '2017-12-25 17:00:00',
                 'setNombreMax' => 32,
                 'setType' => 1,
-                'setImage' => 'Dejeuner de Noel_28082018100937.jpg',
+                'setImage' => 'https://www.mairie-beaurepaire.com/wp-content/uploads/2014/12/Noel_4-2.png',
                 'setNomLieu' => 'Salle des fêtes',
                 'setNumeroVoie' => 1,
                 'setVoie' => 'rue des Sapins',
