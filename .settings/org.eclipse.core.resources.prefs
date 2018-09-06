@@ -62,6 +62,7 @@ encoding//templates/message/ajax_messages_corbeille.html.twig=UTF-8
 encoding//templates/message/ajax_messages_destinataire.html.twig=UTF-8
 encoding//templates/message/ajax_messages_envoyes.html.twig=UTF-8
 encoding//templates/message/ajax_messages_preview.html.twig=UTF-8
+encoding//templates/message/ajax_send_message_ok.html.twig=UTF-8
 encoding//templates/message/ajax_view_message.html.twig=UTF-8
 encoding//templates/message/index.html.twig=UTF-8
 encoding//templates/message_lu/index.html.twig=UTF-8

@@ -264,6 +264,8 @@ Messagerie.Launch = function(params){
 		//A l'évènement submit de la pop-in
 		$('#ajax_new_message #form_message').submit(function() {
 
+			clearInterval(interval);
+			
 			var url = $(this).attr('action') + '/0';
 
 			$.ajax({
@@ -295,6 +297,16 @@ Messagerie.Launch = function(params){
 			tinymce.activeEditor.setContent(contenu);
 			
 			
+			return false;
+		});
+		
+		 //A l'évènement clic sur un élément questionnaire (pour ajout URL)
+		$('#ajax_new_message #ajout-questionnaire').change(function() {
+			var slug = $(this).val();
+			var hostname = window.location.host;
+			var content = tinymce.activeEditor.getContent();
+			tinymce.activeEditor.setContent(content + '<a href="http://' + hostname + '/questionnaire/' + slug + '">' + 'http://' + hostname + '/questionnaire/' + slug + '</a>');
+
 			return false;
 		});
 	}
@@ -334,8 +346,6 @@ Messagerie.Launch = function(params){
 					.done(function(data) {
 						json = data;
 					});
-
-					console.log(j);
 				},
 				search: function() {
 					// custom minLength
@@ -516,5 +526,13 @@ Messagerie.Launch = function(params){
 				Messagerie.global_content_bloc_message.hideLoading();
 			}
 		});
+	}
+	
+	Messagerie.valideCorpsMessage = function(str_erreur)
+	{
+		if (str_erreur != '') {
+			$('#' + $('.mce-tinymce').attr('id')).addClass('erreur_corps');
+			$('.mce-path').html(str_erreur);
+		}
 	}
 }

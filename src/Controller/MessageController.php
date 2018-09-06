@@ -13,6 +13,7 @@ use App\Entity\Groupe;
 use App\Entity\Membre;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use App\Entity\Questionnaire;
 
 class MessageController extends AppController
 {
@@ -296,6 +297,9 @@ class MessageController extends AppController
         $currentRoute = $request->attributes->get('_route');
         $membre = $this->getMembre();
         $em = $this->getDoctrine()->getManager();
+
+        $repository = $this->getDoctrine()->getRepository(Questionnaire::class);
+        $result = $repository->findAllActive();   
         
         //lors de la création d'un nouveau message, enregistrement automatique en tant que brouillon (sauvegarde des données)
         if ($currentRoute == 'message_ajax_new_message') {
@@ -363,10 +367,21 @@ class MessageController extends AppController
             $message->setDateEnvoi(new \DateTime());
             $message->setBrouillon($brouillon);
             
-            //$em->persist($messageLu);
-            //$em->persist($message);
-            //$em->flush();
-            
+            if(!$erreur || $brouillon == 1)
+            {
+                if($brouillon == 0) {
+                    $messageLuDest = new MessageLu();
+                    $messageLuDest->setLu(0);
+                    $messageLuDest->setDate(new \DateTime());
+                    $messageLuDest->setCorbeille(0);
+                    $messageLuDest->setMembre($message->getDestinataire());
+                    $messageLuDest->setMessage($message);
+                    $message->addMessageLus($messageLuDest);
+                    $em->persist($messageLuDest);
+                }
+                $em->persist($message);
+                $em->flush();
+            }
         }
         
         $session->set('Message.brouillon.id', $message->getId());
@@ -379,16 +394,25 @@ class MessageController extends AppController
             $destinataire_input_id = $message->getDestinataire()->getId();
         }
         
-        return $this->render('message/ajax_form_message.html.twig', [
-            'form' => $form->createView(),
-            'message' => $message,
-            'page' => $page,
-            'destinataire' => $destinataire_input,
-            'destinataire_id' => $destinataire_input_id,
-            'membre' => $membre,
-            'str_erreur_destinataire' => $str_erreur_destinataire,
-            'str_erreur_corps' => $str_erreur_corps
-        ]);
+        if(!$erreur && $brouillon == 0)
+        {
+            return $this->render('message/ajax_send_message_ok.html.twig', []);
+        }
+        else
+        {
+            return $this->render('message/ajax_form_message.html.twig', [
+                'form' => $form->createView(),
+                'message' => $message,
+                'page' => $page,
+                'destinataire' => $destinataire_input,
+                'destinataire_id' => $destinataire_input_id,
+                'membre' => $membre,
+                'str_erreur_destinataire' => $str_erreur_destinataire,
+                'str_erreur_corps' => $str_erreur_corps,
+                'questionnaires' => $result
+            ]);
+        }
+        
     }
 
 }

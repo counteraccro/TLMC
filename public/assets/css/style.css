@@ -917,6 +917,15 @@ footer h6, footer p {
 	color: #88898E;
 }
 
+#messagerie-block .mce-tinymce.erreur_corps {
+	border : 2px solid red;
+}
+
+#messagerie-block #erreur_corps_block.invalid-feedback {
+	display: block;
+	margin-top: -0.9rem;
+}
+
 /********************************************
 *
 * fin Page templates/message/index.html.twig

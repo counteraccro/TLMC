@@ -59,13 +59,13 @@
   				{{ image('membre', 'user_default_picture.gif', 'img-fluid float-left shadow-sm') | raw }}
   				{% endif %}
   				
-  				{% if message.expediteur.id == app.user.id %}
-  					De <i>[Brouillon]</i><br />
-  				{% else  %}
-  					De {{ message.expediteur.prenom }} {{ message.expediteur.nom }} &lsaquo;{{ message.expediteur.email }}&rsaquo; <br />
-  				{% endif %}
+  				De {{ message.expediteur.prenom }} {{ message.expediteur.nom }} &lsaquo;{{ message.expediteur.email }}&rsaquo; <br />
   				<i>{{ message.titre }}</i> <br />
-  				<small>A {{ message.destinataire.prenom }} {{ message.destinataire.nom }} &lsaquo;{{ message.destinataire.email }}&rsaquo;</small>
+  				{% if message.destinataire.id == app.user.id %}
+  					<small><i>A [Brouillon]</i>
+  				{% else %}
+  					<small>A {{ message.destinataire.prenom }} {{ message.destinataire.nom }} &lsaquo;{{ message.destinataire.email }}&rsaquo;</small>
+  				{% endif %}
   			</div>
   			<div class="clearfix"></div>
   			Pièces-jointes : <a href="#"><span class="oi oi-paperclip"></span>Questionnaire-demo.xml</a> | <a href="#"><span class="oi oi-paperclip"></span>Questionnaire-demo.csv</a>
