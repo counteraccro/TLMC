@@ -1,7 +1,11 @@
 # TLMC
 
-Installation du projet
+Information  
+------------
+
 Le projet fonctionne avec les versions suivantes :
+
+Projet optimisé pour le navigateur Google Chrome
 
 Version de PHP : 7.1 
 Mysql : 5.0.12
@@ -17,6 +21,7 @@ Icônes 'Iconic'
 
 Données
 ------------
+
 Attention, ce projet est fourni avec des jeux de données (Data-fixtures) dont certaines sont essentielles lors de la bascule en Production :
 - Conserver le compte 'admin'
 - Conserver le groupe 'GLOBAL' dans la table groupe 
