@@ -117,6 +117,7 @@ class QuestionnaireExtension extends AbstractExtension
         $html = '';
         $html = $this->beginBloc($question);
 
+        // ici, l'utilisation de '%o%' est utilisé pour effectuer un str_replace dans la fonction isObligatoire
         $html .= '<label for="q-' . $question->getId() . '">' . $question->getLibelle() . '%o%</label>
                     <select class="form-control ' . $this->isValidateError($question) . '" id="q-' . $question->getId() . '" name="questionnaire[question][q-' . $question->getId() . ']">';
 

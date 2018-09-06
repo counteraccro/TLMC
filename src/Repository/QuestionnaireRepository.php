@@ -261,6 +261,19 @@ class QuestionnaireRepository extends ServiceEntityRepository
         return $query;
     }
     
+    /**
+     * Fonction qui retourne les questionnaires publiés et dont la date de fin n'est pas dépassée
+     */
+    public function findAllActive() {
+        $query = $this->createQueryBuilder('q')
+        ->andWhere('q.date_publication IS NOT NULL')
+        ->andWhere('q.date_fin > CURRENT_TIMESTAMP()')
+        ->addOrderBy('q.titre', 'ASC')
+        ->getQuery()
+        ->getResult();
+        
+        return $query;
+    }
     
     // /**
     // * @return Questionnaire[] Returns an array of Questionnaire objects
