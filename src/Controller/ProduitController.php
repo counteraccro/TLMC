@@ -242,9 +242,12 @@ class ProduitController extends AppController
                     $produitSpecialite->setDate(new \DateTime());
                 }
                 
+                $index = 1;
                 foreach ($produit->getExtensionFormulaires() as $extension) {
+                    $extension->setOrdre($index);
                     $extension->setDisabled(0);
                     $extension->setProduit($produit);
+                    $index++;
                 }
 
                 $produit->setDateCreation(new \DateTime());
@@ -308,7 +311,7 @@ class ProduitController extends AppController
                 //traitement de l'image
                 if (is_null($produit->getImage()) && ! is_null($image)) {
                     $produit->setImage($image);
-                } else {
+                } elseif(!is_null($produit->getImage())) {
                     $file = $request->files->get('produit')['image'];
                     $fileName = $this->telechargerImage($file, 'produit', $produit->getTitre(), $image);
                     if ($fileName) {
@@ -324,6 +327,16 @@ class ProduitController extends AppController
 
                 $em = $this->getDoctrine()->getManager();
 
+                $index = 1;
+                foreach ($produit->getExtensionFormulaires() as $extension) {
+                    if(is_null($extension->getProduit())){
+                        $extension->setOrdre($index);
+                        $extension->setDisabled(0);
+                        $extension->setProduit($produit);
+                    }
+                    $index++;
+                }
+                
                 $tranche_age = $request->request->get('produit')['tranche_age'];
                 asort($tranche_age);
                 $produit->setTrancheAge($tranche_age);
