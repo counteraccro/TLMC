@@ -57,8 +57,11 @@ class ProduitType extends AbstractType
                 'attr' => array(
                     'placeholder' => 'Choisir une image'
                 )
-            ))
-                ->add('produitEtablissements', CollectionType::class, array(
+            ));
+        }
+        
+        if ($options['add']) {
+            $builder->add('produitEtablissements', CollectionType::class, array(
                 'label' => "Etablissements dans lesquels le produit est envoyé",
                 'label_attr' => array(
                     'id' => 'label_collection_type'
@@ -71,8 +74,7 @@ class ProduitType extends AbstractType
                 ),
                 'allow_add' => true,
                 'auto_initialize' => true
-            ))
-                ->add('produitSpecialites', CollectionType::class, array(
+            ))->add('produitSpecialites', CollectionType::class, array(
                 'label' => "Spécialités dans lesquelles le produit est envoyé",
                 'label_attr' => array(
                     'id' => 'label_collection_type'
@@ -95,7 +97,8 @@ class ProduitType extends AbstractType
             ),
             'entry_type' => ExtensionFormulaireType::class,
             'entry_options' => array(
-                'label' => ' '
+                'label' => '-----',
+                'add' => $options['add']
             ),
 
             'allow_add' => true,

@@ -212,9 +212,12 @@ class EvenementController extends AppController
                     $specialiteEvenement->setDate(new \DateTime());
                 }
                 
+                $index = 1;
                 foreach ($evenement->getExtensionFormulaires() as $extension) {
+                    $extension->setOrdre($index);
                     $extension->setDisabled(0);
                     $extension->setEvenement($evenement);
+                    $index++;
                 }
 
                 $evenement->setDisabled(0);
@@ -273,7 +276,7 @@ class EvenementController extends AppController
             if (! $request->isXmlHttpRequest()) {
                 if (is_null($evenement->getImage()) && ! is_null($image)) {
                     $evenement->setImage($image);
-                } else {
+                } elseif(!is_null($evenement->getImage())) {
                     $file = $request->files->get('evenement')['image'];
                     $fileName = $this->telechargerImage($file, 'evenement', $evenement->getNom(), $image);
                     if ($fileName) {
@@ -288,6 +291,16 @@ class EvenementController extends AppController
 
                 $em = $this->getDoctrine()->getManager();
 
+                $index = 1;
+                foreach ($evenement->getExtensionFormulaires() as $extension) {
+                    if(is_null($extension->getEvenement())){
+                        $extension->setOrdre($index);
+                        $extension->setDisabled(0);
+                        $extension->setEvenement($evenement);
+                    }
+                    $index++;
+                }
+                
                 $tranche_age = $request->request->get('evenement')['tranche_age'];
                 asort($tranche_age);
                 $evenement->setTrancheAge($tranche_age);

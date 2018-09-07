@@ -34,16 +34,12 @@
     		</div>
     	</div>
     	
+    	<div class="shadow-sm p-3 mb-5 bg-white rounded border">
+            {{ form_row(form.extension_formulaires) }}
+          	<a href="#" id="add_extension" class="btn btn-primary btn-sm">Ajouter un champ</a>
+      	</div>
+    	
     	{{ form_row(form.image) }}
-        
-        <div id="produit_row_etablissement" class="shadow-sm p-3 mb-5 bg-white rounded border">
-            {{ form_row(form.produitEtablissements) }}
-            <a href="#" id="add_etablissement" class="btn btn-primary btn-sm">Ajouter un établissement</a>
-        </div>
-        <div id="produit_row_specialite" class="shadow-sm p-3 mb-5 bg-white rounded border">
-            {{ form_row(form.produitSpecialites) }}
-        	<a href="#" id="add_specialite" class="btn btn-primary btn-sm">Ajouter une spécialité </a>
-        </div>
         
         {{ form_rest(form) }}
         {{ form_end(form) }}
@@ -53,8 +49,6 @@
 {% endblock %}
 
 {% block script %}
- 	<script src="{{ asset('assets/js/produit_etablissement/ProduitEtablissement.js') }}?{{ date().timestamp }}"></script>
- 	<script src="{{ asset('assets/js/produit_specialite/ProduitSpecialite.js') }}?{{ date().timestamp }}"></script>
  	<script src="{{ asset('assets/js/extension_formulaire/ExtensionFormulaire.js') }}?{{ date().timestamp }}"></script>
 {% endblock %}
 
@@ -68,23 +62,7 @@
     		$('.custom-file label[for="'+ $(this).attr('id') +'"]').html(file);
     	});
 
-        var paramsS = {
-    			id_container : 'div#produit_produitSpecialites',
-    			id_btn_add : '#add_specialite',
-    			val_defaut : $('#produit_produitSpecialites_0_specialite').val()
-    	};
-    	ProduitSpecialite.LaunchAddCollection(paramsS);
-        ProduitSpecialite.Event();
-
-        var paramsE = {
-    			id_container : 'div#produit_produitEtablissements',
-    			id_btn_add : '#add_etablissement',
-    			val_defaut : $('#produit_produitEtablissements_0_etablissement').val()
-    	};
- 		ProduitEtablissement.LaunchAddCollection(paramsE);
-		ProduitEtablissement.Event();
-
-		var paramsEF = {
+        var paramsEF = {
 				id_container : 'div#produit_extension_formulaires',
 				id_btn_add : '#add_extension',
 				id_label_fieldset : '#label_collection_types',
