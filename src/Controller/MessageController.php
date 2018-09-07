@@ -396,7 +396,10 @@ class MessageController extends AppController
         
         if(!$erreur && $brouillon == 0)
         {
-            return $this->render('message/ajax_send_message_ok.html.twig', []);
+            return $this->render('message/ajax_send_message_ok.html.twig', [
+                'destinataire' => $message->getDestinataire()->getPrenom() . ' ' . $message->getDestinataire()->getNom()
+                ,
+            ]);
         }
         else
         {

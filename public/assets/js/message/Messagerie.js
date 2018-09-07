@@ -304,8 +304,7 @@ Messagerie.Launch = function(params){
 		$('#ajax_new_message #ajout-questionnaire').change(function() {
 			var slug = $(this).val();
 			var hostname = window.location.host;
-			var content = tinymce.activeEditor.getContent();
-			tinymce.activeEditor.setContent(content + '<a href="http://' + hostname + '/questionnaire/' + slug + '">' + 'http://' + hostname + '/questionnaire/' + slug + '</a>');
+			tinymce.activeEditor.insertContent('<a href="http://' + hostname + '/questionnaire/' + slug + '">' + 'http://' + hostname + '/questionnaire/' + slug + '</a>');
 
 			return false;
 		});

@@ -926,6 +926,22 @@ footer h6, footer p {
 	margin-top: -0.9rem;
 }
 
+#ajax_new_message #option-form-message {
+	margin-top: 30px;
+	margin-bottom: 10px;
+}
+
+#ajax_new_message #option-form-message .opt {
+	margin-top: -10px;
+	margin-left: -10px;
+}
+
+#ajax_new_message #option-form-message hr {
+	margin: 0px;
+	margin-bottom: 10px;
+	margin-left: -10px;
+}
+
 /********************************************
 *
 * fin Page templates/message/index.html.twig

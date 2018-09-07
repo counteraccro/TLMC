@@ -26,26 +26,36 @@
             {{ str_erreur_corps }}
       	</div>
     	
-    	<div class="form-check">
-            <input type="checkbox" class="form-check-input" id="checkbox-signature">
-            <input type="hidden" id="membre-signature" value="{{ membre.signature }}"/>
-            <label class="form-check-label" for="checkbox-signature" id="label-checkbox-signature">Ajouter ma signature en fin de mail</label>
-  		</div>
-  		<br/>
+    	<div class="card shadow-sm" id="option-form-message">
+  			<div class="card-body">
+  				<div class="opt"><b>Options</b></div>
+  				<hr />
+    			<div class="row">
+    				<div class="col-6">
+    					<div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="checkbox-signature">
+                            <input type="hidden" id="membre-signature" value="{{ membre.signature }}"/>
+                            <label class="form-check-label" for="checkbox-signature" id="label-checkbox-signature">Ajouter ma signature en fin de mail</label>
+                  		</div>
+    				</div>
+    				<div class="col-6">
+    					{% if is_granted("ROLE_ADMIN") %}	
+                      		<div class="form-group">
+                            	<label for="ajout-questionnaire">Inclure un lien vers un questionnaire à mon message</label>
+                            	<select class="form-control col-6" id="ajout-questionnaire">   
+                            		<option value="">Choix questionnaire</option>     
+                                    {% for questionnaire in questionnaires %}
+                                    	<option value="{{ questionnaire.slug }}">{{ questionnaire.titre }}</option>
+                            	    {% endfor %}
+                          		</select>
+                      		</div>
+  		                {% endif %}
+    				</div>
+    			</div>
+  			</div>
+		</div>
+    	
 
-        {% if is_granted("ROLE_ADMIN") %}	
-  		<div class="form-group">
-        	<label for="ajout-questionnaire">Inclure un lien vers un questionnaire à mon message</label>
-        	<select class="form-control col-6" id="ajout-questionnaire">   
-        		<option value="">Choix questionnaire</option>     
-                {% for questionnaire in questionnaires %}
-                	<option value="{{ questionnaire.slug }}">{{ questionnaire.titre }}</option>
-        	    {% endfor %}
-      		</select>
-  		</div>
-  		{% endif %}
-  		
-    	<br/>
     	<div class="float-right text-success" id="info-save-brouillon"></div>
     	<div class="text-info" id="info-brouillon-info"><i><span class="oi oi-info"></span> Votre message est automatiquement enregistré toutes les 20 secondes en brouillon</i></div>
     	<br/>

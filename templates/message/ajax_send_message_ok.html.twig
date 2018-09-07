@@ -1,5 +1,5 @@
-<div class="modal fade" tabindex="-1" role="dialog" id="ajax_send_message_ok">
-	<div class="modal-header">
+<div id="ajax_send_message_ok">
+<!-- 	<div class="modal-header">
 		<h5 class="modal-title">Message envoyé avec succès</h5>
 		<button type="button" class="close" data-dismiss="modal"
 			aria-label="Close" id="form-message-btn-close">
@@ -11,8 +11,13 @@
 			<b><span class="oi oi-check"></span> Votre message a bien été
 				envoyé</b>
 		</div>
-	</div>
-
+	</div> -->
+	
+  <div class="card-header card bg-success border-success">Message envoyé avec succès</div>
+  <div class="card-body text-success">
+    <p class="card-text"><span class="oi oi-check"></span> Votre message a bien été envoyé à <b>{{ destinataire }}</b></p>
+    <small class="float-right text-info"><i>Cette fenêtre se fermera dans 3 secondes ou appuyez sur Echap</i></small>
+  </div> 
 </div>
 
 {% block javascripts %}
@@ -20,8 +25,7 @@
 
 	//rediriger vers la page Messagerie
 	$(document).ready(function() {
-		$('#ajax_send_message_ok').fadeOut(2000);
-		//Messagerie.popin.modal('hide');
+		setTimeout(function() {$('#modal_message_global').modal('hide');}, 3000);
 	});
 
 </script>
