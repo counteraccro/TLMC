@@ -20,7 +20,7 @@ class TemoignageController extends AppController
      * Listing des témoignages. Pour un membre non administrateur, 
      * seul les témoignages actifs concernant des produits ou des événements liés à l'établissement ou à la spécialité du membre sont affichés
      *
-     * @Route("/temoignage/listing/{type}/{page}/{field}/{order}", name="temoignage_listing", defaults={"page" = 1, "type"="tous", "field"= null, "order"= null})
+     * @Route("/temoignage/listing/{type}/{page}/{field}/{order}", name="temoignage_listing", defaults={"page" = 1, "type"="evenement", "field"= null, "order"= null})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT') or is_granted('ROLE_BENEVOLE')")
      *
      * @param Request $request
@@ -31,7 +31,7 @@ class TemoignageController extends AppController
      * @param string $order
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function index(Request $request, SessionInterface $session, string $type = 'tous', int $page = 1, $field = null, $order = null)
+    public function index(Request $request, SessionInterface $session, string $type = 'evenement', int $page = 1, $field = null, $order = null)
     {
         if (is_null($field)) {
             $field = 'id';
@@ -39,6 +39,10 @@ class TemoignageController extends AppController
 
         if (is_null($order)) {
             $order = 'DESC';
+        }
+        
+        if($type != 'evenement' && $type != 'produit'){
+            $type = 'evenement';
         }
 
         $params = array(
