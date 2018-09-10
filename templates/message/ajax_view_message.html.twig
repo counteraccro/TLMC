@@ -62,13 +62,13 @@
   				De {{ message.expediteur.prenom }} {{ message.expediteur.nom }} &lsaquo;{{ message.expediteur.email }}&rsaquo; <br />
   				<i>{{ message.titre }}</i> <br />
   				{% if message.destinataire.id == app.user.id %}
-  					<small><i>A [Brouillon]</i>
+  					<small><i>A moi</i>
   				{% else %}
   					<small>A {{ message.destinataire.prenom }} {{ message.destinataire.nom }} &lsaquo;{{ message.destinataire.email }}&rsaquo;</small>
   				{% endif %}
   			</div>
   			<div class="clearfix"></div>
-  			Pièces-jointes : <a href="#"><span class="oi oi-paperclip"></span>Questionnaire-demo.xml</a> | <a href="#"><span class="oi oi-paperclip"></span>Questionnaire-demo.csv</a>
+  			Pièces-jointes : <a href="#"><span class="oi oi-paperclip"></span> pièce-jointe-1.xml</a> | <a href="#"><span class="oi oi-paperclip"></span> pièce-jointe-2.csv</a>
   			<hr />
   			<div class="corps">
     		    {{ message.corps | raw }}

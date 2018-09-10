@@ -2,9 +2,11 @@
    	<div class="card-header">
    		Liens avec les établissements
    		{% if is_granted("ROLE_ADMIN") %}
-       		<a href="{{ path('produit_etablissement_ajax_add', {'id' : produit.id, 'type': 'produit'}) }}" id="btn-add-produit-etablissement" class="float-right"><span class="oi oi-link-intact"></span> Proposer à un nouvel établissement</a>
-   			<br>
-       		<a href="{{ path('produit_specialite_ajax_add', {'id' : produit.id, 'type': 'produit'}) }}" id="btn-add-produit-specialite" class="float-right"><span class="oi oi-link-intact"></span> Proposer à une nouvelle spécialité</a>
+   		<div class="float-right">
+       		<a href="{{ path('produit_etablissement_ajax_add', {'id' : produit.id, 'type': 'produit'}) }}" id="btn-add-produit-etablissement"><span class="oi oi-link-intact"></span> Proposer à un nouvel établissement</a>
+   			|
+       		<a href="{{ path('produit_specialite_ajax_add', {'id' : produit.id, 'type': 'produit'}) }}" id="btn-add-produit-specialite"><span class="oi oi-link-intact"></span> Proposer à une nouvelle spécialité</a>
+       		</div>
        		{% endif %}
     </div>
     <div class="card-body">
