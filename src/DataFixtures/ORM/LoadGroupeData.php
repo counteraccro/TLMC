@@ -44,7 +44,7 @@ class LoadGroupeData extends Fixture
                 'setDisabled' => '0'
             ],
             'Groupe-5' => [
-                'setNom' => 'Entre potes [perso]',
+                'setNom' => 'Entre amis [perso]',
                 'setDate' => '2018-08-29 13:50:08',
                 'setDisabled' => '0'
             ],

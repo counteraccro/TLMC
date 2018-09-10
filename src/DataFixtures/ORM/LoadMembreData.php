@@ -30,8 +30,8 @@ class LoadMembreData extends Fixture implements DependentFixtureInterface
                 'setEmail' => 'efonzydu92@gmail.com',
                 'setFonction' => 'Directeur',
                 'setDecideur' => true,
-                'setAnnuaire' => false,
-                'setSignature' => 'avec tout mon amour, votre cher Eric Fonzy',
+                'setAnnuaire' => true,
+                'setSignature' => 'Sincères salutations, Eric Fonzy',
                 'setDisabled' => 0,
                 'setEtablissement' => 'Etablissement-1',
                 'setSpecialite' => 'Specialite-1',
@@ -89,7 +89,8 @@ class LoadMembreData extends Fixture implements DependentFixtureInterface
                 'setEtablissement' => 'Etablissement-3',
                 'setSpecialite' => 'Specialite-4',
                 'setSalt' => '1A2B3C4D5E6F7G8902',
-                'setRoles' => array('ROLE_BENEVOLE')
+                'setRoles' => array('ROLE_BENEVOLE'),
+                'setAvatar' => 'https://img.bonoboplanet.com/products_images/prod_72522/h_bonnet-femme-maille-bonobo-BEIGE-TABAC-dc-596.jpg'
             ],
             'Membre-5' => [
                 'setNom' => 'Lucas',
@@ -132,7 +133,7 @@ class LoadMembreData extends Fixture implements DependentFixtureInterface
                 'setPrenom' => 'Julie',
                 'setNumeroTel' => '+33113123456',
                 'setEmail' => 'jul_lombardo@gmail.com',
-                'setFonction' => 'Gestionnaire',
+                'setFonction' => 'Directrice',
                 'setDecideur' => false,
                 'setAnnuaire' => true,
                 'setSignature' => 'à votre disposition, Julie Lombardo',
@@ -302,7 +303,7 @@ class LoadMembreData extends Fixture implements DependentFixtureInterface
                 'setPrenom' => 'Olga',
                 'setNumeroTel' => '+33412457878',
                 'setEmail' => 'olga_petrowsky@gmail.com',
-                'setFonction' => 'Responsable',
+                'setFonction' => 'Secrétaire',
                 'setDecideur' => false,
                 'setAnnuaire' => true,
                 'setSignature' => 'Cordialement, Responsable Olga Petrowsky',

@@ -27,7 +27,7 @@ class LoadEvenementData extends Fixture
                 'setNomLieu' => 'Salle des fêtes',
                 'setNumeroVoie' => 1,
                 'setVoie' => 'rue des Sapins',
-                'setVille' => 'Alaska City',
+                'setVille' => 'Yerres',
                 'setCodePostal' => 99821,
                 'setTrancheAge' => array(0),
                 'setStatut' => 2,
@@ -46,18 +46,18 @@ class LoadEvenementData extends Fixture
                 'setNomLieu' => 'Bowling Le Strike',
                 'setNumeroVoie' => 58,
                 'setVoie' => 'Boulevard de la batte',
-                'setVille' => 'Montreal',
-                'setCodePostal' => 568465746,
+                'setVille' => 'Montgeron',
+                'setCodePostal' => 91230,
                 'setTrancheAge' => array(3, 4),
                 'setStatut' => 1,
                 'setDateFinInscription' => '2018-09-20 00:00:00',
                 'setDisabled' => 0
             ],
             'Evenement-3' => [
-                'setNom' => 'Balade en cheval',
+                'setNom' => 'Balade à cheval',
                 'setDateDebut' => '2018-09-22 08:30:00',
                 'setDateFin' => '2018-09-22 19:00:00',
-                'setDescription' => 'Balade en cheval aux bords du Doubs. Fin de parcours en haut de la citadelle.',
+                'setDescription' => 'Balade à cheval aux bords du Doubs. Fin de parcours en haut de la citadelle.',
                 'setInformationComplementaire' => 'Il est possible pour certaine personne à mobilité réduite de faire la balade.',
                 'setNombreMax' => 20,
                 'setType' => 2,
@@ -76,7 +76,7 @@ class LoadEvenementData extends Fixture
                 'setNom' => "Soirée d'Halloween",
                 'setDateDebut' => '2018-10-31 18:00:00',
                 'setDateFin' => '2018-11-01 03:00:00',
-                'setDescription' => "Venait frissoner à la soirée annuelle d'Halloween. Une distribution de bonbon et un concours de costumes seront organisés.",
+                'setDescription' => "Venez frissoner à la soirée annuelle d'Halloween. Une distribution de bonbons et un concours de costumes seront organisés.",
                 'setNombreMax' => 66,
                 'setType' => 4,
                 'setImage' => 'https://upload.wikimedia.org/wikipedia/fr/a/aa/Logo-halloween-commerce.png',
@@ -112,7 +112,7 @@ class LoadEvenementData extends Fixture
                 'setNom' => "Feu d'artifice du 14 juillet",
                 'setDateDebut' => '2016-07-14 18:00:00',
                 'setDateFin' => '2016-07-14 23:00:00',
-                'setDescription' => "venez célébrez la fête nationale autour d'un barbecue suivi d'un feu d'artifice",
+                'setDescription' => "venez célébrer la fête nationale autour d'un barbecue suivi d'un feu d'artifice",
                 'setNombreMax' => 150,
                 'setType' => 5,
                 'setNomLieu' => 'Stade des cerisiers',
@@ -123,7 +123,7 @@ class LoadEvenementData extends Fixture
                 'setTrancheAge' => array(0),
                 'setStatut' => 4,
                 'setDateFinInscription' => '2016-06-14 18:00:00',
-                'setDisabled' => 1
+                'setDisabled' => 0
             ]
         ]
     ];

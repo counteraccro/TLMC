@@ -135,7 +135,6 @@ class LoadQuestionData extends Fixture implements DependentFixtureInterface
                 'setQuestionnaire' => 'Questionnaire-4',
                 'setLibelle' => 'Comment avez-vous eu connaissance de l\'association ?',
                 'setLibelleTop' => 'Nous allons dès maintenant vous poser quelques questions pour recueillir votre avis concernant le fonctionnement de l’association. ',
-                'setLibelleBottom' => 'Pour les plus jeunes, l’aide des parents est la bienvenue pour remplir ce questionnaire',
                 'setType' => 'RadioType',
                 'setValeurDefaut' => '',
                 'setListeValeur' => '{"0":{"value":"0","libelle":"en Mairie"},"1":{"value":"1","libelle":"par le bouche-à-oreille"},"2":{"value":"2","libelle":"par l\'école ou le collège"},"3":{"value":"3","libelle":"flyers"},"4":{"value":"4","libelle":"campagne de sensibilisation"}}',

@@ -65,7 +65,7 @@ class LoadGroupeMembreData extends Fixture implements DependentFixtureInterface
                 'setDate' => '2018-08-29 13:50:08'
             ],
             'GroupeMembre-11' => [
-                'setMembre' => 'Membre-1',
+                'setMembre' => 'Membre-8',
                 'setGroupe' => 'Groupe-6',
                 'setDate' => '2018-08-29 14:04:17'
             ],

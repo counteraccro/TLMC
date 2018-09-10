@@ -79,7 +79,7 @@ class LoadEtablissementData extends Fixture
                 'setNbLit' => 102,
                 'setStatutConvention' => 0,
                 'setDateCollaboration' => '1998-02-16',
-                'setDisabled' => 1
+                'setDisabled' => 0
             ]
         ]
     ];
