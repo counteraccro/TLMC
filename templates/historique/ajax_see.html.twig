@@ -28,6 +28,7 @@
         	<table class="table table-sm table-striped">
             	<tr>
             		{% if type != 'specialite' %}
+            			<th> Etablissement </th>
                     	<th> Spécialité </th>
                     {% endif %}
                     {% if type != 'evenement' %}
@@ -43,7 +44,8 @@
                 {% for historique in historiques %}
                 	<tr>
                         {% if type != 'specialite' %}
-                        	<td>{{ historique.specialite.service }} ({{ historique.specialite.etablissement.nom }})</td>
+                        	<td>{{ historique.specialite.etablissement.nom }}</td>
+                        	<td>{{ historique.specialite.service }}</td>
                         {% endif %}
                         {% if type != 'evenement' %}
                         	<td>{{ horaire(historique.evenement.dateDebut, historique.evenement.dateFin) }}</td>
