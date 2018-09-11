@@ -28,7 +28,7 @@ class EtablissementType extends AbstractType
             'label' => 'Code logistique'
         ))
             ->add('nb_lit', IntegerType::class, array(
-            'label' => 'Nombre de lit'
+            'label' => 'Nombre de lits'
         ))
             ->add('statut_convention', ChoiceType::class, array(
             'label' => 'Statut de la convention',

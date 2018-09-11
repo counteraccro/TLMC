@@ -90,82 +90,54 @@ class LoadFamilleAdresseData extends Fixture implements DependentFixtureInterfac
                 'setDisabled' => false
             ],
             'FamilleAdresse-12' => [
-                'setNumeroVoie' => 15,
-                'setVoie' => 'rue des Abricots',
-                'setVille' => 'Le Mans',
-                'setCodePostal' => 72200,
-                'setDisabled' => false
-            ],
-            'FamilleAdresse-13' => [
                 'setNumeroVoie' => 75,
                 'setVoie' => 'Avenue Victor Hugo',
                 'setVille' => 'Le Mans',
                 'setCodePostal' => 72200,
                 'setDisabled' => false
             ],
+            'FamilleAdresse-13' => [
+                'setNumeroVoie' => 75,
+                'setVoie' => 'Boulevard Haussmann',
+                'setVille' => 'Paris',
+                'setCodePostal' => 75008,
+                'setDisabled' => false
+            ],
             'FamilleAdresse-14' => [
-                'setNumeroVoie' => 75,
-                'setVoie' => 'Boulevard Haussmann',
-                'setVille' => 'Paris',
-                'setCodePostal' => 75008,
-                'setDisabled' => false
-            ],
-            'FamilleAdresse-15' => [
-                'setNumeroVoie' => 75,
-                'setVoie' => 'Boulevard Haussmann',
-                'setVille' => 'Paris',
-                'setCodePostal' => 75008,
-                'setDisabled' => false
-            ],
-            'FamilleAdresse-16' => [
                 'setNumeroVoie' => 16,
                 'setVoie' => 'Avenue des Orangeades',
                 'setVille' => 'Bordeaux',
                 'setCodePostal' => 33000,
                 'setDisabled' => false
             ],
-            'FamilleAdresse-17' => [
+            'FamilleAdresse-15' => [
                 'setNumeroVoie' => 17,
                 'setVoie' => 'Avenue Marie Currie',
                 'setVille' => 'Tarbes',
                 'setCodePostal' => 65000,
                 'setDisabled' => false
             ],
-            'FamilleAdresse-18' => [
+            'FamilleAdresse-16' => [
                 'setNumeroVoie' => 180,
                 'setVoie' => 'Boulevard des généraux',
                 'setVille' => 'Versailles',
                 'setCodePostal' => 78000,
                 'setDisabled' => false
             ],
-            'FamilleAdresse-19' => [
+            'FamilleAdresse-17' => [
                 'setNumeroVoie' => 50,
                 'setVoie' => 'Route de Garenne',
                 'setVille' => 'Clamart',
                 'setCodePostal' => 92140,
                 'setDisabled' => false
             ],
-            'FamilleAdresse-20' => [
-                'setNumeroVoie' => 50,
-                'setVoie' => 'Route de Garenne',
-                'setVille' => 'Clamart',
-                'setCodePostal' => 92140,
-                'setDisabled' => false
-            ],
-            'FamilleAdresse-21' => [
+            'FamilleAdresse-18' => [
                 'setNumeroVoie' => 180,
                 'setVoie' => 'Avenue de Lille',
                 'setVille' => 'Versailles',
                 'setCodePostal' => 78000,
                 'setDisabled' => false
             ],
-            'FamilleAdresse-22' => [
-                'setNumeroVoie' => 180,
-                'setVoie' => 'Avenue de Lille',
-                'setVille' => 'Versailles',
-                'setCodePostal' => 78000,
-                'setDisabled' => false
-            ]
         ]
     ];
 

@@ -50,7 +50,7 @@ class LoadProduitData extends Fixture
                 'setGenre' => 0,
                 'setQuantite' => 50,
                 'setDateCreation' => '2018-07-17 19:00:00',
-                'setDateEnvoi' => '2018-08-30 12:00:00',
+                'setDateEnvoi' => '2018-06-25 15:00:00',
                 'setDisabled' => 1
             ],
             'Produit-4' => [
@@ -61,7 +61,7 @@ class LoadProduitData extends Fixture
                 'setGenre' => 0,
                 'setQuantite' => 30,
                 'setDateCreation' => '2018-07-17 19:00:00',
-                'setDateEnvoi' => '2018-08-30 12:00:00',
+                'setDateEnvoi' => '2018-07-17 14:00:00',
                 'setDisabled' => 0
             ],
             'Produit-5' => [
@@ -72,7 +72,7 @@ class LoadProduitData extends Fixture
                 'setGenre' => 0,
                 'setQuantite' => 35,
                 'setDateCreation' => '2018-07-17 19:00:00',
-                'setDateEnvoi' => '2018-08-30 12:00:00',
+                'setDateEnvoi' => '2018-04-22 09:00:00',
                 'setDisabled' => 1
             ],
             'Produit-6' => [

@@ -123,7 +123,8 @@ class LoadEvenementData extends Fixture
                 'setTrancheAge' => array(0),
                 'setStatut' => 4,
                 'setDateFinInscription' => '2016-06-14 18:00:00',
-                'setDisabled' => 0
+                'setDisabled' => 0,
+                'setImage' => 'https://www.buzzwebzine.fr/wp-content/uploads/2018/07/feu-artifice-tour-eiffel-paris-14-juillet-2018.jpg'
             ]
         ]
     ];
