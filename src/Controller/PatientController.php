@@ -16,7 +16,8 @@ class PatientController extends AppController
 {
 
     /**
-     * Listing des patients. Pour les membres non admins,
+     * Listing des patients.
+     * Pour les membres non admins,
      * les patients affichés sont les patients de la spécialité du membre connecté
      *
      * @Route("/patient/listing/{page}/{field}/{order}", name="patient_listing", defaults={"page" = 1, "field"= null, "order"= null})
@@ -207,9 +208,9 @@ class PatientController extends AppController
 
         $disabled = false;
         if (! $this->isAdmin() && ! is_null($specialite)) {
-                $patient->setSpecialite($membre->getSpecialite());
-                $query->andWhere("specialite.id = " . $specialite->getId());
-                $disabled = true;
+            $patient->setSpecialite($membre->getSpecialite());
+            $query->andWhere("specialite.id = " . $specialite->getId());
+            $disabled = true;
         }
 
         $query->andWhere('specialite.disabled = 0');
@@ -392,7 +393,7 @@ class PatientController extends AppController
             'order' => $arrayFilters['order']
         ));
     }
-    
+
     /**
      * Mise à jour du dropdown Patient lorsque la spécialité change dans le formulaire d'ajout d'un historique
      *
@@ -406,11 +407,26 @@ class PatientController extends AppController
      */
     public function addAjaxDropdownAction(Request $request, Specialite $specialite = null)
     {
-        
-        $patients = $specialite->getPatients();
-        
+
+        // $patients = $specialite->getPatients();
+        $params = array(
+            'field' => 'nom ASC, Patient.prenom',
+            'order' => 'ASC',
+            'page' => 1,
+            'repositoryClass' => Patient::class,
+            'repository' => 'Patient',
+            'repositoryMethode' => 'findAllPatients',
+            'condition' => array(
+                'Patient.specialite = ' . $specialite->getId(), 
+                'Patient.disabled = 0'
+            )
+        );
+
+        $repository = $this->getDoctrine()->getRepository(Patient::class);
+        $patients = $repository->findAllPatients(1, 10, $params);
+
         return $this->render('patient/ajax_dropdown.html.twig', array(
-            'patients' => $patients
+            'patients' => $patients['paginator']
         ));
     }
 }

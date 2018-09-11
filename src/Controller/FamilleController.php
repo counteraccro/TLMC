@@ -475,7 +475,12 @@ class FamilleController extends AppController
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function addAjaxListeAction(Patient $patient = null){
-        $familles = $patient->getFamilles();
+        
+        if(is_null($patient)){
+            $familles = array();
+        } else {
+            $familles = $patient->getFamilles();
+        }
         
         return $this->render('famille/ajax_liste.html.twig', array(
             'familles' => $familles
