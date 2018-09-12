@@ -69,13 +69,33 @@ class EvenementType extends AbstractType
         ));
 
         if (! $options['ajax']) {
-            $builder->add('image', FileType::class, array(
-                'label' => 'Image',
+            $builder->add('image_1', FileType::class, array(
+                'label' => 'Image 1',
                 'data_class' => null,
                 'required' => false,
                 'help' => ($options['add'] ? 'Formats de fichier acceptés : jpg, jpeg, png' : 'Ne pas remplir si vous souhaitez conserver la même image'),
                 'attr' => array(
-                    'placeholder' => 'Choisir une image'
+                    'placeholder' => 'Choisir la première image'
+                )
+            ));
+            
+            $builder->add('image_2', FileType::class, array(
+                'label' => 'Image 2',
+                'data_class' => null,
+                'required' => false,
+                'help' => ($options['add'] ? 'Formats de fichier acceptés : jpg, jpeg, png' : 'Ne pas remplir si vous souhaitez conserver la même image'),
+                'attr' => array(
+                    'placeholder' => 'Choisir la seconde image'
+                )
+            ));
+            
+            $builder->add('image_3', FileType::class, array(
+                'label' => 'Image 3',
+                'data_class' => null,
+                'required' => false,
+                'help' => ($options['add'] ? 'Formats de fichier acceptés : jpg, jpeg, png' : 'Ne pas remplir si vous souhaitez conserver la même image'),
+                'attr' => array(
+                    'placeholder' => 'Choisir la troisième image'
                 )
             ));
         }
@@ -131,7 +151,8 @@ class EvenementType extends AbstractType
             'type' => EvenementController::TYPE,
             'trancheAge' => AppController::TRANCHE_AGE,
             'query_specialite' => null,
-            'ajax' => false
+            'ajax' => false,
+            'allow_extra_fields' => true
         ));
     }
 }

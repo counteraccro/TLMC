@@ -10,16 +10,8 @@
        	{% endif %}
     </div>
     <div class="card-body">
-		<div class="row align-items-center">
-    		<div class="col-md-3">
-    		    {% if evenement.image != null %}
-    		    	{% if is_granted("ROLE_ADMIN") %}
-    		    	    {{ deleteImage(path('image_delete', {'id': evenement.id, 'type' : 'evenement' }), 'btn-delete-image') | raw }}
-    		        {% endif %}
-    		    	{{ image('evenement', evenement.image) | raw }}
-    	        {% endif %}
-    		</div>
-			<div class="col-md-9">
+		<div class="row align-items-center">	
+    		<div class="col-md-12">
                	<table  class="table table-sm">
                    	<tr>
                    		<th scope="col"> Date</th>
@@ -78,6 +70,32 @@
                 </table>
             </div>
         </div>
+    	<div class="row align-items-center">
+    		<div class="col-md-4">
+    		    {% if evenement.image1 != null %}
+    		    	{% if is_granted("ROLE_ADMIN") %}
+    		    	    {{ deleteImage(path('image_delete', {'id': evenement.id, 'type' : 'evenement', 'field': 'image_1' }), 'btn-delete-image-1') | raw }}
+    		        {% endif %}
+    		    	{{ image('evenement', evenement.image1) | raw }}
+    	        {% endif %}
+    		</div>
+    		<div class="col-md-4">
+    		    {% if evenement.image2 != null %}
+    		    	{% if is_granted("ROLE_ADMIN") %}
+    		    	    {{ deleteImage(path('image_delete', {'id': evenement.id, 'type' : 'evenement', 'field': 'image_2' }), 'btn-delete-image-2') | raw }}
+    		        {% endif %}
+    		    	{{ image('evenement', evenement.image2) | raw }}
+    	        {% endif %}
+    		</div>
+    		<div class="col-md-4">
+    		    {% if evenement.image3 != null %}
+    		    	{% if is_granted("ROLE_ADMIN") %}
+    		    	    {{ deleteImage(path('image_delete', {'id': evenement.id, 'type' : 'evenement', 'field': 'image_3' }), 'btn-delete-image-3') | raw }}
+    		        {% endif %}
+    		    	{{ image('evenement', evenement.image3) | raw }}
+    	        {% endif %}
+    		</div>
+    	</div>
     </div>
 </div>
 
@@ -99,8 +117,14 @@
             var id_btn_delete_evenement = '#btn-disabled-evenement';
             Evenement.EventDelete(id_btn_delete_evenement);
     
-            var id_btn_delete_image = '#btn-delete-image';
-            Evenement.EventDelete(id_btn_delete_image);
+            var id_btn_delete_image_1 = '#btn-delete-image-1';
+            Evenement.EventDelete(id_btn_delete_image_1);
+
+            var id_btn_delete_image_2 = '#btn-delete-imag-2';
+            Evenement.EventDelete(id_btn_delete_image_2);
+
+            var id_btn_delete_image_3 = '#btn-delete-image-3';
+            Evenement.EventDelete(id_btn_delete_image_3);
         });
     </script> 
 

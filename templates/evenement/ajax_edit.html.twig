@@ -69,7 +69,10 @@
     	
     	<div class="row">
             <div class="col-md-12">
-                {{ form_row(form.extension_formulaires) }}
+                <div class="shadow-sm p-3 mb-5 bg-white rounded border">
+                    {{ form_row(form.extension_formulaires) }}
+                  	<a href="#" id="add_extension" class="btn btn-primary btn-sm">Ajouter un champ</a>
+              	</div>
       		</div>
         </div>
     </div>
@@ -83,6 +86,10 @@
     {{ form_end(form) }}
 
 </div>
+
+{% block script %}
+ 	<script src="{{ asset('assets/js/extension_formulaire/ExtensionFormulaire.js') }}?{{ date().timestamp }}"></script>
+{% endblock %}
 
 {% block javascripts %}
 
@@ -102,6 +109,17 @@
          	
     		var url = '{{path('evenement_ajax_edit', {'id': evenement.id }) }}';
     		Evenement.EventEditSubmit(url);
+
+    		var paramsEF = {
+    				id_container : 'div#evenement_extension_formulaires',
+    				id_btn_add : '#add_extension',
+    				id_label_fieldset : '#label_collection_types',
+    				btn_delete : '<a href="#" class="btn btn-danger btn-sm">Supprimer</a>',
+    		};
+    	    
+    		ExtensionFormulaire.Launch(paramsEF);
+    		ExtensionFormulaire.Event();
+    		
     	});
     </script> 
 

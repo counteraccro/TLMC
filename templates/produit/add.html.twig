@@ -42,7 +42,17 @@
       		<a href="#" id="add_extension" class="btn btn-primary btn-sm">Ajouter un champ</a>
   		</div>
     	
-    	{{ form_row(form.image) }}
+    	<div class="row">
+    		<div class="col-md-4">
+                {{ form_row(form.image_1) }}
+    		</div>
+    		<div class="col-md-4">
+                {{ form_row(form.image_2) }}
+    		</div>
+    		<div class="col-md-4">
+                {{ form_row(form.image_3) }}
+    		</div>
+    	</div>
         
         <div id="produit_row_etablissement" class="shadow-sm p-3 mb-5 bg-white rounded border">
             {{ form_row(form.produitEtablissements) }}
@@ -70,7 +80,17 @@
 	<script type="text/javascript">
         $(document).ready(function() {
 
-        	$('#produit_image').change(function() {
+        	$('#evenement_image_1').change(function() {
+        		var file = $(this)[0].files[0].name;
+        		$('.custom-file label[for="'+ $(this).attr('id') +'"]').html(file);
+        	});
+
+            $('#evenement_image_2').change(function() {
+        		var file = $(this)[0].files[0].name;
+        		$('.custom-file label[for="'+ $(this).attr('id') +'"]').html(file);
+        	});
+
+            $('#evenement_image_3').change(function() {
         		var file = $(this)[0].files[0].name;
         		$('.custom-file label[for="'+ $(this).attr('id') +'"]').html(file);
         	});

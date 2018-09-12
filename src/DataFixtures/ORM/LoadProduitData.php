@@ -28,7 +28,7 @@ class LoadProduitData extends Fixture
                 'setDateCreation' => '2017-04-12 12:00:00',
                 'setDateEnvoi' => '2017-04-12 12:00:00',
                 'setDisabled' => 0,
-                'setImage' => "https://s.s-bol.com/imgbase0/imagebase3/large/FC/7/4/1/8/9200000028828147.jpg"
+                'setImage1' => "https://s.s-bol.com/imgbase0/imagebase3/large/FC/7/4/1/8/9200000028828147.jpg"
             ],
             'Produit-2' => [
                 'setType' => 1,
@@ -46,7 +46,7 @@ class LoadProduitData extends Fixture
                 'setTitre' => 'Crayon de couleur',
                 'setTexte' => 'Set de 24 crayons de couleur',
                 'setTrancheAge' => array(2, 3, 4),
-                'setImage' => 'Crayon de couleur_23082018085439.jpg',
+                'setImage1' => 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Caran_pencil.jpg/220px-Caran_pencil.jpg',
                 'setGenre' => 0,
                 'setQuantite' => 50,
                 'setDateCreation' => '2018-07-17 19:00:00',
@@ -85,7 +85,7 @@ class LoadProduitData extends Fixture
                 'setDateCreation' => '2016-07-17 09:28:36',
                 'setDateEnvoi' => '2016-07-18 14:00:00',
                 'setDisabled' => 0,
-                'setImage' => 'https://www.cocktail-scandinave.fr/Vbeta2018/wp-content/uploads/2018/02/MXCHA100-zoom.jpg'
+                'setImage1' => 'https://www.cocktail-scandinave.fr/Vbeta2018/wp-content/uploads/2018/02/MXCHA100-zoom.jpg'
             ]
         ]
     ];

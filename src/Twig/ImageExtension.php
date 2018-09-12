@@ -44,7 +44,7 @@ class ImageExtension extends AbstractExtension
             return false;
         }
         $element = strtolower($element);
-        if ($element != 'produit' && $element != 'evenement' && $element != 'membre') {
+        if (!in_array($element, array('produit', 'evenement', 'membre', 'temoignage'))) {
             return false;
         }
         

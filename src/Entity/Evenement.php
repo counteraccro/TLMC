@@ -57,7 +57,17 @@ class Evenement
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $image;
+    private $image_1;
+    
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $image_2;
+    
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $image_3;
 
     /**
      * @ORM\Column(type="string", length=100)
@@ -227,6 +237,42 @@ class Evenement
     public function setType(int $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getImage1(): ?string
+    {
+        return $this->image_1;
+    }
+
+    public function setImage1(?string $image_1): self
+    {
+        $this->image_1 = $image_1;
+
+        return $this;
+    }
+
+    public function getImage2(): ?string
+    {
+        return $this->image_2;
+    }
+
+    public function setImage2(?string $image_2): self
+    {
+        $this->image_2 = $image_2;
+
+        return $this;
+    }
+
+    public function getImage3(): ?string
+    {
+        return $this->image_3;
+    }
+
+    public function setImage3(?string $image_3): self
+    {
+        $this->image_3 = $image_3;
 
         return $this;
     }
@@ -456,7 +502,7 @@ class Evenement
     {
         if (!$this->specialiteEvenements->contains($specialiteEvenement)) {
             $this->specialiteEvenements[] = $specialiteEvenement;
-            $specialiteEvenement->setSpecialite($this);
+            $specialiteEvenement->setEvenement($this);
         }
 
         return $this;
@@ -467,8 +513,8 @@ class Evenement
         if ($this->specialiteEvenements->contains($specialiteEvenement)) {
             $this->specialiteEvenements->removeElement($specialiteEvenement);
             // set the owning side to null (unless already changed)
-            if ($specialiteEvenement->getSpecialite() === $this) {
-                $specialiteEvenement->setSpecialite(null);
+            if ($specialiteEvenement->getEvenement() === $this) {
+                $specialiteEvenement->setEvenement(null);
             }
         }
 
@@ -533,18 +579,6 @@ class Evenement
                 $historique->setEvenement(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getImage(): ?string
-    {
-        return $this->image;
-    }
-
-    public function setImage(?string $image): self
-    {
-        $this->image = $image;
 
         return $this;
     }
