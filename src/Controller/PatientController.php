@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Entity\Etablissement;
 use App\Entity\Membre;
 use App\Entity\Specialite;
+use App\Entity\FamilleAdresse;
 
 class PatientController extends AppController
 {
@@ -225,10 +226,30 @@ class PatientController extends AppController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $em = $this->getDoctrine()->getManager();
-
+            
             foreach ($patient->getFamilles() as $famille) {
+                //vérification pour éviter les doublons dans les adresses des familles
+                $adresse = $this->getDoctrine()
+                ->getRepository(FamilleAdresse::class)
+                ->findOneBy(array(
+                    'numero_voie' => $famille->getFamilleAdresse()->getNumeroVoie(),
+                    'voie' => $famille->getFamilleAdresse()->getVoie(),
+                    'ville' => $famille->getFamilleAdresse()->getVille(),
+                    'code_postal' => $famille->getFamilleAdresse()->getCodePostal()
+                ));
+                
+                // Si l'adresse existe on la set sinon on la crée directement pour ne pas créer des doublons
+                if (!is_null($adresse)) {
+                    $famille->setFamilleAdresse($adresse);
+                } else {
+                    $famille_adresse = $famille->getFamilleAdresse();
+                    $famille_adresse->setDisabled(0);
+                    $em->persist($famille_adresse);
+                    $em->flush();
+                    $famille->setFamilleAdresse($famille_adresse);
+                }
+                
                 $famille->setPatient($patient);
-                $famille->getFamilleAdresse()->setDisabled(0);
                 $famille->setDisabled(0);
                 $patient->addFamille($famille);
             }

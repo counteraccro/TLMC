@@ -14,6 +14,7 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use App\Entity\Evenement;
+use App\Entity\FamilleAdresse;
 
 class FamilleController extends AppController
 {
@@ -238,6 +239,20 @@ class FamilleController extends AppController
 
             $em = $this->getDoctrine()->getManager();
 
+            //vérification pour éviter les doublons dans la table participant
+            $adresse = $this->getDoctrine()
+            ->getRepository(FamilleAdresse::class)
+            ->findOneBy(array(
+                'numero_voie' => $famille->getFamilleAdresse()->getNumeroVoie(),
+                'voie' => $famille->getFamilleAdresse()->getVoie(),
+                'ville' => $famille->getFamilleAdresse()->getVille(),
+                'code_postal' => $famille->getFamilleAdresse()->getCodePostal()
+            ));
+            
+            if (!is_null($adresse)) {
+                $famille->setFamilleAdresse($adresse);
+            }
+            
             $em->persist($famille);
             $em->flush();
 

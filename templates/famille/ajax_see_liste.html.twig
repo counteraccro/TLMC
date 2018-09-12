@@ -28,7 +28,7 @@
                 		<td>
                 		    {{ famille.familleAdresse.numeroVoie }}, {{ famille.familleAdresse.voie }}<br />
                 		    {{ famille.familleAdresse.codePostal }} {{ famille.familleAdresse.ville }}
-                		    {{ actionEdit(path('famille_adresse_ajax_edit', {'id' : famille.familleAdresse.id, 'page' : pagination.page}), 'btn-edit-famille-adresse-'~ famille.familleAdresse.id ) | raw }}
+                		    {{ actionEdit(path('famille_adresse_ajax_edit', {'id' : famille.familleAdresse.id, 'page' : pagination.page}), 'btn-edit-famille-adresse-' ~ famille.id ~ '-' ~ famille.familleAdresse.id ) | raw }}
                 		</td>
                 		<td>{{ famille.pmr | bool }}</td>
                 		<td>
@@ -64,7 +64,7 @@
         {% for famille in familles %}
             Famille.EventEdit('#btn-edit-famille-' + {{ famille.id }});
     		
-            Famille.EventEdit('#btn-edit-famille-adresse-' + {{ famille.familleAdresse.id }});
+            Famille.EventEdit('#btn-edit-famille-adresse-' + {{ famille.id }} + '-' + {{ famille.familleAdresse.id }});
 
             {% if is_granted("ROLE_ADMIN") %}
 				Famille.EventDelete('#delete-' + {{ famille.id }});

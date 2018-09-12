@@ -97,7 +97,7 @@ class ProduitType extends AbstractType
             ),
             'entry_type' => ExtensionFormulaireType::class,
             'entry_options' => array(
-                'label' => '-----',
+                'label' => ' ',
                 'add' => $options['add']
             ),
 
