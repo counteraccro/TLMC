@@ -6,6 +6,7 @@ namespace App\Twig;
 
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
+use App\Entity\Questionnaire;
 
 class DateExtension extends AbstractExtension
 {
@@ -16,6 +17,10 @@ class DateExtension extends AbstractExtension
             new TwigFunction('formatDateMessage', array(
                 $this,
                 'formatDateMessage'
+            )),
+            new TwigFunction('formatDateQuestionnaire', array(
+                $this,
+                'formatDateQuestionnaire'
             ))
         );
     }
@@ -60,5 +65,15 @@ class DateExtension extends AbstractExtension
         {
             return 'Le ' . date('d/m/Y à H:i:s', $date);
         }
+    }
+    
+    /**
+     * Formate une date (compte/décompte de jours, exemple : J-21)
+     */
+    function formatDateQuestionnaire($date)
+    {
+        $now = new \DateTime();
+        $nbJours = date_diff($now, $date);
+        echo $nbJours->format('%R%a jours');
     }
 }

@@ -275,6 +275,21 @@ class QuestionnaireRepository extends ServiceEntityRepository
         return $query;
     }
     
+    /**
+     * Fonction qui retourne les 5 questionnaires dont la date de fin est la plus proche
+     */
+    public function findExpiringSoon() {
+        $query = $this->createQueryBuilder('q')
+        ->andWhere('q.date_publication IS NOT NULL')
+        ->andWhere('q.date_fin > CURRENT_TIMESTAMP()')
+        ->addOrderBy('q.date_fin', 'DESC')
+        ->setMaxResults(5)
+        ->getQuery()
+        ->getResult();
+        
+        return $query;
+    }
+    
     // /**
     // * @return Questionnaire[] Returns an array of Questionnaire objects
     // */

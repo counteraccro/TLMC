@@ -5,10 +5,9 @@
 	<h1>Accueil</h1>
 
 {% if is_granted('ROLE_ADMIN') %}
-	<div id ="questionnaires_accueil">
-		<div class="card">
+		<div id ="questionnaires_accueil" class="card col-5">
         	<div class="card-header bg-primary float-left">
-            	Questionnaires (listing)
+            	Questionnaires qui vont expirer prochainement
         	</div>
         	<div class="card-body float-left">
         		<table class="table">
@@ -24,18 +23,20 @@
                             <td>{{ quest.id }}</td>
                             <td>{{ quest.titre }}</td>
                             <td>{{ quest.dateCreation |date("d/m/Y H:i")}}</td>
-                           	<td>{{ quest.dateFin |date("d/m/Y H:i")}}</td>
-                            {% if quest.dateFin.timestamp  < date().timestamp %}
-							<td><span class="text-danger"><span class="oi oi-media-record"></span></span> TERMINE</td>
+                           	<td>{{ quest.dateFin |date("d/m/Y H:i")}} {#}/ {{ nbJours |date("d/m/Y H:i")}}#}  <br/>  
+                           	{{ formatDateQuestionnaire(quest.dateFin) }}</td>
+                        	  
+        	            {% if quest.dateFin.timestamp  < date().timestamp %}
+							<td><span class="text-danger"><span class="oi oi-media-record"></span></span></td>
 							{% else %}
-							<td><span class="text-success"><span class="oi oi-media-record"></span></span> EN COURS</td>
+							<td><span class="text-success"><span class="oi oi-media-record"></span></span></td>
 							{% endif %}
                        	</tr>
         	            {% endfor %}
         	    </table>
 			</div>
 		</div>
-	</div>
+
 {% endif %}
 	
 	<div id="temoignages_accueil" class="carousel slide text-center" data-ride="carousel">
