@@ -14,6 +14,7 @@ use App\Entity\Etablissement;
 use App\Entity\Specialite;
 use App\Entity\ProduitEtablissement;
 use App\Entity\ProduitSpecialite;
+use App\Entity\Temoignage;
 
 class AppController extends Controller
 {
@@ -311,7 +312,7 @@ class AppController extends Controller
      * @param string $ancienne_image
      * @return string
      */
-    public function telechargerImage(UploadedFile $file, string $type, string $nom, string $ancienne_image = null)
+    public function telechargerImage(UploadedFile $file, string $type, string $nom, string $field, string $ancienne_image = null)
     {
         $type = strtolower($type);
 
@@ -320,7 +321,7 @@ class AppController extends Controller
             return false;
         }
 
-        $fileName = $this->cleanText($nom) . '_' . date('dmYHis') . '.' . $extension;
+        $fileName = $this->cleanText($nom) . '_' . $field . '_' . date('dmYHis') . '.' . $extension;
 
         $directory = $this->getParameter('pictures_directory') . $type;
         if (! file_exists($directory)) {
@@ -367,31 +368,31 @@ class AppController extends Controller
     /**
      * Supprime une image
      *
-     * @Route("/utils/delete_image/{type}/{id}", name="image_delete")
+     * @Route("/utils/delete_image/{type}/{id}/{field}", name="image_delete")
      *
      * @param Request $request
      * @param string $type
      * @param int $id
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function suppressionImage(Request $request, string $type, int $id)
+    public function suppressionImage(Request $request, string $type, int $id, string $field)
     {
+        $field = str_replace('_', '', ucwords($field, '_'));
+        $methodeGet = 'get' . $field;
+        $methodeSet = 'set' . $field;
+        
         switch ($type) {
             case 'produit':
                 $repository = $this->getDoctrine()->getRepository(Produit::class);
-                $methodeGet = 'getImage';
-                $methodeSet = 'setImage';
                 break;
             case 'evenement':
                 $repository = $this->getDoctrine()->getRepository(Evenement::class);
-                $methodeGet = 'getImage';
-                $methodeSet = 'setImage';
                 break;
             case 'membre':
                 $repository = $this->getDoctrine()->getRepository(Membre::class);
-                $methodeGet = 'getAvatar';
-                $methodeSet = 'setAvatar';
                 break;
+            case 'temoignage':
+                $repository = $this->getDoctrine()->getRepository(Temoignage::class);
         }
 
         if (isset($repository)) {

@@ -11,7 +11,7 @@
          	<div class="row align-items-center">
              	<div class="col-md-2">
              	    {% if membre.avatar != null %}
-             	        {{ deleteImage(path('image_delete', {'id': membre.id, 'type' : 'membre' }), 'btn-delete-avatar') | raw }}
+             	        {{ deleteImage(path('image_delete', {'id': membre.id, 'type' : 'membre', 'field' : 'avatar' }), 'btn-delete-avatar') | raw }}
     	                {{ image('membre', membre.avatar) | raw }}
     	            {% endif %}
     	        </div>

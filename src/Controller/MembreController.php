@@ -178,7 +178,7 @@ class MembreController extends AppController
 
             $file = $form['avatar']->getData();
             if (! is_null($file)) {
-                $fileName = $this->telechargerImage($file, 'membre', $membre->getPrenom() . '-' . $membre->getNom());
+                $fileName = $this->telechargerImage($file, 'membre', $membre->getPrenom() . '-' . $membre->getNom(), 'avatar');
                 if ($fileName) {
                     $membre->setAvatar($fileName);
                 } else {
@@ -297,7 +297,7 @@ class MembreController extends AppController
         if ($form->isSubmitted()) {
             $file = $form['image']->getData();
             if (! is_null($file)) {
-                $fileName = $this->telechargerImage($file, 'membre', $membre->getPrenom() . '-' . $membre->getNom());
+                $fileName = $this->telechargerImage($file, 'membre', $membre->getPrenom() . '-' . $membre->getNom(), 'avatar');
                 if ($fileName) {
                     $membre->setAvatar($fileName);
                 } else {
@@ -363,7 +363,7 @@ class MembreController extends AppController
                     $membre->setAvatar($avatar);
                 } else {
                     $file = $request->files->get('membre')['avatar'];
-                    $fileName = $this->telechargerImage($file, 'membre', $membre->getPrenom() . '-' . $membre->getNom(), $avatar);
+                    $fileName = $this->telechargerImage($file, 'membre', $membre->getPrenom() . '-' . $membre->getNom(), 'avatar', $avatar);
                     if ($fileName) {
                         $membre->setAvatar($fileName);
                     } else {

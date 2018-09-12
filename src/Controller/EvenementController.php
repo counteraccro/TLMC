@@ -40,7 +40,8 @@ class EvenementController extends AppController
     );
 
     /**
-     * Listing des événements. Pour un membre non administrateur, 
+     * Listing des événements.
+     * Pour un membre non administrateur,
      * seul les événements actifs liés à la spécialité du membre sont affichés
      *
      * @Route("/evenement/listing/{page}/{field}/{order}", name="evenement_listing", defaults={"page" = 1, "field"= null, "order"= null})
@@ -188,18 +189,22 @@ class EvenementController extends AppController
             'query_specialite' => $query,
             'add' => true
         ));
+        // $this->pre($request->files->all()); die();
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
-
-            //téléchargement de l'image
-            $file = $form['image']->getData();
-            if (! is_null($file)) {
-                $fileName = $this->telechargerImage($file, 'evenement', $evenement->getNom());
-                if ($fileName) {
-                    $evenement->setImage($fileName);
-                } else {
-                    $form->addError(new FormError("Le fichier n'est pas au format autorisé (jpg, jpeg,png)."));
+            
+            // téléchargement des images
+            for ($i = 1; $i <= 3; $i ++) {
+                $file = $request->files->get('evenement')['image_' . $i];
+                if (! is_null($file)) {
+                    $fileName = $this->telechargerImage($file, 'evenement', $evenement->getNom(), 'image_' . $i);
+                    if ($fileName) {
+                        $methode = 'setImage' . $i;
+                        $evenement->{$methode}($fileName);
+                    } else {
+                        $form->addError(new FormError("L'image $i n'est pas au format autorisé (jpg, jpeg,png)."));
+                    }
                 }
             }
 
@@ -211,13 +216,13 @@ class EvenementController extends AppController
                     $specialiteEvenement->setEvenement($evenement);
                     $specialiteEvenement->setDate(new \DateTime());
                 }
-                
+
                 $index = 1;
                 foreach ($evenement->getExtensionFormulaires() as $extension) {
                     $extension->setOrdre($index);
                     $extension->setDisabled(0);
                     $extension->setEvenement($evenement);
-                    $index++;
+                    $index ++;
                 }
 
                 $evenement->setDisabled(0);
@@ -263,7 +268,11 @@ class EvenementController extends AppController
     public function editAction(SessionInterface $session, Request $request, Evenement $evenement, int $page = 1)
     {
         $arrayFilters = $this->getDatasFilter($session);
-        $image = $evenement->getImage();
+        $images = array(
+            1 => $evenement->getImage1(),
+            2 => $evenement->getImage2(),
+            3 => $evenement->getImage3()
+        );
 
         $form = $this->createForm(EvenementType::class, $evenement, array(
             'ajax' => ($request->isXmlHttpRequest() ? true : false)
@@ -272,17 +281,21 @@ class EvenementController extends AppController
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
-            //traitement de l'image
+            // traitement des images
             if (! $request->isXmlHttpRequest()) {
-                if (is_null($evenement->getImage()) && ! is_null($image)) {
-                    $evenement->setImage($image);
-                } elseif(!is_null($evenement->getImage())) {
-                    $file = $request->files->get('evenement')['image'];
-                    $fileName = $this->telechargerImage($file, 'evenement', $evenement->getNom(), $image);
-                    if ($fileName) {
-                        $evenement->setImage($fileName);
-                    } else {
-                        $form->addError(new FormError("Le fichier n'est pas au format autorisé (jpg, jpeg,png)."));
+                for ($i = 1; $i <= 3; $i ++) {
+                    $methodeGet = 'getImage' . $i;
+                    $methodeSet = 'setImage' . $i;
+                    if (is_null($evenement->{$methodeGet}()) && ! is_null($images[$i])) {
+                        $evenement->{$methodeSet}($images[$i]);
+                    } elseif (! is_null($evenement->{$methodeGet}())) {
+                        $file = $request->files->get('evenement')['image_' . $i];
+                        $fileName = $this->telechargerImage($file, 'evenement', $evenement->getNom(), 'image_'.$i, $images[$i]);
+                        if ($fileName) {
+                            $evenement->{$methodeSet}($fileName);
+                        } else {
+                            $form->addError(new FormError("L'image $i n'est pas au format autorisé (jpg, jpeg,png)."));
+                        }
                     }
                 }
             }
@@ -293,14 +306,14 @@ class EvenementController extends AppController
 
                 $index = 1;
                 foreach ($evenement->getExtensionFormulaires() as $extension) {
-                    if(is_null($extension->getEvenement())){
+                    if (is_null($extension->getEvenement())) {
                         $extension->setOrdre($index);
                         $extension->setDisabled(0);
                         $extension->setEvenement($evenement);
                     }
-                    $index++;
+                    $index ++;
                 }
-                
+
                 $tranche_age = $request->request->get('evenement')['tranche_age'];
                 asort($tranche_age);
                 $evenement->setTrancheAge($tranche_age);

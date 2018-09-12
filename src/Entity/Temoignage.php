@@ -57,6 +57,21 @@ class Temoignage
      */
     private $famille;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $image_1;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $image_2;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $image_3;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -154,6 +169,42 @@ class Temoignage
     public function setFamille(?Famille $famille): self
     {
         $this->famille = $famille;
+
+        return $this;
+    }
+
+    public function getImage1(): ?string
+    {
+        return $this->image_1;
+    }
+
+    public function setImage1(?string $image_1): self
+    {
+        $this->image_1 = $image_1;
+
+        return $this;
+    }
+
+    public function getImage2(): ?string
+    {
+        return $this->image_2;
+    }
+
+    public function setImage2(?string $image_2): self
+    {
+        $this->image_2 = $image_2;
+
+        return $this;
+    }
+
+    public function getImage3(): ?string
+    {
+        return $this->image_3;
+    }
+
+    public function setImage3(?string $image_3): self
+    {
+        $this->image_3 = $image_3;
 
         return $this;
     }

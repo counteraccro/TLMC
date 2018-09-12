@@ -36,7 +36,17 @@ class Produit
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $image;
+    private $image_1;
+    
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $image_2;
+    
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $image_3;
 
     /**
      * @ORM\Column(type="array")
@@ -108,7 +118,7 @@ class Produit
         $this->produitQuestionnaires = new ArrayCollection();
     }
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -149,27 +159,51 @@ class Produit
         return $this;
     }
 
-    public function getImage(): ?string
+    public function getImage1(): ?string
     {
-        return $this->image;
+        return $this->image_1;
     }
 
-    public function setImage(?string $image): self
+    public function setImage1(?string $image_1): self
     {
-        $this->image = $image;
+        $this->image_1 = $image_1;
 
         return $this;
     }
-    
+
+    public function getImage2(): ?string
+    {
+        return $this->image_2;
+    }
+
+    public function setImage2(?string $image_2): self
+    {
+        $this->image_2 = $image_2;
+
+        return $this;
+    }
+
+    public function getImage3(): ?string
+    {
+        return $this->image_3;
+    }
+
+    public function setImage3(?string $image_3): self
+    {
+        $this->image_3 = $image_3;
+
+        return $this;
+    }
+
     public function getTrancheAge(): ?array
     {
         return $this->tranche_age;
     }
-    
+
     public function setTrancheAge(array $tranche_age): self
     {
         $this->tranche_age = $tranche_age;
-        
+
         return $this;
     }
 
@@ -232,16 +266,16 @@ class Produit
 
         return $this;
     }
-    
+
     public function getDisabled(): ?int
     {
         return $this->disabled;
     }
-    
+
     public function setDisabled(int $disabled): self
     {
         $this->disabled = $disabled;
-        
+
         return $this;
     }
 
@@ -301,6 +335,37 @@ class Produit
             // set the owning side to null (unless already changed)
             if ($extensionFormulaire->getProduit() === $this) {
                 $extensionFormulaire->setProduit(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ProduitEtablissement[]
+     */
+    public function getProduitEtablissements(): Collection
+    {
+        return $this->produitEtablissements;
+    }
+
+    public function addProduitEtablissement(ProduitEtablissement $produitEtablissement): self
+    {
+        if (!$this->produitEtablissements->contains($produitEtablissement)) {
+            $this->produitEtablissements[] = $produitEtablissement;
+            $produitEtablissement->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProduitEtablissement(ProduitEtablissement $produitEtablissement): self
+    {
+        if ($this->produitEtablissements->contains($produitEtablissement)) {
+            $this->produitEtablissements->removeElement($produitEtablissement);
+            // set the owning side to null (unless already changed)
+            if ($produitEtablissement->getProduit() === $this) {
+                $produitEtablissement->setProduit(null);
             }
         }
 
@@ -368,35 +433,5 @@ class Produit
 
         return $this;
     }
-
-    /**
-     * @return Collection|ProduitEtablissement[]
-     */
-    public function getProduitEtablissements(): Collection
-    {
-        return $this->produitEtablissements;
-    }
-
-    public function addProduitEtablissement(ProduitEtablissement $produitEtablissement): self
-    {
-        if (!$this->produitEtablissements->contains($produitEtablissement)) {
-            $this->produitEtablissements[] = $produitEtablissement;
-            $produitEtablissement->setProduit($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProduitEtablissement(ProduitEtablissement $produitEtablissement): self
-    {
-        if ($this->produitEtablissements->contains($produitEtablissement)) {
-            $this->produitEtablissements->removeElement($produitEtablissement);
-            // set the owning side to null (unless already changed)
-            if ($produitEtablissement->getProduit() === $this) {
-                $produitEtablissement->setProduit(null);
-            }
-        }
-
-        return $this;
-    }
+    
 }

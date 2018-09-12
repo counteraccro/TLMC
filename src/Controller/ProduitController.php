@@ -216,14 +216,17 @@ class ProduitController extends AppController
                 $form->addError(new FormError('La somme des quantités de produits envoyés est supérieure à la quantité de produit'));
             } else {
 
-                //traitement de l'image
-                $file = $form['image']->getData();
-                if (! is_null($file)) {
-                    $fileName = $this->telechargerImage($file, 'produit', $produit->getTitre());
-                    if ($fileName) {
-                        $produit->setImage($fileName);
-                    } else {
-                        $form->addError(new FormError("Le fichier n'est pas au format autorisé (jpg, jpeg,png)."));
+                // téléchargement des images
+                for ($i = 1; $i <= 3; $i ++) {
+                    $file = $request->files->get('produit')['image_' . $i];
+                    if (! is_null($file)) {
+                        $fileName = $this->telechargerImage($file, 'produit', $produit->getTitre(), 'image_' . $i);
+                        if ($fileName) {
+                            $methode = 'setImage' . $i;
+                            $produit->{$methode}($fileName);
+                        } else {
+                            $form->addError(new FormError("L'image $i n'est pas au format autorisé (jpg, jpeg,png)."));
+                        }
                     }
                 }
             }
@@ -295,7 +298,11 @@ class ProduitController extends AppController
     {
         $arrayFilters = $this->getDatasFilter($session);
 
-        $image = $produit->getImage();
+        $images = array(
+            1 => $produit->getImage1(),
+            2 => $produit->getImage2(),
+            3 => $produit->getImage3()
+        );
 
         $form = $this->createForm(ProduitType::class, $produit, array(
             'ajax' => ($request->isXmlHttpRequest() ? true : false)
@@ -308,17 +315,20 @@ class ProduitController extends AppController
             if ($this->totalProduitsEnvoyes($produit) > $produit->getQuantite()) {
                 $form->addError(new FormError('La somme des quantités de produits envoyés est supérieure à la quantité de produit'));
             } elseif (! $request->isXmlHttpRequest()) {
-                //traitement de l'image
-                if (is_null($produit->getImage()) && ! is_null($image)) {
-                    $produit->setImage($image);
-                } elseif(!is_null($produit->getImage())) {
-                    $file = $request->files->get('produit')['image'];
-                    $fileName = $this->telechargerImage($file, 'produit', $produit->getTitre(), $image);
-                    if ($fileName) {
-                        $produit->setImage($fileName);
-                    } else {
-                        $error = new FormError("Le fichier n'est pas au format autorisé (jpg, jpeg,png).");
-                        $form->addError($error);
+                //traitement des images
+                for ($i = 1; $i <= 3; $i ++) {
+                    $methodeGet = 'getImage' . $i;
+                    $methodeSet = 'setImage' . $i;
+                    if (is_null($produit->{$methodeGet}()) && ! is_null($images[$i])) {
+                        $produit->{$methodeSet}($images[$i]);
+                    } elseif (! is_null($produit->{$methodeGet}())) {
+                        $file = $request->files->get('produit')['image_' . $i];
+                        $fileName = $this->telechargerImage($file, 'produit', $produit->getTitre(), 'image_'.$i, $images[$i]);
+                        if ($fileName) {
+                            $produit->{$methodeSet}($fileName);
+                        } else {
+                            $form->addError(new FormError("L'image $i n'est pas au format autorisé (jpg, jpeg,png)."));
+                        }
                     }
                 }
             }

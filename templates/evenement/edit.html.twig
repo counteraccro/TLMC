@@ -9,34 +9,53 @@
 {% include 'elements/arborescence.html.twig' %}
 
 <div>
-    {{ form_start(form) }}
-    {{ form_errors(form) }}
+{{ form_start(form) }}
     
 	{{ form_row(form.nom) }}
 	{{ form_row(form.type) }}
 	
-	{{ form_row(form.date_debut) }}
-	{{ form_row(form.date_fin) }}
+	<div class="row">
+		<div class="col-md-4">
+			{{ form_row(form.date_debut) }}
+		</div>
+		<div class="col-md-4">
+			{{ form_row(form.date_fin) }}
+		</div>
+		<div class="col-md-4">
+		    {{ form_row(form.date_fin_inscription) }}
+		</div>
+	</div>
 	
 	{{ form_row(form.description) }}
 	{{ form_row(form.nombre_max) }}
 	{{ form_row(form.tranche_age) }}
-	{{ form_row(form.date_fin_inscription) }}
-	{{ form_row(form.information_complementaire) }}
 	
-	<div class="shadow-sm p-3 mb-5 bg-white rounded border">
-        {{ form_row(form.extension_formulaires) }}
-      	<a href="#" id="add_extension" class="btn btn-primary btn-sm">Ajouter un champ</a>
-  	</div>
+	{{ form_row(form.information_complementaire) }}
 	
 	{{ form_row(form.nom_lieu) }}
 	{{ form_row(form.numero_voie) }}
 	{{ form_row(form.voie) }}
 	{{ form_row(form.ville) }}
 	{{ form_row(form.code_postal) }}
+	{{ form_row(form.nom_lieu) }}
 	
 	{{ form_row(form.statut) }}
-	{{ form_row(form.image) }}
+	<div class="row">
+		<div class="col-md-4">
+            {{ form_row(form.image_1) }}
+		</div>
+		<div class="col-md-4">
+            {{ form_row(form.image_2) }}
+		</div>
+		<div class="col-md-4">
+            {{ form_row(form.image_3) }}
+		</div>
+	</div>
+	
+	<div class="shadow-sm p-3 mb-5 bg-white rounded border">
+        {{ form_row(form.extension_formulaires) }}
+      		<a href="#" id="add_extension" class="btn btn-primary btn-sm">Ajouter un champ</a>
+  	</div>
     
     {{ form_rest(form) }}
     {{ form_end(form) }}
@@ -54,7 +73,18 @@
     <script type="text/javascript">
     
     $(document).ready(function() {
-        $('#evenement_image').change(function() {
+
+        $('#evenement_image_1').change(function() {
+    		var file = $(this)[0].files[0].name;
+    		$('.custom-file label[for="'+ $(this).attr('id') +'"]').html(file);
+    	});
+
+        $('#evenement_image_2').change(function() {
+    		var file = $(this)[0].files[0].name;
+    		$('.custom-file label[for="'+ $(this).attr('id') +'"]').html(file);
+    	});
+
+        $('#evenement_image_3').change(function() {
     		var file = $(this)[0].files[0].name;
     		$('.custom-file label[for="'+ $(this).attr('id') +'"]').html(file);
     	});

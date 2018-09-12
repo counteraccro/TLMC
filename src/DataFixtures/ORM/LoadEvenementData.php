@@ -23,7 +23,7 @@ class LoadEvenementData extends Fixture
                 'setDateFin' => '2017-12-25 17:00:00',
                 'setNombreMax' => 32,
                 'setType' => 1,
-                'setImage' => 'https://www.mairie-beaurepaire.com/wp-content/uploads/2014/12/Noel_4-2.png',
+                'setImage1' => 'https://www.mairie-beaurepaire.com/wp-content/uploads/2014/12/Noel_4-2.png',
                 'setNomLieu' => 'Salle des fêtes',
                 'setNumeroVoie' => 1,
                 'setVoie' => 'rue des Sapins',
@@ -42,7 +42,7 @@ class LoadEvenementData extends Fixture
                 'setInformationComplementaire' => '1 accompagnant obligatoire pour les enfants de -10 ans',
                 'setNombreMax' => 12,
                 'setType' => 2,
-                'setImage' => 'https://images-eu.ssl-images-amazon.com/images/I/81xfN64QjVL.png',
+                'setImage1' => 'https://images-eu.ssl-images-amazon.com/images/I/81xfN64QjVL.png',
                 'setNomLieu' => 'Bowling Le Strike',
                 'setNumeroVoie' => 58,
                 'setVoie' => 'Boulevard de la batte',
@@ -61,7 +61,7 @@ class LoadEvenementData extends Fixture
                 'setInformationComplementaire' => 'Il est possible pour certaine personne à mobilité réduite de faire la balade.',
                 'setNombreMax' => 20,
                 'setType' => 2,
-                'setImage' => 'https://upload.wikimedia.org/wikipedia/commons/9/94/Besancon_boucle_Doubs.jpg',
+                'setImage1' => 'https://upload.wikimedia.org/wikipedia/commons/9/94/Besancon_boucle_Doubs.jpg',
                 'setNomLieu' => 'Besançon',
                 'setNumeroVoie' => 56,
                 'setVoie' => 'Faubourg Rivotte',
@@ -79,7 +79,7 @@ class LoadEvenementData extends Fixture
                 'setDescription' => "Venez frissoner à la soirée annuelle d'Halloween. Une distribution de bonbons et un concours de costumes seront organisés.",
                 'setNombreMax' => 66,
                 'setType' => 4,
-                'setImage' => 'https://upload.wikimedia.org/wikipedia/fr/a/aa/Logo-halloween-commerce.png',
+                'setImage1' => 'https://upload.wikimedia.org/wikipedia/fr/a/aa/Logo-halloween-commerce.png',
                 'setNomLieu' => 'Salle des fêtes',
                 'setNumeroVoie' => 100,
                 'setVoie' => "Boulevard de l'horreur",
@@ -97,7 +97,7 @@ class LoadEvenementData extends Fixture
                 'setDescription' => "Concert de gospel 'Ma vie, ma foi' qui est en tournée dans toute la France",
                 'setNombreMax' => 150,
                 'setType' => 3,
-                'setImage' => 'Concert de Gospel_23082018085314.jpg',
+                'setImage1' => 'Concert de Gospel_23082018085314.jpg',
                 'setNomLieu' => 'Stade des cerisiers',
                 'setNumeroVoie' => 100,
                 'setVoie' => "route de corbeille",
@@ -124,7 +124,7 @@ class LoadEvenementData extends Fixture
                 'setStatut' => 4,
                 'setDateFinInscription' => '2016-06-14 18:00:00',
                 'setDisabled' => 0,
-                'setImage' => 'https://www.buzzwebzine.fr/wp-content/uploads/2018/07/feu-artifice-tour-eiffel-paris-14-juillet-2018.jpg'
+                'setImage1' => 'https://www.buzzwebzine.fr/wp-content/uploads/2018/07/feu-artifice-tour-eiffel-paris-14-juillet-2018.jpg'
             ]
         ]
     ];
