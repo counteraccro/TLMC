@@ -65,6 +65,11 @@ class Patient
      */
     private $disabled;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $droit_image;
+
     public function __construct()
     {
         $this->familles = new ArrayCollection();
@@ -238,6 +243,18 @@ class Patient
     public function setDisabled(bool $disabled): self
     {
         $this->disabled = $disabled;
+
+        return $this;
+    }
+
+    public function getDroitImage(): ?bool
+    {
+        return $this->droit_image;
+    }
+
+    public function setDroitImage(bool $droit_image): self
+    {
+        $this->droit_image = $droit_image;
 
         return $this;
     }

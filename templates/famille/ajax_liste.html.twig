@@ -6,7 +6,7 @@
         		<div class="form-check">
         		{% for famille in familles %}
                 	<input class="form-check-input " type="checkbox" value="{{ famille.id }}" id="famille-{{ famille.id }}" name="familles[{{ famille.id }}]">
-                	<label for="famille-{{ famille.id }}">{{ famille.prenom }} {{ famille.nom }}</label>
+                	<label for="famille-{{ famille.id }}">{{ famille.prenom }} {{ famille.nom }} ({{ famille.lienFamille | lienParente }})</label>
                 	<br>
             	{% endfor %}
             	</div>

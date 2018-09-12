@@ -429,25 +429,28 @@ class PatientController extends AppController
     public function addAjaxDropdownAction(Request $request, Specialite $specialite = null)
     {
 
-        // $patients = $specialite->getPatients();
-        $params = array(
-            'field' => 'nom ASC, Patient.prenom',
-            'order' => 'ASC',
-            'page' => 1,
-            'repositoryClass' => Patient::class,
-            'repository' => 'Patient',
-            'repositoryMethode' => 'findAllPatients',
-            'condition' => array(
-                'Patient.specialite = ' . $specialite->getId(), 
-                'Patient.disabled = 0'
-            )
-        );
-
-        $repository = $this->getDoctrine()->getRepository(Patient::class);
-        $patients = $repository->findAllPatients(1, 10, $params);
-
+        if(is_null($specialite)){
+            $patients = array();
+        } else {
+            $params = array(
+                'field' => 'nom ASC, Patient.prenom',
+                'order' => 'ASC',
+                'page' => 1,
+                'repositoryClass' => Patient::class,
+                'repository' => 'Patient',
+                'condition' => array(
+                    'Patient.specialite = ' . $specialite->getId(),
+                    'Patient.disabled = 0'
+                )
+            );
+            
+            $repository = $this->getDoctrine()->getRepository(Patient::class);
+            $result = $repository->findAllPatients(1, 10, $params);
+            $patients = $result['paginator'];
+        }
+        
         return $this->render('patient/ajax_dropdown.html.twig', array(
-            'patients' => $patients['paginator']
+            'patients' => $patients
         ));
     }
 }
