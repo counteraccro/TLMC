@@ -5,31 +5,30 @@
 	<h1>Accueil</h1>
 
 {% if is_granted('ROLE_ADMIN') %}
-		<div id ="questionnaires_accueil" class="card col-5">
+		<div id ="questionnaires_accueil" class="card col-4">
         	<div class="card-header bg-primary float-left">
             	Questionnaires qui vont expirer prochainement
         	</div>
         	<div class="card-body float-left">
         		<table class="table">
                 	<tr>
-        				<th># ID</th>
+        				<th>ID</th>
         				<th>Titre</th>
         				<th>Date de création</th>
         				<th>Date de fin</th>
-        				<th>Statut</th>
+        				<th>Jours restants</th>
         			</tr>
         	            {% for quest in questionnaires %}
         	            <tr>
                             <td>{{ quest.id }}</td>
                             <td>{{ quest.titre }}</td>
                             <td>{{ quest.dateCreation |date("d/m/Y H:i")}}</td>
-                           	<td>{{ quest.dateFin |date("d/m/Y H:i")}} {#}/ {{ nbJours |date("d/m/Y H:i")}}#}  <br/>  
-                           	{{ formatDateQuestionnaire(quest.dateFin) }}</td>
+                           	<td>{{ quest.dateFin |date("d/m/Y H:i")}} {#}/ {{ nbJours |date("d/m/Y H:i")}}#}  <br/></td>
                         	  
         	            {% if quest.dateFin.timestamp  < date().timestamp %}
-							<td><span class="text-danger"><span class="oi oi-media-record"></span></span></td>
+							<td><span class="text-danger"><span class="oi oi-media-record"></span> {{ formatDateQuestionnaire(quest.dateFin) }}</span></td>
 							{% else %}
-							<td><span class="text-success"><span class="oi oi-media-record"></span></span></td>
+							<td><span class="text-success"><span class="oi oi-media-record"></span> {{ formatDateQuestionnaire(quest.dateFin) }}</span></td>
 							{% endif %}
                        	</tr>
         	            {% endfor %}

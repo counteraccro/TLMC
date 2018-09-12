@@ -74,6 +74,6 @@ class DateExtension extends AbstractExtension
     {
         $now = new \DateTime();
         $nbJours = date_diff($now, $date);
-        echo $nbJours->format('%R%a jours');
+        echo $nbJours->format('%a');
     }
 }
