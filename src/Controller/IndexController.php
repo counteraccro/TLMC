@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Temoignage;
+use App\Entity\Questionnaire;
 
 class IndexController extends AppController
 {
@@ -14,7 +15,11 @@ class IndexController extends AppController
      */
     public function index()
     {
-        $repository = $this->getDoctrine()->getRepository(Temoignage::class);
+        $repositoryQuest = $this->getDoctrine()->getRepository(Questionnaire::class);
+        $questionnaires = $repositoryQuest->findAll();
+        
+        
+        $repositoryTmg = $this->getDoctrine()->getRepository(Temoignage::class);
 
         $params = array(
             'order' => 'DESC',
@@ -25,9 +30,11 @@ class IndexController extends AppController
             )
         );
 
-        $temoignages = $repository->findAllTemoignages(1, 5, $params);
+        $temoignages = $repositoryTmg->findAllTemoignages(1, 5, $params);
+        
         return $this->render('index/index.html.twig', [
             'controller_name' => 'IndexController',
+            'questionnaires' => $questionnaires,
             'temoignages' => $temoignages['paginator']
         ]);
     }

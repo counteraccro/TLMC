@@ -4,6 +4,40 @@
 
 	<h1>Accueil</h1>
 
+{% if is_granted('ROLE_ADMIN') %}
+	<div id ="questionnaires_accueil">
+		<div class="card">
+        	<div class="card-header bg-primary float-left">
+            	Questionnaires (listing)
+        	</div>
+        	<div class="card-body float-left">
+        		<table class="table">
+                	<tr>
+        				<th># ID</th>
+        				<th>Titre</th>
+        				<th>Date de création</th>
+        				<th>Date de fin</th>
+        				<th>Statut</th>
+        			</tr>
+        	            {% for quest in questionnaires %}
+        	            <tr>
+                            <td>{{ quest.id }}</td>
+                            <td>{{ quest.titre }}</td>
+                            <td>{{ quest.dateCreation |date("d/m/Y H:i")}}</td>
+                           	<td>{{ quest.dateFin |date("d/m/Y H:i")}}</td>
+                            {% if quest.dateFin.timestamp  < date().timestamp %}
+							<td><span class="text-danger"><span class="oi oi-media-record"></span></span> TERMINE</td>
+							{% else %}
+							<td><span class="text-success"><span class="oi oi-media-record"></span></span> EN COURS</td>
+							{% endif %}
+                       	</tr>
+        	            {% endfor %}
+        	    </table>
+			</div>
+		</div>
+	</div>
+{% endif %}
+	
 	<div id="temoignages_accueil" class="carousel slide text-center" data-ride="carousel">
  		<div class="carousel-inner">
             {% for temoignage in temoignages %}
