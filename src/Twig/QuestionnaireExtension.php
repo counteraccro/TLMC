@@ -34,6 +34,10 @@ class QuestionnaireExtension extends AbstractExtension
             new \Twig_Function('generateChartStats', array(
                 $this,
                 'generateChartStats'
+            )),
+            new \Twig_Function('displayReponses', array(
+                $this,
+                'displayReponses'
             ))
         );
     }
@@ -487,7 +491,7 @@ class QuestionnaireExtension extends AbstractExtension
 
         foreach ($questionnaire->getQuestions() as $question) {
 
-            //si la question est de type case à cocher ou liste déroulante ou choix unique
+            // si la question est de type case à cocher ou liste déroulante ou choix unique
             if (! in_array($question->getType(), array(
                 AppController::CHECKBOXTYPE,
                 AppController::CHOICETYPE,
@@ -733,5 +737,39 @@ class QuestionnaireExtension extends AbstractExtension
 
         $html .= '</div>';
         return $html;
+    }
+
+    /**
+     * Fonction qui convertit le résultat JSON au bon format (selon type question)
+     */
+    public function displayReponses(Question $question, Reponse $reponse)
+    {
+        if ($reponse->getValeur() != "") {
+
+            $data_value = json_decode($question->getListeValeur());
+            $tmp = explode('|', $reponse->getValeur());
+
+            if (in_array($question->getType(), array(
+                AppController::CHECKBOXTYPE,
+                AppController::CHOICETYPE,
+                AppController::RADIOTYPE
+            ))) {
+
+                $repStr = '';
+                foreach ($data_value as $val) {
+
+                    foreach ($tmp as $tmpVal) {
+                        if ($tmpVal == $val->value) {
+                            $repStr .= '<span class="oi oi-arrow-thick-right"></span> <i>' . $val->libelle . '</i>';
+                        }
+                    }
+                }
+            } else {
+                $repStr = '<span class="oi oi-arrow-thick-right"></span> <i>' . $reponse->getValeur() . '</i>';
+            }
+        } else {
+            $repStr = '<span class="oi oi-arrow-thick-right"></span> <i>Pas de réponse saisie</i>';
+        }
+        return $repStr;
     }
 }

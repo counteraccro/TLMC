@@ -249,14 +249,14 @@ class QuestionnaireRepository extends ServiceEntityRepository
      */
     public function findByMembreReponses($membre_id) {
         $query = $this->createQueryBuilder('q')
-        ->select('q.titre, quest.libelle, quest.liste_valeur, quest.type, rep.valeur')
+        //->select('q.titre, quest.libelle, quest.liste_valeur, quest.type, rep.valeur')
         ->join('q.questions', 'quest')
         ->join('quest.reponses', 'rep')
         ->andWhere('rep.membre = :membre_id')
         ->setParameter('membre_id', $membre_id)
         ->addOrderBy('q.id', 'ASC')
         ->getQuery()
-        ->getArrayResult();
+        ->getResult();
         
         return $query;
     }

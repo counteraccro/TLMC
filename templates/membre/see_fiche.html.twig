@@ -33,20 +33,24 @@
         	<div class="card-body float-left">
             	<table class="table">
             	<tr>
-                	<th>Questionnaire</th>
                 	<th>Question</th>
-                	<th>Propositions</th>
                 	<th>Réponse</th>
-                	<th>Type</th>
             	</tr>
-                {% for reponse in reponses %}
+            	
+               
+            		    
+                {% for quest in questionnaires %}
+                	              		<td colspan=2 class="text-center bg bg-primary"><i>Questionnaire #{{ quest.id }} : "{{ quest.titre }}"</i></td>
+                	{% for question in quest.questions %}
+                	    {% for reponse in question.reponses %}
+                	    {% if reponse.membre.id == app.user.id %}
                 	<tr>
-                		<td>{{ reponse.titre }}</td>
-                		<td>{{ reponse.libelle }}</td>
-                		<td>{{ reponse.liste_valeur }}</td>
-                		<td>{{ reponse.valeur }}</td>
-                		<td>{{ reponse.type }}</td>
+                		<td>{{ question.libelle }}</td>
+                		<td>{{ displayReponses(question, reponse) | raw }}</td>
                 	</tr>
+                	{% endif %}
+                        {% endfor %}
+                    {% endfor %}
                 {% endfor %}
     			</table>
         	</div>
