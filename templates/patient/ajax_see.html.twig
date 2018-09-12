@@ -14,6 +14,7 @@
          <div class="card-body">
           	<b>Date naissance :</b> {{ patient.dateNaissance | date('d/m/Y') }} </br>
           	<b>Personne à mobilité réduite :</b> {{ patient.pmr | bool }}<br>
+          	<b>Droit à l'image :</b> {{ patient.droitImage | bool }}<br>
            	<b> Spécialité :</b> {{ patient.specialite.service }} ({{ patient.specialite.etablissement.nom }})
          </div>
     </div>

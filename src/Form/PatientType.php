@@ -44,7 +44,8 @@ class PatientType extends AbstractType
             'required' => false,
             'label' => 'Personne à mobilité réduite'
         ))
-            ->add('specialite', EntityType::class, $opt_spe);
+            ->add('specialite', EntityType::class, $opt_spe)
+            ->add('droit_image', CheckboxType::class, array('label' => "Droit à l'image", 'required' => false));
 
         if ($options['add']) {
             $builder->add('familles', CollectionType::class, array(

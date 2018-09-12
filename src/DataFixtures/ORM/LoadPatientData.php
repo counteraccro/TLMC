@@ -24,6 +24,7 @@ class LoadPatientData extends Fixture implements DependentFixtureInterface
                 'setPrenom' => 'Ingrid',
                 'setDateNaissance' => '1991-09-30 11:29:00',
                 'setPMR' => false,
+                'setDroitImage' => true,
                 'setSpecialite' => 'Specialite-1',
                 'setDisabled' => false
             ],
@@ -32,6 +33,7 @@ class LoadPatientData extends Fixture implements DependentFixtureInterface
                 'setPrenom' => 'Christine',
                 'setDateNaissance' => '1993-08-23 17:55:00',
                 'setPMR' => false,
+                'setDroitImage' => true,
                 'setSpecialite' => 'Specialite-1',
                 'setDisabled' => false
             ],
@@ -40,6 +42,7 @@ class LoadPatientData extends Fixture implements DependentFixtureInterface
                 'setPrenom' => 'Aymeric',
                 'setDateNaissance' => '1984-04-12 11:11:11',
                 'setPMR' => true,
+                'setDroitImage' => true,
                 'setSpecialite' => 'Specialite-1',
                 'setDisabled' => false
             ],
@@ -48,6 +51,7 @@ class LoadPatientData extends Fixture implements DependentFixtureInterface
                 'setPrenom' => 'Pierre',
                 'setDateNaissance' => '1969-11-30 22:22:00',
                 'setPMR' => true,
+                'setDroitImage' => true,
                 'setSpecialite' => 'Specialite-2',
                 'setDisabled' => false
             ],
@@ -56,6 +60,7 @@ class LoadPatientData extends Fixture implements DependentFixtureInterface
                 'setPrenom' => 'Charles-Antoine',
                 'setDateNaissance' => '1989-06-14 15:12:00',
                 'setPMR' => false,
+                'setDroitImage' => true,
                 'setSpecialite' => 'Specialite-3',
                 'setDisabled' => false
             ],
@@ -64,6 +69,7 @@ class LoadPatientData extends Fixture implements DependentFixtureInterface
                 'setPrenom' => 'Charles-Henri',
                 'setDateNaissance' => '2001-03-05 03:05:01',
                 'setPMR' => true,
+                'setDroitImage' => false,
                 'setSpecialite' => 'Specialite-4',
                 'setDisabled' => false
             ],
@@ -72,6 +78,7 @@ class LoadPatientData extends Fixture implements DependentFixtureInterface
                 'setPrenom' => 'Luke',
                 'setDateNaissance' => '1960-03-15 15:03:19',
                 'setPMR' => true,
+                'setDroitImage' => true,
                 'setSpecialite' => 'Specialite-5',
                 'setDisabled' => false
             ],
@@ -80,6 +87,7 @@ class LoadPatientData extends Fixture implements DependentFixtureInterface
                 'setPrenom' => 'Carl',
                 'setDateNaissance' => '2012-12-12 12:12:12',
                 'setPMR' => true,
+                'setDroitImage' => true,
                 'setSpecialite' => 'Specialite-6',
                 'setDisabled' => false
             ],
@@ -88,6 +96,7 @@ class LoadPatientData extends Fixture implements DependentFixtureInterface
                 'setPrenom' => 'Marc',
                 'setDateNaissance' => '1998-08-08 08:08:00',
                 'setPMR' => false,
+                'setDroitImage' => true,
                 'setSpecialite' => 'Specialite-6',
                 'setDisabled' => false
             ],
@@ -96,6 +105,7 @@ class LoadPatientData extends Fixture implements DependentFixtureInterface
                 'setPrenom' => 'John',
                 'setDateNaissance' => '1911-11-11 11:11:11',
                 'setPMR' => true,
+                'setDroitImage' => true,
                 'setSpecialite' => 'Specialite-1',
                 'setDisabled' => false
             ],
@@ -104,6 +114,7 @@ class LoadPatientData extends Fixture implements DependentFixtureInterface
                 'setPrenom' => 'Lisa',
                 'setDateNaissance' => '2010-05-05 05:05:05',
                 'setPMR' => true,
+                'setDroitImage' => false,
                 'setSpecialite' => 'Specialite-2',
                 'setDisabled' => false
             ],
@@ -112,6 +123,7 @@ class LoadPatientData extends Fixture implements DependentFixtureInterface
                 'setPrenom' => 'Rémi',
                 'setDateNaissance' => '1988-05-30 12:15:00',
                 'setPMR' => false,
+                'setDroitImage' => true,
                 'setSpecialite' => 'Specialite-3',
                 'setDisabled' => false
             ],
@@ -120,6 +132,7 @@ class LoadPatientData extends Fixture implements DependentFixtureInterface
                 'setPrenom' => 'Christophe',
                 'setDateNaissance' => '2001-03-05 03:05:01',
                 'setPMR' => true,
+                'setDroitImage' => true,
                 'setSpecialite' => 'Specialite-4',
                 'setDisabled' => false
             ],
@@ -128,6 +141,7 @@ class LoadPatientData extends Fixture implements DependentFixtureInterface
                 'setPrenom' => 'Frédéric',
                 'setDateNaissance' => '1960-01-14 14:01:00',
                 'setPMR' => true,
+                'setDroitImage' => true,
                 'setSpecialite' => 'Specialite-7',
                 'setDisabled' => true
             ]
