@@ -26,17 +26,15 @@ class GroupeRepository extends ServiceEntityRepository
     public function findByUser($id_membre)
     {   
         $query = $this->createQueryBuilder('g')
-        ->select('COUNT(DISTINCT g.id)');
-        /*SELECT DISTINCT groupe.id, groupe.nom, groupe_membre.membre_id, membre.prenom, membre.nom
-         * FROM groupe join groupe_membre ON groupe_membre.groupe_id = groupe.id
-         * JOIN membre ON membre.id = groupe_membre.membre_id
-         * WHERE membre.id = 7*/
-
-        $result = $query->getQuery()->getSingleScalarResult();
+        ->join('g.groupeMembres', 'gm')
+        ->join('gm.membre', 'm')
+        ->andWhere('gm.membre = :id_membre')
+        ->setParameter('id_membre', $id_membre)
+        ->addOrderBy('g.nom', 'ASC')       
+        ->getQuery()
+        ->getResult();
         
-        return array(
-            'result' => $result
-        );
+        return $query;
     }
 
 //    /**

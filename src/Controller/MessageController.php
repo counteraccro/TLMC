@@ -186,6 +186,10 @@ class MessageController extends AppController
      */
     public function ajaxViewMessage(Message $message, $page = 1)
     {
+        $membre = $this->getMembre();
+        $repository = $this->getDoctrine()->getRepository(Groupe::class);
+        $groupes = $repository->findByUser($membre->getId());
+        
         foreach ($message->getMessageLus() as &$messageLu) {
             if ($messageLu->getMembre()->getId() == $this->getUser()->getId()) {
                 $messageLu->setLu(1);
@@ -200,7 +204,8 @@ class MessageController extends AppController
 
         return $this->render('message/ajax_view_message.html.twig', [
             'message' => $message,
-            'page' => $page
+            'page' => $page, 
+            'groupes' => $groupes
         ]);
     }
 

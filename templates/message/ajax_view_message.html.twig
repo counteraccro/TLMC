@@ -32,7 +32,9 @@
        	</div>
        	<a href="#" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="top" title="Corbeille"><span class="oi oi-trash"></span></a>
        	<div class="float-right">
-       		<i>Texte {{ page }}</i>
+       		<i>Groupes auxquels vous participez : {% for groupe in groupes %}
+            #{{ groupe.nom }}
+       		{% endfor %}</i>
        	</div>
        
 	</div>
