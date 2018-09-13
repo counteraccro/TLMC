@@ -145,6 +145,21 @@ class PatientRepository extends ServiceEntityRepository
 
         return $query;
     }
+    
+    /**
+     * Fonction qui renvoie les 5 derniers patients enregistrés
+     */
+    public function getRecents()
+    {
+        $query = $this->createQueryBuilder('p')
+        ->andWhere('p.disabled = 0')
+        ->addOrderBy('p.id', 'DESC')
+        ->setMaxResults(5)
+        ->getQuery()
+        ->getResult();
+        
+        return $query;
+    }
 
     // /**
     // * @return Patient[] Returns an array of Patient objects

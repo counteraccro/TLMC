@@ -29,7 +29,7 @@
                                 <td>{{ quest.id }}</td>
                                 <td>{{ quest.titre }}</td>
                                 <td>{{ quest.dateCreation |date("d/m/Y H:i")}}</td>
-                               	<td>{{ quest.dateFin |date("d/m/Y H:i")}}<br/></td>
+                               	<td>{{ quest.dateFin |date("d/m/Y H:i")}}</td>
                             	<td>{{ formatDateDecompte(quest.dateFin) }}</td>  
                            	</tr>
             	            {% endfor %}
@@ -58,7 +58,7 @@
                                 <td>{{ ev.nom }}</td>
                                 <td>{{ ev.ville }}</td>
                                 <td>{{ ev.dateDebut |date("d/m/Y H:i")}}</td>
-                               	<td>{{ ev.dateFin |date("d/m/Y H:i")}}<br/></td>
+                               	<td>{{ ev.dateFin |date("d/m/Y H:i")}}</td>
                                	<td>{{ formatDateDecompte(ev.dateDebut) }}</td> 
                             </tr>
             	            {% endfor %}
@@ -69,24 +69,106 @@
     	<div class="col-4">
     		<div class="card">
             	<div class="card-header bg-info">
-                	Questionnaires qui vont expirer prochainement
+                	Derniers patients enregistrés
             	</div>
             	<div class="card-body">
             		<table class="table">
                     	<tr>
             				<th>ID</th>
+            				<th>Nom</th>
+            				<th>Prénom</th>
+            				<th>Date de naissance</th>
+            			</tr>
+            	            {% for pat in patients %}
+            	            <tr>
+                                <td>{{ pat.id }}</td>
+                                <td>{{ pat.nom }}</td>
+                                <td>{{ pat.prenom }}</td>
+                               	<td>{{ pat.dateNaissance | date('d/m/Y') }} ({{ pat.dateNaissance | age }} ans)</td>
+                           	</tr>
+            	            {% endfor %}
+            	    </table>
+    			</div>
+    		</div>
+    	</div>
+    </div>
+    
+    		<div class="row">
+		<div class="col-4">
+    		<div class="card">
+            	<div class="card-header bg-info">
+                	Produits : derniers enregistrements
+            	</div>
+            	<div class="card-body">
+            		<table class="table">
+                    	<tr>
+            				<th>#</th>
             				<th>Titre</th>
-            				<th>Date de création</th>
+            				<th>Tranche d'âge</th>
+            				<th>Quantité</th>
+            			</tr>
+            	            {% for prod in produits %}
+            	            <tr>
+                                <td>{{ prod.id }}</td>
+                                <td>{{ prod.titre }}</td>
+        				        <td>{% for tranche_age in prod.trancheAge %}
+        			                    {{ tranche_age | trancheAge }}<br />
+        			                {% endfor %}</td>
+                               	<td>{{ prod.quantite }}</td>
+                           	</tr>
+            	            {% endfor %}
+            	    </table>
+    			</div>
+    		</div>
+    	</div>
+    	<div class="col-4">
+    		<div class="card">
+            	<div class="card-header bg-info">
+                	Evènements les plus proches
+            	</div>
+            	<div class="card-body">
+            		<table class="table">
+                    	<tr>
+            				<th>#</th>
+            				<th>Nom</th>
+            				<th>Ville</th>
+            				<th>Date de début</th>
             				<th>Date de fin</th>
             				<th>Jours restants</th>
             			</tr>
-            	            {% for quest in questionnaires %}
+            	            {% for ev in evenements %}
             	            <tr>
-                                <td>{{ quest.id }}</td>
-                                <td>{{ quest.titre }}</td>
-                                <td>{{ quest.dateCreation |date("d/m/Y H:i")}}</td>
-                               	<td>{{ quest.dateFin |date("d/m/Y H:i")}}<br/></td>
-								<td>{{ formatDateDecompte(quest.dateFin) }}</td>
+                                <td>{{ ev.id }}</td>
+                                <td>{{ ev.nom }}</td>
+                                <td>{{ ev.ville }}</td>
+                                <td>{{ ev.dateDebut |date("d/m/Y H:i")}}</td>
+                               	<td>{{ ev.dateFin |date("d/m/Y H:i")}}</td>
+                               	<td>{{ formatDateDecompte(ev.dateDebut) }}</td> 
+                            </tr>
+            	            {% endfor %}
+            	    </table>
+    			</div>
+    		</div>
+    	</div>
+    	<div class="col-4">
+    		<div class="card">
+            	<div class="card-header bg-info">
+                	Derniers patients enregistrés
+            	</div>
+            	<div class="card-body">
+            		<table class="table">
+                    	<tr>
+            				<th>ID</th>
+            				<th>Nom</th>
+            				<th>Prénom</th>
+            				<th>Date de naissance</th>
+            			</tr>
+            	            {% for pat in patients %}
+            	            <tr>
+                                <td>{{ pat.id }}</td>
+                                <td>{{ pat.nom }}</td>
+                                <td>{{ pat.prenom }}</td>
+                               	<td>{{ pat.dateNaissance | date('d/m/Y') }} ({{ pat.dateNaissance | age }} ans)</td>
                            	</tr>
             	            {% endfor %}
             	    </table>
