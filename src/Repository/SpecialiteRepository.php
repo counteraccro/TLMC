@@ -134,8 +134,11 @@ class SpecialiteRepository extends ServiceEntityRepository
      *
      * @param Etablissement $etablissement
      */
-    public function getSpecialitesByEtablissement(Etablissement $etablissement)
+    public function getSpecialitesByEtablissement(Etablissement $etablissement = null)
     {
+        if(is_null($etablissement)){
+            return array();
+        }
         $return = $this->createQueryBuilder('s')
             ->andWhere('s.etablissement = ' . $etablissement->getId())
             ->andWhere('s.disabled = 0')
