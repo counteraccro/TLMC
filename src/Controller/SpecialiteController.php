@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Form\SpecialiteType;
 use App\Entity\Etablissement;
 use App\Entity\Membre;
-use App\Entity\Patient;
 
 class SpecialiteController extends AppController
 {
@@ -367,7 +366,7 @@ class SpecialiteController extends AppController
      * @param string $type
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function addAjaxDropdownAction(Request $request, Etablissement $etablissement, string $type)
+    public function addAjaxDropdownAction(Request $request, Etablissement $etablissement = null, string $type)
     {
         $specialites = $this->getDoctrine()->getRepository(Specialite::class)->getSpecialitesByEtablissement($etablissement);
 
@@ -400,6 +399,7 @@ class SpecialiteController extends AppController
 
                 $etablissement = $objet->getEtablissement();
                 break;
+                
         }
 
         $select_specialite = (! is_null($objet->getSpecialite()) ? $objet->getSpecialite()->getId() : 0);

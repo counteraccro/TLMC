@@ -14,7 +14,19 @@
 	{{ form_row(form.nom) }}
 	{{ form_row(form.prenom) }}
 	{{ form_row(form.date_naissance) }}
-	{{ form_row(form.specialite) }}
+	
+	<div class="form-group">
+		<label for="patient_etablissement">Etablissements</label>
+		<select name="patient_etablissement" id="patient_etablissement" class="form-control">
+    		{% for etablissement in etablissements %}
+    			<option value="{{ etablissement.id }}">{{ etablissement.nom }}</option>
+    		{% endfor %}
+		</select>
+	</div>
+	<div id="bloc_specialite">
+		{{ form_row(form.specialite) }}
+	</div>
+	
 	{{ form_row(form.PMR) }}
 	{{ form_row(form.droit_image) }}
 
@@ -33,6 +45,7 @@
 
 {% block script %}
  	<script src="{{ asset('assets/js/utils/FormAddCollection.js') }}?{{ date().timestamp }}"></script>
+ 	<script src="{{ asset('assets/js/specialite/specialite.js') }}?{{ date().timestamp }}"></script>
 {% endblock %}
 
 {% block javascripts %}
@@ -41,6 +54,16 @@
     
     $(document).ready(function() {
 
+    	var params = {
+				url_ajax_see : '{{ path('specialite_ajax_add_dropdown', {'type': 'patient'}) }}',
+				id_specialite : '#bloc_specialite',
+				id_bloc_etablissement : '#patient_etablissement'
+		};
+        
+    	Specialite.Launch(params);
+    	Specialite.LoadDropdownSpecialite();
+		Specialite.EventChange('#patient_save');
+    	
 		var params = {
 				id_container : 'div#patient_familles',
 				id_btn_add : '#add_famille',

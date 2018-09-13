@@ -19,7 +19,8 @@ class Produit
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\TypeProduit", inversedBy="produits")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $type;
 
@@ -121,18 +122,6 @@ class Produit
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getType(): ?int
-    {
-        return $this->type;
-    }
-
-    public function setType(int $type): self
-    {
-        $this->type = $type;
-
-        return $this;
     }
 
     public function getTitre(): ?string
@@ -275,6 +264,18 @@ class Produit
     public function setDisabled(int $disabled): self
     {
         $this->disabled = $disabled;
+
+        return $this;
+    }
+
+    public function getType(): ?TypeProduit
+    {
+        return $this->type;
+    }
+
+    public function setType(?TypeProduit $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }
@@ -433,5 +434,4 @@ class Produit
 
         return $this;
     }
-    
 }

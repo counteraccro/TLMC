@@ -50,7 +50,8 @@ class Evenement
     private $description;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\TypeEvenement", inversedBy="evenements")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $type;
 
@@ -229,18 +230,6 @@ class Evenement
         return $this;
     }
 
-    public function getType(): ?int
-    {
-        return $this->type;
-    }
-
-    public function setType(int $type): self
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
     public function getImage1(): ?string
     {
         return $this->image_1;
@@ -393,6 +382,18 @@ class Evenement
     public function setDisabled(int $disabled): self
     {
         $this->disabled = $disabled;
+
+        return $this;
+    }
+
+    public function getType(): ?TypeEvenement
+    {
+        return $this->type;
+    }
+
+    public function setType(?TypeEvenement $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }

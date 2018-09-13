@@ -288,4 +288,27 @@ class EtablissementController extends AppController
             'order' => $arrayFilters['order']
         ));
     }
+    
+    /**
+     * Fonction permettant la suggestion d'établissement lors de la création d'un patient ou d'un membre (autocomplétion)
+     *
+     * @Route("/etablissement/ajax/autocomplete", name="etablissement_ajax_autocomplete")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
+     * @param Request $request
+     */
+    public function autoCompleteAction(Request $request)
+    {
+        $term = $request->get('term');
+        
+        $repository = $this->getDoctrine()->getRepository(Etablissement::class);
+        $result = $repository->findByTerm($term);
+        
+        $json = array();
+        
+        // renvoie les résultats à afficher
+        foreach ($result as $etablissement) {
+            $json[$etablissement->getId()] = $etablissement->getNom();
+        }
+        return $this->json($json);
+    }
 }

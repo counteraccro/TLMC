@@ -207,6 +207,8 @@ class PatientController extends AppController
 
         $query = $sr->createQueryBuilder('specialite')->innerJoin('specialite.etablissement', 'etablissement');
 
+        $etablissements = $this->getDoctrine()->getRepository(Etablissement::class)->findEtablissementAvecSpecialite();
+        
         $disabled = false;
         if (! $this->isAdmin() && ! is_null($specialite)) {
             $patient->setSpecialite($membre->getSpecialite());
@@ -265,6 +267,7 @@ class PatientController extends AppController
         return $this->render('patient/add.html.twig', array(
             'page' => $page,
             'form' => $form->createView(),
+            'etablissements' => $etablissements,
             'paths' => array(
                 'home' => $this->indexUrlProject(),
                 'urls' => array(

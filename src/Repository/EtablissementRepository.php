@@ -140,9 +140,28 @@ class EtablissementRepository extends ServiceEntityRepository
             ->select('e.id, e.nom')
             ->innerJoin('App:Specialite', 's', 'WITH', 's.etablissement = e.id')
             ->orderBy('e.nom', 'ASC')
+            ->andWhere('e.disabled = 0')
             ->groupBy('e.id')
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * Fonction qui renvoie les établissements actifs dont le nom contient le paramètre donné
+     * Permet de renvoyer des suggestions à l'autocomplete
+     *
+     * @param string $term
+     */
+    public function findByTerm($term)
+    {
+        $query = $this->createQueryBuilder('e')
+            ->andWhere('e.disabled = 0')
+            ->andWhere('e.nom LIKE :term')
+            ->setParameter('term', '%' . $term . '%')
+            ->orderby('e.nom', 'ASC');
+        $result = $query->getQuery()->getResult();
+
+        return $result;
     }
 
     // /**

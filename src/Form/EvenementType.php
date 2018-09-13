@@ -15,6 +15,9 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Entity\TypeEvenement;
+use App\Repository\TypeEvenementRepository;
 
 class EvenementType extends AbstractType
 {
@@ -38,8 +41,14 @@ class EvenementType extends AbstractType
             ->add('description', TextareaType::class, array(
             'required' => false
         ))
-            ->add('type', ChoiceType::class, array(
-            'choices' => array_flip($options['type'])
+            ->add('type', EntityType::class, array(
+            'class' => TypeEvenement::class,
+            'query_builder' => function (TypeEvenementRepository $ter) {
+                return $ter->createQueryBuilder('te')
+                        ->andWhere('te.disabled = 0')
+                        ->orderBy('te.nom');
+            },
+            'choice_label' => 'nom'
         ))
             ->add('nom_lieu', TextType::class, array(
             'label' => 'Lieu'
@@ -78,7 +87,7 @@ class EvenementType extends AbstractType
                     'placeholder' => 'Choisir la première image'
                 )
             ));
-            
+
             $builder->add('image_2', FileType::class, array(
                 'label' => 'Image 2',
                 'data_class' => null,
@@ -88,7 +97,7 @@ class EvenementType extends AbstractType
                     'placeholder' => 'Choisir la seconde image'
                 )
             ));
-            
+
             $builder->add('image_3', FileType::class, array(
                 'label' => 'Image 3',
                 'data_class' => null,
@@ -148,7 +157,6 @@ class EvenementType extends AbstractType
             'label_submit' => 'Valider',
             'add' => false,
             'statut' => EvenementController::STATUT,
-            'type' => EvenementController::TYPE,
             'trancheAge' => AppController::TRANCHE_AGE,
             'query_specialite' => null,
             'ajax' => false,

@@ -11,23 +11,29 @@ use App\Controller\ProduitController;
 
 class ProduitExtension extends AbstractExtension
 {
+
     public function getFilters(): array
     {
-        return [
-            new TwigFilter('typeProduit', array($this, 'getTypeProduit')),
-            new TwigFilter('genre', array($this, 'getGenre')),
-        ];
+        return array(
+            new TwigFilter('genre', array(
+                $this,
+                'getGenre'
+            ))
+        );
     }
-    
+
     public function getFunctions(): array
     {
         return array(
-            new TwigFunction('function_name', array($this, 'doSomething')),
+            new TwigFunction('function_name', array(
+                $this,
+                'doSomething'
+            ))
         );
     }
-    
+
     /**
-     * Renvoie le type correspondant à  une clé ou la clé s'il n'y a pas de correspondance
+     * Renvoie le type correspondant à une clé ou la clé s'il n'y a pas de correspondance
      *
      * @param int $key
      * @return string
@@ -36,9 +42,9 @@ class ProduitExtension extends AbstractExtension
     {
         return (isset(ProduitController::TYPE[$key]) ? ProduitController::TYPE[$key] : $key);
     }
-    
+
     /**
-     * Renvoie le genre correspondant à  une clé ou la clé s'il n'y a pas de correspondance
+     * Renvoie le genre correspondant à une clé ou la clé s'il n'y a pas de correspondance
      *
      * @param int $key
      * @return string
