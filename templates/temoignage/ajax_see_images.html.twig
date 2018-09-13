@@ -1,0 +1,38 @@
+<div id="ajax_temoignage_images">
+	<div class="modal-header">
+		<h5 class="modal-title">
+			Image du témoignage {{ temoignage.titre }}
+		</h5>
+		<button type="button" class="close" data-dismiss="modal"
+			aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+
+	<div class="modal-body">
+		{% if temoignage.image1 != null %}
+	        {{ image('temoignage', temoignage.image1, 'img-fluid shadow-sm img-thumbnail') | raw }}<br><br>
+	    {% endif %}
+	    {% if temoignage.image2 != null %}
+            {{ image('temoignage', temoignage.image2, 'img-fluid shadow-sm img-thumbnail') | raw }}<br><br>
+        {% endif %}
+        {% if temoignage.image3 != null %}
+            {{ image('temoignage', temoignage.image3, 'img-fluid shadow-sm img-thumbnail') | raw }}
+        {% endif %}
+	</div>
+
+	<div class="modal-footer">
+		
+	</div>
+	
+	{% block javascripts %}
+	<script type="text/javascript">
+		var id_modal = '#modal_{{ type }}_global';
+		$(id_modal).modal({
+    		   'show' : true,
+    		   'backdrop' : 'static'
+    	});
+	</script>
+	{% endblock %}
+	
+</div>

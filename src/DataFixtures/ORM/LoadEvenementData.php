@@ -97,7 +97,7 @@ class LoadEvenementData extends Fixture
                 'setDescription' => "Concert de gospel 'Ma vie, ma foi' qui est en tournée dans toute la France",
                 'setNombreMax' => 150,
                 'setType' => 3,
-                'setImage1' => 'Concert de Gospel_23082018085314.jpg',
+                'setImage1' => 'http://www.association-defi.fr/wp-content/uploads/2014/03/concert-defi-mars-2015-1024x661.jpg',
                 'setNomLieu' => 'Stade des cerisiers',
                 'setNumeroVoie' => 100,
                 'setVoie' => "route de corbeille",

@@ -11,10 +11,7 @@
 <div>
     {{ form_start(form) }}
     
-    {{ form_row(form.titre) }}
-	{{ form_row(form.corps) }}
-	
-	<div id="temoignage_row_evenement">
+    <div id="temoignage_row_evenement">
 		{{ form_row(form.evenement) }}
 	</div>
 	
@@ -25,6 +22,21 @@
 	<div id="temoignage_row_produit">
 		{{ form_row(form.produit) }}
 	</div>
+    
+    {{ form_row(form.titre) }}
+	{{ form_row(form.corps) }}
+	
+	<!-- <div class="row">
+		<div class="col-md-4">
+            {#{ form_row(form.image_1) }#}
+		</div>
+		<div class="col-md-4">
+            {#{ form_row(form.image_2) }#}
+		</div>
+		<div class="col-md-4">
+            {#{ form_row(form.image_3) }#}
+		</div>
+	</div> -->
 	
     {{ form_rest(form) }}
     {{ form_errors(form) }}

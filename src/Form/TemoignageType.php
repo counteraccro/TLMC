@@ -13,6 +13,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use App\Entity\Famille;
 use App\Repository\FamilleRepository;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class TemoignageType extends AbstractType
 {
@@ -70,6 +71,38 @@ class TemoignageType extends AbstractType
 
             $builder->add('produit', EntityType::class, $prod_opt);
         }
+        
+        if (! $options['ajax']) {
+            $builder->add('image_1', FileType::class, array(
+                'label' => 'Image 1',
+                'data_class' => null,
+                'required' => false,
+                'help' => ($options['add'] ? 'Formats de fichier acceptés : jpg, jpeg, png' : 'Ne pas remplir si vous souhaitez conserver la même image'),
+                'attr' => array(
+                    'placeholder' => 'Choisir la première image'
+                )
+            ));
+            
+            $builder->add('image_2', FileType::class, array(
+                'label' => 'Image 2',
+                'data_class' => null,
+                'required' => false,
+                'help' => ($options['add'] ? 'Formats de fichier acceptés : jpg, jpeg, png' : 'Ne pas remplir si vous souhaitez conserver la même image'),
+                'attr' => array(
+                    'placeholder' => 'Choisir la seconde image'
+                )
+            ));
+            
+            $builder->add('image_3', FileType::class, array(
+                'label' => 'Image 3',
+                'data_class' => null,
+                'required' => false,
+                'help' => ($options['add'] ? 'Formats de fichier acceptés : jpg, jpeg, png' : 'Ne pas remplir si vous souhaitez conserver la même image'),
+                'attr' => array(
+                    'placeholder' => 'Choisir la troisième image'
+                )
+            ));
+        }
 
         $builder->add('save', SubmitType::class, array(
             'label' => $options['label_submit'],
@@ -93,7 +126,9 @@ class TemoignageType extends AbstractType
             'query_event' => null,
             'query_famille' => null,
             'required_prod' => false,
-            'required_event' => false
+            'required_event' => false,
+            'ajax' => false,
+            'add' => true
         ]);
     }
 }

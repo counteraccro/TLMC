@@ -66,6 +66,10 @@ class ActionExtension extends AbstractExtension
                 $this,
                 'actionDeleteImage'
             )),
+            new TwigFunction('seeImages', array(
+                $this,
+                'actionSeeImages'
+            )),
         );
     }
 
@@ -184,5 +188,16 @@ class ActionExtension extends AbstractExtension
      */
     public function actionDeleteImage($url_delete, string $id = null){
         return '<a href="' . $url_delete . '" ' . (is_null($id) ? '' :  'id="' . $id . '"') . ' class="float-right align-top" title="Supprimer l\'image"><span class="oi oi-circle-x"></span></a>';
+    }
+    
+    /**
+     * Bouton pour voir les images d'un témoignage
+     *
+     * @param string $url_see
+     * @param string $id
+     * return string
+     */
+    public function actionSeeImages($url_see, string $id = null){
+        return '<a href="' . $url_see . '" ' . (is_null($id) ? '' :  'id="' . $id . '"') . ' class="align-top" title="Voir les images assoicées"><span class="oi oi-image"></span></a>';
     }
 }

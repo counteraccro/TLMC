@@ -17,7 +17,8 @@ class TemoignageController extends AppController
 {
 
     /**
-     * Listing des témoignages. Pour un membre non administrateur, 
+     * Listing des témoignages.
+     * Pour un membre non administrateur,
      * seul les témoignages actifs concernant des produits ou des événements liés à l'établissement ou à la spécialité du membre sont affichés
      *
      * @Route("/temoignage/listing/{type}/{page}/{field}/{order}", name="temoignage_listing", defaults={"page" = 1, "type"="evenement", "field"= null, "order"= null})
@@ -40,8 +41,8 @@ class TemoignageController extends AppController
         if (is_null($order)) {
             $order = 'DESC';
         }
-        
-        if($type != 'evenement' && $type != 'produit'){
+
+        if ($type != 'evenement' && $type != 'produit') {
             $type = 'evenement';
         }
 
@@ -193,7 +194,9 @@ class TemoignageController extends AppController
                 break;
         }
 
-        $objet = $repository->findOneBy(array('id' => $id));
+        $objet = $repository->findOneBy(array(
+            'id' => $id
+        ));
 
         $params = array(
             'field' => 'date_creation',
@@ -201,20 +204,20 @@ class TemoignageController extends AppController
             'page' => $page,
             'repositoryClass' => Temoignage::class,
             'repository' => 'Temoignage',
-            'repositoryMethode' => 'findAllTemoignages',
+            'repositoryMethode' => 'findAllTemoignages'
         );
-        
+
         $params['condition'] = array(
             $params['repository'] . '.' . $type . '  = ' . $id
         );
-        
+
         if (! $this->isAdmin()) {
             $params['condition'][] = $params['repository'] . '.disabled = 0';
         }
-        
+
         $repository = $this->getDoctrine()->getRepository($params['repositoryClass']);
         $result = $repository->{$params['repositoryMethode']}($params['page'], self::MAX_NB_RESULT_AJAX, $params);
-        
+
         $pagination = array(
             'page' => $page,
             'route' => 'temoignage_ajax_see_liste',
@@ -254,21 +257,24 @@ class TemoignageController extends AppController
     {
         $arrayFilters = $this->getDatasFilter($session);
         $opt_form = array(
-            'label_submit' => 'Ajouter'
+            'label_submit' => 'Ajouter',
+            'ajax' => true//($request->isXmlHttpRequest() ? true : false)
         );
 
         $temoignage = new Temoignage();
-        
+
         $membre = $this->getMembre();
         $id_specialite = (is_null($membre->getSpecialite()) ? 0 : $membre->getSpecialite()->getId());
         $isAdmin = $this->isAdmin();
-        
+
         switch ($type) {
             case 'evenement':
                 $repository = $this->getDoctrine()->getRepository(Evenement::class);
 
                 if ($request->isXmlHttpRequest()) {
-                    $objet = $repository->findOneBy(array('id' => $id));
+                    $objet = $repository->findOneBy(array(
+                        'id' => $id
+                    ));
 
                     $opt_form['disabled_event'] = true;
                     $opt_form['required_event'] = true;
@@ -284,14 +290,17 @@ class TemoignageController extends AppController
                 $repository = $this->getDoctrine()->getRepository(Produit::class);
 
                 if ($request->isXmlHttpRequest()) {
-                    $objet = $repository->findOneBy(array('id' => $id));
+                    $objet = $repository->findOneBy(array(
+                        'id' => $id
+                    ));
 
                     $opt_form['disabled_prod'] = true;
                     $opt_form['avec_event'] = false;
 
                     $temoignage->setProduit($objet);
                 } else {
-                    $opt_form['query_prod'] = $repository->getProduitAvailable($isAdmin, $membre->getEtablissement()->getId(), $id_specialite);
+                    $opt_form['query_prod'] = $repository->getProduitAvailable($isAdmin, $membre->getEtablissement()
+                        ->getId(), $id_specialite);
                     $opt_form['required_prod'] = true;
                 }
                 break;
@@ -303,16 +312,20 @@ class TemoignageController extends AppController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $em = $this->getDoctrine()->getManager();
-            
-            //Pour associer la famille lors de l'ajout depuis une modale
+
+            // Pour associer la famille lors de l'ajout depuis une modale
             if ($request->isXmlHttpRequest()) {
-                if(isset($request->request->get('temoignage')['famille'])){
+                if (isset($request->request->get('temoignage')['famille'])) {
                     $famille_id = $request->request->get('temoignage')['famille'];
-                    $famille = $this->getDoctrine()->getRepository(Famille::class)->findOneBy(array('id' =>$famille_id));
+                    $famille = $this->getDoctrine()
+                        ->getRepository(Famille::class)
+                        ->findOneBy(array(
+                        'id' => $famille_id
+                    ));
                     $temoignage->setFamille($famille);
                 }
             }
-            
+
             $temoignage->setMembre($membre);
             $temoignage->setDisabled(0);
             $temoignage->setDateCreation(new \DateTime());
@@ -378,9 +391,11 @@ class TemoignageController extends AppController
     public function editAction(SessionInterface $session, Request $request, Temoignage $temoignage, int $page = 1, string $type = 'tous')
     {
         $arrayFilters = $this->getDatasFilter($session);
-    
+
         $opt_form = array(
-            'label_submit' => 'Modifier'
+            'label_submit' => 'Modifier',
+            'add' => false,
+            'ajax' => true//($request->isXmlHttpRequest() ? true : false)
         );
 
         if ($request->isXmlHttpRequest()) {
@@ -505,7 +520,7 @@ class TemoignageController extends AppController
         if ($request->isXmlHttpRequest()) {
             return $this->json(array(
                 'statut' => true,
-                'page' => $page 
+                'page' => $page
             ));
         }
 
@@ -514,6 +529,25 @@ class TemoignageController extends AppController
             'type' => $type,
             'field' => $arrayFilters['field'],
             'order' => $arrayFilters['order']
+        ));
+    }
+
+    /**
+     * Fiche d'un témoignage
+     *
+     * @Route("/temoignage/ajax/see/image/{id}/{type}", name="temoignage_ajax_see_images")
+     * @ParamConverter("temoignage", options={"mapping": {"id": "id"}})
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT') or is_granted('ROLE_BENEVOLE')")
+     *
+     * @param Temoignage $temoignage
+     * @param string $type
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function seeImageAction(Temoignage $temoignage, string $type = 'tous')
+    {
+        return $this->render('temoignage/ajax_see_images.html.twig', array(
+            'temoignage' => $temoignage,
+            'type' => $type
         ));
     }
 }
