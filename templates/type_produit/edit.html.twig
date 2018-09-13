@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edition d'un type de produit {% endblock %}
+
+{% block body %}
+
+<h1>Modification du type de produit  #{{ type.id }} - {{ type.nom }}</h1>
+
+{% include 'elements/arborescence.html.twig' %}
+
+<div>
+    {{ form_start(form) }}
+    
+	{{ form_row(form.nom) }}
+    
+	{{ form_rest(form) }}
+    {{ form_errors(form) }}
+    {{ form_end(form) }}
+    
+</div>
+	  
+{% endblock %}

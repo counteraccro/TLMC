@@ -6,6 +6,7 @@ use App\Entity\TypeProduit;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class TypeProduitType extends AbstractType
 {
@@ -13,13 +14,19 @@ class TypeProduitType extends AbstractType
     {
         $builder
             ->add('nom')
-        ;
+            ->add('save', SubmitType::class, array(
+                'label' => $options['label_submit'],
+                'attr' => array(
+                    'class' => 'btn btn-primary'
+                )
+            ));
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
+        $resolver->setDefaults(array(
             'data_class' => TypeProduit::class,
-        ]);
+            'label_submit' => 'Valider'
+        ));
     }
 }

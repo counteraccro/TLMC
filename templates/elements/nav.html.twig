@@ -38,6 +38,9 @@
             		</a>
             		<div class="dropdown-menu" aria-labelledby="navbarDropdown">
               			<a class="dropdown-item" href="{{ path('evenement_listing') }}"><span class="oi oi-calendar"></span> Evénements</a>
+              			{% if is_granted("ROLE_ADMIN")%}
+              				<a class="dropdown-item" href="{{ path('type_evenement_listing') }}"><span class="oi oi-list"></span> Types d'événement</a>
+              			{% endif %}
               			<a class="dropdown-item" href="{{ path('temoignage_listing', {'type': 'evenement'}) }}"><span class="oi oi-comment-square"></span> Témoignages</a>
               		</div>
           		</li>
@@ -48,6 +51,9 @@
             		</a>
             		<div class="dropdown-menu" aria-labelledby="navbarDropdown">
               			<a class="dropdown-item" href="{{ path('produit_listing') }}"><span class="oi oi-basket"></span> Produits</a>
+              			{% if is_granted("ROLE_ADMIN")%}
+              				<a class="dropdown-item" href="{{ path('type_produit_listing') }}"><span class="oi oi-list"></span> Types de produit</a>
+              			{% endif %}
               			<a class="dropdown-item" href="{{ path('temoignage_listing', {'type': 'produit'}) }}"><span class="oi oi-comment-square"></span> Témoignages</a>
               		</div>
           		</li>

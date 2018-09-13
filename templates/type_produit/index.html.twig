@@ -1,20 +1,55 @@
+
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello {{ controller_name }}!{% endblock %}
+{% block title %}Types de produit{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'src/Controller/TypeProduitController.php'|file_link(0) }}">src/Controller/TypeProduitController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'templates/type_produit/index.html.twig'|file_link(0) }}">templates/type_produit/index.html.twig</a></code></li>
-    </ul>
+    <h1>Gestion des types de produit</h1>
+    
+    {% include 'elements/arborescence.html.twig' %}
+    
+    <div class="card">
+    	<div class="card-header">
+            {{ pagination.nb_elements }} type{% if pagination.nb_elements > 1 %}s{% endif %} {% if pagination.pages_count > 0 %} de produit - Page {{ pagination.page }} / {{ pagination.pages_count }} {% endif %}
+            <a href="{{ path('type_produit_add', {'page' : pagination.page}) }}" class="float-right"><span class="oi oi-list"></span> Nouveau type de produit</a>
+            {{ labelFilter(path('utils_delete-search', {'page' : pagination.page} ), current_search) | raw }}
+      	</div>
+      	
+      	<div class="card-body">
+      	<table class="table table-sm table-striped">
+        	<tr>
+        		<th>{{ headerFilter(path('type_produit_listing', {'page' : pagination.page, 'field' : 'id'} ), '#', current_order, current_field) | raw }}</th>
+        		<th>{{ headerFilter(path('type_produit_listing', {'page' : pagination.page, 'field' : 'nom'} ), 'Nom', current_order, current_field) | raw }}</th>
+        		<th></th>
+        	</tr>
+        	<tr>
+        		<td>{{ inputFilter(path('type_produit_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'TypeProduit-id', current_search, 'Identifiant') | raw }}</td>
+        		<td>{{ inputFilter(path('type_produit_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'TypeProduit-nom', current_search, 'Nom') | raw }}</td>
+        		<td></td>
+        	</tr>
+        	
+  		{% for type in types %}
+        		<tr>
+        			<td>{{ type.id }}</td>
+        			<td>
+        				{{ type.nom }}
+        			</td>
+        			<td>
+                        {{ actionEdit(path('type_produit_edit', {'id' : type.id, 'page' : pagination.page})) | raw }}
+            			{{ actionDelete(type.disabled, path('type_produit_delete', {'id' : type.id, 'page' : pagination.page})) | raw }}
+        			</td>
+        		</tr>
+        	{% endfor %}
+        </table>
+                
+    	{% if types is empty %}
+        	<p class="text-info text-center">Il  n'y a aucun type de produit correspondant à votre recherche.</p>
+        {% endif %}
+        
+  	</div>
+  	<div class="card-footer">
+    	{% include 'elements/pagination.html.twig' %}
+  	</div>
 </div>
 {% endblock %}

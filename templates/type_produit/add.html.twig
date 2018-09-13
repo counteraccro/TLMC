@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Nouveau type de produit {% endblock %}
+
+{% block body %}
+
+<h1>Ajout d'un nouveau type de produit</h1>
+
+{% include 'elements/arborescence.html.twig' %}
+
+<div>
+    {{ form_start(form) }}
+    
+	{{ form_row(form.nom) }}
+    
+	{{ form_rest(form) }}
+    {{ form_errors(form) }}
+    {{ form_end(form) }}
+    
+</div>
+	  
+{% endblock %}
