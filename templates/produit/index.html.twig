@@ -32,7 +32,7 @@
         	</tr>
         	<tr>
         		<td>{{ inputFilter(path('produit_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Produit-id', current_search, 'Identifiant') | raw }}</td>
-        		<td>{{ inputFilter(path('produit_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Produit-type', current_search, '', constant('App\\Controller\\ProduitController::TYPE')) | raw }}</td>
+        		<td>{{ inputFilter(path('produit_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Produit-type-nom', current_search, 'Type') | raw }}</td>
         		<td>{{ inputFilter(path('produit_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Produit-titre', current_search, 'Titre') | raw }}</td>
         		<td>{{ inputFilter(path('produit_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Produit-texte', current_search, 'Texte') | raw }}</td>
         		<td></td>
@@ -45,7 +45,7 @@
   		{% for produit in produits %}
         		<tr>
         			<td>{{ produit.id }}</td>
-        			<td>{{ produit.type | typeProduit}}</td>
+        			<td>{{ produit.type.nom }}</td>
         			<td>
         				{{ produit.titre }}
         			</td>

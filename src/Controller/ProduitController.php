@@ -16,16 +16,6 @@ class ProduitController extends AppController
 {
 
     /**
-     * Tableau de types de produit
-     *
-     * @var array
-     */
-    const TYPE = array(
-        1 => 'Cadeau',
-        2 => 'Matériel'
-    );
-
-    /**
      * Tableau de genre du produit
      *
      * @var array

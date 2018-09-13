@@ -24,9 +24,7 @@ ExtensionFormulaire.Launch = function(params) {
 			return false;
 		});
 
-		if (ExtensionFormulaire.index == 0) {
-			ExtensionFormulaire.AddElement();
-		} else {
+		if (ExtensionFormulaire.index != 0) {
 			// S'il existe déjà des éléments, on ajoute un lien de suppression pour chacun d'entre eux
 			ExtensionFormulaire.container.children('div').each(function() {
 				ExtensionFormulaire.addDeleteLink($(this));

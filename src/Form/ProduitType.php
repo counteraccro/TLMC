@@ -14,14 +14,23 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use App\Controller\AppController;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use App\Repository\TypeProduitRepository;
+use App\Entity\TypeProduit;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class ProduitType extends AbstractType
 {
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('type', ChoiceType::class, array(
-            'choices' => array_flip($options['type'])
+        $builder->add('type', EntityType::class, array(
+            'class' => TypeProduit::class,
+            'query_builder' => function (TypeProduitRepository $tpr) {
+                return $tpr->createQueryBuilder('te')
+                    ->andWhere('te.disabled = 0')
+                    ->orderBy('te.nom');
+            },
+            'choice_label' => 'nom'
         ))
             ->add('titre')
             ->add('texte', TextareaType::class, array(
@@ -58,7 +67,7 @@ class ProduitType extends AbstractType
                     'placeholder' => 'Choisir la première image'
                 )
             ));
-            
+
             $builder->add('image_2', FileType::class, array(
                 'label' => 'Image 2',
                 'data_class' => null,
@@ -68,7 +77,7 @@ class ProduitType extends AbstractType
                     'placeholder' => 'Choisir la seconde image'
                 )
             ));
-            
+
             $builder->add('image_3', FileType::class, array(
                 'label' => 'Image 3',
                 'data_class' => null,
@@ -79,7 +88,7 @@ class ProduitType extends AbstractType
                 )
             ));
         }
-        
+
         if ($options['add']) {
             $builder->add('produitEtablissements', CollectionType::class, array(
                 'label' => "Etablissements dans lesquels le produit est envoyé",
@@ -139,7 +148,6 @@ class ProduitType extends AbstractType
             'data_class' => Produit::class,
             'label_submit' => 'Valider',
             'genre' => ProduitController::GENRE,
-            'type' => ProduitController::TYPE,
             'trancheAge' => AppController::TRANCHE_AGE,
             'add' => false,
             'ajax' => false

@@ -40,7 +40,7 @@
         		<td>{{ inputFilter(path('evenement_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Evenement-nombre_max', current_search, 'Nombre max') | raw }}</td>
         		<td>{{ inputFilter(path('evenement_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Evenement-description', current_search, 'Description') | raw }}</td>
         		<td></td>
-        		<td>{{ inputFilter(path('evenement_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Evenement-type', current_search, '', constant('App\\Controller\\EvenementController::TYPE')) | raw }}</td>
+        		<td>{{ inputFilter(path('evenement_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Evenement-type-nom', current_search, 'Type') | raw }}</td>
         		<td>{{ inputFilter(path('evenement_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Evenement-statut', current_search, '', constant('App\\Controller\\EvenementController::STATUT')) | raw }}</td>
         		<td></td>
         	</tr>
@@ -60,7 +60,7 @@
         			    	{{ tranche |trancheAge }} <br />	
         			    {% endfor %}
         			</td>
-        			<td>{{ evenement.type | typeEvent }}</td>
+        			<td>{{ evenement.type.nom }}</td>
         			<td>{{ evenement.statut | statutEvent }}</td>
         			<td>
         			    {{ actionSee(path('evenement_see', {'id' : evenement.id, 'page' : pagination.page})) | raw }}

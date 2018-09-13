@@ -15,19 +15,6 @@ class EvenementController extends AppController
 {
 
     /**
-     * Tableau de types d'événements
-     *
-     * @var array
-     */
-    const TYPE = array(
-        1 => 'Repas',
-        2 => 'Sortie',
-        3 => 'Spectacle',
-        4 => 'Fête',
-        5 => 'Animation'
-    );
-
-    /**
      * Tableau de statuts d'événements
      *
      * @var array
