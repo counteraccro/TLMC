@@ -204,6 +204,21 @@ class ProduitRepository extends ServiceEntityRepository
         
         return $return;
     }
+    
+    /**
+     * Fonction qui renvoie les 5 derniers produits enregistrés en base
+     */
+    public function getRecents()
+    {
+        $query = $this->createQueryBuilder('prod')
+        ->andWhere('prod.disabled = 0')
+        ->addOrderBy('prod.date_creation', 'DESC')
+        ->setMaxResults(5)
+        ->getQuery()
+        ->getResult();
+
+        return $query;
+    }
 
     // /**
     // * @return Produit[] Returns an array of Produit objects

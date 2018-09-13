@@ -5,6 +5,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Temoignage;
 use App\Entity\Questionnaire;
 use App\Entity\Evenement;
+use App\Entity\Patient;
+use App\Entity\Produit;
 
 class IndexController extends AppController
 {
@@ -38,6 +40,14 @@ class IndexController extends AppController
         $repositoryQuest = $this->getDoctrine()->getRepository(Evenement::class);
         $evenements = $repositoryQuest->getComingSoon();
         
+        // 5 derniers patients enregistrés en base
+        $repositoryQuest = $this->getDoctrine()->getRepository(Patient::class);
+        $patients = $repositoryQuest->getRecents();
+        
+        // 5 derniers produits enregistrés en base
+        $repositoryQuest = $this->getDoctrine()->getRepository(Produit::class);
+        $produits = $repositoryQuest->getRecents();
+        
         /**
          *  Début affichage des vues en fonction des droits de l'utilisateur courant
          */
@@ -58,6 +68,8 @@ class IndexController extends AppController
                 return $this->render('index/index.html.twig', [
                     'questionnaires' => $questionnaires,
                     'evenements' => $evenements,
+                    'patients' => $patients,
+                    'produits' => $produits,
                     'temoignages' => $temoignages['paginator']
                 ]);
                 break;
