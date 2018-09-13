@@ -22,20 +22,6 @@ class IndexController extends AppController
         $repositoryQuest = $this->getDoctrine()->getRepository(Questionnaire::class);
         $questionnaires = $repositoryQuest->findExpiringSoon();
 
-        // 5 derniers témoignages créés
-        $repositoryTmg = $this->getDoctrine()->getRepository(Temoignage::class);
-
-        $params = array(
-            'order' => 'DESC',
-            'field' => 'date_creation',
-            'repository' => 'Temoignage',
-            'condition' => array(
-                'Temoignage.disabled = 0'
-            )
-        );
-
-        $temoignages = $repositoryTmg->findAllTemoignages(1, 5, $params);
-
         // 5 évènements dont la date de début est la plus proche
         $repositoryQuest = $this->getDoctrine()->getRepository(Evenement::class);
         $evenements = $repositoryQuest->getComingSoon();
@@ -48,17 +34,44 @@ class IndexController extends AppController
         $repositoryQuest = $this->getDoctrine()->getRepository(Produit::class);
         $produits = $repositoryQuest->getRecents();
         
-        /**
-         *  Début affichage des vues en fonction des droits de l'utilisateur courant
-         */
+        // 5 derniers témoignages créés
+        $repositoryTmg = $this->getDoctrine()->getRepository(Temoignage::class);
+        
+        $params = array(
+            'order' => 'DESC',
+            'field' => 'date_creation',
+            'repository' => 'Temoignage',
+            'condition' => array(
+                'Temoignage.disabled = 0'
+            )
+        );
+        
         //s'il s'agit d'un visiteur non-authentifié
         if (! $this->getUser()) {
+            $temoignages = $repositoryTmg->findAllTemoignages(1, 5, $params);
             return $this->render('index/index_visiteur.html.twig', [
                 'temoignages' => $temoignages['paginator']
             ]);
         }
+        
+        $membre = $this->getMembre();
+        if(!$this->isAdmin()){
+            $params['jointure'] = array(
+                array('oldrepository' => 'Temoignage',
+                    'newrepository' => 'membre'
+                )
+            );
+            
+            $params['condition'][] = 'membre.specialite = ' . (is_null($membre->getSpecialite()) ? 0 : $membre->getSpecialite()->getId());
+        }
+        
+        $temoignages = $repositoryTmg->findAllTemoignages(1, 5, $params);
+        
+        /**
+         *  Début affichage des vues en fonction des droits de l'utilisateur courant
+         */
 
-        $roles = $this->getMembre()->getRoles();
+        $roles = $membre->getRoles();
         // Cas car ici on n'a qu'un seul rôle, a adapter si besoin (à l'avenir)
         $role = $roles[0];
 

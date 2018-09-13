@@ -27,7 +27,7 @@
             	            {% for quest in questionnaires %}
             	            <tr>
                                 <td>{{ quest.id }}</td>
-                                <td>{{ quest.titre }}</td>
+                                <td><a href="{{ path('questionnaire_see', {'id': quest.id}) }}">{{ quest.titre }}</a></td>
                                 <td>{{ quest.dateCreation |date("d/m/Y H:i")}}</td>
                                	<td>{{ quest.dateFin |date("d/m/Y H:i")}}</td>
                             	<td>{{ formatDateDecompte(quest.dateFin) }}</td>  
@@ -55,7 +55,7 @@
             	            {% for ev in evenements %}
             	            <tr>
                                 <td>{{ ev.id }}</td>
-                                <td>{{ ev.nom }}</td>
+                                <td><a href="{{ path('evenement_see', {'id': ev.id}) }}">{{ ev.nom }}</a></td>
                                 <td>{{ ev.ville }}</td>
                                 <td>{{ ev.dateDebut |date("d/m/Y H:i")}}</td>
                                	<td>{{ ev.dateFin |date("d/m/Y H:i")}}</td>
@@ -69,12 +69,12 @@
     	<div class="col-4">
     		<div class="card">
             	<div class="card-header bg-info">
-                	Derniers patients enregistrés
+                	Patients : derniers enregistrements
             	</div>
             	<div class="card-body">
             		<table class="table">
                     	<tr>
-            				<th>ID</th>
+            				<th>#</th>
             				<th>Nom</th>
             				<th>Prénom</th>
             				<th>Date de naissance</th>
@@ -82,8 +82,8 @@
             	            {% for pat in patients %}
             	            <tr>
                                 <td>{{ pat.id }}</td>
-                                <td>{{ pat.nom }}</td>
-                                <td>{{ pat.prenom }}</td>
+                                <td><a href="{{ path('patient_see', {'id': pat.id}) }}">{{ pat.nom }}</a></td>
+                                <td><a href="{{ path('patient_see', {'id': pat.id}) }}">{{ pat.prenom }}</a></td>
                                	<td>{{ pat.dateNaissance | date('d/m/Y') }} ({{ pat.dateNaissance | age }} ans)</td>
                            	</tr>
             	            {% endfor %}
@@ -110,7 +110,7 @@
             	            {% for prod in produits %}
             	            <tr>
                                 <td>{{ prod.id }}</td>
-                                <td>{{ prod.titre }}</td>
+                                <td><a href="{{ path('produit_see', {'id': prod.id}) }}">{{ prod.titre }}</a></td>
         				        <td>{% for tranche_age in prod.trancheAge %}
         			                    {{ tranche_age | trancheAge }}<br />
         			                {% endfor %}</td>
@@ -131,13 +131,22 @@
                     	<tr>
             				<th>#</th>
             				<th>Titre</th>
-            				<th>Date de création</th>
+            				<th>Corps</th>
+            				<th>Auteur</th>
+            				<th>Date création</th>
             			</tr>
             	            {% for tem in temoignages %}
             	            <tr>
                                 <td>{{ tem.id }}</td>
-                                <td>{{ tem.titre }}</td>
-                                <td>{{ tem.dateCreation |date("d/m/Y H:i")}}</td>
+                                <td><a href="{{ path('temoignage_see', {'id': tem.id}) }}">{{ tem.titre }}</a></td>
+                                <td>
+                                {% if tem.produit != null %}
+                                    {{ tem.produit.titre }}
+                                {% else %}
+                                	{{ tem.evenement.nom }}
+                                {% endif %}</td>
+                                <td>{{ tem.famille.prenom }} {{ tem.famille.nom }}</td>
+                                <td>{{ tem.dateCreation |date("d/m/Y")}}</td>
                             </tr>
             	            {% endfor %}
             	    </table>
