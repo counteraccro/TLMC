@@ -124,58 +124,26 @@
     	<div class="col-4">
     		<div class="card">
             	<div class="card-header bg-info">
-                	Evènements les plus proches
+                	Témoignages les plus récents
             	</div>
             	<div class="card-body">
             		<table class="table">
                     	<tr>
             				<th>#</th>
-            				<th>Nom</th>
-            				<th>Ville</th>
-            				<th>Date de début</th>
-            				<th>Date de fin</th>
-            				<th>Jours restants</th>
+            				<th>Titre</th>
+            				<th>Date de création</th>
             			</tr>
-            	            {% for ev in evenements %}
+            	            {% for tem in temoignages %}
             	            <tr>
-                                <td>{{ ev.id }}</td>
-                                <td>{{ ev.nom }}</td>
-                                <td>{{ ev.ville }}</td>
-                                <td>{{ ev.dateDebut |date("d/m/Y H:i")}}</td>
-                               	<td>{{ ev.dateFin |date("d/m/Y H:i")}}</td>
-                               	<td>{{ formatDateDecompte(ev.dateDebut) }}</td> 
+                                <td>{{ tem.id }}</td>
+                                <td>{{ tem.titre }}</td>
+                                <td>{{ tem.dateCreation |date("d/m/Y H:i")}}</td>
                             </tr>
             	            {% endfor %}
             	    </table>
     			</div>
     		</div>
     	</div>
-    	<div class="col-4">
-    		<div class="card">
-            	<div class="card-header bg-info">
-                	Derniers patients enregistrés
-            	</div>
-            	<div class="card-body">
-            		<table class="table">
-                    	<tr>
-            				<th>ID</th>
-            				<th>Nom</th>
-            				<th>Prénom</th>
-            				<th>Date de naissance</th>
-            			</tr>
-            	            {% for pat in patients %}
-            	            <tr>
-                                <td>{{ pat.id }}</td>
-                                <td>{{ pat.nom }}</td>
-                                <td>{{ pat.prenom }}</td>
-                               	<td>{{ pat.dateNaissance | date('d/m/Y') }} ({{ pat.dateNaissance | age }} ans)</td>
-                           	</tr>
-            	            {% endfor %}
-            	    </table>
-    			</div>
-    		</div>
-    	</div>
-    </div>
 </div>
 
 {% endblock %}
