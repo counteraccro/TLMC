@@ -54,6 +54,7 @@
                     			{% if temoignage.membre.id == app.user.id %}
                     			    {{ actionEdit(path('temoignage_ajax_edit', {'id' : temoignage.id, 'type' : type, 'page' : pagination.page}), 'btn-edit-temoignage-'~ temoignage.id ) | raw }}
                     			{% endif %}
+                    			{#{ seeImages(path('temoignage_ajax_see_images', {'id': temoignage.id, 'type': type}), 'btn-see-images-' ~ temoignage.id) | raw }#}
                 		        {% if is_granted("ROLE_ADMIN") %}
                     		        {{ actionDelete(temoignage.disabled, path('temoignage_delete', {'id' : temoignage.id, 'page' : pagination.page}), temoignage.id) | raw }}
                     		    {% endif %}
@@ -96,6 +97,9 @@
             {% for temoignage in temoignages %}
                 var id_btn_edit_{{ temoignage.id }} = '#btn-edit-temoignage-' + {{ temoignage.id }};
             	Temoignage.EventEdit(id_btn_edit_{{ temoignage.id }});
+
+            	var id_btn_see_images_{{ temoignage.id }} = '#btn-see-images-' + {{ temoignage.id }};
+            	Temoignage.EventEdit(id_btn_see_images_{{ temoignage.id }});
             	
             	var id_delete = '#delete-' + {{ temoignage.id }};
 				Temoignage.EventDelete(id_delete);
