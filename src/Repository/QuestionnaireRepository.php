@@ -282,6 +282,7 @@ class QuestionnaireRepository extends ServiceEntityRepository
         $query = $this->createQueryBuilder('q')
         ->andWhere('q.date_publication IS NOT NULL')
         ->andWhere('q.date_fin > CURRENT_TIMESTAMP()')
+        ->andWhere('q.publication = 1')
         ->addOrderBy('q.date_fin', 'DESC')
         ->setMaxResults(5)
         ->getQuery()

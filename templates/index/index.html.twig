@@ -1,86 +1,115 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-
+<div id="page-accueil">
 	<h1>Accueil</h1>
-
-{% if is_granted('ROLE_ADMIN') %}
-		<div id ="questionnaires_accueil" class="card col-4">
-        	<div class="card-header bg-primary float-left">
-            	Questionnaires qui vont expirer prochainement
-        	</div>
-        	<div class="card-body float-left">
-        		<table class="table">
-                	<tr>
-        				<th>ID</th>
-        				<th>Titre</th>
-        				<th>Date de création</th>
-        				<th>Date de fin</th>
-        				<th>Jours restants</th>
-        			</tr>
-        	            {% for quest in questionnaires %}
-        	            <tr>
-                            <td>{{ quest.id }}</td>
-                            <td>{{ quest.titre }}</td>
-                            <td>{{ quest.dateCreation |date("d/m/Y H:i")}}</td>
-                           	<td>{{ quest.dateFin |date("d/m/Y H:i")}} {#}/ {{ nbJours |date("d/m/Y H:i")}}#}  <br/></td>
-                        	  
-        	            {% if quest.dateFin.timestamp  < date().timestamp %}
-							<td><span class="text-danger"><span class="oi oi-media-record"></span> {{ formatDateQuestionnaire(quest.dateFin) }}</span></td>
-							{% else %}
-							<td><span class="text-success"><span class="oi oi-media-record"></span> {{ formatDateQuestionnaire(quest.dateFin) }}</span></td>
-							{% endif %}
-                       	</tr>
-        	            {% endfor %}
-        	    </table>
-			</div>
-		</div>
-
-{% endif %}
-	
-	<div id="temoignages_accueil" class="carousel slide text-center" data-ride="carousel">
- 		<div class="carousel-inner">
-            {% for temoignage in temoignages %}
-				<div class="carousel-item {% if loop.index0 == 0 %}active{% endif %}">
-    		        {% if temoignage.evenement != null %}
-        				<strong>{{ temoignage.evenement.nom }}</strong>
-        	        {% endif %}
-    				
-        	        {% if temoignage.produit != null %}
-        				<strong>{{ temoignage.produit.titre }}</strong>
-        	        {% endif %}
-        			
-        			<p class="mb-0">{{ temoignage.corps }}</p>
-  					<p class="blockquote-footer">
-  						{% if temoignage.famille != null %}
-                       		{{ temoignage.famille.prenom }}, 
-                       		{{ temoignage.famille.lienFamille | lienParente }} de {{ temoignage.famille.patient.prenom }}, 
-                       		{{ temoignage.famille.patient.dateNaissance | age }} ans, 
-                       		{{ temoignage.famille.familleAdresse.ville }}
-                   	    {% endif %}
-  					</p>
-      			
+		<div class="row">
+		<div class="col-4">
+    		<div class="card">
+            	<div class="card-header bg-info">
+                	Questionnaires qui vont expirer prochainement
+            	</div>
+            	<div class="card-body">
+            		<table class="table">
+                    	<tr>
+            				<th>#</th>
+            				<th>Questionnaire</th>
+            				<th>Date création</th>
+            				<th>Date fin</th>
+            				<th>J restants</th>
+            			</tr>
+            	            {% for quest in questionnaires %}
+            	            <tr>
+                                <td>{{ quest.id }}</td>
+                                <td>{{ quest.titre }}</td>
+                                <td>{{ quest.dateCreation |date("d/m/Y H:i")}}</td>
+                               	<td>{{ quest.dateFin |date("d/m/Y H:i")}}<br/></td>
+                            	  
+            	            {% if quest.dateFin.timestamp  < date().timestamp %}
+            	      			<td>intégrer partie html au twig extension + format urgent</td>
+    							<td><span class="text-danger"><span class="oi oi-media-record"></span> {{ formatDateQuestionnaire(quest.dateFin) }}</span></td>
+    							{% else %}
+    							<td><span class="text-success"><span class="oi oi-media-record"></span> {{ formatDateQuestionnaire(quest.dateFin) }}</span></td>
+    							{% endif %}
+                           	</tr>
+            	            {% endfor %}
+            	    </table>
     			</div>
-  	        {% endfor %}
-  		</div>
-  		<a class="carousel-control-prev" href="#temoignages_accueil" role="button" data-slide="prev">
-    		<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    		<span class="sr-only">Précédent</span>
-  		</a>
-  		<a class="carousel-control-next" href="#temoignages_accueil" role="button" data-slide="next">
-    		<span class="carousel-control-next-icon" aria-hidden="true"></span>
-    		<span class="sr-only">Suivant</span>
-  		</a>
-	</div>
+    		</div>
+    	</div>
+    	<div class="col-4">
+    		<div class="card">
+            	<div class="card-header bg-primary">
+                	Questionnaires qui vont expirer prochainement
+            	</div>
+            	<div class="card-body">
+            		<table class="table">
+                    	<tr>
+            				<th>ID</th>
+            				<th>Titre</th>
+            				<th>Date de création</th>
+            				<th>Date de fin</th>
+            				<th>Jours restants</th>
+            			</tr>
+            	            {% for quest in questionnaires %}
+            	            <tr>
+                                <td>{{ quest.id }}</td>
+                                <td>{{ quest.titre }}</td>
+                                <td>{{ quest.dateCreation |date("d/m/Y H:i")}}</td>
+                               	<td>{{ quest.dateFin |date("d/m/Y H:i")}}<br/></td>
+                            	  
+            	            {% if quest.dateFin.timestamp  < date().timestamp %}
+            	      			<td>intégrer partie html au twig extension + format urgent</td>
+    							<td><span class="text-danger"><span class="oi oi-media-record"></span> {{ formatDateQuestionnaire(quest.dateFin) }}</span></td>
+    							{% else %}
+    							<td><span class="text-success"><span class="oi oi-media-record"></span> {{ formatDateQuestionnaire(quest.dateFin) }}</span></td>
+    							{% endif %}
+                           	</tr>
+            	            {% endfor %}
+            	    </table>
+    			</div>
+    		</div>
+    	</div>
+    	<div class="col-4">
+    		<div class="card">
+            	<div class="card-header bg-primary">
+                	Questionnaires qui vont expirer prochainement
+            	</div>
+            	<div class="card-body">
+            		<table class="table">
+                    	<tr>
+            				<th>ID</th>
+            				<th>Titre</th>
+            				<th>Date de création</th>
+            				<th>Date de fin</th>
+            				<th>Jours restants</th>
+            			</tr>
+            	            {% for quest in questionnaires %}
+            	            <tr>
+                                <td>{{ quest.id }}</td>
+                                <td>{{ quest.titre }}</td>
+                                <td>{{ quest.dateCreation |date("d/m/Y H:i")}}</td>
+                               	<td>{{ quest.dateFin |date("d/m/Y H:i")}}<br/></td>
+                            	  
+            	            {% if quest.dateFin.timestamp  < date().timestamp %}
+            	      			<td>intégrer partie html au twig extension + format urgent</td>
+    							<td><span class="text-danger"><span class="oi oi-media-record"></span> {{ formatDateQuestionnaire(quest.dateFin) }}</span></td>
+    							{% else %}
+    							<td><span class="text-success"><span class="oi oi-media-record"></span> {{ formatDateQuestionnaire(quest.dateFin) }}</span></td>
+    							{% endif %}
+                           	</tr>
+            	            {% endfor %}
+            	    </table>
+    			</div>
+    		</div>
+    	</div>
+    </div>
+</div>
 
 {% endblock %}
 
 {% block javascripts %}
 	<script type="text/javascript">
 
-	$('.carousel').carousel({
-		interval: 5000
-	});
-	
     </script>
 {% endblock %}

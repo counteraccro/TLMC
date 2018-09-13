@@ -61,20 +61,6 @@ a:hover {
 	z-index: 100000000;
 }
 
-#temoignages_accueil {
-	
-    position: absolute;
-    bottom: 140px;
-    width: 99.5%;
-    height: auto;
-    background-color: #f5f5f5;
-}
-
-#questionnaires_accueil {
-	padding : 0;
-	height : auto;
-}
-
 /********************************************
 *
 * SURCHARGE BOUTON BOOTSTRAP
@@ -950,5 +936,36 @@ footer h6, footer p {
 /********************************************
 *
 * fin Page templates/message/index.html.twig
+*
+********************************************/
+
+/********************************************
+*
+* debut Page templates/index/index.html.twig
+*
+********************************************/
+
+#page-accueil .card .card-body{
+	padding: 0px;
+	padding-top: 10px;
+}
+
+#page-accueil .card .card-body table th {
+	border-top: none;
+}
+
+#page-accueil .card .card-body table th,
+#page-accueil .card .card-body table td {
+  padding: 0.1rem;
+  padding-left: 0.3rem;
+}
+
+#page-accueil .row {
+	margin-right: -10px;
+}
+
+/********************************************
+*
+* fin Page templates/index/index.html.twig
 *
 ********************************************/

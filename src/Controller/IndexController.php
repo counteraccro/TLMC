@@ -17,13 +17,6 @@ class IndexController extends AppController
     {
         $repositoryQuest = $this->getDoctrine()->getRepository(Questionnaire::class);
         $questionnaires = $repositoryQuest->findExpiringSoon();
-        
-//         foreach ($questionnaires as $quest) {
-//             $now = new \DateTime();
-//             $dateFin = $quest->getDateFin();
-//             $nbJours = $now->diff($dateFin);
-//             $nbJours->format('%R%a days');
-//         }
 
         $repositoryTmg = $this->getDoctrine()->getRepository(Temoignage::class);
 
@@ -41,7 +34,6 @@ class IndexController extends AppController
         return $this->render('index/index.html.twig', [
             'controller_name' => 'IndexController',
             'questionnaires' => $questionnaires,
-            //'nbJours' => $nbJours,
             'temoignages' => $temoignages['paginator']
         ]);
     }

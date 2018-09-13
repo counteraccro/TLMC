@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div id="page-accueil">
+<div id="temoignages_accueil" class="carousel slide text-center" data-ride="carousel">
+ 		<div class="carousel-inner">
+            {% for temoignage in temoignages %}
+				<div class="carousel-item {% if loop.index0 == 0 %}active{% endif %}">
+    		        {% if temoignage.evenement != null %}
+        				<strong>{{ temoignage.evenement.nom }}</strong>
+        	        {% endif %}
+    				
+        	        {% if temoignage.produit != null %}
+        				<strong>{{ temoignage.produit.titre }}</strong>
+        	        {% endif %}
+        			
+        			<p class="mb-0">{{ temoignage.corps }}</p>
+  					<p class="blockquote-footer">
+  						{% if temoignage.famille != null %}
+                       		{{ temoignage.famille.prenom }}, 
+                       		{{ temoignage.famille.lienFamille | lienParente }} de {{ temoignage.famille.patient.prenom }}, 
+                       		{{ temoignage.famille.patient.dateNaissance | age }} ans, 
+                       		{{ temoignage.famille.familleAdresse.ville }}
+                   	    {% endif %}
+  					</p>
+      			
+    			</div>
+  	        {% endfor %}
+  		</div>
+  		<a class="carousel-control-prev" href="#temoignages_accueil" role="button" data-slide="prev">
+    		<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    		<span class="sr-only">Précédent</span>
+  		</a>
+  		<a class="carousel-control-next" href="#temoignages_accueil" role="button" data-slide="next">
+    		<span class="carousel-control-next-icon" aria-hidden="true"></span>
+    		<span class="sr-only">Suivant</span>
+  		</a>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+	<script type="text/javascript">
+
+	$('.carousel').carousel({
+		interval: 5000
+	});
+	
+    </script>
+{% endblock %}
