@@ -132,6 +132,7 @@ encoding//templates/temoignage/edit.html.twig=UTF-8
 encoding//templates/temoignage/index.html.twig=UTF-8
 encoding//templates/temoignage/see.html.twig=UTF-8
 encoding//templates/type_evenement/add.html.twig=UTF-8
+encoding//templates/type_evenement/ajax_add.html.twig=UTF-8
 encoding//templates/type_evenement/edit.html.twig=UTF-8
 encoding//templates/type_evenement/index.html.twig=UTF-8
 encoding//templates/type_produit=UTF-8

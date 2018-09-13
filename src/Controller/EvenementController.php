@@ -217,7 +217,10 @@ class EvenementController extends AppController
                 $em->persist($evenement);
                 $em->flush();
 
-                return $this->redirect($this->generateUrl('evenement_listing'));
+                //return $this->redirect($this->generateUrl('evenement_listing'));
+                return $this->redirect($this->generateUrl('evenement_see', array(
+                    'id' => $evenement->getId()
+                )));
             }
         }
 

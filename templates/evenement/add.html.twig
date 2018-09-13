@@ -12,7 +12,15 @@
     {{ form_start(form) }}
     
 	{{ form_row(form.nom) }}
-	{{ form_row(form.type) }}
+	<div class="row">
+		<div class="col-md-11">
+	        {{ form_row(form.type) }}
+		</div>
+		<div class="col-md-1 col align-self-center">
+			<button type="button" id="add_type"><span class="oi oi-plus"></span></button>
+		</div>
+	</div>
+	
 	
 	<div class="row">
 		<div class="col-md-4">
@@ -66,6 +74,13 @@
     {{ form_errors(form) }}
     {{ form_end(form) }}
     
+    <!-- Modal -->
+    <div class="modal fade" id="modal_evenement_global" tabindex="-1" role="dialog">
+     	<div class="modal-dialog modal-lg" role="document">
+    		<div class="modal-content" id="bloc_modal"></div>
+    	</div>
+    </div>
+    
 </div>
 	  
 {% endblock %}
@@ -80,6 +95,10 @@
     <script type="text/javascript">
     
     $(document).ready(function() {
+
+    	$('#add_type').click(function() {
+    		$('#evenement_type').append('<option value="12" selected="selected">Kiwi</option>');
+    	});
     	$('#evenement_image_1').change(function() {
     		var file = $(this)[0].files[0].name;
     		$('.custom-file label[for="'+ $(this).attr('id') +'"]').html(file);

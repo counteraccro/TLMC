@@ -156,7 +156,10 @@ class EtablissementController extends AppController
             $em->persist($etablissement);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('etablissement_listing'));
+            // return $this->redirect($this->generateUrl('etablissement_listing'));
+            return $this->redirect($this->generateUrl('etablissement_see', array(
+                'id' => $etablissement->getId()
+            )));
         }
 
         return $this->render('etablissement/add.html.twig', array(
@@ -288,7 +291,7 @@ class EtablissementController extends AppController
             'order' => $arrayFilters['order']
         ));
     }
-    
+
     /**
      * Fonction permettant la suggestion d'établissement lors de la création d'un patient ou d'un membre (autocomplétion)
      *
@@ -299,12 +302,12 @@ class EtablissementController extends AppController
     public function autoCompleteAction(Request $request)
     {
         $term = $request->get('term');
-        
+
         $repository = $this->getDoctrine()->getRepository(Etablissement::class);
         $result = $repository->findByTerm($term);
-        
+
         $json = array();
-        
+
         // renvoie les résultats à afficher
         foreach ($result as $etablissement) {
             $json[$etablissement->getId()] = $etablissement->getNom();
