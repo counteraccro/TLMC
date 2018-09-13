@@ -18,9 +18,9 @@ class DateExtension extends AbstractExtension
                 $this,
                 'formatDateMessage'
             )),
-            new TwigFunction('formatDateQuestionnaire', array(
+            new TwigFunction('formatDateDecompte', array(
                 $this,
-                'formatDateQuestionnaire'
+                'formatDateDecompte'
             ))
         );
     }
@@ -68,12 +68,21 @@ class DateExtension extends AbstractExtension
     }
     
     /**
-     * Formate une date (compte/décompte de jours, exemple : J-21)
+     * Formate une date (décompte de jours, exemple : J-21)
      */
-    function formatDateQuestionnaire($date)
+    function formatDateDecompte($date)
     {
         $now = new \DateTime();
-        $nbJours = date_diff($now, $date);
-        echo $nbJours->format('%a');
+        $interval = date_diff($now, $date);
+        $nbJours = $interval->format('%a');
+
+        if ($nbJours <= 7) {
+            echo '<span class="text-danger"><span class="oi oi-media-record"></span> ' . $nbJours;
+        }
+        else {
+            echo '<span class="text-success"><span class="oi oi-media-record"></span> ' . $nbJours;
+        }
     }
+    
+
 }

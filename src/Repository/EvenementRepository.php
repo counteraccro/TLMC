@@ -149,7 +149,23 @@ class EvenementRepository extends ServiceEntityRepository
         
         return $return;
     }
-
+    
+    /**
+     * Fonction qui renvoie les 5 évènements dont la date de début est la plus proche
+     */
+    public function getComingSoon()
+    {
+        $query = $this->createQueryBuilder('ev')
+        ->andWhere('ev.disabled = 0')
+        ->andWhere('ev.date_debut > CURRENT_TIMESTAMP()')
+        ->addOrderBy('ev.date_debut', 'ASC')
+        ->setMaxResults(5)
+        ->getQuery()
+        ->getResult();
+        
+        return $query;
+    }
+    
     // /**
     // * @return Evenement[] Returns an array of Evenement objects
     // */

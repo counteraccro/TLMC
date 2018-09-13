@@ -1,8 +1,14 @@
 {% extends 'base.html.twig' %}
 
+{% block title %} Index {% endblock %}
+
 {% block body %}
 <div id="page-accueil">
-	<h1>Accueil</h1>
+    {% if  app.environment == 'dev' %}
+		<h1>Accueil (ADMIN)</h1>
+	{% else %}
+		<h1>Accueil</h1>
+	{% endif %}
 		<div class="row">
 		<div class="col-4">
     		<div class="card">
@@ -16,7 +22,7 @@
             				<th>Questionnaire</th>
             				<th>Date création</th>
             				<th>Date fin</th>
-            				<th>J restants</th>
+            				<th>Jours restants</th>
             			</tr>
             	            {% for quest in questionnaires %}
             	            <tr>
@@ -24,13 +30,7 @@
                                 <td>{{ quest.titre }}</td>
                                 <td>{{ quest.dateCreation |date("d/m/Y H:i")}}</td>
                                	<td>{{ quest.dateFin |date("d/m/Y H:i")}}<br/></td>
-                            	  
-            	            {% if quest.dateFin.timestamp  < date().timestamp %}
-            	      			<td>intégrer partie html au twig extension + format urgent</td>
-    							<td><span class="text-danger"><span class="oi oi-media-record"></span> {{ formatDateQuestionnaire(quest.dateFin) }}</span></td>
-    							{% else %}
-    							<td><span class="text-success"><span class="oi oi-media-record"></span> {{ formatDateQuestionnaire(quest.dateFin) }}</span></td>
-    							{% endif %}
+                            	<td>{{ formatDateDecompte(quest.dateFin) }}</td>  
                            	</tr>
             	            {% endfor %}
             	    </table>
@@ -39,7 +39,36 @@
     	</div>
     	<div class="col-4">
     		<div class="card">
-            	<div class="card-header bg-primary">
+            	<div class="card-header bg-info">
+                	Evènements les plus proches
+            	</div>
+            	<div class="card-body">
+            		<table class="table">
+                    	<tr>
+            				<th>#</th>
+            				<th>Nom</th>
+            				<th>Ville</th>
+            				<th>Date de début</th>
+            				<th>Date de fin</th>
+            				<th>Jours restants</th>
+            			</tr>
+            	            {% for ev in evenements %}
+            	            <tr>
+                                <td>{{ ev.id }}</td>
+                                <td>{{ ev.nom }}</td>
+                                <td>{{ ev.ville }}</td>
+                                <td>{{ ev.dateDebut |date("d/m/Y H:i")}}</td>
+                               	<td>{{ ev.dateFin |date("d/m/Y H:i")}}<br/></td>
+                               	<td>{{ formatDateDecompte(ev.dateDebut) }}</td> 
+                            </tr>
+            	            {% endfor %}
+            	    </table>
+    			</div>
+    		</div>
+    	</div>
+    	<div class="col-4">
+    		<div class="card">
+            	<div class="card-header bg-info">
                 	Questionnaires qui vont expirer prochainement
             	</div>
             	<div class="card-body">
@@ -57,46 +86,7 @@
                                 <td>{{ quest.titre }}</td>
                                 <td>{{ quest.dateCreation |date("d/m/Y H:i")}}</td>
                                	<td>{{ quest.dateFin |date("d/m/Y H:i")}}<br/></td>
-                            	  
-            	            {% if quest.dateFin.timestamp  < date().timestamp %}
-            	      			<td>intégrer partie html au twig extension + format urgent</td>
-    							<td><span class="text-danger"><span class="oi oi-media-record"></span> {{ formatDateQuestionnaire(quest.dateFin) }}</span></td>
-    							{% else %}
-    							<td><span class="text-success"><span class="oi oi-media-record"></span> {{ formatDateQuestionnaire(quest.dateFin) }}</span></td>
-    							{% endif %}
-                           	</tr>
-            	            {% endfor %}
-            	    </table>
-    			</div>
-    		</div>
-    	</div>
-    	<div class="col-4">
-    		<div class="card">
-            	<div class="card-header bg-primary">
-                	Questionnaires qui vont expirer prochainement
-            	</div>
-            	<div class="card-body">
-            		<table class="table">
-                    	<tr>
-            				<th>ID</th>
-            				<th>Titre</th>
-            				<th>Date de création</th>
-            				<th>Date de fin</th>
-            				<th>Jours restants</th>
-            			</tr>
-            	            {% for quest in questionnaires %}
-            	            <tr>
-                                <td>{{ quest.id }}</td>
-                                <td>{{ quest.titre }}</td>
-                                <td>{{ quest.dateCreation |date("d/m/Y H:i")}}</td>
-                               	<td>{{ quest.dateFin |date("d/m/Y H:i")}}<br/></td>
-                            	  
-            	            {% if quest.dateFin.timestamp  < date().timestamp %}
-            	      			<td>intégrer partie html au twig extension + format urgent</td>
-    							<td><span class="text-danger"><span class="oi oi-media-record"></span> {{ formatDateQuestionnaire(quest.dateFin) }}</span></td>
-    							{% else %}
-    							<td><span class="text-success"><span class="oi oi-media-record"></span> {{ formatDateQuestionnaire(quest.dateFin) }}</span></td>
-    							{% endif %}
+								<td>{{ formatDateDecompte(quest.dateFin) }}</td>
                            	</tr>
             	            {% endfor %}
             	    </table>

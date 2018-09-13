@@ -280,6 +280,7 @@ class QuestionnaireRepository extends ServiceEntityRepository
      */
     public function findExpiringSoon() {
         $query = $this->createQueryBuilder('q')
+        ->andWhere('q.disabled = 0')
         ->andWhere('q.date_publication IS NOT NULL')
         ->andWhere('q.date_fin > CURRENT_TIMESTAMP()')
         ->andWhere('q.publication = 1')

@@ -55,8 +55,8 @@ class LoadEvenementData extends Fixture
             ],
             'Evenement-3' => [
                 'setNom' => 'Balade à cheval',
-                'setDateDebut' => '2018-09-22 08:30:00',
-                'setDateFin' => '2018-09-22 19:00:00',
+                'setDateDebut' => '2018-09-14 08:30:00',
+                'setDateFin' => '2018-09-14 19:00:00',
                 'setDescription' => 'Balade à cheval aux bords du Doubs. Fin de parcours en haut de la citadelle.',
                 'setInformationComplementaire' => 'Il est possible pour certaine personne à mobilité réduite de faire la balade.',
                 'setNombreMax' => 20,
