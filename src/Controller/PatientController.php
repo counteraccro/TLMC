@@ -207,8 +207,10 @@ class PatientController extends AppController
 
         $query = $sr->createQueryBuilder('specialite')->innerJoin('specialite.etablissement', 'etablissement');
 
-        $etablissements = $this->getDoctrine()->getRepository(Etablissement::class)->findEtablissementAvecSpecialite();
-        
+        $etablissements = $this->getDoctrine()
+            ->getRepository(Etablissement::class)
+            ->findEtablissementAvecSpecialite();
+
         $disabled = false;
         if (! $this->isAdmin() && ! is_null($specialite)) {
             $patient->setSpecialite($membre->getSpecialite());
@@ -228,20 +230,24 @@ class PatientController extends AppController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $em = $this->getDoctrine()->getManager();
-            
+
             foreach ($patient->getFamilles() as $famille) {
-                //vérification pour éviter les doublons dans les adresses des familles
+                // vérification pour éviter les doublons dans les adresses des familles
                 $adresse = $this->getDoctrine()
-                ->getRepository(FamilleAdresse::class)
-                ->findOneBy(array(
-                    'numero_voie' => $famille->getFamilleAdresse()->getNumeroVoie(),
-                    'voie' => $famille->getFamilleAdresse()->getVoie(),
-                    'ville' => $famille->getFamilleAdresse()->getVille(),
-                    'code_postal' => $famille->getFamilleAdresse()->getCodePostal()
+                    ->getRepository(FamilleAdresse::class)
+                    ->findOneBy(array(
+                    'numero_voie' => $famille->getFamilleAdresse()
+                        ->getNumeroVoie(),
+                    'voie' => $famille->getFamilleAdresse()
+                        ->getVoie(),
+                    'ville' => $famille->getFamilleAdresse()
+                        ->getVille(),
+                    'code_postal' => $famille->getFamilleAdresse()
+                        ->getCodePostal()
                 ));
-                
+
                 // Si l'adresse existe on la set sinon on la crée directement pour ne pas créer des doublons
-                if (!is_null($adresse)) {
+                if (! is_null($adresse)) {
                     $famille->setFamilleAdresse($adresse);
                 } else {
                     $famille_adresse = $famille->getFamilleAdresse();
@@ -250,7 +256,7 @@ class PatientController extends AppController
                     $em->flush();
                     $famille->setFamilleAdresse($famille_adresse);
                 }
-                
+
                 $famille->setPatient($patient);
                 $famille->setDisabled(0);
                 $patient->addFamille($famille);
@@ -261,7 +267,9 @@ class PatientController extends AppController
             $em->persist($patient);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('patient_listing'));
+            return $this->redirect($this->generateUrl('patient_see', array(
+                'id' => $patient->getId()
+            )));
         }
 
         return $this->render('patient/add.html.twig', array(
@@ -431,8 +439,7 @@ class PatientController extends AppController
      */
     public function addAjaxDropdownAction(Request $request, Specialite $specialite = null)
     {
-
-        if(is_null($specialite)){
+        if (is_null($specialite)) {
             $patients = array();
         } else {
             $params = array(
@@ -446,12 +453,12 @@ class PatientController extends AppController
                     'Patient.disabled = 0'
                 )
             );
-            
+
             $repository = $this->getDoctrine()->getRepository(Patient::class);
             $result = $repository->findAllPatients(1, 10, $params);
             $patients = $result['paginator'];
         }
-        
+
         return $this->render('patient/ajax_dropdown.html.twig', array(
             'patients' => $patients
         ));

@@ -176,7 +176,7 @@ class EvenementController extends AppController
             'query_specialite' => $query,
             'add' => true
         ));
-        // $this->pre($request->files->all()); die();
+        
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
@@ -217,7 +217,6 @@ class EvenementController extends AppController
                 $em->persist($evenement);
                 $em->flush();
 
-                //return $this->redirect($this->generateUrl('evenement_listing'));
                 return $this->redirect($this->generateUrl('evenement_see', array(
                     'id' => $evenement->getId()
                 )));

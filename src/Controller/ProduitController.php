@@ -27,7 +27,8 @@ class ProduitController extends AppController
     );
 
     /**
-     * Listing des produits. Pour un membre non administrateur, 
+     * Listing des produits.
+     * Pour un membre non administrateur,
      * seul les produits actifs liés à l'établissement ou à la spécialité du membre sont affichés
      *
      * @Route("/produit/listing/{page}/{field}/{order}", name="produit_listing", defaults={"page" = 1, "field"= null, "order"= null})
@@ -133,22 +134,28 @@ class ProduitController extends AppController
         // Si appel Ajax, on renvoi sur la page ajax
         if ($request->isXmlHttpRequest()) {
 
-            //si le membre n'est pas admin, on affiche le nombre de produit disponible dans sa spécialité
+            // si le membre n'est pas admin, on affiche le nombre de produit disponible dans sa spécialité
             if ($this->isAdmin()) {
                 $admin = true;
             } else {
                 $admin = false;
-                
+
                 $membre = $this->getMembre();
                 $etablissement = $membre->getEtablissement();
                 $specialite = $membre->getSpecialite();
-                
+
                 if (is_null($specialite)) {
                     $repository = $this->getDoctrine()->getRepository(ProduitEtablissement::class);
-                    $lien = $repository->findOneBy(array('produit' => $produit, 'etablissement' => $etablissement));
+                    $lien = $repository->findOneBy(array(
+                        'produit' => $produit,
+                        'etablissement' => $etablissement
+                    ));
                 } else {
                     $repository = $this->getDoctrine()->getRepository(ProduitSpecialite::class);
-                    $lien = $repository->findOneBy(array('produit' => $produit, 'specialite' => $specialite));
+                    $lien = $repository->findOneBy(array(
+                        'produit' => $produit,
+                        'specialite' => $specialite
+                    ));
                 }
             }
 
@@ -220,7 +227,7 @@ class ProduitController extends AppController
                     }
                 }
             }
-            
+
             if ($form->isValid()) {
 
                 $em = $this->getDoctrine()->getManager();
@@ -234,13 +241,13 @@ class ProduitController extends AppController
                     $produitSpecialite->setProduit($produit);
                     $produitSpecialite->setDate(new \DateTime());
                 }
-                
+
                 $index = 1;
                 foreach ($produit->getExtensionFormulaires() as $extension) {
                     $extension->setOrdre($index);
                     $extension->setDisabled(0);
                     $extension->setProduit($produit);
-                    $index++;
+                    $index ++;
                 }
 
                 $produit->setDateCreation(new \DateTime());
@@ -249,7 +256,9 @@ class ProduitController extends AppController
                 $em->persist($produit);
                 $em->flush();
 
-                return $this->redirect($this->generateUrl('produit_listing'));
+                return $this->redirect($this->generateUrl('produit_see', array(
+                    'id' => $produit->getId()
+                )));
             }
         }
 
@@ -301,11 +310,11 @@ class ProduitController extends AppController
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
-            //vérification du nombre de produits
+            // vérification du nombre de produits
             if ($this->totalProduitsEnvoyes($produit) > $produit->getQuantite()) {
                 $form->addError(new FormError('La somme des quantités de produits envoyés est supérieure à la quantité de produit'));
             } elseif (! $request->isXmlHttpRequest()) {
-                //traitement des images
+                // traitement des images
                 for ($i = 1; $i <= 3; $i ++) {
                     $methodeGet = 'getImage' . $i;
                     $methodeSet = 'setImage' . $i;
@@ -313,7 +322,7 @@ class ProduitController extends AppController
                         $produit->{$methodeSet}($images[$i]);
                     } elseif (! is_null($produit->{$methodeGet}())) {
                         $file = $request->files->get('produit')['image_' . $i];
-                        $fileName = $this->telechargerImage($file, 'produit', $produit->getTitre(), 'image_'.$i, $images[$i]);
+                        $fileName = $this->telechargerImage($file, 'produit', $produit->getTitre(), 'image_' . $i, $images[$i]);
                         if ($fileName) {
                             $produit->{$methodeSet}($fileName);
                         } else {
@@ -329,14 +338,14 @@ class ProduitController extends AppController
 
                 $index = 1;
                 foreach ($produit->getExtensionFormulaires() as $extension) {
-                    if(is_null($extension->getProduit())){
+                    if (is_null($extension->getProduit())) {
                         $extension->setOrdre($index);
                         $extension->setDisabled(0);
                         $extension->setProduit($produit);
                     }
-                    $index++;
+                    $index ++;
                 }
-                
+
                 $tranche_age = $request->request->get('produit')['tranche_age'];
                 asort($tranche_age);
                 $produit->setTrancheAge($tranche_age);

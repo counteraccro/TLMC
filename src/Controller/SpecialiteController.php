@@ -78,7 +78,7 @@ class SpecialiteController extends AppController
      * @Route("/specialite/ajax/see/{id}", name="specialite_ajax_see")
      * @ParamConverter("specialite", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN')")
-     * 
+     *
      * @param Request $request
      * @param SessionInterface $session
      * @param Specialite $specialite
@@ -88,14 +88,14 @@ class SpecialiteController extends AppController
     public function seeAction(Request $request, SessionInterface $session, Specialite $specialite, int $page = 1)
     {
         $arrayFilters = $this->getDatasFilter($session);
-        
+
         if ($request->isXmlHttpRequest()) {
-            
+
             return $this->render('specialite/ajax_see.html.twig', array(
                 'specialite' => $specialite
             ));
         }
-        
+
         return $this->render('specialite/see.html.twig', array(
             'page' => $page,
             'specialite' => $specialite,
@@ -134,7 +134,9 @@ class SpecialiteController extends AppController
 
         if ($request->isXmlHttpRequest()) {
             $repository = $this->getDoctrine()->getRepository(Etablissement::class);
-            $etablissement = $repository->findOneBy(array('id' => $id));
+            $etablissement = $repository->findOneBy(array(
+                'id' => $id
+            ));
             $specialite->setEtablissement($etablissement);
 
             $form = $this->createForm(SpecialiteType::class, $specialite, array(
@@ -163,7 +165,9 @@ class SpecialiteController extends AppController
                     'statut' => true
                 ));
             } else {
-                return $this->redirect($this->generateUrl('specialite_listing'));
+                return $this->redirect($this->generateUrl('specialite_see', array(
+                    'id' => $specialite->getId()
+                )));
             }
         }
 
@@ -326,16 +330,16 @@ class SpecialiteController extends AppController
             'page' => $page,
             'repositoryClass' => Specialite::class,
             'repository' => 'Specialite',
-            'repositoryMethode' => 'findAllSpecialites',
+            'repositoryMethode' => 'findAllSpecialites'
         );
-        
+
         $params['condition'] = array(
             $params['repository'] . '.etablissement = ' . $etablissement->getId()
         );
-        
+
         $repository = $this->getDoctrine()->getRepository($params['repositoryClass']);
         $result = $repository->{$params['repositoryMethode']}($params['page'], self::MAX_NB_RESULT_AJAX, $params);
-        
+
         $pagination = array(
             'page' => $page,
             'route' => 'specialite_etablissement_ajax_see',
@@ -346,7 +350,7 @@ class SpecialiteController extends AppController
                 'id' => $etablissement->getId()
             )
         );
-        
+
         return $this->render('specialite/ajax_see_liste.html.twig', array(
             'etablissement' => $etablissement,
             'specialites' => $result['paginator'],
@@ -368,7 +372,9 @@ class SpecialiteController extends AppController
      */
     public function addAjaxDropdownAction(Request $request, Etablissement $etablissement = null, string $type)
     {
-        $specialites = $this->getDoctrine()->getRepository(Specialite::class)->getSpecialitesByEtablissement($etablissement);
+        $specialites = $this->getDoctrine()
+            ->getRepository(Specialite::class)
+            ->getSpecialitesByEtablissement($etablissement);
 
         return $this->render('specialite/ajax_dropdown.html.twig', array(
             'specialites' => $specialites,
@@ -395,19 +401,24 @@ class SpecialiteController extends AppController
         switch ($type) {
             case 'membre':
                 $repo_membre = $this->getDoctrine()->getRepository(Membre::class);
-                $objet = $repo_membre->findOneBy(array('id' => $id));
+                $objet = $repo_membre->findOneBy(array(
+                    'id' => $id
+                ));
 
                 $etablissement = $objet->getEtablissement();
                 break;
-                
         }
 
         $select_specialite = (! is_null($objet->getSpecialite()) ? $objet->getSpecialite()->getId() : 0);
 
         if ($etablissement_id) {
-            $etablissement = $this->getDoctrine()->getRepository(Etablissement::class)->findOneBy(array('id' => $etablissement_id));
+            $etablissement = $this->getDoctrine()
+                ->getRepository(Etablissement::class)
+                ->findOneBy(array(
+                'id' => $etablissement_id
+            ));
         }
-        
+
         $repository = $this->getDoctrine()->getRepository(Specialite::class);
         $specialites = $repository->getSpecialitesByEtablissement($etablissement);
 

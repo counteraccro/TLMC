@@ -210,7 +210,9 @@ class MembreController extends AppController
                 $em->persist($membre);
                 $em->flush();
 
-                return $this->redirect($this->generateUrl('membre_listing'));
+                return $this->redirect($this->generateUrl('membre_see', array(
+                    'id' => $membre->getId()
+                )));
             }
         }
 
@@ -308,8 +310,10 @@ class MembreController extends AppController
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($membre);
                 $em->flush();
-                
-                return $this->redirect($this->generateUrl('membre_see_fiche', array('id' => $membre->getId())));
+
+                return $this->redirect($this->generateUrl('membre_see_fiche', array(
+                    'id' => $membre->getId()
+                )));
             }
         }
         $membre = $this->getMembre();

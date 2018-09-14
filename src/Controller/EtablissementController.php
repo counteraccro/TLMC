@@ -156,7 +156,6 @@ class EtablissementController extends AppController
             $em->persist($etablissement);
             $em->flush();
 
-            // return $this->redirect($this->generateUrl('etablissement_listing'));
             return $this->redirect($this->generateUrl('etablissement_see', array(
                 'id' => $etablissement->getId()
             )));

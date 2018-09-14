@@ -117,7 +117,7 @@ class FamilleController extends AppController
             'page' => $page,
             'repositoryClass' => Famille::class,
             'repository' => 'Famille',
-            'repositoryMethode' => 'findAllFamilles',
+            'repositoryMethode' => 'findAllFamilles'
         );
 
         $params['condition'] = array(
@@ -127,7 +127,7 @@ class FamilleController extends AppController
         if (! $this->isAdmin()) {
             $params['condition'][] = $params['repository'] . '.disabled = 0';
         }
-        
+
         $repository = $this->getDoctrine()->getRepository($params['repositoryClass']);
         $result = $repository->{$params['repositoryMethode']}($params['page'], self::MAX_NB_RESULT_AJAX, $params);
 
@@ -168,12 +168,12 @@ class FamilleController extends AppController
 
         // Si appel Ajax, on renvoi sur la page ajax
         if ($request->isXmlHttpRequest()) {
-            
+
             return $this->render('famille/ajax_see.html.twig', array(
                 'famille' => $famille
             ));
         }
-        
+
         return $this->render('famille/see.html.twig', array(
             'page' => $page,
             'famille' => $famille,
@@ -211,10 +211,12 @@ class FamilleController extends AppController
         $famille = new Famille();
 
         $repository = $this->getDoctrine()->getRepository(Patient::class);
-        
+
         if ($request->isXmlHttpRequest()) {
-            
-            $patient = $repository->findOneBy(array('id' => $id));
+
+            $patient = $repository->findOneBy(array(
+                'id' => $id
+            ));
             $famille->setPatient($patient);
 
             $form = $this->createForm(FamilleType::class, $famille, array(
@@ -227,7 +229,8 @@ class FamilleController extends AppController
 
             $form = $this->createForm(FamilleType::class, $famille, array(
                 'label_submit' => 'Ajouter',
-                'query_patient' => $repository->getPatientForOneSpecialite($this->getMembre()->getSpecialite(), $this->isAdmin())
+                'query_patient' => $repository->getPatientForOneSpecialite($this->getMembre()
+                    ->getSpecialite(), $this->isAdmin())
             ));
         }
         $form->handleRequest($request);
@@ -239,20 +242,24 @@ class FamilleController extends AppController
 
             $em = $this->getDoctrine()->getManager();
 
-            //vérification pour éviter les doublons dans la table participant
+            // vérification pour éviter les doublons dans la table participant
             $adresse = $this->getDoctrine()
-            ->getRepository(FamilleAdresse::class)
-            ->findOneBy(array(
-                'numero_voie' => $famille->getFamilleAdresse()->getNumeroVoie(),
-                'voie' => $famille->getFamilleAdresse()->getVoie(),
-                'ville' => $famille->getFamilleAdresse()->getVille(),
-                'code_postal' => $famille->getFamilleAdresse()->getCodePostal()
+                ->getRepository(FamilleAdresse::class)
+                ->findOneBy(array(
+                'numero_voie' => $famille->getFamilleAdresse()
+                    ->getNumeroVoie(),
+                'voie' => $famille->getFamilleAdresse()
+                    ->getVoie(),
+                'ville' => $famille->getFamilleAdresse()
+                    ->getVille(),
+                'code_postal' => $famille->getFamilleAdresse()
+                    ->getCodePostal()
             ));
-            
-            if (!is_null($adresse)) {
+
+            if (! is_null($adresse)) {
                 $famille->setFamilleAdresse($adresse);
             }
-            
+
             $em->persist($famille);
             $em->flush();
 
@@ -261,7 +268,9 @@ class FamilleController extends AppController
                     'statut' => true
                 ));
             } else {
-                return $this->redirect($this->generateUrl('famille_listing'));
+                return $this->redirect($this->generateUrl('famille_see', array(
+                    'id' => $famille->getId()
+                )));
             }
         }
 
@@ -442,7 +451,7 @@ class FamilleController extends AppController
             'order' => $arrayFilters['order']
         ));
     }
-    
+
     /**
      * Mise à jour du dropdown Famille lorsque l'événement change dans le formulaire d'ajout d'un témoignage
      *
@@ -455,48 +464,47 @@ class FamilleController extends AppController
      */
     public function addAjaxDropdownAction(Evenement $evenement = null)
     {
-        
         $repository = $this->getDoctrine()->getRepository(Famille::class);
         $specialite = $this->getMembre()->getSpecialite();
         $specialite_id = (is_null($specialite) ? 0 : $specialite->getId());
-        if(is_null($evenement)){
+        if (is_null($evenement)) {
             $resultats = $repository->getFamilles(0, $specialite_id, $this->isAdmin());
         } else {
             $resultats = $repository->getFamilles($evenement->getId(), $specialite_id, $this->isAdmin());
         }
-        
+
         $familles = array();
-        foreach ($resultats as $resultat){
-            if(isset($familles[$resultat['id_patient']])){
+        foreach ($resultats as $resultat) {
+            if (isset($familles[$resultat['id_patient']])) {
                 $familles[$resultat['id_patient']][] = $resultat;
             } else {
                 $familles[$resultat['id_patient']][0] = $resultat;
             }
         }
-        
+
         return $this->render('famille/ajax_dropdown.html.twig', array(
             'familles' => $familles
         ));
     }
-    
+
     /**
      * Mise à jour de la liste de familles d'un patient pour l'ajout d'un historique
-     * 
+     *
      * @Route("/famille/ajax/liste/{id}", name="famille_ajax_liste", defaults={"id" = 0})
      * @ParamConverter("patient", options={"mapping": {"id": "id"}})
      * Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
-     * 
+     *
      * @param Patient $patient
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function addAjaxListeAction(Patient $patient = null){
-        
-        if(is_null($patient)){
+    public function addAjaxListeAction(Patient $patient = null)
+    {
+        if (is_null($patient)) {
             $familles = array();
         } else {
             $familles = $patient->getFamilles();
         }
-        
+
         return $this->render('famille/ajax_liste.html.twig', array(
             'familles' => $familles
         ));

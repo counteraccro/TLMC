@@ -337,8 +337,9 @@ class TemoignageController extends AppController
                     'statut' => true
                 ));
             } else {
-                return $this->redirect($this->generateUrl('temoignage_listing', array(
-                    'type' => $type
+                return $this->redirect($this->generateUrl('temoignage_see', array(
+                    'type' => $type,
+                    'id' => $temoignage->getId()
                 )));
             }
         }
