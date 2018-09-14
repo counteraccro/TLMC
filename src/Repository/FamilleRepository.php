@@ -132,21 +132,31 @@ class FamilleRepository extends ServiceEntityRepository
      * Récupération des familles participant à un événement
      *
      * @param int $id_evenement
-     * @param bool $admin
+     * @param int $id_specialite
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getFamilles(int $id_evenement)
+    public function getFamilles(int $id_evenement, int $id_specialite = null)
     {
         $return = $this->createQueryBuilder('f')
             ->select('p.id as id_patient, p.nom as nom_patient, p.prenom as prenom_patient, f.prenom, f.nom, f.id')
             ->innerJoin('App:Participant', 'pa', 'WITH', 'pa.famille = f.id')
-            ->innerJoin('App:Patient', 'p', 'WITH', 'p.id = f.patient')
-            ->andWhere('pa.evenement = :idEvenement')
-            ->andWhere('f.disabled = 0');
+            ->innerJoin('App:Patient', 'p', 'WITH', 'p.id = f.patient');
 
-        $return->setParameters(array(
-            'idEvenement' => $id_evenement
-        ))->orderBy('p.nom ASC, p.prenom ASC, f.nom ASC, f.prenom');
+        if (! is_null($id_specialite)) {
+            $return->innerJoin('App:Historique', 'h', 'WITH', 'h.evenement = pa.evenement AND h.patient = f.patient')
+                ->andWhere('pa.evenement = :idEvenement')
+                ->andWhere('f.disabled = 0')
+                ->andWhere('h.specialite = :idSpecialite')
+                ->setParameters(array(
+                'idEvenement' => $id_evenement,
+                'idSpecialite' => $id_specialite
+            ));
+        } else {
+            $return->andWhere('pa.evenement = :idEvenement')
+                ->andWhere('f.disabled = 0')
+                ->setParameter('idEvenement', $id_evenement);
+        }
+        $return->orderBy('p.nom ASC, p.prenom ASC, f.nom ASC, f.prenom');
 
         return $return->distinct()
             ->getQuery()
