@@ -16,6 +16,7 @@ class ImageType extends AbstractType
             'label' => 'Télécharger mon nouvel avatar :',
             'data_class' => null,
             'required' => false,
+            'help' => ' ', //pour pouvoir afficher un message d'erreur lors de la sélection d'un ficher
             'attr' => array(
                 'placeholder' => 'Uploader un nouvel avatar'
             )))

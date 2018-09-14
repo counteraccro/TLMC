@@ -39,16 +39,16 @@
 
 {% block script %}
  	<script src="{{ asset('assets/js/specialite/specialite.js') }}?{{ date().timestamp }}"></script>
+ 	<script src="{{ asset('assets/js/image/Image.js') }}?{{ date().timestamp }}"></script>
 {% endblock %}
 
 {% block javascripts %}
     <script type="text/javascript">
     
     $(document).ready(function() {
-    	$('#membre_avatar').change(function() {
-    		var file = $(this)[0].files[0].name;
-    		$('.custom-file label[for="'+ $(this).attr('id') +'"]').html(file);
-    	});
+
+		Image.Launch();
+    	Image.UpdateInput('#membre_avatar', 'Choisir un avatar', '');
     	
 		var params = {
 				url_ajax_see : '{{ path('specialite_ajax_add_dropdown', {'type': 'membre'}) }}',

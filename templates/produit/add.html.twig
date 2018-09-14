@@ -85,26 +85,18 @@
  	<script src="{{ asset('assets/js/produit_specialite/ProduitSpecialite.js') }}?{{ date().timestamp }}"></script>
  	<script src="{{ asset('assets/js/extension_formulaire/ExtensionFormulaire.js') }}?{{ date().timestamp }}"></script>
  	<script src="{{ asset('assets/js/type_produit/TypeProduit.js') }}?{{ date().timestamp }}"></script>
+ 	<script src="{{ asset('assets/js/image/Image.js') }}?{{ date().timestamp }}"></script>
 {% endblock %}
 
 {% block javascripts %}
 	<script type="text/javascript">
         $(document).ready(function() {
 
-        	$('#evenement_image_1').change(function() {
-        		var file = $(this)[0].files[0].name;
-        		$('.custom-file label[for="'+ $(this).attr('id') +'"]').html(file);
-        	});
-
-            $('#evenement_image_2').change(function() {
-        		var file = $(this)[0].files[0].name;
-        		$('.custom-file label[for="'+ $(this).attr('id') +'"]').html(file);
-        	});
-
-            $('#evenement_image_3').change(function() {
-        		var file = $(this)[0].files[0].name;
-        		$('.custom-file label[for="'+ $(this).attr('id') +'"]').html(file);
-        	});
+        	var texte_aide = "Formats de fichier acceptés : jpg, jpeg, png, gif";
+        	Image.Launch();
+        	Image.UpdateInput('#produit_image_1', 'Choisir la première image', texte_aide);
+        	Image.UpdateInput('#produit_image_2', 'Choisir la seconde image', texte_aide);
+        	Image.UpdateInput('#produit_image_3', 'Choisir la troisième image', texte_aide);
         	
         	var paramsS = {
         			id_container : 'div#produit_produitSpecialites',

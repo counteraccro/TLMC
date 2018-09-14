@@ -82,7 +82,7 @@ class EvenementType extends AbstractType
                 'label' => 'Image 1',
                 'data_class' => null,
                 'required' => false,
-                'help' => ($options['add'] ? 'Formats de fichier acceptés : jpg, jpeg, png' : 'Ne pas remplir si vous souhaitez conserver la même image'),
+                'help' => ($options['add'] ? $options['aide_ajout'] : $options['aide_edition']),
                 'attr' => array(
                     'placeholder' => 'Choisir la première image'
                 )
@@ -92,7 +92,7 @@ class EvenementType extends AbstractType
                 'label' => 'Image 2',
                 'data_class' => null,
                 'required' => false,
-                'help' => ($options['add'] ? 'Formats de fichier acceptés : jpg, jpeg, png' : 'Ne pas remplir si vous souhaitez conserver la même image'),
+                'help' => ($options['add'] ? $options['aide_ajout'] : $options['aide_edition']),
                 'attr' => array(
                     'placeholder' => 'Choisir la seconde image'
                 )
@@ -102,7 +102,7 @@ class EvenementType extends AbstractType
                 'label' => 'Image 3',
                 'data_class' => null,
                 'required' => false,
-                'help' => ($options['add'] ? 'Formats de fichier acceptés : jpg, jpeg, png' : 'Ne pas remplir si vous souhaitez conserver la même image'),
+                'help' => ($options['add'] ? $options['aide_ajout'] : $options['aide_edition']),
                 'attr' => array(
                     'placeholder' => 'Choisir la troisième image'
                 )
@@ -160,7 +160,9 @@ class EvenementType extends AbstractType
             'trancheAge' => AppController::TRANCHE_AGE,
             'query_specialite' => null,
             'ajax' => false,
-            'allow_extra_fields' => true
+            'allow_extra_fields' => true,
+            'aide_ajout' => 'Formats de fichier acceptés : jpg, jpeg, png, gif',
+            'aide_edition' => 'Ne pas remplir si vous souhaitez conserver la même image'
         ));
     }
 }

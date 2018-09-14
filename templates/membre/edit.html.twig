@@ -39,16 +39,17 @@
 
 {% block script %}
  	<script src="{{ asset('assets/js/specialite/specialite.js') }}?{{ date().timestamp }}"></script>
+ 	<script src="{{ asset('assets/js/image/Image.js') }}?{{ date().timestamp }}"></script>
 {% endblock %}
 
 {% block javascripts %}
     <script type="text/javascript">
     
     $(document).ready(function() {
-    	$('#membre_avatar').change(function() {
-    		var file = $(this)[0].files[0].name;
-    		$('.custom-file label[for="'+ $(this).attr('id') +'"]').html(file);
-    	});
+
+    	var texte_aide = "Ne pas remplir si vous souhaitez conserver la même image.";
+    	Image.Launch();
+    	Image.UpdateInput('#membre_avatar', 'Choisir un avatar', texte_aide);
     	
 		var params = {
 				url_ajax_see : '{{ path('specialite_ajax_edit_dropdown', {'id': membre.id, 'type': 'membre'}) }}',

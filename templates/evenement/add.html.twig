@@ -50,7 +50,8 @@
 	{{ form_row(form.statut) }}
 	<div class="row">
 		<div class="col-md-4">
-            {{ form_row(form.image_1) }}
+			{{ form_row(form.image_1) }}
+            
 		</div>
 		<div class="col-md-4">
             {{ form_row(form.image_2) }}
@@ -89,6 +90,7 @@
 	<script src="{{ asset('assets/js/utils/FormAddCollection.js') }}?{{ date().timestamp }}"></script>
 	<script src="{{ asset('assets/js/extension_formulaire/ExtensionFormulaire.js') }}?{{ date().timestamp }}"></script>
 	<script src="{{ asset('assets/js/type_evenement/TypeEvenement.js') }}?{{ date().timestamp }}"></script>
+	<script src="{{ asset('assets/js/image/Image.js') }}?{{ date().timestamp }}"></script>
 {% endblock %}
 
 {% block javascripts %}
@@ -97,20 +99,11 @@
     
     $(document).ready(function() {
 
-    	$('#evenement_image_1').change(function() {
-    		var file = $(this)[0].files[0].name;
-    		$('.custom-file label[for="'+ $(this).attr('id') +'"]').html(file);
-    	});
-
-        $('#evenement_image_2').change(function() {
-    		var file = $(this)[0].files[0].name;
-    		$('.custom-file label[for="'+ $(this).attr('id') +'"]').html(file);
-    	});
-
-        $('#evenement_image_3').change(function() {
-    		var file = $(this)[0].files[0].name;
-    		$('.custom-file label[for="'+ $(this).attr('id') +'"]').html(file);
-    	});
+    	var texte_aide = "Formats de fichier acceptés : jpg, jpeg, png, gif";
+    	Image.Launch();
+    	Image.UpdateInput('#evenement_image_1', 'Choisir la première image', texte_aide);
+    	Image.UpdateInput('#evenement_image_2', 'Choisir la seconde image', texte_aide);
+    	Image.UpdateInput('#evenement_image_3', 'Choisir la troisième image', texte_aide);
     	
 		var params = {
 				id_container : 'div#evenement_specialite_evenements',

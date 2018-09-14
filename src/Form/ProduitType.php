@@ -62,7 +62,7 @@ class ProduitType extends AbstractType
                 'label' => 'Image 1',
                 'data_class' => null,
                 'required' => false,
-                'help' => ($options['add'] ? 'Formats de fichier acceptés : jpg, jpeg, png' : 'Ne pas remplir si vous souhaitez conserver la même image'),
+                'help' => ($options['add'] ? $options['aide_ajout'] : $options['aide_edition']),
                 'attr' => array(
                     'placeholder' => 'Choisir la première image'
                 )
@@ -72,7 +72,7 @@ class ProduitType extends AbstractType
                 'label' => 'Image 2',
                 'data_class' => null,
                 'required' => false,
-                'help' => ($options['add'] ? 'Formats de fichier acceptés : jpg, jpeg, png' : 'Ne pas remplir si vous souhaitez conserver la même image'),
+                'help' => ($options['add'] ? $options['aide_ajout'] : $options['aide_edition']),
                 'attr' => array(
                     'placeholder' => 'Choisir la seconde image'
                 )
@@ -82,7 +82,7 @@ class ProduitType extends AbstractType
                 'label' => 'Image 3',
                 'data_class' => null,
                 'required' => false,
-                'help' => ($options['add'] ? 'Formats de fichier acceptés : jpg, jpeg, png' : 'Ne pas remplir si vous souhaitez conserver la même image'),
+                'help' => ($options['add'] ? $options['aide_ajout'] : $options['aide_edition']),
                 'attr' => array(
                     'placeholder' => 'Choisir la troisième image'
                 )
@@ -150,7 +150,9 @@ class ProduitType extends AbstractType
             'genre' => ProduitController::GENRE,
             'trancheAge' => AppController::TRANCHE_AGE,
             'add' => false,
-            'ajax' => false
+            'ajax' => false,
+            'aide_ajout' => 'Formats de fichier acceptés : jpg, jpeg, png, gif',
+            'aide_edition' => 'Ne pas remplir si vous souhaitez conserver la même image'
         ));
     }
 }

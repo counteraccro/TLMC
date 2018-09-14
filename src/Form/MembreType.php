@@ -102,7 +102,7 @@ class MembreType extends AbstractType
                 'label' => 'Avatar',
                 'data_class' => null,
                 'required' => false,
-                'help' => ($options['edit'] ? 'Ne pas remplir si vous souhaitez conserver le même avatar' : ''),
+                'help' => ($options['edit'] ? 'Ne pas remplir si vous souhaitez conserver le même avatar' : ' '),//pour pouvoir afficher un message d'erreur lors de la sélection d'un ficher
                 'attr' => array(
                     'placeholder' => 'Choisir un avatar'
                 )
