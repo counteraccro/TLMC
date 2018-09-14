@@ -1,8 +1,8 @@
-<div id="ajax_type_evenement_add">
+<div id="ajax_type_produit_add">
 	{{ form_start(form) }}
 	<div class="modal-header">
 		<h5 class="modal-title">
-			Ajout d'un nouveau type d'événement
+			Ajout d'un nouveau type de produit
 		</h5>
 		<button type="button" class="close" data-dismiss="modal"
 			aria-label="Close">
@@ -28,13 +28,13 @@
 
     	$(document).ready(function() {
 
-            $('#modal_add_evenement').modal({
+            $('#modal_add_produit').modal({
      		   'show' : true,
      		   'backdrop' : 'static'
      		});
 
-            var url = '{{path('type_evenement_ajax_add') }}';
-    		TypeEvenement.EventAddSubmit(url);
+            var url = '{{path('type_produit_ajax_add') }}';
+    		TypeProduit.EventAddSubmit(url);
     		
     	});
     </script> 

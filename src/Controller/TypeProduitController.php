@@ -73,6 +73,7 @@ class TypeProduitController extends AppController
      * Ajout d'un type de produit
      *
      * @Route("/type_produit/add/{page}", name="type_produit_add")
+     * @Route("/type_produit/ajax/add", name="type_produit_ajax_add")
      * @Security("is_granted('ROLE_ADMIN')")
      *
      * @param SessionInterface $session
@@ -80,24 +81,38 @@ class TypeProduitController extends AppController
      * @param int $page
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function addAction(SessionInterface $session, Request $request, int $page)
+    public function addAction(SessionInterface $session, Request $request, int $page = 1)
     {
         $arrayFilters = $this->getDatasFilter($session);
         
-        $type_evenement = new TypeProduit();
+        $type_produit = new TypeProduit();
         
-        $form = $this->createForm(TypeProduitType::class, $type_evenement, array('label_submit' => 'Ajouter'));
+        $form = $this->createForm(TypeProduitType::class, $type_produit, array('label_submit' => 'Ajouter'));
         
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $type_evenement->setDisabled(0);
+            $type_produit->setDisabled(0);
             
             $em = $this->getDoctrine()->getManager();
             
-            $em->persist($type_evenement);
+            $em->persist($type_produit);
             $em->flush();
             
+            if ($request->isXmlHttpRequest()) {
+                return $this->json(array(
+                    'statut' => true,
+                    'id' => $type_produit->getId(),
+                    'nom' => $type_produit->getNom()
+                ));
+            }
+            
             return $this->redirect($this->generateUrl('type_produit_listing'));
+        }
+        
+        if ($request->isXmlHttpRequest()) {
+            return $this->render('type_produit/ajax_add.html.twig', array(
+                'form' => $form->createView()
+            ));
         }
         
         return $this->render('type_produit/add.html.twig', array(
@@ -165,7 +180,7 @@ class TypeProduitController extends AppController
                         'page' => $page,
                         'field' => $arrayFilters['field'],
                         'order' => $arrayFilters['order']
-                    )) => 'Gestion de types de produits'
+                    )) => 'Gestion de types de produit'
                 ),
                 'active' => 'Edition de #' . $type_produit->getId() . ' - ' . $type_produit->getNom()
             )

@@ -16,8 +16,11 @@
         {{ form_row(form.titre) }}
         
         <div class="row">
-    		<div class="col-md-6">
+    		<div class="col-md-5">
     			{{ form_row(form.type) }}
+    		</div>
+    		<div class="col-md-1 col align-self-center">
+    			<a href="{{ path('type_produit_ajax_add') }}" id="add_type" title="Ajouter un type de produit"><span class="oi oi-plus"></span></a>
     		</div>
     		<div class="col-md-6">
     			{{ form_row(form.genre) }}
@@ -66,6 +69,13 @@
         {{ form_rest(form) }}
         {{ form_end(form) }}
         
+        <!-- Modal -->
+    	<div class="modal fade" id="modal_add_produit" tabindex="-1" role="dialog">
+         	<div class="modal-dialog modal-lg" role="document">
+        		<div class="modal-content" id="bloc_modal"></div>
+        	</div>
+    </div>
+        
     </div>
 	  
 {% endblock %}
@@ -74,6 +84,7 @@
  	<script src="{{ asset('assets/js/produit_etablissement/ProduitEtablissement.js') }}?{{ date().timestamp }}"></script>
  	<script src="{{ asset('assets/js/produit_specialite/ProduitSpecialite.js') }}?{{ date().timestamp }}"></script>
  	<script src="{{ asset('assets/js/extension_formulaire/ExtensionFormulaire.js') }}?{{ date().timestamp }}"></script>
+ 	<script src="{{ asset('assets/js/type_produit/TypeProduit.js') }}?{{ date().timestamp }}"></script>
 {% endblock %}
 
 {% block javascripts %}
@@ -120,6 +131,15 @@
             
         	ExtensionFormulaire.Launch(paramsEF);
         	ExtensionFormulaire.Event();
+
+        	var paramsTP = {
+    				id_content_modal : '#bloc_modal',
+    				id_modal : '#modal_add_produit'
+    		};
+            
+    		TypeProduit.Launch(paramsTP);
+    		var id_btn_add = '#add_type';
+    		TypeProduit.EventAdd(id_btn_add);
         });
     </script> 
 {% endblock %}
