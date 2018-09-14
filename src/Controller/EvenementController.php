@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Form\EvenementType;
 use App\Entity\Specialite;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class EvenementController extends AppController
 {
@@ -391,6 +392,101 @@ class EvenementController extends AppController
             'page' => $page,
             'field' => $arrayFilters['field'],
             'order' => $arrayFilters['order']
+        ));
+    }
+    
+    /**
+     * Duplication d'un événement
+     *
+     * @Route("/evenement/duplicate/{id}/{page}", name="evenement_duplicate")
+     * @ParamConverter("evenement", options={"mapping": {"id": "id"}})
+     * @Security("is_granted('ROLE_ADMIN')")
+     * 
+     * @param Request $request
+     * @param Session $session
+     * @param Evenement $evenement
+     * @param int $page
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function duplicateAction(Request $request, Session $session, Evenement $evenement, int $page = 1){
+        
+        $arrayFilters = $this->getDatasFilter($session);
+        
+        $evenementDuplicated = new Evenement();
+        $evenementDuplicated->duplicate($evenement);
+        
+        // requête pour le champ spécialité
+        $membre = $this->getMembre();
+        $sr = $this->getDoctrine()->getRepository(Specialite::class);
+        $query = $sr->createQueryBuilder('specialite')->innerJoin('specialite.etablissement', 'etablissement');
+        if ($membre->getSpecialite() && ! $this->isAdmin()) {
+            $query->andWhere("etablissement.id = " . $membre->getEtablissement()
+                ->getId());
+        }
+        $query->orderBy('etablissement.nom, specialite.service', 'ASC');
+        
+        $form = $this->createForm(EvenementType::class, $evenementDuplicated, array(
+            'query_specialite' => $query,
+            'add' => true
+        ));
+        
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted()) {
+            
+            // téléchargement des images
+            for ($i = 1; $i <= 3; $i ++) {
+                $file = $request->files->get('evenement')['image_' . $i];
+                if (! is_null($file)) {
+                    $fileName = $this->telechargerImage($file, 'evenement', $evenementDuplicated->getNom(), 'image_' . $i);
+                    if ($fileName) {
+                        $methode = 'setImage' . $i;
+                        $evenementDuplicated->{$methode}($fileName);
+                    } else {
+                        $form->addError(new FormError("L'image $i n'est pas au format autorisé (jpg, jpeg,png)."));
+                    }
+                }
+            }
+            
+            if ($form->isValid()) {
+                
+                $em = $this->getDoctrine()->getManager();
+                
+                foreach ($evenementDuplicated->getSpecialiteEvenements() as $specialiteEvenement) {
+                    $specialiteEvenement->setEvenement($evenementDuplicated);
+                    $specialiteEvenement->setDate(new \DateTime());
+                }
+                
+                foreach ($evenementDuplicated->getExtensionFormulaires() as $extension) {
+                    $extension->setDisabled(0);
+                    $extension->setEvenement($evenementDuplicated);
+                }
+                
+                $evenementDuplicated->setDisabled(0);
+                
+                $em->persist($evenementDuplicated);
+                $em->flush();
+                
+                return $this->redirect($this->generateUrl('evenement_see', array(
+                    'id' => $evenementDuplicated->getId()
+                )));
+            }
+        }
+        
+        return $this->render('evenement/add.html.twig', array(
+            'page' => $page,
+            'form' => $form->createView(),
+            'paths' => array(
+                'home' => $this->indexUrlProject(),
+                'urls' => array(
+                    $this->generateUrl('evenement_listing', array(
+                        'page' => $page,
+                        'field' => $arrayFilters['field'],
+                        'order' => $arrayFilters['order']
+                    )) => 'Gestion des événements'
+                ),
+                'active' => "Ajout d'un événement"
+            )
         ));
     }
 }

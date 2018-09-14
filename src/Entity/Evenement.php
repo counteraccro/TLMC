@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -8,11 +7,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ *
  * @ORM\Entity(repositoryClass="App\Repository\EvenementRepository")
  */
 class Evenement
 {
+
     /**
+     *
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -20,18 +22,21 @@ class Evenement
     private $id;
 
     /**
+     *
      * @ORM\Column(type="string", length=200)
      */
     private $nom;
 
     /**
+     *
      * @ORM\Column(type="datetime")
      */
     public $date_debut;
 
     /**
+     *
      * @ORM\Column(type="datetime")
-     * 
+     *
      * @Assert\Expression(
      *     "this.date_debut < this.date_fin",
      *     message="La date de fin doit être supérieure à la date de fin"
@@ -40,77 +45,92 @@ class Evenement
     public $date_fin;
 
     /**
+     *
      * @ORM\Column(type="integer")
      */
     private $nombre_max;
 
     /**
+     *
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
 
     /**
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\TypeEvenement", inversedBy="evenements")
      * @ORM\JoinColumn(nullable=false)
      */
     private $type;
 
     /**
+     *
      * @ORM\Column(type="text", nullable=true)
      */
     private $image_1;
-    
+
     /**
+     *
      * @ORM\Column(type="text", nullable=true)
      */
     private $image_2;
-    
+
     /**
+     *
      * @ORM\Column(type="text", nullable=true)
      */
     private $image_3;
 
     /**
+     *
      * @ORM\Column(type="string", length=100)
      */
     private $nom_lieu;
 
     /**
+     *
      * @ORM\Column(type="integer")
      */
     private $numero_voie;
 
     /**
+     *
      * @ORM\Column(type="string", length=300)
      */
     private $voie;
 
     /**
+     *
      * @ORM\Column(type="string", length=100)
      */
     private $ville;
 
     /**
+     *
      * @ORM\Column(type="integer")
      */
     private $code_postal;
 
     /**
+     *
      * @ORM\Column(type="array")
      */
     private $tranche_age;
 
     /**
+     *
      * @ORM\Column(type="text", nullable=true)
      */
     private $information_complementaire;
 
     /**
+     *
      * @ORM\Column(type="integer")
      */
     private $statut;
 
     /**
+     *
      * @ORM\Column(type="datetime")
      * @Assert\Expression(
      *     "this.date_fin_inscription < this.date_debut",
@@ -118,39 +138,46 @@ class Evenement
      * )
      */
     public $date_fin_inscription;
-    
+
     /**
+     *
      * @ORM\Column(type="smallint")
      */
     private $disabled;
 
     /**
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\Temoignage", mappedBy="evenement")
      */
     private $temoignages;
 
     /**
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\ExtensionFormulaire", mappedBy="evenement", cascade={"persist"})
      * @ORM\OrderBy({"ordre" = "ASC"})
      */
     private $extensionFormulaires;
 
     /**
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\EvenementQuestionnaire", mappedBy="evenement")
      */
     private $evenementQuestionnaires;
 
     /**
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\SpecialiteEvenement", mappedBy="evenement", cascade={"persist"})
      */
     private $specialiteEvenements;
-    
+
     /**
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\Participant", mappedBy="evenement")
      */
     private $participants;
-    
+
     /**
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\Historique", mappedBy="evenement")
      */
     private $historiques;
@@ -399,6 +426,7 @@ class Evenement
     }
 
     /**
+     *
      * @return Collection|Temoignage[]
      */
     public function getTemoignages(): Collection
@@ -408,7 +436,7 @@ class Evenement
 
     public function addTemoignage(Temoignage $temoignage): self
     {
-        if (!$this->temoignages->contains($temoignage)) {
+        if (! $this->temoignages->contains($temoignage)) {
             $this->temoignages[] = $temoignage;
             $temoignage->setEvenement($this);
         }
@@ -430,6 +458,7 @@ class Evenement
     }
 
     /**
+     *
      * @return Collection|ExtensionFormulaire[]
      */
     public function getExtensionFormulaires(): Collection
@@ -439,7 +468,7 @@ class Evenement
 
     public function addExtensionFormulaire(ExtensionFormulaire $extensionFormulaire): self
     {
-        if (!$this->extensionFormulaires->contains($extensionFormulaire)) {
+        if (! $this->extensionFormulaires->contains($extensionFormulaire)) {
             $this->extensionFormulaires[] = $extensionFormulaire;
             $extensionFormulaire->setEvenement($this);
         }
@@ -461,6 +490,7 @@ class Evenement
     }
 
     /**
+     *
      * @return Collection|EvenementQuestionnaire[]
      */
     public function getEvenementQuestionnaires(): Collection
@@ -470,7 +500,7 @@ class Evenement
 
     public function addEvenementQuestionnaire(EvenementQuestionnaire $evenementQuestionnaire): self
     {
-        if (!$this->evenementQuestionnaires->contains($evenementQuestionnaire)) {
+        if (! $this->evenementQuestionnaires->contains($evenementQuestionnaire)) {
             $this->evenementQuestionnaires[] = $evenementQuestionnaire;
             $evenementQuestionnaire->setEvenement($this);
         }
@@ -492,6 +522,7 @@ class Evenement
     }
 
     /**
+     *
      * @return Collection|SpecialiteEvenement[]
      */
     public function getSpecialiteEvenements(): Collection
@@ -501,7 +532,7 @@ class Evenement
 
     public function addSpecialiteEvenement(SpecialiteEvenement $specialiteEvenement): self
     {
-        if (!$this->specialiteEvenements->contains($specialiteEvenement)) {
+        if (! $this->specialiteEvenements->contains($specialiteEvenement)) {
             $this->specialiteEvenements[] = $specialiteEvenement;
             $specialiteEvenement->setEvenement($this);
         }
@@ -523,6 +554,7 @@ class Evenement
     }
 
     /**
+     *
      * @return Collection|Participant[]
      */
     public function getParticipants(): Collection
@@ -532,7 +564,7 @@ class Evenement
 
     public function addParticipant(Participant $participant): self
     {
-        if (!$this->participants->contains($participant)) {
+        if (! $this->participants->contains($participant)) {
             $this->participants[] = $participant;
             $participant->setEvenement($this);
         }
@@ -554,6 +586,7 @@ class Evenement
     }
 
     /**
+     *
      * @return Collection|Historique[]
      */
     public function getHistoriques(): Collection
@@ -563,7 +596,7 @@ class Evenement
 
     public function addHistorique(Historique $historique): self
     {
-        if (!$this->historiques->contains($historique)) {
+        if (! $this->historiques->contains($historique)) {
             $this->historiques[] = $historique;
             $historique->setEvenement($this);
         }
@@ -584,4 +617,33 @@ class Evenement
         return $this;
     }
 
+    /**
+     * Duplication d'un événement
+     * 
+     * @param Evenement $evenement
+     */
+    public function duplicate(Evenement $evenement)
+    {
+        $champsDupliques = array(
+            'Nom',
+            'Description',
+            'InformationComplementaire',
+            'NombreMax',
+            'TrancheAge',
+            'Statut'
+        );
+        
+        foreach ($champsDupliques as $champ){
+            $methodeGet = 'get' . $champ;
+            $methodeSet = 'set' . $champ;
+            
+            $this->{$methodeSet}($evenement->{$methodeGet}());
+        }
+        
+        foreach ($evenement->getExtensionFormulaires() as $extension) {
+            $extensionDuplicated = new ExtensionFormulaire();
+            $extensionDuplicated->duplicate($extension);
+            $this->addExtensionFormulaire($extensionDuplicated);
+        }
+    }
 }

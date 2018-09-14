@@ -6,6 +6,9 @@
        		<div class="float-right"> 
        	    	{{ editObjet(path('evenement_ajax_edit', {'id': evenement.id }), "Editer l'événement", "btn-edit-evenement") | raw }}
        			{{ deleteObjet(evenement.disabled, path('evenement_delete', {'id': evenement.id, 'page' : 1 }), 'btn-disabled-evenement') | raw }}
+       			<span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Duplication de l'événement sans les dates, les images et les spécialités associées">
+       				<a href="{{ path('evenement_duplicate', {'id' : evenement.id}) }}" id="btn-duplicate-evenement" class="btn btn-secondary"><span class="oi oi-fork"></span> Dupliquer</a>
+       			</span>
        	    </div>
        	{% endif %}
     </div>
@@ -125,6 +128,8 @@
 
             var id_btn_delete_image_3 = '#btn-delete-image-3';
             Evenement.EventDelete(id_btn_delete_image_3);
+
+            $('[data-toggle="tooltip"]').tooltip();
         });
     </script> 
 

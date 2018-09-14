@@ -122,4 +122,25 @@ class ExtensionFormulaire
 
         return $this;
     }
+    
+    /**
+     * Duplication d'une extension
+     * 
+     * @param ExtensionFormulaire $extension_formulaire
+     */
+    public function duplicate(ExtensionFormulaire $extension_formulaire)
+    {
+        $champsDupliques = array(
+            'Libelle',
+            'Ordre',
+            'Valeur'
+        );
+        
+        foreach ($champsDupliques as $champ){
+            $methodeGet = 'get' . $champ;
+            $methodeSet = 'set' . $champ;
+            
+            $this->{$methodeSet}($extension_formulaire->{$methodeGet}());
+        }
+    }
 }
