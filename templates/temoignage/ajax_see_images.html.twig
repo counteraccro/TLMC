@@ -1,7 +1,7 @@
 <div id="ajax_temoignage_images">
 	<div class="modal-header">
 		<h5 class="modal-title">
-			Image du témoignage {{ temoignage.titre }}
+			Images du témoignage {{ temoignage.titre }}
 		</h5>
 		<button type="button" class="close" data-dismiss="modal"
 			aria-label="Close">
@@ -10,17 +10,55 @@
 	</div>
 
 	<div class="modal-body">
-		{% if temoignage.image1 != null %}
-	        {{ image('temoignage', temoignage.image1, 'img-fluid shadow-sm img-thumbnail') | raw }}<br><br>
-	    {% endif %}
-	    {% if temoignage.image2 != null %}
-            {{ image('temoignage', temoignage.image2, 'img-fluid shadow-sm img-thumbnail') | raw }}<br><br>
-        {% endif %}
-        {% if temoignage.image3 != null %}
-            {{ image('temoignage', temoignage.image3, 'img-fluid shadow-sm img-thumbnail') | raw }}
+		{% if temoignage.image1 is null and temoignage.image2 is null and temoignage.image3 is null %}
+        	<p class="text-center">Il n'y a aucun image téléchargée pour ce témoignage.</p>
+        {% else %}
+        
+        	{#% if temoignage.image1 != null %}
+	            {{ image('temoignage', temoignage.image1, 'img-fluid shadow-sm img-thumbnail') | raw }}<br><br>
+	        {% endif %}
+	        {% if temoignage.image2 != null %}
+                {{ image('temoignage', temoignage.image2, 'img-fluid shadow-sm img-thumbnail') | raw }}<br><br>
+            {% endif %}
+            {% if temoignage.image3 != null %}
+                {{ image('temoignage', temoignage.image3, 'img-fluid shadow-sm img-thumbnail') | raw }}
+            {% endif %#}
+            
+        	<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+          		<ol class="carousel-indicators">
+          	        {% if temoignage.image1 != null %}<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>{% endif %}
+    		        {% if temoignage.image2 != null %}<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>{% endif %}
+    		        {% if temoignage.image3 != null %}<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>{% endif %}
+  				</ol>
+          		<div class="carousel-inner">
+          		    {% if temoignage.image1 != null %}
+                		<div class="carousel-item active">
+                  			<img class="d-block w-100" src="{{ asset('img/temoignage/'~ temoignage.image1) }}" alt="Première image">
+                		</div>
+                    {% endif %}
+                    {% if temoignage.image2 != null %}
+                		<div class="carousel-item">
+                  			<img class="d-block w-100" src="{{ asset('img/temoignage/'~ temoignage.image2) }}" alt="Deuxième image">
+                		</div>
+                    {% endif %}
+                    {% if temoignage.image3 != null %}
+                		<div class="carousel-item">
+                  			<img class="d-block w-100" src="{{ asset('img/temoignage/'~ temoignage.image3) }}" alt="Troisième image">
+                		</div>
+                    {% endif %}
+              	</div>
+              	<a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                	<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                	<span class="sr-only">Précédent</span>
+              	</a>
+              	<a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                	<span class="carousel-control-next-icon" aria-hidden="true"></span>
+                	<span class="sr-only">Suivant</span>
+              	</a>
+            </div>
         {% endif %}
 	</div>
-
+	
 	<div class="modal-footer">
 		
 	</div>
@@ -32,7 +70,7 @@
     		   'show' : true,
     		   'backdrop' : 'static'
     	});
+		$('.carousel').carousel();
 	</script>
 	{% endblock %}
-	
 </div>

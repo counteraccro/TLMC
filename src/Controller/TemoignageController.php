@@ -412,6 +412,12 @@ class TemoignageController extends AppController
     {
         $arrayFilters = $this->getDatasFilter($session);
 
+        $images = array(
+            1 => $temoignage->getImage1(),
+            2 => $temoignage->getImage2(),
+            3 => $temoignage->getImage3()
+        );
+        
         $opt_form = array(
             'label_submit' => 'Modifier',
             'add' => false,
@@ -448,7 +454,27 @@ class TemoignageController extends AppController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted()) {
+            // traitement des images
+            if (! $request->isXmlHttpRequest()) {
+                for ($i = 1; $i <= 3; $i ++) {
+                    $methodeGet = 'getImage' . $i;
+                    $methodeSet = 'setImage' . $i;
+                    if (is_null($temoignage->{$methodeGet}()) && ! is_null($images[$i])) {
+                        $temoignage->{$methodeSet}($images[$i]);
+                    } elseif (! is_null($temoignage->{$methodeGet}())) {
+                        $file = $request->files->get('temoignage')['image_' . $i];
+                        $fileName = $this->telechargerImage($file, 'temoignage', $temoignage->getTitre(), 'image_'.$i, $images[$i]);
+                        if ($fileName) {
+                            $temoignage->{$methodeSet}($fileName);
+                        } else {
+                            $form->addError(new FormError("L'image $i n'est pas au format autorisé (jpg, jpeg,png)."));
+                        }
+                    }
+                }
+            }
+            
+            if ($form->isValid()) {
 
             $em = $this->getDoctrine()->getManager();
 
@@ -477,6 +503,7 @@ class TemoignageController extends AppController
                 'field' => $arrayFilters['field'],
                 'order' => $arrayFilters['order']
             )));
+        }
         }
 
         // Si appel Ajax, on renvoi sur la page ajax

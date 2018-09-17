@@ -15,7 +15,7 @@ Image.Launch = function(){
 			}
 			
 			
-			if(!file.match(/\.(jpg|jpeg|png)$/i) && file != ''){
+			if(!file.match(/\.(jpg|jpeg|png|gif)$/i) && file != ''){
 				$(this).attr('class', 'custom-file-input is-invalid');
 				$(id + '_help').attr('class', 'form-text text-danger').html(Image.message_erreur);
 			} else {
