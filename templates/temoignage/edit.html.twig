@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} Edition d'un témoigange {% endblock %}
+{% block title %} Edition d'un témoignage {% endblock %}
 
 {% block body %}
 
@@ -26,17 +26,17 @@
     {{ form_row(form.titre) }}
 	{{ form_row(form.corps) }}
 	
-	<!-- <div class="row">
+	<div class="row">
 		<div class="col-md-4">
-            {#{ form_row(form.image_1) }#}
+            {{ form_row(form.image_1) }}
 		</div>
 		<div class="col-md-4">
-            {#{ form_row(form.image_2) }#}
+            {{ form_row(form.image_2) }}
 		</div>
 		<div class="col-md-4">
-            {#{ form_row(form.image_3) }#}
+            {{ form_row(form.image_3) }}
 		</div>
-	</div> -->
+	</div>
 	
     {{ form_rest(form) }}
     {{ form_errors(form) }}
@@ -46,8 +46,18 @@
 	  
 {% endblock %}
 
+{% block script %}
+ 	<script src="{{ asset('assets/js/image/Image.js') }}?{{ date().timestamp }}"></script>
+{% endblock %}
+
 {% block javascripts %}
 	<script type="text/javascript">	
+
+    	var texte_aide = "Formats de fichier acceptés : jpg, jpeg, png, gif";
+    	Image.Launch();
+    	Image.UpdateInput('#temoignage_image_1', 'Choisir la première image', texte_aide);
+    	Image.UpdateInput('#temoignage_image_2', 'Choisir la seconde image', texte_aide);
+    	Image.UpdateInput('#temoignage_image_3', 'Choisir la troisième image', texte_aide);
 		
         if($('#temoignage_evenement').val()){
         	$('#temoignage_row_produit').hide();

@@ -12,6 +12,7 @@ use App\Entity\Membre;
 use App\Entity\Evenement;
 use App\Entity\Produit;
 use App\Entity\Famille;
+use Symfony\Component\Form\FormError;
 
 class TemoignageController extends AppController
 {
@@ -258,7 +259,7 @@ class TemoignageController extends AppController
         $arrayFilters = $this->getDatasFilter($session);
         $opt_form = array(
             'label_submit' => 'Ajouter',
-            'ajax' => true//($request->isXmlHttpRequest() ? true : false)
+            'ajax' => ($request->isXmlHttpRequest() ? true : false)
         );
 
         $temoignage = new Temoignage();
@@ -309,12 +310,30 @@ class TemoignageController extends AppController
         $form = $this->createForm(TemoignageType::class, $temoignage, $opt_form);
 
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
 
-            $em = $this->getDoctrine()->getManager();
+        if ($form->isSubmitted()) {
 
-            // Pour associer la famille lors de l'ajout depuis une modale
-            if ($request->isXmlHttpRequest()) {
+            // téléchargement des images
+            if (! $request->isXmlHttpRequest()) {
+                for ($i = 1; $i <= 3; $i ++) {
+                    $file = $request->files->get('temoignage')['image_' . $i];
+                    if (! is_null($file)) {
+                        $fileName = $this->telechargerImage($file, 'temoignage', $temoignage->getTitre(), 'image_' . $i);
+                        if ($fileName) {
+                            $methode = 'setImage' . $i;
+                            $temoignage->{$methode}($fileName);
+                        } else {
+                            $form->addError(new FormError("L'image $i n'est pas au format autorisé (jpg, jpeg,png)."));
+                        }
+                    }
+                }
+            }
+
+            if ($form->isValid()) {
+
+                $em = $this->getDoctrine()->getManager();
+
+                // Pour associer la famille lors de l'ajout depuis une modale
                 if (isset($request->request->get('temoignage')['famille'])) {
                     $famille_id = $request->request->get('temoignage')['famille'];
                     $famille = $this->getDoctrine()
@@ -324,23 +343,23 @@ class TemoignageController extends AppController
                     ));
                     $temoignage->setFamille($famille);
                 }
-            }
 
-            $temoignage->setMembre($membre);
-            $temoignage->setDisabled(0);
-            $temoignage->setDateCreation(new \DateTime());
-            $em->persist($temoignage);
-            $em->flush();
+                $temoignage->setMembre($membre);
+                $temoignage->setDisabled(0);
+                $temoignage->setDateCreation(new \DateTime());
+                $em->persist($temoignage);
+                $em->flush();
 
-            if ($request->isXmlHttpRequest()) {
-                return $this->json(array(
-                    'statut' => true
-                ));
-            } else {
-                return $this->redirect($this->generateUrl('temoignage_see', array(
-                    'type' => $type,
-                    'id' => $temoignage->getId()
-                )));
+                if ($request->isXmlHttpRequest()) {
+                    return $this->json(array(
+                        'statut' => true
+                    ));
+                } else {
+                    return $this->redirect($this->generateUrl('temoignage_see', array(
+                        'type' => $type,
+                        'id' => $temoignage->getId()
+                    )));
+                }
             }
         }
 
@@ -393,10 +412,16 @@ class TemoignageController extends AppController
     {
         $arrayFilters = $this->getDatasFilter($session);
 
+        $images = array(
+            1 => $temoignage->getImage1(),
+            2 => $temoignage->getImage2(),
+            3 => $temoignage->getImage3()
+        );
+        
         $opt_form = array(
             'label_submit' => 'Modifier',
             'add' => false,
-            'ajax' => true//($request->isXmlHttpRequest() ? true : false)
+            'ajax' => ($request->isXmlHttpRequest() ? true : false)
         );
 
         if ($request->isXmlHttpRequest()) {
@@ -429,7 +454,27 @@ class TemoignageController extends AppController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted()) {
+            // traitement des images
+            if (! $request->isXmlHttpRequest()) {
+                for ($i = 1; $i <= 3; $i ++) {
+                    $methodeGet = 'getImage' . $i;
+                    $methodeSet = 'setImage' . $i;
+                    if (is_null($temoignage->{$methodeGet}()) && ! is_null($images[$i])) {
+                        $temoignage->{$methodeSet}($images[$i]);
+                    } elseif (! is_null($temoignage->{$methodeGet}())) {
+                        $file = $request->files->get('temoignage')['image_' . $i];
+                        $fileName = $this->telechargerImage($file, 'temoignage', $temoignage->getTitre(), 'image_'.$i, $images[$i]);
+                        if ($fileName) {
+                            $temoignage->{$methodeSet}($fileName);
+                        } else {
+                            $form->addError(new FormError("L'image $i n'est pas au format autorisé (jpg, jpeg,png)."));
+                        }
+                    }
+                }
+            }
+            
+            if ($form->isValid()) {
 
             $em = $this->getDoctrine()->getManager();
 
@@ -458,6 +503,7 @@ class TemoignageController extends AppController
                 'field' => $arrayFilters['field'],
                 'order' => $arrayFilters['order']
             )));
+        }
         }
 
         // Si appel Ajax, on renvoi sur la page ajax

@@ -48,7 +48,13 @@ Famille.Launch = function(params) {
 	 */
 	Famille.LoadFamilleOnChange = function()
 	{
-		Famille.Ajax(Famille.url_ajax_see + '/' + $(Famille.id_dropdown).val(), Famille.id_famille);
+		if($(Famille.id_dropdown).val() == ''){
+			var val = 0;
+		} else {
+			var val = $(Famille.id_dropdown).val();
+		}
+
+		Famille.Ajax(Famille.url_ajax_see + '/' + val, Famille.id_famille);
 	}
 	
 	/**
