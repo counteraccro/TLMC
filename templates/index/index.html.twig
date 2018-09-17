@@ -14,7 +14,7 @@
     		<div class="card card-accueil">
             	<div class="card-header bg-info">
                 	Questionnaires qui vont expirer prochainement
-                	<span class="float-right text-info"><a href="{{ path('questionnaire_listing') }}"><i><span class="oi oi-question-mark"></span> Gestion des questionnaires</i></a></span>
+                	<span class="float-right text-info"><a class="lien-gestion" href="{{ path('questionnaire_listing') }}"><i><span class="oi oi-question-mark"></span> Gestion des questionnaires</i></a></span>
             	</div>
             	<div class="card-body">
             		<table class="table">
@@ -37,7 +37,7 @@
             	            {% endfor %}
             	    </table>
             	            {% if questionnaires is empty %}
-        						<p class="text-info text-center"><i>Aucun questionnaire dans cette rubrique.</i><p>
+        						<p class="text-info text-center"><i>Aucun questionnaire à afficher dans cette rubrique.</i><p>
                             {% endif %}
     			</div>
     		</div>
@@ -46,7 +46,7 @@
     		<div class="card card-accueil">
             	<div class="card-header bg-info">
                 	Evènements les plus proches
-                	<span class="float-right text-info"><a href="{{ path('evenement_listing') }}"><i><span class="oi oi-calendar"></span> Gestion des évènements</i></a></span>
+                	<span class="float-right text-info"><a class="lien-gestion" href="{{ path('evenement_listing') }}"><i><span class="oi oi-calendar"></span> Gestion des évènements</i></a></span>
             	</div>
             	<div class="card-body">
             		<table class="table">
@@ -70,7 +70,7 @@
             	            {% endfor %}
             	    </table>
             	            {% if evenements is empty %}
-        						<p class="text-info text-center"><i>Aucun évènement dans cette rubrique.</i><p>
+        						<p class="text-info text-center"><i>Aucun évènement à afficher dans cette rubrique.</i><p>
                             {% endif %}
     			</div>
     		</div>
@@ -79,7 +79,7 @@
     		<div class="card card-accueil">
             	<div class="card-header bg-info">
                 	Patients enregistrés dernièrement
-                	<span class="float-right text-info"><a href="{{ path('patient_listing') }}"><i><span class="oi oi-person"></span> Gestion des patients</i></a></span>
+                	<span class="float-right text-info"><a class="lien-gestion" href="{{ path('patient_listing') }}"><i><span class="oi oi-person"></span> Gestion des patients</i></a></span>
             	</div>
             	<div class="card-body">
             		<table class="table">
@@ -99,7 +99,7 @@
             	            {% endfor %}
             	    </table>
             	            {% if patients is empty %}
-        						<p class="text-info text-center"><i>Aucun patient dans cette rubrique.</i><p>
+        						<p class="text-info text-center"><i>Aucun patient à afficher dans cette rubrique.</i><p>
                             {% endif %}            	    
     			</div>
     		</div>
@@ -112,7 +112,7 @@
     		<div class="card card-accueil">
             	<div class="card-header bg-info">
                 	Produits enregistrés dernièrement
-                	<span class="float-right text-info"><a href="{{ path('produit_listing') }}"><i><span class="oi oi-basket"></span> Gestion des produits</i></a></span>
+                	<span class="float-right text-info"><a class="lien-gestion" href="{{ path('produit_listing') }}"><i><span class="oi oi-basket"></span> Gestion des produits</i></a></span>
             	</div>
             	<div class="card-body">
             		<table class="table">
@@ -127,14 +127,15 @@
                                 <td>{{ prod.id }}</td>
                                 <td><a href="{{ path('produit_see', {'id': prod.id}) }}">{{ prod.titre }}</a></td>
         				        <td>{% for tranche_age in prod.trancheAge %}
-        			                    {{ tranche_age | trancheAge }}<br />
+        			                    {{ tranche_age | trancheAge }}
+        			                    {% if not loop.last %}/ {% endif %}
         			                {% endfor %}</td>
                                	<td>{{ prod.quantite }}</td>
                            	</tr>
             	            {% endfor %}
             	    </table>
             	            {% if produits is empty %}
-        						<p class="text-info text-center"><i>Aucun produit dans cette rubrique.</i><p>
+        						<p class="text-info text-center"><i>Aucun produit  à afficher dans cette rubrique.</i><p>
                             {% endif %}            	    
     			</div>
     		</div>
@@ -143,7 +144,7 @@
     		<div class="card card-accueil">
             	<div class="card-header bg-info">
                 	Témoignages évènements les plus récents
-                	<span class="float-right text-info"><a href="{{ path('temoignage_listing') }}"><i><span class="oi oi-comment-square"></span> Gestion des témoignages (évènements)</i></a></span>
+                	<span class="float-right text-info"><a class="lien-gestion" href="{{ path('temoignage_listing') }}"><i><span class="oi oi-comment-square"></span> Gestion des témoignages (évènements)</i></a></span>
             	</div>
             	<div class="card-body">
             		<table class="table">
@@ -154,24 +155,21 @@
             				<th>Auteur</th>
             				<th>Date création</th>
             			</tr>
-            	            {% for tem in temoignages %}
-            	            <tr>
-                                <td>{{ tem.id }}</td>
-                                <td><a href="{{ path('temoignage_see', {'id': tem.id}) }}">{{ tem.titre }}</a></td>
-                                <td>
-                                {% if tem.produit != null %}
-                                    {{ tem.produit.titre }}
-                                {% else %}
-                                	{{ tem.evenement.nom }}
-                                {% endif %}</td>
-                                <td>{{ tem.famille.prenom }} {{ tem.famille.nom }}</td>
-                                <td>{{ tem.dateCreation |date("d/m/Y")}}</td>
-                            </tr>
+            	            {% for tem in temoignages_event %}
+                    	            <tr>
+                                        <td>{{ tem.id }}</td>
+                                        <td><a href="{{ path('temoignage_see', {'id': tem.id}) }}">{{ tem.titre }}</a></td>
+                                        <td>{{ tem.evenement.nom }}</td>
+
+                                        <td>{{ tem.famille.prenom }} {{ tem.famille.nom }}</td>
+
+                                        <td>{{ tem.dateCreation |date("d/m/Y")}}</td>
+                                    </tr>
             	            {% endfor %}
             	    </table>
-            	            {% if temoignages is empty %}
-        						<p class="text-info text-center"><i>Aucun témoignage évènement dans cette rubrique.</i><p>
-                            {% endif %}            	    
+            	            {% if temoignages_event is empty %}
+        						<p class="text-info text-center"><i>Aucun témoignage évènement à afficher dans cette rubrique.</i><p>
+                            {% endif %}           	    
     			</div>
     		</div>
     	</div>
@@ -180,7 +178,7 @@
     		<div class="card card-accueil">
             	<div class="card-header bg-info">
                 	Témoignages produits les plus récents
-                	<span class="float-right text-info"><a href="{{ path('temoignage_listing') }}"><i><span class="oi oi-comment-square"></span> Gestion des témoignages (produits)</i></a></span>
+                	<span class="float-right text-info"><a class="lien-gestion" href="{{ path('temoignage_listing') }}"><i><span class="oi oi-comment-square"></span> Gestion des témoignages (produits)</i></a></span>
             	</div>
             	<div class="card-body">
             		<table class="table">
@@ -188,26 +186,20 @@
             				<th>#</th>
             				<th>Titre</th>
             				<th>Corps</th>
-            				<th>Auteur</th>
             				<th>Date création</th>
             			</tr>
-            	            {% for tem in temoignages %}
-            	            <tr>
-                                <td>{{ tem.id }}</td>
-                                <td><a href="{{ path('temoignage_see', {'id': tem.id}) }}">{{ tem.titre }}</a></td>
-                                <td>
-                                {% if tem.produit != null %}
-                                    {{ tem.produit.titre }}
-                                {% else %}
-                                	{{ tem.evenement.nom }}
-                                {% endif %}</td>
-                                <td>{{ tem.famille.prenom }} {{ tem.famille.nom }}</td>
-                                <td>{{ tem.dateCreation |date("d/m/Y")}}</td>
-                            </tr>
+            	            {% for tem in temoignages_prod %}
+                    	            <tr>
+                                        <td>{{ tem.id }}</td>
+                                        <td><a href="{{ path('temoignage_see', {'id': tem.id}) }}">{{ tem.titre }}</a></td>
+                                        <td>{{ tem.produit.titre }}</td>
+                                
+                                        <td>{{ tem.dateCreation |date("d/m/Y")}}</td>
+                                    </tr>
             	            {% endfor %}
             	    </table>
-            	            {% if temoignages is empty %}
-        						<p class="text-info text-center"><i>Aucun témoignage produit dans cette rubrique.</i><p>
+            	            {% if temoignages_prod is empty %}
+        						<p class="text-info text-center"><i>Aucun témoignage produit à afficher dans cette rubrique.</i><p>
                             {% endif %}            	    
     			</div>
     		</div>

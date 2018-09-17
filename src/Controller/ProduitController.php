@@ -222,7 +222,7 @@ class ProduitController extends AppController
                             $methode = 'setImage' . $i;
                             $produit->{$methode}($fileName);
                         } else {
-                            $form->addError(new FormError("L'image $i n'est pas au format autorisé (jpg, jpeg,png)."));
+                            $form->addError(new FormError("L'image $i n'est pas au format autorisé (" . implode(', ', AppController::FORMAT_IMAGE) . ")."));
                         }
                     }
                 }
@@ -326,7 +326,7 @@ class ProduitController extends AppController
                         if ($fileName) {
                             $produit->{$methodeSet}($fileName);
                         } else {
-                            $form->addError(new FormError("L'image $i n'est pas au format autorisé (jpg, jpeg,png)."));
+                            $form->addError(new FormError("L'image $i n'est pas au format autorisé (" . implode(', ', AppController::FORMAT_IMAGE) . ")."));
                         }
                     }
                 }

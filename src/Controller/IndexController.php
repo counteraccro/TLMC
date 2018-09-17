@@ -18,6 +18,12 @@ class IndexController extends AppController
      */
     public function index()
     {
+        //s'il s'agit d'un visiteur non-authentifié
+        if (! $this->getUser()) {
+            
+            return $this->redirectToRoute('security_login');
+        }
+        
         // 5 questionnaires dont la date de fin est la plus proche
         $repositoryQuest = $this->getDoctrine()->getRepository(Questionnaire::class);
         $questionnaires = $repositoryQuest->findExpiringSoon();
@@ -25,50 +31,27 @@ class IndexController extends AppController
         // 5 évènements dont la date de début est la plus proche
         $repositoryQuest = $this->getDoctrine()->getRepository(Evenement::class);
         $evenements = $repositoryQuest->getComingSoon();
-        
+
         // 5 derniers patients enregistrés en base
         $repositoryQuest = $this->getDoctrine()->getRepository(Patient::class);
         $patients = $repositoryQuest->getRecents();
-        
+
         // 5 derniers produits enregistrés en base
         $repositoryQuest = $this->getDoctrine()->getRepository(Produit::class);
         $produits = $repositoryQuest->getRecents();
-        
+
         // 5 derniers témoignages créés
         $repositoryTmg = $this->getDoctrine()->getRepository(Temoignage::class);
-        
-        $params = array(
-            'order' => 'DESC',
-            'field' => 'date_creation',
-            'repository' => 'Temoignage',
-            'condition' => array(
-                'Temoignage.disabled = 0'
-            )
-        );
-        
-        //s'il s'agit d'un visiteur non-authentifié
-        if (! $this->getUser()) {
-            
-            return $this->redirectToRoute('security_login');
-            
-            /*$temoignages = $repositoryTmg->findAllTemoignages(1, 5, $params);
-            return $this->render('index/index_visiteur.html.twig', [
-                'temoignages' => $temoignages['paginator']
-            ]);*/
-        }
-        
         $membre = $this->getMembre();
-        if(!$this->isAdmin()){
-            $params['jointure'] = array(
-                array('oldrepository' => 'Temoignage',
-                    'newrepository' => 'membre'
-                )
-            );
-            
-            $params['condition'][] = 'membre.specialite = ' . (is_null($membre->getSpecialite()) ? 0 : $membre->getSpecialite()->getId());
+        $specialite = $membre->getSpecialite();
+        if (is_null($specialite)) {
+            $specialite_id = null;
         }
-        
-        $temoignages = $repositoryTmg->findAllTemoignages(1, 5, $params);
+        else {
+            $specialite_id = $specialite->getId();
+        }
+        $temoignages_prod = $repositoryTmg->getRecentsTemProd($this->isAdmin(), $specialite_id);
+        $temoignages_event = $repositoryTmg->getRecentsTemEvent($this->isAdmin(), $specialite_id);
         
         /**
          *  Début affichage des vues en fonction des droits de l'utilisateur courant
@@ -86,28 +69,32 @@ class IndexController extends AppController
                     'evenements' => $evenements,
                     'patients' => $patients,
                     'produits' => $produits,
-                    'temoignages' => $temoignages['paginator']
+                    'temoignages_prod' => $temoignages_prod,
+                    'temoignages_event' => $temoignages_event,
                 ]);
                 break;
                 
             // si l'utilisateur courant est bénévole
             case 'ROLE_BENEVOLE':
                 return $this->render('index/index_benevole.html.twig', [
-                'temoignages' => $temoignages['paginator']
+                'temoignages_prod' => $temoignages_prod,
+                'temoignages_event' => $temoignages_event,
                 ]);
                 break;
                 
                 // si l'utilisateur courant est bénéficiaire
             case 'ROLE_BENEFICIAIRE':
                 return $this->render('index/index_beneficiaire.html.twig', [
-                'temoignages' => $temoignages['paginator']
+                'temoignages_prod' => $temoignages_prod,
+                'temoignages_event' => $temoignages_event,
                 ]);
                 break;
                 
                 // si l'utilisateur courant est bénéficiaire direct
             case 'ROLE_BENEFICIAIRE_DIRECT':
                 return $this->render('index/index_beneficiaire_direct.html.twig', [
-                'temoignages' => $temoignages['paginator']
+                'temoignages_prod' => $temoignages_prod,
+                'temoignages_event' => $temoignages_event,
                 ]);
                 break;
         }

@@ -191,7 +191,7 @@ class EvenementController extends AppController
                         $methode = 'setImage' . $i;
                         $evenement->{$methode}($fileName);
                     } else {
-                        $form->addError(new FormError("L'image $i n'est pas au format autorisé (jpg, jpeg,png)."));
+                        $form->addError(new FormError("L'image $i n'est pas au format autorisé (" . implode(', ', AppController::FORMAT_IMAGE) . ")."));
                     }
                 }
             }
@@ -284,7 +284,7 @@ class EvenementController extends AppController
                         if ($fileName) {
                             $evenement->{$methodeSet}($fileName);
                         } else {
-                            $form->addError(new FormError("L'image $i n'est pas au format autorisé (jpg, jpeg,png)."));
+                            $form->addError(new FormError("L'image $i n'est pas au format autorisé (" . implode(', ', AppController::FORMAT_IMAGE) . ")."));
                         }
                     }
                 }
@@ -443,7 +443,7 @@ class EvenementController extends AppController
                         $methode = 'setImage' . $i;
                         $evenementDuplicated->{$methode}($fileName);
                     } else {
-                        $form->addError(new FormError("L'image $i n'est pas au format autorisé (jpg, jpeg,png)."));
+                        $form->addError(new FormError("L'image $i n'est pas au format autorisé (" . implode(', ', AppController::FORMAT_IMAGE) . ")."));
                     }
                 }
             }

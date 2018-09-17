@@ -949,7 +949,7 @@ footer h6, footer p {
 	min-height: 240px;
 }
 
-#page-accueil .card.card-accueil a {
+#page-accueil .card.card-accueil .lien-gestion {
 	color: white;
 }
 

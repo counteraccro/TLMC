@@ -9,35 +9,72 @@
 	{% else %}
 		<h1>Accueil</h1>
 	{% endif %}
+	<div class="row">
     	<div class="col-4">
-    		<div class="card">
+    		<div class="card card-accueil">
             	<div class="card-header bg-info">
-                	Témoignages les plus récents
+                	Témoignages évènements les plus récents
+                	<span class="float-right text-info"><a class="lien-gestion" href="{{ path('temoignage_listing') }}"><i><span class="oi oi-comment-square"></span> Gestion des témoignages (évènements)</i></a></span>
             	</div>
             	<div class="card-body">
             		<table class="table">
                     	<tr>
             				<th>#</th>
             				<th>Titre</th>
-            				<th>Date de création</th>
+            				<th>Corps</th>
+            				<th>Auteur</th>
+            				<th>Date création</th>
             			</tr>
-            	            {% for tem in temoignages %}
-            	            <tr>
-                                <td>{{ tem.id }}</td>
-                                <td>{{ tem.titre }}</td>
-                                <td>
-                                {% if tem.produit != null %}
-                                    {{ tem.produit.titre }}
-                                {% else %}
-                                	{{ tem.evenement.nom }}
-                                {% endif %}</td>
-                                <td>{{ tem.dateCreation |date("d/m/Y H:i")}}</td>
-                            </tr>
+            	            {% for tem in temoignages_event %}
+                    	            <tr>
+                                        <td>{{ tem.id }}</td>
+                                        <td><a href="{{ path('temoignage_see', {'id': tem.id}) }}">{{ tem.titre }}</a></td>
+                                        <td>{{ tem.evenement.nom }}</td>
+
+                                        <td>{{ tem.famille.prenom }} {{ tem.famille.nom }}</td>
+
+                                        <td>{{ tem.dateCreation |date("d/m/Y")}}</td>
+                                    </tr>
             	            {% endfor %}
             	    </table>
+            	            {% if temoignages_event is empty %}
+        						<p class="text-info text-center"><i>Aucun témoignage évènement à afficher dans cette rubrique.</i><p>
+                            {% endif %}           	    
     			</div>
     		</div>
     	</div>
+    	
+    	    	<div class="col-4">
+    		<div class="card card-accueil">
+            	<div class="card-header bg-info">
+                	Témoignages produits les plus récents
+                	<span class="float-right text-info"><a class="lien-gestion" href="{{ path('temoignage_listing') }}"><i><span class="oi oi-comment-square"></span> Gestion des témoignages (produits)</i></a></span>
+            	</div>
+            	<div class="card-body">
+            		<table class="table">
+                    	<tr>
+            				<th>#</th>
+            				<th>Titre</th>
+            				<th>Corps</th>
+            				<th>Date création</th>
+            			</tr>
+            	            {% for tem in temoignages_prod %}
+                    	            <tr>
+                                        <td>{{ tem.id }}</td>
+                                        <td><a href="{{ path('temoignage_see', {'id': tem.id}) }}">{{ tem.titre }}</a></td>
+                                        <td>{{ tem.produit.titre }}</td>
+                                
+                                        <td>{{ tem.dateCreation |date("d/m/Y")}}</td>
+                                    </tr>
+            	            {% endfor %}
+            	    </table>
+            	            {% if temoignages_prod is empty %}
+        						<p class="text-info text-center"><i>Aucun témoignage produit à afficher dans cette rubrique.</i><p>
+                            {% endif %}            	    
+    			</div>
+    		</div>
+    	</div>
+    </div>
 </div>
 
 {% endblock %}
@@ -45,9 +82,5 @@
 {% block javascripts %}
 	<script type="text/javascript">
 
-	$('.carousel').carousel({
-		interval: 5000
-	});
-	
     </script>
 {% endblock %}

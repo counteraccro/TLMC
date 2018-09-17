@@ -22,9 +22,9 @@
                     <div class="alert alert-info"><span class="oi oi-info"></span> <b>Information</b><br/>
                     Les formats de fichier acceptés sont les suivants :<br/>
                     	<ul>
-                            <li>JPG</li>
-                            <li>JPEG</li>
-                            <li>PNG</li>
+                    	{% for type_img in constant('App\\Controller\\AppController::FORMAT_IMAGE') %}
+                    		<li>{{ type_img }}</li>
+                    	{% endfor %}
                     	</ul>
                     </div>
                       	{{ form(form) }}

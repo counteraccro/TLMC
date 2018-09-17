@@ -14,6 +14,7 @@ use App\Entity\Groupe;
 use App\Entity\GroupeMembre;
 use Symfony\Component\Form\FormError;
 use App\Form\ImageType;
+use PhpParser\Node\Stmt\Foreach_;
 
 class MembreController extends AppController
 {
@@ -131,7 +132,7 @@ class MembreController extends AppController
     public function seeFicheAction(Request $request)
     {
         $membre = $this->getMembre();
-
+     
         // Si appel Ajax, on renvoi sur la page ajax
         if ($request->isXmlHttpRequest()) {
 
@@ -139,7 +140,9 @@ class MembreController extends AppController
                 'membre' => $membre
             ));
         }
+        
 
+        
         $repository = $this->getDoctrine()->getRepository(Questionnaire::class);
         $questionnaires = $repository->findByMembreReponses($membre->getId());
 
@@ -182,7 +185,7 @@ class MembreController extends AppController
                 if ($fileName) {
                     $membre->setAvatar($fileName);
                 } else {
-                    $form->addError(new FormError("Le fichier n'est pas au format autorisé (jpg, jpeg,png)."));
+                    $form->addError(new FormError("Le fichier n'est pas au format autorisé (" . implode(', ', AppController::FORMAT_IMAGE) . ")."));
                 }
             }
 
@@ -293,6 +296,7 @@ class MembreController extends AppController
     public function editAvatarAction(Request $request, int $page = 1)
     {
         $membre = $this->getMembre();
+        
         $form = $this->createForm(ImageType::class);
 
         $form->handleRequest($request);
@@ -303,7 +307,7 @@ class MembreController extends AppController
                 if ($fileName) {
                     $membre->setAvatar($fileName);
                 } else {
-                    $form->addError(new FormError("Le fichier n'est pas au format autorisé (jpg, jpeg,png)."));
+                    $form->addError(new FormError("Le fichier n'est pas au format autorisé (" . implode(', ', AppController::FORMAT_IMAGE) . ")."));
                 }
             }
             if ($form->isValid()) {
