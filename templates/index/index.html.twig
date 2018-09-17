@@ -11,7 +11,7 @@
 	{% endif %}
 		<div class="row">
 		<div class="col-4">
-    		<div class="card">
+    		<div class="card card-accueil">
             	<div class="card-header bg-info">
                 	Questionnaires qui vont expirer prochainement
             	</div>
@@ -24,6 +24,7 @@
             				<th>Date fin</th>
             				<th>Jours restants</th>
             			</tr>
+
             	            {% for quest in questionnaires %}
             	            <tr>
                                 <td>{{ quest.id }}</td>
@@ -34,11 +35,14 @@
                            	</tr>
             	            {% endfor %}
             	    </table>
+            	            {% if questionnaires is empty %}
+        						<p class="text-info text-center"><i>Aucun questionnaire dans cette rubrique.</i><p>
+                            {% endif %}
     			</div>
     		</div>
     	</div>
     	<div class="col-4">
-    		<div class="card">
+    		<div class="card card-accueil">
             	<div class="card-header bg-info">
                 	Evènements les plus proches
             	</div>
@@ -63,11 +67,14 @@
                             </tr>
             	            {% endfor %}
             	    </table>
+            	            {% if evenements is empty %}
+        						<p class="text-info text-center"><i>Aucun évènement dans cette rubrique.</i><p>
+                            {% endif %}
     			</div>
     		</div>
     	</div>
     	<div class="col-4">
-    		<div class="card">
+    		<div class="card card-accueil">
             	<div class="card-header bg-info">
                 	Patients : derniers enregistrements
             	</div>
@@ -88,14 +95,18 @@
                            	</tr>
             	            {% endfor %}
             	    </table>
+            	            {% if patients is empty %}
+        						<p class="text-info text-center"><i>Aucun patient dans cette rubrique.</i><p>
+                            {% endif %}            	    
     			</div>
     		</div>
     	</div>
     </div>
     
+    <br/>
     		<div class="row">
 		<div class="col-4">
-    		<div class="card">
+    		<div class="card card-accueil">
             	<div class="card-header bg-info">
                 	Produits : derniers enregistrements
             	</div>
@@ -118,11 +129,14 @@
                            	</tr>
             	            {% endfor %}
             	    </table>
+            	            {% if produits is empty %}
+        						<p class="text-info text-center"><i>Aucun produit dans cette rubrique.</i><p>
+                            {% endif %}            	    
     			</div>
     		</div>
     	</div>
     	<div class="col-4">
-    		<div class="card">
+    		<div class="card card-accueil">
             	<div class="card-header bg-info">
                 	Témoignages les plus récents
             	</div>
@@ -150,9 +164,13 @@
                             </tr>
             	            {% endfor %}
             	    </table>
+            	            {% if temoignages is empty %}
+        						<p class="text-info text-center"><i>Aucun témoignage dans cette rubrique.</i><p>
+                            {% endif %}            	    
     			</div>
     		</div>
     	</div>
+	</div>
 </div>
 
 {% endblock %}

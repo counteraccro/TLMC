@@ -10,7 +10,13 @@
            	</b> : {{ temoignage.titre }}
         	{% if is_granted("ROLE_ADMIN") %} 
         	     rédigé par {{ temoignage.membre.prenom }} {{ temoignage.membre.nom }}
-        	     <br><b>Actif :</b> {{ temoignage.disabled | actif }}
+        	     <br><b>Actif :</b>
+        	     {% if temoignage.disabled | actif == 'Oui' %}
+        	     	<span class="text-success"><span class="oi oi-media-record"></span></span>
+        	     {% else %}
+        	     	<span class="text-danger"><span class="oi oi-media-record"></span></span>
+        	     {% endif %} 
+        	     {{ temoignage.disabled | actif }}
         	{% endif %}
         	
         	{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')%}

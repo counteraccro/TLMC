@@ -945,6 +945,10 @@ footer h6, footer p {
 *
 ********************************************/
 
+#page-accueil .card.card-accueil{
+	min-height: 240px;
+}
+
 #page-accueil .card .card-body{
 	padding: 0px;
 	padding-top: 10px;
