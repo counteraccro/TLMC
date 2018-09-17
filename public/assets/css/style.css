@@ -945,11 +945,20 @@ footer h6, footer p {
 *
 ********************************************/
 
-#page-accueil .card.card-accueil{
+#page-accueil .card.card-accueil {
 	min-height: 240px;
 }
 
-#page-accueil .card .card-body{
+#page-accueil .card.card-accueil a {
+	color: white;
+}
+
+#page-accueil .card.card-visiteur {
+	min-width: 400px;
+	max-width: 600px;
+}
+
+#page-accueil .card .card-body {
 	padding: 0px;
 	padding-top: 10px;
 }

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} Index {% endblock %}
+{% block title %} Accueil {% endblock %}
 
 {% block body %}
 <div id="page-accueil">
@@ -14,6 +14,7 @@
     		<div class="card card-accueil">
             	<div class="card-header bg-info">
                 	Questionnaires qui vont expirer prochainement
+                	<span class="float-right text-info"><a href="{{ path('questionnaire_listing') }}"><i><span class="oi oi-question-mark"></span> Gestion des questionnaires</i></a></span>
             	</div>
             	<div class="card-body">
             		<table class="table">
@@ -45,6 +46,7 @@
     		<div class="card card-accueil">
             	<div class="card-header bg-info">
                 	Evènements les plus proches
+                	<span class="float-right text-info"><a href="{{ path('evenement_listing') }}"><i><span class="oi oi-calendar"></span> Gestion des évènements</i></a></span>
             	</div>
             	<div class="card-body">
             		<table class="table">
@@ -76,7 +78,8 @@
     	<div class="col-4">
     		<div class="card card-accueil">
             	<div class="card-header bg-info">
-                	Patients : derniers enregistrements
+                	Patients enregistrés dernièrement
+                	<span class="float-right text-info"><a href="{{ path('patient_listing') }}"><i><span class="oi oi-person"></span> Gestion des patients</i></a></span>
             	</div>
             	<div class="card-body">
             		<table class="table">
@@ -108,7 +111,8 @@
 		<div class="col-4">
     		<div class="card card-accueil">
             	<div class="card-header bg-info">
-                	Produits : derniers enregistrements
+                	Produits enregistrés dernièrement
+                	<span class="float-right text-info"><a href="{{ path('produit_listing') }}"><i><span class="oi oi-basket"></span> Gestion des produits</i></a></span>
             	</div>
             	<div class="card-body">
             		<table class="table">
@@ -138,7 +142,8 @@
     	<div class="col-4">
     		<div class="card card-accueil">
             	<div class="card-header bg-info">
-                	Témoignages les plus récents
+                	Témoignages évènements les plus récents
+                	<span class="float-right text-info"><a href="{{ path('temoignage_listing') }}"><i><span class="oi oi-comment-square"></span> Gestion des témoignages (évènements)</i></a></span>
             	</div>
             	<div class="card-body">
             		<table class="table">
@@ -165,7 +170,44 @@
             	            {% endfor %}
             	    </table>
             	            {% if temoignages is empty %}
-        						<p class="text-info text-center"><i>Aucun témoignage dans cette rubrique.</i><p>
+        						<p class="text-info text-center"><i>Aucun témoignage évènement dans cette rubrique.</i><p>
+                            {% endif %}            	    
+    			</div>
+    		</div>
+    	</div>
+    	
+    	    	<div class="col-4">
+    		<div class="card card-accueil">
+            	<div class="card-header bg-info">
+                	Témoignages produits les plus récents
+                	<span class="float-right text-info"><a href="{{ path('temoignage_listing') }}"><i><span class="oi oi-comment-square"></span> Gestion des témoignages (produits)</i></a></span>
+            	</div>
+            	<div class="card-body">
+            		<table class="table">
+                    	<tr>
+            				<th>#</th>
+            				<th>Titre</th>
+            				<th>Corps</th>
+            				<th>Auteur</th>
+            				<th>Date création</th>
+            			</tr>
+            	            {% for tem in temoignages %}
+            	            <tr>
+                                <td>{{ tem.id }}</td>
+                                <td><a href="{{ path('temoignage_see', {'id': tem.id}) }}">{{ tem.titre }}</a></td>
+                                <td>
+                                {% if tem.produit != null %}
+                                    {{ tem.produit.titre }}
+                                {% else %}
+                                	{{ tem.evenement.nom }}
+                                {% endif %}</td>
+                                <td>{{ tem.famille.prenom }} {{ tem.famille.nom }}</td>
+                                <td>{{ tem.dateCreation |date("d/m/Y")}}</td>
+                            </tr>
+            	            {% endfor %}
+            	    </table>
+            	            {% if temoignages is empty %}
+        						<p class="text-info text-center"><i>Aucun témoignage produit dans cette rubrique.</i><p>
                             {% endif %}            	    
     			</div>
     		</div>

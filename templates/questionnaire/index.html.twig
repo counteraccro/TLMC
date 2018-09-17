@@ -11,7 +11,7 @@
 <div class="card">
 	<div class="card-header">
     	{{ pagination.nb_elements }} questionnaires - Page {{ pagination.page }} / {{ pagination.pages_count }}
-		<a href="{{ path('questionnaire_add', {'page' : pagination.page}) }}" class="float-right"><span class="oi oi-person"></span> Nouveau questionnaire</a>
+		<a href="{{ path('questionnaire_add', {'page' : pagination.page}) }}" class="float-right"><span class="oi oi-question-mark"></span> Nouveau questionnaire</a>
 		{{ labelFilter(path('utils_delete-search', {'page' : pagination.page} ), current_search) | raw }}
   	</div>
   	

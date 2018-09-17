@@ -48,10 +48,13 @@ class IndexController extends AppController
         
         //s'il s'agit d'un visiteur non-authentifié
         if (! $this->getUser()) {
-            $temoignages = $repositoryTmg->findAllTemoignages(1, 5, $params);
+            
+            return $this->redirectToRoute('security_login');
+            
+            /*$temoignages = $repositoryTmg->findAllTemoignages(1, 5, $params);
             return $this->render('index/index_visiteur.html.twig', [
                 'temoignages' => $temoignages['paginator']
-            ]);
+            ]);*/
         }
         
         $membre = $this->getMembre();
