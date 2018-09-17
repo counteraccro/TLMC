@@ -54,7 +54,7 @@
                     			{% if temoignage.membre.id == app.user.id %}
                     			    {{ actionEdit(path('temoignage_ajax_edit', {'id' : temoignage.id, 'type' : type, 'page' : pagination.page}), 'btn-edit-temoignage-'~ temoignage.id ) | raw }}
                     			{% endif %}
-                    			{#{ seeImages(path('temoignage_ajax_see_images', {'id': temoignage.id, 'type': type}), 'btn-see-images-' ~ temoignage.id) | raw }#}
+                    			{{ seeImages(path('temoignage_ajax_see_images', {'id': temoignage.id, 'type': type}), 'btn-see-images-' ~ temoignage.id) | raw }}
                 		        {% if is_granted("ROLE_ADMIN") %}
                     		        {{ actionDelete(temoignage.disabled, path('temoignage_delete', {'id' : temoignage.id, 'page' : pagination.page}), temoignage.id) | raw }}
                     		    {% endif %}

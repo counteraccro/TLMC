@@ -171,5 +171,34 @@ Temoignage.Launch = function(params) {
 			});
 		});
 	}
-	
+
+	Temoignage.UpdateField = function(type)
+	{
+		var id_div = '#temoignage_row_';
+		if (type != 'evenement' && type != 'produit'){
+			$( id_div + 'produit').hide();
+			
+			$('#temoignage_type').change(function(){
+				if($(this).val() == 1){
+					$(id_div + '#temoignage_row_produit').show();
+					
+					$(id_div + 'evenement').hide();
+					$(id_div + 'evenement #temoignage_evenement').val(0);
+					$(id_div + 'evenement #temoignage_famille').val(0);
+				} else {
+					$(id_div + 'evenement').show();
+				
+					$(id_div + '#produit').hide();
+					$(id_div + 'produit #temoignage_produit').val(0);
+				}
+			});
+		} else if (type == 'evenement'){
+    		$(id_div + type + ' #temoignage_evenement').attr('required', 'required');
+    		$(id_div + type + ' #temoignage_famille').attr('required', 'required');
+    		$(id_div + 'produit').hide();
+		} else if (type == 'produit'){
+			$(id_div + type + ' #temoignage_produit').attr('required', 'required');
+			$( id_div + 'evenement').hide();
+		}
+	}
 }
