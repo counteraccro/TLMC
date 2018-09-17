@@ -331,7 +331,7 @@ class AppController extends Controller
         $type = strtolower($type);
 
         $extension = strtolower($file->getClientOriginalExtension());
-        if (in_array($extension, self::FORMAT_IMAGE)) {
+        if (!in_array($extension, self::FORMAT_IMAGE)) {
             return false;
         }
 

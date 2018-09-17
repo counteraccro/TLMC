@@ -10,6 +10,7 @@
 
 <div>
     {{ form_start(form) }}
+    {{ form_errors(form) }}
     
 	{{ form_row(form.nom) }}
 	<div class="row">
@@ -72,7 +73,6 @@
   	</div>
   	
     {{ form_rest(form) }}
-    {{ form_errors(form) }}
     {{ form_end(form) }}
     
     <!-- Modal -->
@@ -131,8 +131,7 @@
 		};
         
 		TypeEvenement.Launch(paramsTE);
-		var id_btn_add = '#add_type';
-		TypeEvenement.EventAdd(id_btn_add);
+		TypeEvenement.EventAdd('#add_type');
     });
     
     </script> 

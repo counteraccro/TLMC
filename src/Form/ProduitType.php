@@ -26,9 +26,9 @@ class ProduitType extends AbstractType
         $builder->add('type', EntityType::class, array(
             'class' => TypeProduit::class,
             'query_builder' => function (TypeProduitRepository $tpr) {
-                return $tpr->createQueryBuilder('te')
-                    ->andWhere('te.disabled = 0')
-                    ->orderBy('te.nom');
+                return $tpr->createQueryBuilder('tp')
+                    ->andWhere('tp.disabled = 0')
+                    ->orderBy('tp.nom');
             },
             'choice_label' => 'nom'
         ))
