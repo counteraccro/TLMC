@@ -108,7 +108,7 @@ class AppController extends Controller
     const EDIT = "edit";
 
     const DROITS = array(
-        'ROLE_ADMIN' => 'Administratreur',
+        'ROLE_ADMIN' => 'Administrateur',
         'ROLE_BENEFICIAIRE_DIRECT' => 'Bénéficiaire Direct',
         'ROLE_BENEFICIAIRE' => 'Bénéficiaire',
         'ROLE_BENEVOLE' => 'Bénévole'

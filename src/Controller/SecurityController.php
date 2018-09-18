@@ -10,6 +10,8 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class SecurityController extends AppController
 {
     /**
+     * La route pour se connecter.
+     * 
      * @Route("/login", name="security_login")
      */
     public function login(Request $request, AuthenticationUtils $authenticationUtils)
@@ -30,7 +32,7 @@ class SecurityController extends AppController
     
     /**
      * La route pour se deconnecter.
-
+     *
      * @Route("/logout", name="security_logout")
      */
     public function logout(): void

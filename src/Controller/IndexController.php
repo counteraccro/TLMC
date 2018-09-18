@@ -12,25 +12,26 @@ use Symfony\Component\Routing\Annotation\Route;
 class IndexController extends AppController
 {
 
-    /**
-     *
-     * @Route("/email", name="email")
-     * @param EmailManager $sendEmail
-     */
-    public function testMailer(EmailManager $sendEmail)
-    {
-        $params = array(
-            'expediteur' => array('toto@gmail.com'),
-            'destinataire' => array('ingridweil@gmail.com', 'ingridweil2@gmail.com'),
-            'body' => $this->render('emails/registration.html.twig', [
-                'nom' => htmlentities($this->getMembre()->getNom()),
-                'prenom' => htmlentities($this->getMembre()->getPrenom()),
-                'username' => htmlentities($this->getMembre()->getUsername()),
-            ]),
-        );
-        $sendEmail->send($params);
-        return $this->render('index/index_visiteur.html.twig');
-    }
+//     /**
+//      *
+//      * @Route("/email", name="email")
+//      * @param EmailManager $sendEmail
+//      */
+//     public function testMailer(EmailManager $sendEmail)
+//     {
+//         $params = array(
+//             'expediteur' => array('toto@gmail.com'),
+//             'destinataire' => array('ingridweil@gmail.com', 'ingridweil2@gmail.com'),
+//             'body' => $this->render('emails/registration.html.twig', [
+//                 'nom' => htmlentities($this->getMembre()->getNom()),
+//                 'prenom' => htmlentities($this->getMembre()->getPrenom()),
+//                 'username' => htmlentities($this->getMembre()->getUsername()),
+//                 'password' => $this->getMembre()->getPassword()
+//             ]),
+//         );
+//         $sendEmail->send($params);
+//         return $this->render('index/index_visiteur.html.twig');
+//     }
 
     /**
      * Page d'accueil + 5 derniers témoignages

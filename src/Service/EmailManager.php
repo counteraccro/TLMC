@@ -24,7 +24,8 @@ class EmailManager extends AppService
     }
 
     /**
-     * 
+     * Fonction permettant l'envoi d'un mail en automatique
+     * Prend en paramètres un tableau comprenant le destinataire, l'expéditeur et le corps du message
      * @param array $params
      */
     public function send(array $params)
@@ -38,7 +39,7 @@ class EmailManager extends AppService
     }
     
     /**
-     * 
+     * Valide les paramètres qui serviront plus tard à l'envoi de mail en automatique (vérification clés-valeurs)
      * @param array $params_
      * @throws \ErrorException
      */

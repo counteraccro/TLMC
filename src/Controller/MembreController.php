@@ -14,6 +14,7 @@ use App\Entity\Groupe;
 use App\Entity\GroupeMembre;
 use Symfony\Component\Form\FormError;
 use App\Form\AvatarType;
+use App\Service\EmailManager;
 
 class MembreController extends AppController
 {
@@ -165,9 +166,10 @@ class MembreController extends AppController
      * @param SessionInterface $session
      * @param Request $request
      * @param int $page
+     * @param EmailManager $sendEmail
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function addAction(UserPasswordEncoderInterface $encoder, SessionInterface $session, Request $request, int $page)
+    public function addAction(UserPasswordEncoderInterface $encoder, SessionInterface $session, Request $request, int $page, EmailManager $sendEmail)
     {
         $arrayFilters = $this->getDatasFilter($session);
 
@@ -206,15 +208,45 @@ class MembreController extends AppController
 
                 $membre->setDisabled(0);
                 $membre->setSalt($this->generateSalt());
-
+                $password_en_clair = $membre->getPassword();
                 $encodePassword = $encoder->encodePassword($membre, $membre->getPassword());
                 $membre->setPassword($encodePassword);
                 $em->persist($membre);
                 $em->flush();
 
-                return $this->redirect($this->generateUrl('membre_see', array(
-                    'id' => $membre->getId()
-                )));
+                $params = array(
+                    'expediteur' => array('toto@gmail.com'),
+                    'destinataire' => array('ingridweil@gmail.com', 'ingridweil2@gmail.com'),
+                    'body' => $this->render('emails/registration.html.twig', [
+                        'nom' => htmlentities($membre->getNom()),
+                        'prenom' => htmlentities($membre->getPrenom()),
+                        'username' => htmlentities($membre->getUsername()),
+                        'password' => $password_en_clair
+                    ]),
+                );
+                $sendEmail->send($params);
+                
+                //REDIRECTION VERS LA PAGE mais pas possible de checker mail auto
+//                 return $this->redirect($this->generateUrl('membre_see', array(
+//                     'id' => $membre->getId()
+//                 )));
+
+                //ce render permet de visualiser le mail auto (TODO : remettre la redirection ci-dessus une fois mails auto terminés)
+                return $this->render('membre/see.html.twig', array(
+                    'page' => $page,
+                    'membre' => $membre,
+                    'paths' => array(
+                        'home' => $this->indexUrlProject(),
+                        'urls' => array(
+                            $this->generateUrl('membre_listing', array(
+                                'page' => $page,
+                                'field' => $arrayFilters['field'],
+                                'order' => $arrayFilters['order']
+                            )) => 'Gestion des membres'
+                        ),
+                        'active' => "Ajout d'un membre"
+                    )
+                ));
             }
         }
 
