@@ -70,11 +70,17 @@ class Patient
      */
     private $droit_image;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\FamillePatient", mappedBy="patient")
+     */
+    private $famillePatients;
+
     public function __construct()
     {
         $this->familles = new ArrayCollection();
         $this->historiques = new ArrayCollection();
         $this->participants = new ArrayCollection();
+        $this->famillePatients = new ArrayCollection();
     }
 
     public function getId()
@@ -255,6 +261,37 @@ class Patient
     public function setDroitImage(bool $droit_image): self
     {
         $this->droit_image = $droit_image;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|FamillePatient[]
+     */
+    public function getFamillePatients(): Collection
+    {
+        return $this->famillePatients;
+    }
+
+    public function addFamillePatient(FamillePatient $famillePatient): self
+    {
+        if (!$this->famillePatients->contains($famillePatient)) {
+            $this->famillePatients[] = $famillePatient;
+            $famillePatient->setPatient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFamillePatient(FamillePatient $famillePatient): self
+    {
+        if ($this->famillePatients->contains($famillePatient)) {
+            $this->famillePatients->removeElement($famillePatient);
+            // set the owning side to null (unless already changed)
+            if ($famillePatient->getPatient() === $this) {
+                $famillePatient->setPatient(null);
+            }
+        }
 
         return $this;
     }

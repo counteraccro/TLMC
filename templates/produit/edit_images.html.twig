@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Modifications des images {% endblock %}
+
+{% block body %}
+    <h1>Modification des images du produit #{{ produit.id }} - {{ produit.titre }}</h1>
+    
+    {% include 'elements/arborescence.html.twig' %}
+
+    <div class="card mx-auto" style="width: 55rem">
+  		<div class="card-header bg-light">Modifier les images</div>
+  		<div class="card-body">
+			<div class="row">
+            	<div class="col-4">
+            		Image 1
+            	    {% if produit.image1 %}
+            	        {{ image('produit', produit.image1, 'img-fluid shadow-sm img-thumbnail') | raw }}
+                    {% else %}
+                        {{ image('produit', 'product_default_picture.jpg', 'img-fluid shadow-sm img-thumbnail') | raw }}
+                    {% endif %}
+                    <br>Image 2
+            	    {% if produit.image2 %}
+            	        {{ image('produit', produit.image2, 'img-fluid shadow-sm img-thumbnail') | raw }}
+                    {% else %}
+                        {{ image('produit', 'product_default_picture.jpg', 'img-fluid shadow-sm img-thumbnail') | raw }}
+                    {% endif %}
+                    <br>Image 3
+            	    {% if produit.image3 %}
+            	        {{ image('produit', produit.image3, 'img-fluid shadow-sm img-thumbnail') | raw }}
+                    {% else %}
+                        {{ image('produit', 'product_default_picture.jpg', 'img-fluid shadow-sm img-thumbnail') | raw }}
+                    {% endif %}
+                </div>
+                <div class="col-8">
+                    <div class="alert alert-info"><span class="oi oi-info"></span> <b>Information</b><br/>
+                    	Les formats de fichier acceptés sont les suivants :<br/>
+                    	<ul>
+                    	{% for type_img in constant('App\\Controller\\AppController::FORMAT_IMAGE') %}
+                    		<li>{{ type_img }}</li>
+                    	{% endfor %}
+                    	</ul>
+                    </div>
+                    {{ form(form) }}	
+                </div>
+          	</div>
+		</div>
+	</div>
+
+    {% block script %}
+     	<script src="{{ asset('assets/js/image/Image.js') }}?{{ date().timestamp }}"></script>
+    {% endblock %}
+    
+    {% block javascripts %}
+        <script type="text/javascript">
+        	$(document).ready(function() {
+        		Image.Launch();
+            	Image.UpdateInput('#image_image_1', 'Choisir la première image', '{{ texte_aide }}');
+            	Image.UpdateInput('#image_image_2', 'Choisir la seconde image', '{{ texte_aide }}');
+            	Image.UpdateInput('#image_image_3', 'Choisir la troisième image', '{{ texte_aide }}');
+        	});
+        </script>
+    {% endblock %}
+{% endblock %}

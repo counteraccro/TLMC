@@ -4,7 +4,8 @@
     	{% if is_granted("ROLE_ADMIN") %}
     	    ({% if produit.disabled == 1 %} Inactif {% else %} Actif {% endif %})
        		<div class="float-right">
-       			{{ editObjet(path('produit_ajax_edit', {'id': produit.id }), "Editer le produit", "btn-edit-produit") | raw }}
+       			{{ editObjet(path('produit_edit_images', {'id': produit.id, 'page': page }), "Modifier les images", "") | raw }}
+    	        {{ editObjet(path('produit_ajax_edit', {'id': produit.id }), "Editer le produit", "btn-edit-produit") | raw }}
        			{{ deleteObjet(produit.disabled, path('produit_delete', {'id': produit.id, 'page' : 1 }), 'btn-disabled-produit') | raw }}
        		</div>
        	{% endif %}
@@ -62,32 +63,33 @@
         	</div>
     	</div>
     	<div class="row align-items-center">
-    		<div class="col-md-4">
-    		    {% if produit.image1 != null %}
-    		    	{% if is_granted("ROLE_ADMIN") %}
-    		    	    {{ deleteImage(path('image_delete', {'id': produit.id, 'type' : 'produit', 'field': 'image_1' }), 'btn-delete-image-1') | raw }}
-    		        {% endif %}
-    		    	{{ image('produit', produit.image1, 'img-fluid shadow-sm img-thumbnail') | raw }}
-    	        {% endif %}
-    		</div>
-    		<div class="col-md-4">
-    		    {% if produit.image2 != null %}
-    		    	{% if is_granted("ROLE_ADMIN") %}
-    		    	    {{ deleteImage(path('image_delete', {'id': produit.id, 'type' : 'produit', 'field': 'image_2' }), 'btn-delete-image-2') | raw }}
-    		        {% endif %}
-    		    	{{ image('produit', produit.image2, 'img-fluid shadow-sm img-thumbnail') | raw }}
-    	        {% endif %}
-    		</div>
-    		<div class="col-md-4">
-    		    {% if produit.image3 != null %}
-    		    	{% if is_granted("ROLE_ADMIN") %}
-    		    	    {{ deleteImage(path('image_delete', {'id': produit.id, 'type' : 'produit', 'field': 'image_3' }), 'btn-delete-image-3') | raw }}
-    		        {% endif %}
-    		    	{{ image('produit', produit.image3, 'img-fluid shadow-sm img-thumbnail') | raw }}
-    	        {% endif %}
-    		</div>
+    		{% if produit.image1 != null %}
+            	<div class="col-md-4">
+                   	{% if is_granted("ROLE_ADMIN") %}
+                	    {{ deleteImage(path('image_delete', {'id': produit.id, 'type' : 'produit', 'field': 'image_1' }), 'btn-delete-image-1') | raw }}
+                    {% endif %}
+                    {{ image('produit', produit.image1) | raw }}
+               	</div>
+            {% endif %}
+            	
+            {% if produit.image2 != null %}
+            	<div class="col-md-4">
+                  	{% if is_granted("ROLE_ADMIN") %}
+                	    {{ deleteImage(path('image_delete', {'id': produit.id, 'type' : 'produit', 'field': 'image_2' }), 'btn-delete-image-2') | raw }}
+                    {% endif %}
+                	{{ image('produit', produit.image2) | raw }}
+                </div>
+            {% endif %}
+            		
+            {% if produit.image3 != null %}
+            	<div class="col-md-4">
+                  	{% if is_granted("ROLE_ADMIN") %}
+                	    {{ deleteImage(path('image_delete', {'id': produit.id, 'type' : 'produit', 'field': 'image_3' }), 'btn-delete-image-3') | raw }}
+                    {% endif %}
+            	  	{{ image('produit', produit.image3) | raw }}
+            	</div>
+            {% endif %}
     	</div>
-    	
     </div>
 </div>
 
@@ -105,14 +107,10 @@
         var id_btn_delete_produit = '#btn-disabled-produit';
         Produit.EventDelete(id_btn_delete_produit);
 
-        var id_btn_delete_image_1 = '#btn-delete-image-1';
-        Produit.EventDelete(id_btn_delete_image_1);
-
-        var id_btn_delete_image_2 = '#btn-delete-image-2';
-        Produit.EventDelete(id_btn_delete_image_2);
-
-        var id_btn_delete_image_3 = '#btn-delete-image-3';
-        Produit.EventDelete(id_btn_delete_image_3);
+        var pas;
+        for (pas = 1; pas <= 3; pas++) {
+        	Produit.EventDelete('#btn-delete-image-' + pas);
+        }
     });
     
     </script> 

@@ -151,7 +151,7 @@ class ProduitType extends AbstractType
             'trancheAge' => AppController::TRANCHE_AGE,
             'add' => false,
             'ajax' => false,
-            'aide_ajout' => 'Formats de fichier acceptés : jpg, jpeg, png, gif',
+            'aide_ajout' => 'Formats de fichier acceptés : ' . implode(', ', AppController::FORMAT_IMAGE),
             'aide_edition' => 'Ne pas remplir si vous souhaitez conserver la même image'
         ));
     }

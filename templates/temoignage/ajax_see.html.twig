@@ -21,7 +21,8 @@
         	
         	{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')%}
             	<div class="float-right">
-            		{{ editObjet(path('temoignage_ajax_edit', {'id': temoignage.id, 'type':'temoignage' }), "Editer le témoignage", "btn-edit-temoignage") | raw }}
+            		{{ editObjet(path('temoignage_edit_images', {'id': temoignage.id, 'type' : type, 'page': page }), "Modifier les images", "") | raw }}
+        	        {{ editObjet(path('temoignage_ajax_edit', {'id': temoignage.id, 'type':'temoignage' }), "Editer le témoignage", "btn-edit-temoignage") | raw }}
             		{% if is_granted("ROLE_ADMIN") %}
             		    {{ deleteObjet(temoignage.disabled, path('temoignage_delete', {'id': temoignage.id, 'page' : 1 }), 'btn-disabled-temoignage') | raw }}
             		{% endif %}
@@ -42,32 +43,34 @@
                 {% endif %}
         	</blockquote>
         	
-        	<div id="temoignage_images">
+        	<div id="temoignage_images" style="width: 55rem">
         		<div class="row align-items-center">
-            		<div class="col-md-4">
-            		    {% if temoignage.image1 != null %}
-            		    	{% if is_granted("ROLE_ADMIN") %}
+            		{% if temoignage.image1 != null %}
+            			<div class="col-md-4">
+            		       	{% if is_granted("ROLE_ADMIN") %}
             		    	    {{ deleteImage(path('image_delete', {'id': temoignage.id, 'type' : 'temoignage', 'field': 'image_1' }), 'btn-delete-image-1') | raw }}
             		        {% endif %}
-            		    	{{ image('temoignage', temoignage.image1) | raw }}
-            	        {% endif %}
-            		</div>
-            		<div class="col-md-4">
-            		    {% if temoignage.image2 != null %}
-            		    	{% if is_granted("ROLE_ADMIN") %}
+            		        {{ image('temoignage', temoignage.image1) | raw }}
+            	    	</div>
+            		{% endif %}
+            		
+            		{% if temoignage.image2 != null %}
+            			<div class="col-md-4">
+            		      	{% if is_granted("ROLE_ADMIN") %}
             		    	    {{ deleteImage(path('image_delete', {'id': temoignage.id, 'type' : 'temoignage', 'field': 'image_2' }), 'btn-delete-image-2') | raw }}
             		        {% endif %}
             		    	{{ image('temoignage', temoignage.image2) | raw }}
-            	        {% endif %}
-            		</div>
-            		<div class="col-md-4">
-            		    {% if temoignage.image3 != null %}
-            		    	{% if is_granted("ROLE_ADMIN") %}
+            	        </div>
+            		{% endif %}
+            		
+            		{% if temoignage.image3 != null %}
+            			<div class="col-md-4">
+            		      	{% if is_granted("ROLE_ADMIN") %}
             		    	    {{ deleteImage(path('image_delete', {'id': temoignage.id, 'type' : 'temoignage', 'field': 'image_3' }), 'btn-delete-image-3') | raw }}
             		        {% endif %}
             		    	{{ image('temoignage', temoignage.image3) | raw }}
-            	        {% endif %}
-            		</div>
+            	        </div>
+            		{% endif %}
             	</div>
         	</div>
      	</div>

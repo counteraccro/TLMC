@@ -11,6 +11,7 @@ use App\Form\ProduitType;
 use Symfony\Component\Form\FormError;
 use App\Entity\ProduitEtablissement;
 use App\Entity\ProduitSpecialite;
+use App\Form\ImageType;
 
 class ProduitController extends AppController
 {
@@ -161,6 +162,7 @@ class ProduitController extends AppController
 
             return $this->render('produit/ajax_see.html.twig', array(
                 'produit' => $produit,
+                'page' => $page,
                 'admin' => $admin,
                 'quantite' => ($admin ? 0 : $lien->getQuantite())
             ));
@@ -275,6 +277,81 @@ class ProduitController extends AppController
                     )) => 'Gestion des produits'
                 ),
                 'active' => "Ajout d'un produit"
+            )
+        ));
+    }
+    
+    /**
+     * Edition des images d'un produit
+     *
+     * @Route("/produit/edit_images/{id}/{page}", name="produit_edit_images")
+     * @ParamConverter("produit", options={"mapping": {"id": "id"}})
+     * @Security("is_granted('ROLE_ADMIN')")
+     * 
+     * @param Request $request
+     * @param SessionInterface $session
+     * @param Produit $produit
+     * @param int $page
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function editImagesAction(Request $request, SessionInterface $session, Produit $produit, int $page = 1)
+    {
+        $arrayFilters = $this->getDatasFilter($session);
+        
+        $images = array(
+            1 => $produit->getImage1(),
+            2 => $produit->getImage2(),
+            3 => $produit->getImage3()
+        );
+        
+        $form = $this->createForm(ImageType::class);
+        
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            
+            for ($i = 1; $i <= 3; $i ++) {
+                $file = $form['image_' . $i]->getData();
+                $methodeSet = 'setImage' . $i;
+                if (! is_null($file)) {
+                    $fileName = $this->telechargerImage($file, 'produit', $produit->getTitre(), 'image_'.$i, $images[$i]);
+                    if ($fileName) {
+                        $produit->{$methodeSet}($fileName);
+                    } else {
+                        $form->addError(new FormError("Le fichier n'est pas au format autorisé (" . implode(', ', AppController::FORMAT_IMAGE) . ")."));
+                    }
+                }
+            }
+            
+            if ($form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($produit);
+                $em->flush();
+                
+                return $this->redirect($this->generateUrl('produit_see', array(
+                    'id' => $produit->getId(),
+                    'page' => $page
+                )));
+            }
+        }
+        
+        return $this->render('produit/edit_images.html.twig', array(
+            'produit' => $produit,
+            'texte_aide' => 'Formats de fichier acceptés : ' . implode(', ', self::FORMAT_IMAGE),
+            'form' => $form->createView(),
+            'paths' => array(
+                'home' => $this->indexUrlProject(),
+                'urls' => array(
+                    $this->generateUrl('produit_listing', array(
+                        'page' => $page,
+                        'field' => $arrayFilters['field'],
+                        'order' => $arrayFilters['order']
+                    )) => 'Gestion des produits',
+                    $this->generateUrl('produit_see', array(
+                        'id' => $produit->getId(),
+                        'page' => $page
+                    )) => 'Fiche du produit #' . $produit->getId() . ' - ' . $produit->getTitre()
+                ),
+                'active' => 'Modification des images'
             )
         ));
     }

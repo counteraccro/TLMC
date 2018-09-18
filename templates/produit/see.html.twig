@@ -60,7 +60,7 @@
         $(document).ready(function() {
     
         	var paramsP = {
-    				url_ajax_see : '{{path('produit_ajax_see', {'id': produit.id}) }}',
+    				url_ajax_see : '{{path('produit_ajax_see', {'id': produit.id, 'page': page }) }}',
     				id_content_modal : '#bloc_modal',
     				id_modal : '#modal_produit_global',
     				id_global : '#bloc_produit',

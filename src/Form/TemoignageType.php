@@ -133,7 +133,7 @@ class TemoignageType extends AbstractType
             'ajax' => false,
             'add' => true,
             'allow_extra_fields' => true,
-            'aide_ajout' => 'Formats de fichier acceptés : jpg, jpeg, png, gif',
+            'aide_ajout' => 'Formats de fichier acceptés : ' . implode(', ', AppController::FORMAT_IMAGE),
             'aide_edition' => 'Ne pas remplir si vous souhaitez conserver la même image'
         ]);
     }

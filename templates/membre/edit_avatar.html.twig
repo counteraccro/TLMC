@@ -5,7 +5,7 @@
 {% block body %}
     <h1>Mon avatar</h1>
     
-     {% include 'elements/arborescence.html.twig' %}
+    {% include 'elements/arborescence.html.twig' %}
 
     <div class="card mx-auto" style="width: 55rem">
   		<div class="card-header bg-light">Modifier mon avatar</div>
@@ -20,32 +20,31 @@
                 </div>
                 <div class="col-8">
                     <div class="alert alert-info"><span class="oi oi-info"></span> <b>Information</b><br/>
-                    Les formats de fichier acceptés sont les suivants :<br/>
+                    	Les formats de fichier acceptés sont les suivants :<br/>
                     	<ul>
                     	{% for type_img in constant('App\\Controller\\AppController::FORMAT_IMAGE') %}
                     		<li>{{ type_img }}</li>
                     	{% endfor %}
                     	</ul>
                     </div>
-                      	{{ form(form) }}
-                      	
+                    {{ form(form) }}	
                 </div>
           	</div>
 		</div>
 	</div>
 
-{% block script %}
- 	<script src="{{ asset('assets/js/image/Image.js') }}?{{ date().timestamp }}"></script>
-{% endblock %}
-
-{% block javascripts %}
-    <script type="text/javascript">
+    {% block script %}
+     	<script src="{{ asset('assets/js/image/Image.js') }}?{{ date().timestamp }}"></script>
+    {% endblock %}
     
-    $(document).ready(function() {
-    	Image.Launch();
-    	Image.UpdateInput('#image_image', 'Uploader un nouvel avatar', '');
-    });
-
-    	</script>
-{% endblock %}
+    {% block javascripts %}
+        <script type="text/javascript">
+        
+        $(document).ready(function() {
+        	Image.Launch();
+        	Image.UpdateInput('#avatar_avatar', 'Uploader un nouvel avatar', '');
+        });
+    
+        	</script>
+    {% endblock %}
 {% endblock %}

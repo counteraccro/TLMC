@@ -13,8 +13,7 @@ use App\Entity\Questionnaire;
 use App\Entity\Groupe;
 use App\Entity\GroupeMembre;
 use Symfony\Component\Form\FormError;
-use App\Form\ImageType;
-use PhpParser\Node\Stmt\Foreach_;
+use App\Form\AvatarType;
 
 class MembreController extends AppController
 {
@@ -297,11 +296,11 @@ class MembreController extends AppController
     {
         $membre = $this->getMembre();
         
-        $form = $this->createForm(ImageType::class);
+        $form = $this->createForm(AvatarType::class);
 
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
-            $file = $form['image']->getData();
+            $file = $form['avatar']->getData();
             if (! is_null($file)) {
                 $fileName = $this->telechargerImage($file, 'membre', $membre->getPrenom() . '-' . $membre->getNom(), 'avatar');
                 if ($fileName) {
@@ -320,7 +319,7 @@ class MembreController extends AppController
                 )));
             }
         }
-        $membre = $this->getMembre();
+        
         return $this->render('membre/edit_avatar.html.twig', [
             'membre' => $membre,
             'form' => $form->createView(),

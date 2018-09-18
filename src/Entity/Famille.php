@@ -81,10 +81,16 @@ class Famille
      */
     private $temoignages;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\FamillePatient", mappedBy="famille")
+     */
+    private $famillePatients;
+
     public function __construct()
     {
         $this->participants = new ArrayCollection();
         $this->temoignages = new ArrayCollection();
+        $this->famillePatients = new ArrayCollection();
     }
 
 
@@ -261,6 +267,37 @@ class Famille
             // set the owning side to null (unless already changed)
             if ($temoignage->getFamille() === $this) {
                 $temoignage->setFamille(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|FamillePatient[]
+     */
+    public function getFamillePatients(): Collection
+    {
+        return $this->famillePatients;
+    }
+
+    public function addFamillePatient(FamillePatient $famillePatient): self
+    {
+        if (!$this->famillePatients->contains($famillePatient)) {
+            $this->famillePatients[] = $famillePatient;
+            $famillePatient->setFamille($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFamillePatient(FamillePatient $famillePatient): self
+    {
+        if ($this->famillePatients->contains($famillePatient)) {
+            $this->famillePatients->removeElement($famillePatient);
+            // set the owning side to null (unless already changed)
+            if ($famillePatient->getFamille() === $this) {
+                $famillePatient->setFamille(null);
             }
         }
 

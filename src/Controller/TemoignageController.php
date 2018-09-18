@@ -13,6 +13,7 @@ use App\Entity\Evenement;
 use App\Entity\Produit;
 use App\Entity\Famille;
 use Symfony\Component\Form\FormError;
+use App\Form\ImageType;
 
 class TemoignageController extends AppController
 {
@@ -128,7 +129,7 @@ class TemoignageController extends AppController
      * Fiche d'un témoignage
      *
      * @Route("/temoignage/see/{id}/{type}/{page}", name="temoignage_see")
-     * @Route("/temoignage/see/{id}", name="temoignage_ajax_see")
+     * @Route("/temoignage/ajax/see_fiche/{id}/{type}/{page}", name="temoignage_ajax_see")
      * @ParamConverter("temoignage", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT') or is_granted('ROLE_BENEVOLE')")
      *
@@ -147,7 +148,9 @@ class TemoignageController extends AppController
         if ($request->isXmlHttpRequest()) {
 
             return $this->render('temoignage/ajax_see.html.twig', array(
-                'temoignage' => $temoignage
+                'temoignage' => $temoignage,
+                'type' => $type,
+                'page' => $page
             ));
         }
 
@@ -377,6 +380,7 @@ class TemoignageController extends AppController
             'page' => $page,
             'type' => $type,
             'form' => $form->createView(),
+            'texte_aide' => 'Formats de fichier acceptés : ' . implode(', ', self::FORMAT_IMAGE),
             'paths' => array(
                 'home' => $this->indexUrlProject(),
                 'urls' => array(
@@ -388,6 +392,85 @@ class TemoignageController extends AppController
                     )) => 'Gestion des témoignages'
                 ),
                 'active' => "Ajout d'un témoignage"
+            )
+        ));
+    }
+    
+    /**
+     * Edition des images d'un témoignage
+     *
+     * @Route("/temoignage/edit_images/{id}/{type}/{page}", name="temoignage_edit_images")
+     * @ParamConverter("temoignage", options={"mapping": {"id": "id"}})
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE_DIRECT') or is_granted('ROLE_BENEFICIAIRE')")
+     * 
+     * @param Request $request
+     * @param SessionInterface $session
+     * @param Temoignage $temoignage
+     * @param string $type
+     * @param int $page
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function editImagesAction(Request $request, SessionInterface $session, Temoignage $temoignage, string $type, int $page = 1)
+    {
+        $arrayFilters = $this->getDatasFilter($session);
+        
+        $images = array(
+            1 => $temoignage->getImage1(),
+            2 => $temoignage->getImage2(),
+            3 => $temoignage->getImage3()
+        );
+        
+        $form = $this->createForm(ImageType::class);
+        
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            
+            for ($i = 1; $i <= 3; $i ++) {
+                $file = $form['image_' . $i]->getData();
+                $methodeSet = 'setImage' . $i;
+                if (! is_null($file)) {
+                    $fileName = $this->telechargerImage($file, 'temoignage', $temoignage->getTitre(), 'image_'.$i, $images[$i]);
+                    if ($fileName) {
+                        $temoignage->{$methodeSet}($fileName);
+                    } else {
+                        $form->addError(new FormError("Le fichier n'est pas au format autorisé (" . implode(', ', AppController::FORMAT_IMAGE) . ")."));
+                    }
+                }
+            }
+            
+            if ($form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($temoignage);
+                $em->flush();
+                
+                return $this->redirect($this->generateUrl('temoignage_see', array(
+                    'id' => $temoignage->getId(),
+                    'type' => $type,
+                    'page' => $page
+                )));
+            }
+        }
+        
+        return $this->render('temoignage/edit_images.html.twig', array(
+            'temoignage' => $temoignage,
+            'texte_aide' => 'Formats de fichier acceptés : ' . implode(', ', self::FORMAT_IMAGE),
+            'form' => $form->createView(),
+            'paths' => array(
+                'home' => $this->indexUrlProject(),
+                'urls' => array(
+                    $this->generateUrl('temoignage_listing', array(
+                        'page' => $page,
+                        'type' => $type,
+                        'field' => $arrayFilters['field'],
+                        'order' => $arrayFilters['order']
+                    )) => 'Gestion des témoignages',
+                    $this->generateUrl('temoignage_see', array(
+                        'id' => $temoignage->getId(),
+                        'type' => $type,
+                        'page' => $page
+                    )) => 'Fiche du témoignage #' . $temoignage->getId() . ' - ' . $temoignage->getTitre()
+                ),
+                'active' => 'Modification des images'
             )
         ));
     }
@@ -520,6 +603,7 @@ class TemoignageController extends AppController
             'page' => $page,
             'type' => $type,
             'form' => $form->createView(),
+            'texte_aide' => 'Formats de fichier acceptés : ' . implode(', ', self::FORMAT_IMAGE),
             'temoignage' => $temoignage,
             'paths' => array(
                 'home' => $this->indexUrlProject(),
@@ -582,7 +666,7 @@ class TemoignageController extends AppController
     /**
      * Fiche d'un témoignage
      *
-     * @Route("/temoignage/ajax/see/image/{id}/{type}", name="temoignage_ajax_see_images")
+     * @Route("/temoignage/ajax/see_image/{id}/{type}", name="temoignage_ajax_see_images")
      * @ParamConverter("temoignage", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT') or is_granted('ROLE_BENEVOLE')")
      *

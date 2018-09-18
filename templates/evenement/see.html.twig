@@ -68,7 +68,7 @@
     $(document).ready(function() {
 
     	var paramsE = {
-				url_ajax_see : '{{path('evenement_ajax_see', {'id': evenement.id}) }}',
+				url_ajax_see : '{{path('evenement_ajax_see', {'id': evenement.id, 'page': page }) }}',
 				id_content_modal : '#bloc_modal',
 				id_modal : '#modal_evenement_global',
 				id_global : '#bloc_evenement'

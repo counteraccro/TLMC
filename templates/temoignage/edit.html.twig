@@ -53,11 +53,10 @@
 {% block javascripts %}
 	<script type="text/javascript">	
 
-    	var texte_aide = "Formats de fichier acceptés : jpg, jpeg, png, gif";
     	Image.Launch();
-    	Image.UpdateInput('#temoignage_image_1', 'Choisir la première image', texte_aide);
-    	Image.UpdateInput('#temoignage_image_2', 'Choisir la seconde image', texte_aide);
-    	Image.UpdateInput('#temoignage_image_3', 'Choisir la troisième image', texte_aide);
+    	Image.UpdateInput('#temoignage_image_1', 'Choisir la première image', {{ texte_aide }});
+    	Image.UpdateInput('#temoignage_image_2', 'Choisir la seconde image', {{ texte_aide }});
+    	Image.UpdateInput('#temoignage_image_3', 'Choisir la troisième image', {{ texte_aide }});
 		
         if($('#temoignage_evenement').val()){
         	$('#temoignage_row_produit').hide();

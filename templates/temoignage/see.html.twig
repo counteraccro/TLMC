@@ -34,7 +34,7 @@
     $(document).ready(function() {
 		
     	var params = {
-				url_ajax_see : '{{path('temoignage_ajax_see', {'id': temoignage.id}) }}',
+				url_ajax_see : '{{path('temoignage_ajax_see', {'id': temoignage.id, 'type': type, 'page': page}) }}',
 				id_content_modal : '#bloc_modal',
 				id_modal : '#modal_temoignage_global',
 				id_global : '#bloc_temoignage',

@@ -11,6 +11,7 @@ use App\Form\EvenementType;
 use App\Entity\Specialite;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Session\Session;
+use App\Form\ImageType;
 
 class EvenementController extends AppController
 {
@@ -107,7 +108,7 @@ class EvenementController extends AppController
      * Fiche d'un événement
      *
      * @Route("/evenement/see/{id}/{page}", name="evenement_see")
-     * @Route("/evenement/ajax/see/{id}", name="evenement_ajax_see")
+     * @Route("/evenement/ajax/see/{id}/{page}", name="evenement_ajax_see")
      * @ParamConverter("evenement", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT') or is_granted('ROLE_BENEVOLE')")
      *
@@ -125,7 +126,8 @@ class EvenementController extends AppController
         if ($request->isXmlHttpRequest()) {
 
             return $this->render('evenement/ajax_see.html.twig', array(
-                'evenement' => $evenement
+                'evenement' => $evenement,
+                'page' => $page
             ));
         }
 
@@ -241,6 +243,81 @@ class EvenementController extends AppController
         ));
     }
 
+    /**
+     * Edition des images d'un événement
+     *
+     * @Route("/evenement/edit_images/{id}/{page}", name="evenement_edit_images")
+     * @ParamConverter("evenement", options={"mapping": {"id": "id"}})
+     * @Security("is_granted('ROLE_ADMIN')")
+     *
+     * @param Request $request
+     * @param SessionInterface $session
+     * @param Evenement $evenement
+     * @param int $page
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function editImagesAction(Request $request, SessionInterface $session, Evenement $evenement, int $page = 1)
+    {
+        $arrayFilters = $this->getDatasFilter($session);
+        
+        $images = array(
+            1 => $evenement->getImage1(),
+            2 => $evenement->getImage2(),
+            3 => $evenement->getImage3()
+        );
+        
+        $form = $this->createForm(ImageType::class);
+        
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            
+            for ($i = 1; $i <= 3; $i ++) {
+                $file = $form['image_' . $i]->getData();
+                $methodeSet = 'setImage' . $i;
+                if (! is_null($file)) {
+                    $fileName = $this->telechargerImage($file, 'evenement', $evenement->getNom(), 'image_'.$i, $images[$i]);
+                    if ($fileName) {
+                        $evenement->{$methodeSet}($fileName);
+                    } else {
+                        $form->addError(new FormError("Le fichier n'est pas au format autorisé (" . implode(', ', AppController::FORMAT_IMAGE) . ")."));
+                    }
+                }
+            }
+            
+            if ($form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($evenement);
+                $em->flush();
+                
+                return $this->redirect($this->generateUrl('evenement_see', array(
+                    'id' => $evenement->getId(),
+                    'page' => $page
+                )));
+            }
+        }
+        
+        return $this->render('evenement/edit_images.html.twig', array(
+            'evenement' => $evenement,
+            'texte_aide' => 'Formats de fichier acceptés : ' . implode(', ', self::FORMAT_IMAGE),
+            'form' => $form->createView(),
+            'paths' => array(
+                'home' => $this->indexUrlProject(),
+                'urls' => array(
+                    $this->generateUrl('evenement_listing', array(
+                        'page' => $page,
+                        'field' => $arrayFilters['field'],
+                        'order' => $arrayFilters['order']
+                    )) => 'Gestion des produits',
+                    $this->generateUrl('produit_see', array(
+                        'id' => $evenement->getId(),
+                        'page' => $page
+                    )) => 'Fiche de l\'événement #' . $evenement->getId() . ' - ' . $evenement->getNom()
+                ),
+                'active' => 'Modification des images'
+            )
+        ));
+    }
+    
     /**
      * Edition d'un événement
      *

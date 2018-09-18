@@ -12,14 +12,27 @@ class ImageType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('image', FileType::class, array(
-            'label' => 'Télécharger mon nouvel avatar :',
+        $builder->add('image_1', FileType::class, array(
             'data_class' => null,
             'required' => false,
-            'help' => ' ', //pour pouvoir afficher un message d'erreur lors de la sélection d'un ficher
+            'help' => $options['aide'],
             'attr' => array(
-                'placeholder' => 'Uploader un nouvel avatar'
+                'placeholder' => 'Choisir la première image'
             )))
+                ->add('image_2', FileType::class, array(
+                    'data_class' => null,
+                    'required' => false,
+                    'help' => $options['aide'],
+                    'attr' => array(
+                        'placeholder' => 'Choisir la deuxième image'
+                    )))
+                ->add('image_3', FileType::class, array(
+                    'data_class' => null,
+                    'required' => false,
+                    'help' => $options['aide'],
+                    'attr' => array(
+                        'placeholder' => 'Choisir la troisième image'
+                    )))
             ->add('save', SubmitType::class, array(
             'label' => 'Sauvegarder',
             'attr' => array(
@@ -31,7 +44,7 @@ class ImageType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-
+            'aide' => 'Ne pas remplir si vous souhaitez conserver la même image'
         ));
     }
 }
