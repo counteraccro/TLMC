@@ -137,7 +137,7 @@ class LoadFamilleAdresseData extends Fixture implements DependentFixtureInterfac
                 'setVille' => 'Versailles',
                 'setCodePostal' => 78000,
                 'setDisabled' => false
-            ],
+            ]
         ]
     ];
 
@@ -157,11 +157,11 @@ class LoadFamilleAdresseData extends Fixture implements DependentFixtureInterfac
 
         $manager->flush();
     }
-    
+
     public function getDependencies()
     {
         return array(
-            LoadPatientData::class,
+            LoadPatientData::class
         );
     }
 }

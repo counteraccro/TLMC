@@ -8,7 +8,6 @@ use App\Entity\FamilleAdresse;
 use App\Entity\Patient;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-// use Symfony\Component\DependencyInjection\ContainerInterface;
 class LoadFamilleData extends Fixture implements DependentFixtureInterface
 {
 

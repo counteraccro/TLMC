@@ -119,15 +119,11 @@
     
             var id_btn_delete_evenement = '#btn-disabled-evenement';
             Evenement.EventDelete(id_btn_delete_evenement);
-    
-            var id_btn_delete_image_1 = '#btn-delete-image-1';
-            Evenement.EventDelete(id_btn_delete_image_1);
 
-            var id_btn_delete_image_2 = '#btn-delete-imag-2';
-            Evenement.EventDelete(id_btn_delete_image_2);
-
-            var id_btn_delete_image_3 = '#btn-delete-image-3';
-            Evenement.EventDelete(id_btn_delete_image_3);
+            var pas;
+            for (pas = 1; pas <= 3; pas++) {
+            	Evenement.EventDelete('#btn-delete-image-' + pas);
+            }
 
             $('[data-toggle="tooltip"]').tooltip();
         });

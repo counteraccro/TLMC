@@ -41,6 +41,35 @@
                 	</p>
                 {% endif %}
         	</blockquote>
+        	
+        	<div id="temoignage_images">
+        		<div class="row align-items-center">
+            		<div class="col-md-4">
+            		    {% if temoignage.image1 != null %}
+            		    	{% if is_granted("ROLE_ADMIN") %}
+            		    	    {{ deleteImage(path('image_delete', {'id': temoignage.id, 'type' : 'temoignage', 'field': 'image_1' }), 'btn-delete-image-1') | raw }}
+            		        {% endif %}
+            		    	{{ image('temoignage', temoignage.image1) | raw }}
+            	        {% endif %}
+            		</div>
+            		<div class="col-md-4">
+            		    {% if temoignage.image2 != null %}
+            		    	{% if is_granted("ROLE_ADMIN") %}
+            		    	    {{ deleteImage(path('image_delete', {'id': temoignage.id, 'type' : 'temoignage', 'field': 'image_2' }), 'btn-delete-image-2') | raw }}
+            		        {% endif %}
+            		    	{{ image('temoignage', temoignage.image2) | raw }}
+            	        {% endif %}
+            		</div>
+            		<div class="col-md-4">
+            		    {% if temoignage.image3 != null %}
+            		    	{% if is_granted("ROLE_ADMIN") %}
+            		    	    {{ deleteImage(path('image_delete', {'id': temoignage.id, 'type' : 'temoignage', 'field': 'image_3' }), 'btn-delete-image-3') | raw }}
+            		        {% endif %}
+            		    	{{ image('temoignage', temoignage.image3) | raw }}
+            	        {% endif %}
+            		</div>
+            	</div>
+        	</div>
      	</div>
     </div>
     
@@ -52,6 +81,12 @@
 
             var id_btn_delete_temoignage = '#btn-disabled-temoignage';
             Temoignage.EventDelete(id_btn_delete_temoignage);
+
+            var pas;
+            for (pas = 1; pas <= 3; pas++) {
+            	Temoignage.EventDelete('#btn-delete-image-' + pas);
+            }
+            
         </script>
     {% endblock %}
     
