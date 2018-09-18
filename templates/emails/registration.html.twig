@@ -1,3 +1,11 @@
-<h3>You did it! You registered!</h3>
+<h3>Confirmation d'inscription</h3>
 
-Hi ! You're successfully registered.
+Bonjour Madame/Monsieur <b>{{ prenom |raw }} {{ nom |raw }}</b>,<br/><br/>
+
+Nous avons le plaisir de vous confirmer votre inscription &agrave; la plateforme TLMC.<br/><br/>
+
+Rappel de votre identifiant : <i>{{ username |raw }}</i><br/>
+Pour vous connecter, vous pouvez d&egrave;s &agrave; pr&eacutesent vous rendre sur l'espace de connexion &agrave; l'adresse suivante : <a href="{{ url('security_login') }}">Se connecter</a><br/><br/>
+
+En cas de perte ou d'oubli de votre mot de passe, cliquez sur "mot de passe oubli&eacute" ou sollicitez un administrateur de la plateforme.<hr>
+<small class="text-muted">Attention, vos identifiants sont strictement personnels, merci de veiller &agrave; leur confidentialit&eacute.</small>
