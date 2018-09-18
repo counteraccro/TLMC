@@ -323,7 +323,7 @@ class TemoignageController extends AppController
                             $methode = 'setImage' . $i;
                             $temoignage->{$methode}($fileName);
                         } else {
-                            $form->addError(new FormError("L'image $i n'est pas au format autorisé (jpg, jpeg,png)."));
+                            $form->addError(new FormError("L'image $i n'est pas au format autorisé (" . implode(', ', AppController::FORMAT_IMAGE) . ")."));
                         }
                     }
                 }
@@ -468,7 +468,7 @@ class TemoignageController extends AppController
                         if ($fileName) {
                             $temoignage->{$methodeSet}($fileName);
                         } else {
-                            $form->addError(new FormError("L'image $i n'est pas au format autorisé (jpg, jpeg,png)."));
+                            $form->addError(new FormError("L'image $i n'est pas au format autorisé (" . implode(', ', AppController::FORMAT_IMAGE) . ")."));
                         }
                     }
                 }

@@ -6,6 +6,7 @@ namespace App\Twig;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
+use App\Controller\AppController;
 
 class ImageExtension extends AbstractExtension
 {
@@ -44,7 +45,7 @@ class ImageExtension extends AbstractExtension
             return false;
         }
         $element = strtolower($element);
-        if (!in_array($element, array('produit', 'evenement', 'membre', 'temoignage'))) {
+        if (!in_array($element, AppController::TYPE_AVEC_IMAGE)) {
             return false;
         }
         

@@ -143,6 +143,18 @@ class AppController extends Controller
     );
 
     /**
+     * Types d'élément pour lesquels on peut télécharger une image
+     *
+     * @var array
+     */
+    const TYPE_AVEC_IMAGE = array(
+        'produit',
+        'evenement',
+        'membre',
+        'temoignage'
+    );
+
+    /**
      * Supprime une recherche de la session
      *
      * @Route("/utils/delete-search/{page}/{key}", name="utils_delete-search", defaults={"key"= null})
@@ -331,7 +343,7 @@ class AppController extends Controller
         $type = strtolower($type);
 
         $extension = strtolower($file->getClientOriginalExtension());
-        if (!in_array($extension, self::FORMAT_IMAGE)) {
+        if (! in_array($extension, self::FORMAT_IMAGE)) {
             return false;
         }
 
@@ -391,43 +403,45 @@ class AppController extends Controller
      */
     public function suppressionImage(Request $request, string $type, int $id, string $field)
     {
-        $field = str_replace('_', '', ucwords($field, '_'));
-        $methodeGet = 'get' . $field;
-        $methodeSet = 'set' . $field;
+        if (in_array($type, self::TYPE_AVEC_IMAGE)) {
+            $field = str_replace('_', '', ucwords($field, '_'));
+            $methodeGet = 'get' . $field;
+            $methodeSet = 'set' . $field;
 
-        switch ($type) {
-            case 'produit':
-                $repository = $this->getDoctrine()->getRepository(Produit::class);
-                break;
-            case 'evenement':
-                $repository = $this->getDoctrine()->getRepository(Evenement::class);
-                break;
-            case 'membre':
-                $repository = $this->getDoctrine()->getRepository(Membre::class);
-                break;
-            case 'temoignage':
-                $repository = $this->getDoctrine()->getRepository(Temoignage::class);
-        }
-
-        if (isset($repository)) {
-            $objet = $repository->findOneBy(array(
-                'id' => $id
-            ));
-
-            $image = $objet->{$methodeGet}();
-            $directory = $this->getParameter('pictures_directory') . $type;
-
-            $directory = str_replace("\\", "/", $directory);
-
-            if (! preg_match("/^(http|https)/", $image) && file_exists($directory . '/' . $image)) {
-                unlink($directory . '/' . $image);
+            switch ($type) {
+                case 'produit':
+                    $repository = $this->getDoctrine()->getRepository(Produit::class);
+                    break;
+                case 'evenement':
+                    $repository = $this->getDoctrine()->getRepository(Evenement::class);
+                    break;
+                case 'membre':
+                    $repository = $this->getDoctrine()->getRepository(Membre::class);
+                    break;
+                case 'temoignage':
+                    $repository = $this->getDoctrine()->getRepository(Temoignage::class);
             }
-            $objet->{$methodeSet}(NULL);
-            $entityManager = $this->getDoctrine()->getManager();
 
-            $entityManager->persist($objet);
+            if (isset($repository)) {
+                $objet = $repository->findOneBy(array(
+                    'id' => $id
+                ));
 
-            $entityManager->flush();
+                $image = $objet->{$methodeGet}();
+                $directory = $this->getParameter('pictures_directory') . $type;
+
+                $directory = str_replace("\\", "/", $directory);
+
+                if (! preg_match("/^(http|https)/", $image) && file_exists($directory . '/' . $image)) {
+                    unlink($directory . '/' . $image);
+                }
+                $objet->{$methodeSet}(NULL);
+                $entityManager = $this->getDoctrine()->getManager();
+
+                $entityManager->persist($objet);
+
+                $entityManager->flush();
+            }
         }
 
         if ($request->isXmlHttpRequest()) {
