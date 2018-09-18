@@ -155,6 +155,16 @@ class LoadFamillePatientData extends Fixture implements DependentFixtureInterfac
                 'setFamille' => 'Famille-29',
                 'setPatient' => 'Patient-13',
                 'setLienParente' => 3
+            ],
+            'FamillePatient-30' => [
+                'setFamille' => 'Famille-28',
+                'setPatient' => 'Patient-15',
+                'setLienParente' => 4
+            ],
+            'FamillePatient-31' => [
+                'setFamille' => 'Famille-29',
+                'setPatient' => 'Patient-15',
+                'setLienParente' => 3
             ]
         ]
     ];

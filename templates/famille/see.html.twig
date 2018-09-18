@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} Fiche d'une famille {% endblock %}
+{% block title %} Fiche d'un membre de famille {% endblock %}
 
 {% block body %}
 
-<h1>Fiche de la famille #{{ famille.id }} - {{ famille.prenom }} {{ famille.nom }} </h1>
+<h1>Fiche du membre de famille #{{ famille.id }} - {{ famille.prenom }} {{ famille.nom }} </h1>
 
 {% include 'elements/arborescence.html.twig' %}
     
@@ -24,11 +24,32 @@
            	{% endif %}
          </div>
          <div class="card-body">
-          	<b>Patient :</b> {{ famille.patient.prenom }} {{ famille.patient.nom }} </br>
-			<b>Email :</b> {{ famille.email }} <br>
-			<b>Numéro de téléphone :</b> {{ famille.numeroTel }} <br>
-			<b>Adresse :</b> {{ famille.familleAdresse.numeroVoie }}, {{ famille.familleAdresse.voie }}, {{ famille.familleAdresse.codePostal }} {{ famille.familleAdresse.ville }} <br>
-			<b>Personne à mobilité réduite :</b> {{ famille.pmr | bool }}
+          	<table class="table-sm">
+         		<tr>
+         			<th>Patients</th>
+         			<td>{% for famillePatient in famille.famillePatients %} 
+          	                {{ famillePatient.lienParente | lienParente }} de 
+          	    			<b>{{ famillePatient.patient.prenom }} {{ famillePatient.patient.nom }}</b><br> 
+          	            {% endfor %}
+          			</td>
+         		</tr>
+         		<tr>
+         			<th>Email</th>
+         			<td>{{ famille.email }}</td>
+         		</tr>
+         		<tr>
+         			<th>Numéro de téléphone</th>
+         			<td>{{ famille.numeroTel }}</td>
+         		</tr>
+         		<tr>
+         			<th>Adresse</th>
+         			<td>{{ famille.familleAdresse.numeroVoie }}, {{ famille.familleAdresse.voie }}<br> {{ famille.familleAdresse.codePostal }} {{ famille.familleAdresse.ville }}</td>
+         		</tr>
+         		<tr>
+         			<th>Personne à mobilité réduite</th>
+         			<td>{{ famille.pmr | bool }}</td>
+         		</tr>
+         	</table>
     </div>
     
     <!-- Modal -->
