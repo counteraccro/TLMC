@@ -117,11 +117,17 @@ class FamilleController extends AppController
             'page' => $page,
             'repositoryClass' => Famille::class,
             'repository' => 'Famille',
-            'repositoryMethode' => 'findAllFamilles'
+            'repositoryMethode' => 'findAllFamilles',
+            'jointure' => array(
+                array(
+                    'oldrepository' => 'Famille',
+                    'newrepository' => 'famillePatients'
+                )
+            )
         );
 
         $params['condition'] = array(
-            $params['repository'] . '.patient = ' . $patient->getId()
+            'famillePatients.patient = ' . $patient->getId()
         );
 
         if (! $this->isAdmin()) {
@@ -465,17 +471,19 @@ class FamilleController extends AppController
     public function addAjaxDropdownAction(Evenement $evenement = null)
     {
         $repository = $this->getDoctrine()->getRepository(Famille::class);
-        
+
         $evenement_id = (is_null($evenement) ? 0 : $evenement->getId());
-        
-        if($this->isAdmin()){
+
+        if ($this->isAdmin()) {
             $specialite_id = null;
-        } elseif(is_null($this->getMembre()->getSpecialite())){
+        } elseif (is_null($this->getMembre()->getSpecialite())) {
             $specialite_id = 0;
         } else {
-            $specialite_id = $this->getMembre()->getSpecialite()->getId();
+            $specialite_id = $this->getMembre()
+                ->getSpecialite()
+                ->getId();
         }
-        
+
         $resultats = $repository->getFamilles($evenement_id, $specialite_id);
 
         $familles = array();

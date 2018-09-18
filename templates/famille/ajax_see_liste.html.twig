@@ -1,7 +1,7 @@
 <div id="ajax_patient_famille_see">
     <div class="card">
         <div class="card-header">
-        	{{ pagination.nb_elements }} membre{% if pagination.nb_elements > 1 %}s{% endif %} {% if pagination.pages_count > 0 %} de famille - Page {{ pagination.page }} / {{ pagination.pages_count }} {% endif %}
+        	{{ pagination.nb_elements }} membre{% if pagination.nb_elements > 1 %}s{% endif %} de famille{% if pagination.pages_count > 0 %} - Page {{ pagination.page }} / {{ pagination.pages_count }} {% endif %}
         	<a href="{{ path('famille_ajax_add', {'id' : patient.id}) }}" id="btn-add-famille" class="float-right"><span class="oi oi-person"></span> Nouveau membre de famille</a>
         </div>
         
@@ -20,8 +20,8 @@
                	
                 {% for famille in familles %}
                		<tr>
-               			<td>{{ famille.prenom }} </td>
-               			<td> {{ famille.nom }} </td>
+               			<td>{{ famille.prenom }}</td>
+               			<td>{{ famille.nom }}</td>
                 		<td>{{ famille.lienFamille | lienParente }}</td>
                 		<td>{{ famille.email }} </td>
                 		<td>{{ famille.numeroTel }} </td>

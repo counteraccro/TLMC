@@ -28,6 +28,7 @@
             		<th> N° de téléphone</th>
             		<th> Adresse </th>
             		<th> Patient </th>
+            		<th> Patients </th>
             		<th> {{ headerFilter(path('famille_listing', {'page' : pagination.page, 'field' : 'pmr'} ), 'Mobilité réduite', current_order, current_field) | raw }}</th>
             		<th></th>
             	</tr>
@@ -40,6 +41,7 @@
             		<td>{{ inputFilter(path('famille_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Famille-numero_tel', current_search, 'N° de téléphone') | raw }}</td>
             		<td>{{ inputFilter(path('famille_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Famille-famille_adresse-voie', current_search, 'Recherche voie') | raw }}</td>
             		<td>{{ inputFilter(path('famille_listing', {'page' : pagination.page, 'field' : current_field, 'order' : current_order}), 'Famille-patient-nom', current_search, 'Nom du patient') | raw }}</td>
+            		<td></td>
             		<td></td>
             		<td></td>
             	</tr>
@@ -63,6 +65,14 @@
             				<a href="{{ path('patient_see', {'id': famille.patient.id, 'page' : pagination.page}) }}">
             			        {{ famille.patient.prenom }} {{ famille.patient.nom }}
             			    </a>
+            			</td>
+            			<td>
+            				{% for famillePatient in famille.famillePatients %}
+                                {{ famillePatient.lienParente | lienParente }} de 
+                                <a href="{{ path('patient_see', {'id': famille.patient.id, 'page' : pagination.page}) }}">
+                                    {{ famillePatient.patient.prenom }} {{ famillePatient.patient.nom }} 
+                                </a><br>
+            				{% endfor %}
             			</td>
             			<td>{{ famille.pmr | bool }}</td>
             			<td>

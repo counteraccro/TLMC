@@ -144,6 +144,15 @@ class LoadPatientData extends Fixture implements DependentFixtureInterface
                 'setDroitImage' => true,
                 'setSpecialite' => 'Specialite-7',
                 'setDisabled' => true
+            ],
+            'Patient-15' => [
+                'setNom' => 'Lanoix',
+                'setPrenom' => 'Christian',
+                'setDateNaissance' => '2001-03-05 03:05:01',
+                'setPMR' => false,
+                'setDroitImage' => true,
+                'setSpecialite' => 'Specialite-4',
+                'setDisabled' => false
             ]
         ]
     ];
