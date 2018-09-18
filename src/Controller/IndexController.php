@@ -7,9 +7,22 @@ use App\Entity\Questionnaire;
 use App\Entity\Evenement;
 use App\Entity\Patient;
 use App\Entity\Produit;
+use App\Service\EmailManager;
 
 class IndexController extends AppController
 {
+    /**
+     * @Route("/email", name="email")
+     * @param EmailManager $sendEmail
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function testMailer(EmailManager $sendEmail){
+        
+        $params = array();
+        $sendEmail->send($params);
+        
+        return $this->json(array('oki' => 'okki'));
+    }
 
     /**
      * Page d'accueil + 5 derniers témoignages
