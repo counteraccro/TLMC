@@ -75,7 +75,7 @@ symfony/process: ^4.1
 symfony/security-bundle: ^4.1
 symfony/serializer: ^4.1
 symfony/serializer-pack: *
-symfony/swiftmailer-bundle: ^3.1
+symfony/swiftmailer-bundle: ^3.2
 symfony/translation: ^4.1
 symfony/twig-bundle: ^4.1
 symfony/validator: ^4.1

@@ -4,11 +4,13 @@
 eclipse.preferences.version=1
 encoding//public/assets/css/style.css=UTF-8
 encoding//src/Controller/PatientController.php=UTF-8
+encoding//src/Service/EmailManager.php=UTF-8
 encoding//templates/base.html.twig=UTF-8
 encoding//templates/elements/ajax_pagination.html.twig=UTF-8
 encoding//templates/elements/footer.html.twig=UTF-8
 encoding//templates/elements/nav.html.twig=UTF-8
 encoding//templates/elements/pagination.html.twig=UTF-8
+encoding//templates/emails/registration.html.twig=UTF-8
 encoding//templates/etablissement/add.html.twig=UTF-8
 encoding//templates/etablissement/ajax_edit.html.twig=UTF-8
 encoding//templates/etablissement/ajax_see.html.twig=UTF-8
