@@ -88,7 +88,8 @@ class HistoriqueController extends AppController
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      *
      * @param int $id
-     * @param string type
+     * @param
+     *            string type
      * @param int $page
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -176,7 +177,8 @@ class HistoriqueController extends AppController
      *
      * @param SessionInterface $session
      * @param Request $request
-     * @param int page
+     * @param
+     *            int page
      * @param int $id
      * @param string $type
      * @return \Symfony\Component\HttpFoundation\Response
@@ -273,27 +275,27 @@ class HistoriqueController extends AppController
             $em = $this->getDoctrine()->getManager();
 
             $familles = $request->request->get('familles');
-            
-            if(is_array($familles)){
-                //ajout de données dans la table participant
+
+            if (is_array($familles)) {
+                // ajout de données dans la table participant
                 foreach ($familles as $famille_id) {
                     $participant = new Participant();
                     $famille = $this->getDoctrine()
-                    ->getRepository(Famille::class)
-                    ->findOneBy(array(
+                        ->getRepository(Famille::class)
+                        ->findOneBy(array(
                         'id' => $famille_id
                     ));
-                    
+
                     $participant->setDate(new \DateTime());
-                    
-                    //vérification pour éviter les doublons dans la table participant
+
+                    // vérification pour éviter les doublons dans la table participant
                     $participants = $this->getDoctrine()
-                    ->getRepository(Participant::class)
-                    ->findBy(array(
+                        ->getRepository(Participant::class)
+                        ->findBy(array(
                         'famille' => $famille,
                         'evenement' => $historique->getEvenement()
                     ));
-                    
+
                     if (count($participants) == 0) {
                         $participant->setEvenement($historique->getEvenement());
                         $participant->setPatient($historique->getPatient());
@@ -304,7 +306,7 @@ class HistoriqueController extends AppController
                 }
             }
 
-            //vérification pour éviter les doublons dans la table historique
+            // vérification pour éviter les doublons dans la table historique
             $historiques = $this->getDoctrine()
                 ->getRepository(Historique::class)
                 ->findBy(array(
@@ -359,7 +361,7 @@ class HistoriqueController extends AppController
      * Edition d'un historique
      *
      * @Route("/historique/edit/{id}/{page}", name="historique_edit")
-     * @Route("/historique/ajax/edit/{id}/{objet_id}/{type}", name="historique_ajax_edit")
+     * @Route("/historique/ajax/edit/{id}/{objet_id}/{type}/{page}", name="historique_ajax_edit")
      * @ParamConverter("historique", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
      *
@@ -376,7 +378,10 @@ class HistoriqueController extends AppController
         $arrayFilters = $this->getDatasFilter($session);
 
         $opt_form = array(
-            'label_submit' => 'Modifier'
+            'label_submit' => 'Modifier',
+            'disabled_evenement' => true,
+            'disabled_specialite' => true,
+            'disabled_patient' => true
         );
 
         if ($request->isXmlHttpRequest()) {
@@ -387,7 +392,6 @@ class HistoriqueController extends AppController
                         'id' => $objet_id
                     ));
 
-                    $opt_form['disabled_evenement'] = true;
                     break;
                 case 'specialite':
                     $repository = $this->getDoctrine()->getRepository(Specialite::class);
@@ -395,7 +399,6 @@ class HistoriqueController extends AppController
                         'id' => $objet_id
                     ));
 
-                    $opt_form['disabled_specialite'] = true;
                     break;
                 case 'patient':
                     $repository = $this->getDoctrine()->getRepository(Patient::class);
@@ -403,10 +406,12 @@ class HistoriqueController extends AppController
                         'id' => $objet_id
                     ));
 
-                    $opt_form['disabled_patient'] = true;
                     break;
                 case 'membre':
-                    $objet = $this->getMembre();
+                    $repository = $this->getDoctrine()->getRepository(Membre::class);
+                    $objet = $repository->findOneBy(array(
+                        'id' => $objet_id
+                    ));
                     break;
             }
         }
@@ -416,9 +421,19 @@ class HistoriqueController extends AppController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
+            
             $em = $this->getDoctrine()->getManager();
 
+            //Mise à jour des statuts dans la table participant
+            $repository_participant = $this->getDoctrine()->getRepository(Participant::class);
+            foreach ($request->request->get('participant') as $id => $statut){
+                $participant = $repository_participant->findOneBy(array(
+                    'id' => $id
+                ));
+                $participant->setStatut($statut['statut']);
+                $em->persist($participant);
+            }
+            
             $em->persist($historique);
             $em->flush();
 
@@ -435,11 +450,20 @@ class HistoriqueController extends AppController
             )));
         }
 
+        $participations = $this->getDoctrine()
+        ->getRepository(Participant::class)
+        ->findBy(array(
+            'evenement' => $historique->getEvenement(),
+            'patient' => $historique->getPatient()
+        ));
+        
         if ($request->isXmlHttpRequest()) {
             return $this->render('historique/ajax_edit.html.twig', array(
                 'form' => $form->createView(),
+                'page' => $page,
                 'objet' => $objet,
                 'historique' => $historique,
+                'participants' => $participations,
                 'type' => $type
             ));
         }
@@ -448,6 +472,7 @@ class HistoriqueController extends AppController
             'page' => $page,
             'form' => $form->createView(),
             'historique' => $historique,
+            'participants' => $participations,
             'paths' => array(
                 'home' => $this->indexUrlProject(),
                 'urls' => array(
