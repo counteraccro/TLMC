@@ -2,12 +2,7 @@
 
     	<div class="card shadow-sm" id="card-info-questionnaire">
          	<div class="card-header bg-light">
-         		  {% if questionnaire.disabled == 0 %} 
-                    		<span class="text-success"><span class="oi oi-media-record"></span></span>
-                  {% else %} 
-                    		<span class="text-danger"><span class="oi oi-media-record"></span></span>
-                   {% endif %}
-            	  <b> Titre du questionnaire :</b> {{ questionnaire.titre }}
+            	  <b> Titre du questionnaire :</b> {{ questionnaire.titre }} | <b>Actif :</b> {{ questionnaire.disabled |actif(true) |raw}}
             	<div class="float-right">
             		  {% if is_granted("ROLE_ADMIN") %}
             		  {{ addQuestion(questionnaire, path('question_ajax_add', {'id': questionnaire.id })) | raw }}

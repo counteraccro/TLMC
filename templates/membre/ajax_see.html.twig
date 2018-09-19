@@ -21,7 +21,7 @@
                     		<th scope="col"> Pseudo </th>
                     		<td > {{ membre.username }} </td>
                     		<th scope="col"> Actif </th>
-                    		<td> {{ membre.disabled | actif }} </td>
+                    		<td> {{ membre.disabled | actif(true) | raw }} </td>
                     	</tr>
                     	<tr>
                     		<th scope="col"> Numéro de téléphone </th>

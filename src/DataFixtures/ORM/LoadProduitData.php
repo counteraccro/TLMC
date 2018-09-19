@@ -49,7 +49,7 @@ class LoadProduitData extends Fixture implements DependentFixtureInterface
             ],
             'Produit-3' => [
                 'setType' => 'TypeProduit-1',
-                'setTitre' => 'Crayon de couleur',
+                'setTitre' => 'Crayons de couleur',
                 'setTexte' => 'Set de 24 crayons de couleur',
                 'setTrancheAge' => array(
                     2,

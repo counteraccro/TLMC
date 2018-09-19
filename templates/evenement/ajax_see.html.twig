@@ -2,7 +2,7 @@
 	<div class="card-header bg-light">
       	<b>Evénement :</b> {{ evenement.nom }}
        	{% if is_granted("ROLE_ADMIN") %}
-       		<br><b>Actif :</b> {{ evenement.disabled | actif }}
+       		<br><b>Actif :</b> {{ evenement.disabled | actif(true) | raw }}
        		<div class="float-right"> 
        			{{ editObjet(path('evenement_edit_images', {'id': evenement.id, 'page': page }), "Modifier les images", "") | raw }}
        	    	{{ editObjet(path('evenement_ajax_edit', {'id': evenement.id }), "Editer l'événement", "btn-edit-evenement") | raw }}

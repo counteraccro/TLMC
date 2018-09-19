@@ -77,7 +77,7 @@ class LoadTemoignageData extends Fixture implements DependentFixtureInterface
             'Temoignage-7' => [
                 'setProduit' => 'Produit-3',
                 'setMembre' => 'Membre-7',
-                'setTitre' => 'Super',
+                'setTitre' => 'J\'adore mes nouveaux crayons',
                 'setCorps' => "Les crayons de couleurs sont trop beaux, j'ai pu faire plein de dessins avec.",
                 'setDisabled' => 0,
                 'setDateCreation' => '2018-01-24 17:17:17'
@@ -125,6 +125,22 @@ class LoadTemoignageData extends Fixture implements DependentFixtureInterface
                 'setFamille' => 'Famille-9',
                 'setDisabled' => 0,
                 'setDateCreation' => '2018-11-11 11:11:11'
+            ],
+            'Temoignage-13' => [
+                'setProduit' => 'Produit-4',
+                'setMembre' => 'Membre-17',
+                'setTitre' => 'Un rêve en coton',
+                'setCorps' => "C'est fou ce que je me repose mieux depuis que vous nous avez fait livrer ces nouveaux matelas ! Un grand merci :)",
+                'setDisabled' => 0,
+                'setDateCreation' => '2018-09-19 12:49:17'
+            ],
+            'Temoignage-14' => [
+                'setProduit' => 'Produit-6',
+                'setMembre' => 'Membre-8',
+                'setTitre' => 'Nouvelles chaises en bois un peu dures',
+                'setCorps' => "Ces chaises sont peu confortables, peut-être peut-on penser à en prendre en mousse la prochaine fois ?",
+                'setDisabled' => 0,
+                'setDateCreation' => '2018-09-19 12:49:17'
             ]
         ]
     ];

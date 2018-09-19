@@ -2,7 +2,7 @@
 	<div class="card-header bg-light">
     	<b>Produit :</b> {{ produit.titre }} 
     	{% if is_granted("ROLE_ADMIN") %}
-    	    ({% if produit.disabled == 1 %} Inactif {% else %} Actif {% endif %})
+    	    | <b>Actif: </b> {{ produit.disabled | actif(true) | raw }}
        		<div class="float-right">
        			{{ editObjet(path('produit_edit_images', {'id': produit.id, 'page': page }), "Modifier les images", "") | raw }}
     	        {{ editObjet(path('produit_ajax_edit', {'id': produit.id }), "Editer le produit", "btn-edit-produit") | raw }}
