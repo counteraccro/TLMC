@@ -154,6 +154,8 @@ class AppController extends Controller
         'temoignage'
     );
 
+    const ADRESSE_ENVOI_MAIL_AUTO = 'noreply@tlmc.com';
+    
     /**
      * Supprime une recherche de la session
      *

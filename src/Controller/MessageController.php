@@ -14,6 +14,7 @@ use App\Entity\Membre;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Entity\Questionnaire;
+use App\Service\EmailManager;
 
 class MessageController extends AppController
 {
@@ -290,14 +291,20 @@ class MessageController extends AppController
     
     /**
      * Fonction permettant d'écrire un nouveau message ou brouillon
-     *
+     * 
      * @Route("/messagerie/ajax/newmessage/{page}", name="message_ajax_new_message")
      * @Route("/messagerie/ajax/editmessage/{id}/{brouillon}/{page}", name="message_ajax_edit_message")
      * @ParamConverter("message", options={"mapping": {"id": "id"}})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BENEVOLE') or is_granted('ROLE_BENEFICIAIRE') or is_granted('ROLE_BENEFICIAIRE_DIRECT')")
+     * @param SessionInterface $session
      * @param Request $request
+     * @param Message $message
+     * @param int $brouillon
+     * @param int $page
+     * @param EmailManager $sendEmail
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function ajaxFormMessage(SessionInterface $session, Request $request, Message $message = null, $brouillon = 1, $page = 1)
+    public function ajaxFormMessage(SessionInterface $session, Request $request, Message $message = null, $brouillon = 1, $page = 1, EmailManager $sendEmail)
     {
         $currentRoute = $request->attributes->get('_route');
         $membre = $this->getMembre();
@@ -396,14 +403,23 @@ class MessageController extends AppController
         if($message->getDestinataire()->getId() != $this->getUser()->getId())
         {
             $destinataire_input = $message->getDestinataire()->getPrenom() . ' ' . $message->getDestinataire()->getNom();
-            $destinataire_input_id = $message->getDestinataire()->getId();
+            $destinataire_input_id = $message->getDestinataire()->getId();   
         }
         
         if(!$erreur && $brouillon == 0)
-        {
+        {          
+            $params = array(
+                'expediteur' => array(AppController::ADRESSE_ENVOI_MAIL_AUTO),
+                'destinataire' => array($message->getDestinataire()->getEmail()),
+                'body' => $this->render('emails/new_message.html.twig', [
+                    'nom' => htmlentities($message->getDestinataire()->getNom()),
+                    'prenom' => htmlentities($message->getDestinataire()->getPrenom())
+                ]),
+            );
+            $sendEmail->send($params);
+
             return $this->render('message/ajax_send_message_ok.html.twig', [
                 'destinataire' => $message->getDestinataire()->getPrenom() . ' ' . $message->getDestinataire()->getNom()
-                ,
             ]);
         }
         else
@@ -420,7 +436,5 @@ class MessageController extends AppController
                 'questionnaires' => $result
             ]);
         }
-        
     }
-
 }

@@ -21,8 +21,8 @@ class IndexController extends AppController
     public function testMailer(EmailManager $sendEmail)
     {
         $params = array(
-            'expediteur' => array('toto@gmail.com'),
-            'destinataire' => array('ingridweil@gmail.com', 'ingridweil2@gmail.com'),
+            'expediteur' => array(AppController::ADRESSE_ENVOI_MAIL_AUTO),
+            'destinataire' => array('user1@gmail.com', 'user2@gmail.com'),
             'body' => $this->render('emails/registration.html.twig', [
                 'nom' => htmlentities($this->getMembre()->getNom()),
                 'prenom' => htmlentities($this->getMembre()->getPrenom()),

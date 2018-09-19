@@ -215,13 +215,13 @@ class MembreController extends AppController
                 $em->flush();
 
                 $params = array(
-                    'expediteur' => array('admin-tlmc@gmail.com'),
+                    'expediteur' => array(AppController::ADRESSE_ENVOI_MAIL_AUTO),
                     'destinataire' => array($membre->getEmail()),
                     'body' => $this->render('emails/registration.html.twig', [
                         'nom' => htmlentities($membre->getNom()),
                         'prenom' => htmlentities($membre->getPrenom()),
                         'username' => htmlentities($membre->getUsername()),
-                        'password' => $password_en_clair
+                        'password' => htmlentities($password_en_clair)
                     ]),
                 );
                 $sendEmail->send($params);
