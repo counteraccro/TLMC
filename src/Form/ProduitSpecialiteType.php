@@ -11,38 +11,58 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use App\Repository\SpecialiteRepository;
+use App\Repository\ProduitRepository;
 
 class ProduitSpecialiteType extends AbstractType
 {
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $opt_spe = array(
-            'label' => 'Spécialité',
-            'class' => Specialite::class,
-            'choice_label' => 'service',
-            'disabled' => $options['disabled_specialite'],
-            'query_builder' => function (SpecialiteRepository $sr) {
-                return $sr->createQueryBuilder('s')
-                    ->innerJoin('App:Etablissement', 'e', 'WITH', 's.etablissement = e.id')
-                    ->andWhere('s.disabled = 0')
-                    ->orderBy('e.nom, s.service', 'ASC');
-            },
-            'group_by' => function (Specialite $specialite) {
-                return $specialite->getEtablissement()->getNom();
-            }
-        );
+        
 
         if ($options['avec_specialite']) {
-            $builder->add('specialite', EntityType::class, $opt_spe);
+            $opt_specialite = array(
+                'label' => 'Spécialité',
+                'class' => Specialite::class,
+                'choice_label' => 'service',
+                'disabled' => $options['disabled_specialite'],
+                'query_builder' => function (SpecialiteRepository $sr) {
+                return $sr->createQueryBuilder('s')
+                ->innerJoin('App:Etablissement', 'e', 'WITH', 's.etablissement = e.id')
+                ->andWhere('s.disabled = 0')
+                ->orderBy('e.nom, s.service', 'ASC');
+                },
+                'group_by' => function (Specialite $specialite) {
+                return $specialite->getEtablissement()->getNom();
+                }
+                );
+            
+            if (! is_null($options['query_specialite'])) {
+                $opt_specialite['query_builder'] = $options['query_specialite'];
+            }
+            
+            $builder->add('specialite', EntityType::class, $opt_specialite);
         }
+        
         if ($options['avec_produit']) {
-            $builder->add('produit', EntityType::class, array(
+            $opt_produit = array(
                 'class' => Produit::class,
                 'choice_label' => 'titre',
-                'disabled' => $options['disabled_produit']
-            ));
+                'disabled' => $options['disabled_produit'],
+                'query_builder' => function (ProduitRepository $pr) {
+                return $pr->createQueryBuilder('p')
+                ->andWhere('p.disabled = 0')
+                ->orderBy('p.titre', 'ASC');
+                }
+                );
+            
+            if (! is_null($options['query_produit'])) {
+                $opt_produit['query_builder'] = $options['query_produit'];
+            }
+            
+            $builder->add('produit', EntityType::class, $opt_produit);
         }
+        
         $builder->add('quantite', IntegerType::class, array(
             'label' => 'Quantité'
         ));
@@ -66,7 +86,9 @@ class ProduitSpecialiteType extends AbstractType
             'avec_specialite' => true,
             'avec_produit' => true,
             'disabled_specialite' => false,
-            'disabled_produit' => false
+            'disabled_produit' => false,
+            'query_specialite' => null,
+            'query_produit' => null
         ]);
     }
 }
