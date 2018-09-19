@@ -215,8 +215,8 @@ class MembreController extends AppController
                 $em->flush();
 
                 $params = array(
-                    'expediteur' => array('toto@gmail.com'),
-                    'destinataire' => array('ingridweil@gmail.com', 'ingridweil2@gmail.com'),
+                    'expediteur' => array('admin-tlmc@gmail.com'),
+                    'destinataire' => array($membre->getEmail()),
                     'body' => $this->render('emails/registration.html.twig', [
                         'nom' => htmlentities($membre->getNom()),
                         'prenom' => htmlentities($membre->getPrenom()),
@@ -226,27 +226,27 @@ class MembreController extends AppController
                 );
                 $sendEmail->send($params);
                 
-                //REDIRECTION VERS LA PAGE mais pas possible de checker mail auto
-//                 return $this->redirect($this->generateUrl('membre_see', array(
-//                     'id' => $membre->getId()
-//                 )));
+                //REDIRECTION VERS LA PAGE Membre mais pas possible de checker mail auto (voir *)
+                return $this->redirect($this->generateUrl('membre_see', array(
+                    'id' => $membre->getId()
+                )));
 
-                //ce render permet de visualiser le mail auto (TODO : remettre la redirection ci-dessus une fois mails auto terminés)
-                return $this->render('membre/see.html.twig', array(
-                    'page' => $page,
-                    'membre' => $membre,
-                    'paths' => array(
-                        'home' => $this->indexUrlProject(),
-                        'urls' => array(
-                            $this->generateUrl('membre_listing', array(
-                                'page' => $page,
-                                'field' => $arrayFilters['field'],
-                                'order' => $arrayFilters['order']
-                            )) => 'Gestion des membres'
-                        ),
-                        'active' => "Ajout d'un membre"
-                    )
-                ));
+                // (*) ce render permet de visualiser le mail auto de confirmation d'inscription
+//                 return $this->render('membre/see.html.twig', array(
+//                     'page' => $page,
+//                     'membre' => $membre,
+//                     'paths' => array(
+//                         'home' => $this->indexUrlProject(),
+//                         'urls' => array(
+//                             $this->generateUrl('membre_listing', array(
+//                                 'page' => $page,
+//                                 'field' => $arrayFilters['field'],
+//                                 'order' => $arrayFilters['order']
+//                             )) => 'Gestion des membres'
+//                         ),
+//                         'active' => "Ajout d'un membre"
+//                     )
+//                 ));
             }
         }
 
