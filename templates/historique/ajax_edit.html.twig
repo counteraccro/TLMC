@@ -15,23 +15,32 @@
 	    {{ form_row(form.specialite) }}
 		{{ form_row(form.patient) }}
 		
+		<div id="bloc_familles">
+			{% for participant in participants %}
+				{{ participant.famille.prenom }} {{ participant.famille.nom }} ({{ participant.famille.lienFamille | lienParente }})
+				{{ selectStatut('participant['~ participant.id ~'][statut]', participant.statut, 'participant_' ~ participant.id ~ '_statut') |raw }}
+                <br>
+			{% endfor %}
+		</div>
+		
 		<div class="modal-footer">
-		{{ form_widget(form.save) }}
+		    {{ form_widget(form.save) }}
+		</div>
+    	{{ form_rest(form) }}
+    	{{ form_errors(form) }}
+    	{{ form_end(form) }}
 	</div>
-	{{ form_rest(form) }}
-	{{ form_errors(form) }}
-	{{ form_end(form) }}
-</div>
 
-	{% block javascripts %}
-	<script type="text/javascript">
-    
-    	$('#modal_{{ type }}_global').modal({
-    		   'show' : true,
-    		   'backdrop' : 'static'
-    	});
-    	
-		var url = '{{path('historique_ajax_edit', {'id': historique.id, 'objet_id': objet.id, 'type':type }) }}';
-		Historique.EventEditSubmit(url);
-	    </script>
-	{% endblock %}
+    {% block javascripts %}
+    	<script type="text/javascript">
+        
+        	$('#modal_{{ type }}_global').modal({
+        		   'show' : true,
+        		   'backdrop' : 'static'
+        	});
+        	
+    		var url = '{{path('historique_ajax_edit', {'id': historique.id, 'objet_id': objet.id, 'type':type, 'page': page }) }}';
+    		Historique.EventEditSubmit(url);
+    	</script>
+    {% endblock %}
+</div>

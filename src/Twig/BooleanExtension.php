@@ -52,8 +52,11 @@ class BooleanExtension extends AbstractExtension
      * @param boolean $value
      * @return string
      */
-    public function isActif($value)
+    public function isActif($value, $avec_pastille = false)
     {
+        if($avec_pastille){
+            return ($value == 0 ? '<span class="text-success"><span class="oi oi-media-record"></span></span> Oui' : '<span class="text-danger"><span class="oi oi-media-record"></span></span> Non');
+        }
         return ($value == 0 ? 'Oui' : 'Non');
     }
 }

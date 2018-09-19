@@ -39,6 +39,7 @@
                     	<th> Patient </th>
                     {% endif %}
                     <th>Familles</th>
+                    <th></th>
                 </tr>
                 
                 {% for historique in historiques %}
@@ -63,6 +64,9 @@
                         		{% endif %}
                         	{% endfor %}
                         </td>
+                        <td>
+                        	{{ actionEdit(path('historique_ajax_edit', {'id' : historique.id, 'type' : pagination.page, 'type': type, 'objet_id': objet.id}), 'btn-edit-historique-'~ historique.id ) | raw }}
+            		    </td>
                     </tr>
                 
                 {% endfor %}
@@ -91,6 +95,10 @@
 
             var id_btn_add = '#btn-add-historique';
         	Historique.EventAdd(id_btn_add);
+
+        	{% for historique in historiques %}
+        		Historique.EventEdit('#btn-edit-historique-' + {{ historique.id }});
+        	{% endfor %}
 			
         </script>
     {% endblock %}

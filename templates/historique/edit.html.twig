@@ -14,6 +14,14 @@
         {{ form_row(form.evenement) }}
 	    {{ form_row(form.specialite) }}
 		{{ form_row(form.patient) }}
+		
+		<div id="bloc_familles">
+			{% for participant in participants %}
+				{{ participant.famille.prenom }} {{ participant.famille.nom }} ({{ participant.famille.lienFamille | lienParente }})
+				{{ selectStatut('participant['~ participant.id ~'][statut]', participant.statut, 'participant_' ~ participant.id ~ '_statut') |raw }}
+                <br>
+			{% endfor %}
+		</div>
         
         {{ form_rest(form) }}
         {{ form_errors(form) }}
